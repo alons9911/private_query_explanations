@@ -12,17 +12,41 @@ from typing import Any, Iterable, Mapping, Sequence
 
 from .algorithm import (
     Candidate,
-    generate_simple_predicate_views,
     histogram,
     histogram_distance_hd,
 )
-from .dp import add_laplace_noise_to_counts
 from .query import Condition, Op, Query, active_domain
 
 
-def load_csv(path: Path) -> list[dict[str, object]]:
+def _coerce_scalar(x: str) -> object:
+    s = x.strip()
+    if s == "":
+        return ""
+    # ints first
+    try:
+        if s.isdigit() or (s.startswith("-") and s[1:].isdigit()):
+            return int(s)
+    except Exception:
+        pass
+    # floats
+    try:
+        # avoid treating codes like "0012" as float; keep them as string
+        if any(ch in s for ch in (".", "e", "E")):
+            return float(s)
+    except Exception:
+        pass
+    return s
+
+
+def load_csv(path: Path, *, infer_types: bool = True) -> list[dict[str, object]]:
     with path.open(newline="", encoding="utf-8") as f:
-        return [dict(r) for r in csv.DictReader(f)]
+        rows: list[dict[str, object]] = []
+        for r in csv.DictReader(f):
+            if not infer_types:
+                rows.append(dict(r))
+                continue
+            rows.append({k: _coerce_scalar(v) for k, v in dict(r).items()})
+        return rows
 
 
 def downsample(rows: Sequence[Mapping[str, Any]], n: int, *, rng: random.Random) -> list[Mapping[str, Any]]:
@@ -31,6 +55,41 @@ def downsample(rows: Sequence[Mapping[str, Any]], n: int, *, rng: random.Random)
     idxs = list(range(len(rows)))
     rng.shuffle(idxs)
     return [rows[i] for i in idxs[:n]]
+
+
+def generate_pairwise_predicate_views(
+    dataset: Sequence[Mapping[str, Any]],
+    predicate_attrs: Sequence[str],
+    *,
+    max_values_per_attr: int | None = None,
+) -> list[Query]:
+    """
+    View generation per the slide pseudocode (“All combinations of A1=v1 and A2=v2”):
+
+      for each (Ai, Aj) in Attributes × Attributes:
+        for each (vi, vj) in Dom(Ai) × Dom(Aj):
+          p(t) := (t[Ai] == vi) AND (t[Aj] == vj)
+
+    Notes:
+    - We only generate unordered pairs Ai != Aj to avoid duplicates and to keep runtime bounded.
+    - `max_values_per_attr` bounds the per-attribute domain used in view generation.
+    """
+
+    attrs = list(dict.fromkeys(predicate_attrs))
+    doms: dict[str, list[Any]] = {}
+    for a in attrs:
+        dom = active_domain(dataset, a)
+        if max_values_per_attr is not None:
+            dom = dom[: max_values_per_attr]
+        doms[a] = dom
+
+    views: list[Query] = []
+    for i, ai in enumerate(attrs):
+        for aj in attrs[i + 1 :]:
+            for vi in doms.get(ai, []):
+                for vj in doms.get(aj, []):
+                    views.append(Query((Condition(ai, Op.EQ, vi), Condition(aj, Op.EQ, vj))))
+    return views
 
 
 def brute_force_topk_proxy(
@@ -225,9 +284,12 @@ class RunSpec:
     k: int
     tau: int
     epsilon: float
+    predicate_view_mode: str = "pairwise"  # "pairwise" (slides) or "single"
     n_tuples: int | None = None
     seed: int = 7
     repeats: int = 1
+    label: str | None = None
+    dataset_name: str | None = None
 
 
 @dataclass(frozen=True)
@@ -237,6 +299,7 @@ class RunResult:
     """
 
     spec: RunSpec
+    trial: int
     runtime_s: float
     avg_selected_hd: float
     avg_noisy_hist_mae: float | None
@@ -269,8 +332,13 @@ def _hist_mae(true_h: Mapping[Any, float], noisy_h: Mapping[Any, float]) -> floa
 
 
 def run_once(spec: RunSpec) -> RunResult:
-    rng = random.Random(spec.seed)
-    dataset_full = load_csv(Path(spec.dataset_csv))
+    # Kept for backward compatibility; run_once represents a single trial.
+    return _run_trial(spec, trial=0)
+
+
+def _run_trial(spec: RunSpec, *, trial: int) -> RunResult:
+    rng = random.Random(spec.seed + trial)
+    dataset_full = load_csv(Path(spec.dataset_csv), infer_types=True)
     dataset: Sequence[Mapping[str, Any]]
     if spec.n_tuples is not None:
         dataset = downsample(dataset_full, spec.n_tuples, rng=rng)
@@ -280,11 +348,23 @@ def run_once(spec: RunSpec) -> RunResult:
     q1 = _query_from_dict(spec.q1)
     q2 = _query_from_dict(spec.q2)
 
-    predicate_views = generate_simple_predicate_views(
-        dataset,
-        predicate_attrs=spec.predicate_attrs,
-        max_values_per_attr=spec.max_values_per_predicate_attr,
-    )
+    if spec.predicate_view_mode == "pairwise":
+        predicate_views = generate_pairwise_predicate_views(
+            dataset,
+            predicate_attrs=spec.predicate_attrs,
+            max_values_per_attr=spec.max_values_per_predicate_attr,
+        )
+    elif spec.predicate_view_mode == "single":
+        # Fall back to the simpler generator from algorithm.py
+        from .algorithm import generate_simple_predicate_views
+
+        predicate_views = generate_simple_predicate_views(
+            dataset,
+            predicate_attrs=spec.predicate_attrs,
+            max_values_per_attr=spec.max_values_per_predicate_attr,
+        )
+    else:
+        raise ValueError(f"Unknown predicate_view_mode: {spec.predicate_view_mode}")
 
     t0 = time.perf_counter()
     avg_noisy_mae: float | None = None
@@ -321,7 +401,9 @@ def run_once(spec: RunSpec) -> RunResult:
             maes.append(_hist_mae(true_h2, e["noisy_hist_q2"]))
         avg_hd = _compute_selected_hd(dataset=dataset, q1=q1, q2=q2, selected=selected)
         avg_noisy_mae = sum(maes) / float(len(maes) or 1)
-        return RunResult(spec=spec, runtime_s=runtime, avg_selected_hd=avg_hd, avg_noisy_hist_mae=avg_noisy_mae)
+        return RunResult(
+            spec=spec, trial=trial, runtime_s=runtime, avg_selected_hd=avg_hd, avg_noisy_hist_mae=avg_noisy_mae
+        )
 
     if spec.algorithm == AlgorithmName.BRUTE_PROXY:
         chosen = brute_force_topk_proxy(
@@ -336,7 +418,7 @@ def run_once(spec: RunSpec) -> RunResult:
         runtime = time.perf_counter() - t0
         selected = [(c.view, c.attribute) for c in chosen]
         avg_hd = _compute_selected_hd(dataset=dataset, q1=q1, q2=q2, selected=selected)
-        return RunResult(spec=spec, runtime_s=runtime, avg_selected_hd=avg_hd, avg_noisy_hist_mae=None)
+        return RunResult(spec=spec, trial=trial, runtime_s=runtime, avg_selected_hd=avg_hd, avg_noisy_hist_mae=None)
 
     if spec.algorithm == AlgorithmName.BRUTE_NON_PROXY:
         chosen = brute_force_topk_non_proxy(
@@ -351,9 +433,18 @@ def run_once(spec: RunSpec) -> RunResult:
         runtime = time.perf_counter() - t0
         selected = [(c.view, c.attribute) for c in chosen]
         avg_hd = _compute_selected_hd(dataset=dataset, q1=q1, q2=q2, selected=selected)
-        return RunResult(spec=spec, runtime_s=runtime, avg_selected_hd=avg_hd, avg_noisy_hist_mae=None)
+        return RunResult(spec=spec, trial=trial, runtime_s=runtime, avg_selected_hd=avg_hd, avg_noisy_hist_mae=None)
 
     raise ValueError(f"Unknown algorithm: {spec.algorithm}")
+
+
+def run_repeated(spec: RunSpec) -> list[RunResult]:
+    """
+    Run the same spec multiple times (different RNG seeds) to match the slide's “# of trials”.
+    """
+
+    reps = max(1, int(spec.repeats))
+    return [_run_trial(spec, trial=i) for i in range(reps)]
 
 
 def run_planned_experiments(
@@ -398,15 +489,15 @@ def run_planned_experiments(
     sizes = sorted(set(sizes))
     for n in sizes:
         s = RunSpec(**{**asdict(base_spec), "n_tuples": n})
-        results.append(run_once(s))
-    emit("runtime_vs_tuples", results[-len(sizes) :])
+        results.extend(run_repeated(s))
+    emit("runtime_vs_tuples", results[-len(sizes) * max(1, base_spec.repeats) :])
 
     # --- Runtime f(Algorithm) ---
     algs = [AlgorithmName.PRIVATE, AlgorithmName.BRUTE_PROXY, AlgorithmName.BRUTE_NON_PROXY]
     rows = []
     for a in algs:
         s = RunSpec(**{**asdict(base_spec), "algorithm": a})
-        rows.append(run_once(s))
+        rows.extend(run_repeated(s))
     results.extend(rows)
     emit("runtime_vs_algorithm", rows)
 
@@ -415,7 +506,7 @@ def run_planned_experiments(
     rows = []
     for k in ks:
         s = RunSpec(**{**asdict(base_spec), "k": k})
-        rows.append(run_once(s))
+        rows.extend(run_repeated(s))
     results.extend(rows)
     emit("runtime_vs_k", rows)
 
@@ -426,7 +517,7 @@ def run_planned_experiments(
     rows = []
     for lim in limits:
         s = RunSpec(**{**asdict(base_spec), "max_values_per_predicate_attr": lim})
-        rows.append(run_once(s))
+        rows.extend(run_repeated(s))
     results.extend(rows)
     emit("runtime_vs_num_predicates", rows)
 
@@ -436,7 +527,7 @@ def run_planned_experiments(
     rows = []
     for e in epsilons:
         s = RunSpec(**{**asdict(base_spec), "epsilon": e})
-        rows.append(run_once(s))
+        rows.extend(run_repeated(s))
     results.extend(rows)
     emit("runtime_vs_epsilon", rows)
 
@@ -445,7 +536,7 @@ def run_planned_experiments(
     rows = []
     for t in taus:
         s = RunSpec(**{**asdict(base_spec), "tau": t})
-        rows.append(run_once(s))
+        rows.extend(run_repeated(s))
     results.extend(rows)
     emit("runtime_vs_tau", rows)
 
@@ -465,7 +556,7 @@ def run_planned_experiments(
                             "epsilon": e,
                         }
                     )
-                    grid_rows.append(run_once(s))
+                    grid_rows.extend(run_repeated(s))
     results.extend(grid_rows)
     emit("quality_heatmap_grid", grid_rows)
 
@@ -474,18 +565,36 @@ def run_planned_experiments(
 
 def _parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Run planned experiments (slides 41–43).")
+    p.add_argument("--suite", default=None, help="Named suite (e.g., 'slide41').")
     p.add_argument("--dataset", default=str(Path(__file__).with_name("toy.csv")), help="CSV dataset path")
+    p.add_argument("--dataset-ipums", default=None, help="IPUMS-CPS CSV path (for slide41 suite)")
+    p.add_argument("--dataset-stackoverflow", default=None, help="StackOverflow survey CSV path (for slide41 suite)")
     p.add_argument("--out", default="results", help="Output directory")
     p.add_argument("--algorithm", default=AlgorithmName.PRIVATE, help="Algorithm name")
     p.add_argument("--k", type=int, default=2)
     p.add_argument("--tau", type=int, default=3)
     p.add_argument("--epsilon", type=float, default=1.0)
     p.add_argument("--seed", type=int, default=7)
+    p.add_argument("--repeats", type=int, default=1, help="Number of trials to repeat each point")
     return p.parse_args(argv)
 
 
 def main(argv: Sequence[str] | None = None) -> None:
     args = _parse_args(argv)
+
+    out_dir = Path(args.out)
+
+    if args.suite == "slide41":
+        from .slide_specs import slide41_suite
+
+        suite = slide41_suite(ipums_csv=args.dataset_ipums, stackoverflow_csv=args.dataset_stackoverflow)
+        for s in suite:
+            s = RunSpec(**{**asdict(s), "seed": args.seed, "repeats": args.repeats})
+            ds_name = s.dataset_name or Path(s.dataset_csv).stem
+            label = s.label or "run"
+            run_planned_experiments(out_dir=out_dir / ds_name / label, base_spec=s)
+        print(f"Wrote slide41 experiment outputs to: {out_dir.resolve()}")
+        return
 
     # Default query pair matches the demo: sales vs engineering.
     base = RunSpec(
@@ -500,10 +609,9 @@ def main(argv: Sequence[str] | None = None) -> None:
         tau=args.tau,
         epsilon=args.epsilon,
         seed=args.seed,
-        repeats=1,
+        repeats=args.repeats,
     )
 
-    out_dir = Path(args.out)
     run_planned_experiments(out_dir=out_dir, base_spec=base)
     print(f"Wrote experiment outputs to: {out_dir.resolve()}")
 

@@ -53,7 +53,7 @@ def plot_runtime_sweeps(results_dir: Path, out_dir: Path) -> None:
         if df.empty:
             continue
         plt.figure(figsize=(7, 4))
-        sns.lineplot(data=df.sort_values(xcol), x=xcol, y="runtime_s", marker="o")
+        sns.lineplot(data=df.sort_values(xcol), x=xcol, y="runtime_s", marker="o", errorbar="sd")
         plt.title(title)
         plt.xlabel(xcol.replace("spec.", ""))
         plt.ylabel("runtime (s)")
@@ -141,12 +141,22 @@ def main() -> None:
     args = ap.parse_args()
 
     results_dir = Path(args.results)
-    out_dir = Path(args.out) if args.out else (results_dir / "plots")
-    out_dir.mkdir(parents=True, exist_ok=True)
 
-    plot_runtime_sweeps(results_dir, out_dir)
-    plot_quality_heatmaps(results_dir, out_dir)
-    print(f"Wrote plots to: {out_dir.resolve()}")
+    # If results_dir contains suite subdirectories (e.g. results/<dataset>/<label>/),
+    # generate plots for each leaf directory that contains the expected JSONL files.
+    def is_leaf(d: Path) -> bool:
+        return any((d / f).exists() for f in ("runtime_vs_algorithm.jsonl", "quality_heatmap_grid.jsonl"))
+
+    leaves = [results_dir] if is_leaf(results_dir) else [p for p in results_dir.rglob("*") if p.is_dir() and is_leaf(p)]
+    if not leaves:
+        raise SystemExit(f"No experiment outputs found under: {results_dir}")
+
+    for leaf in leaves:
+        out_dir = Path(args.out) if args.out else (leaf / "plots")
+        out_dir.mkdir(parents=True, exist_ok=True)
+        plot_runtime_sweeps(leaf, out_dir)
+        plot_quality_heatmaps(leaf, out_dir)
+        print(f"Wrote plots to: {out_dir.resolve()}")
 
 
 if __name__ == "__main__":

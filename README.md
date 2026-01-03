@@ -34,6 +34,21 @@ python3 -m pqr.experiments --dataset pqr/toy.csv --out results
 
 Outputs are written as `*.jsonl` files under the output directory for easy plotting in a notebook.
 
+### Run the slide 41 dataset/query suite (IPUMS-CPS + StackOverflow)
+
+Slide 41 defines two datasets and six specific query-pairs. The experiment runner includes a built-in suite for these.
+
+- **IPUMS-CPS**: requires a manual export (not downloadable automatically). Provide the CSV path via `--dataset-ipums`.
+- **StackOverflow survey**: download the survey CSV in Colab (or locally) and provide the CSV path via `--dataset-stackoverflow`.
+
+Run the suite (with the slide’s default #trials = 10):
+
+```bash
+python3 -m pqr.experiments --suite slide41 --out results --dataset-ipums /path/to/ipums.csv --dataset-stackoverflow /path/to/stackoverflow.csv --repeats 10
+```
+
+This writes per-dataset/per-query outputs under `results/<dataset>/<query_label>/`.
+
 ### Generate visualizations (plots + heatmaps)
 
 Install plotting deps:
