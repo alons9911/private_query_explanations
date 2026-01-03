@@ -1,1 +1,96 @@
 # private_query_explanations
+
+Reference implementation of the core pseudocode found in `Private_Query_Refinement.pdf`:
+
+- **Algorithm 1**: *Private-Queries-Diff-Top-K-Explanation*
+- **Algorithm 2**: *Find-Top-k-Explanations*
+
+The PDF draft contains some placeholders / unspecified subroutines (e.g., exact
+view-generation, the exact “one-shot top-τ” primitive, and the full diversity
+penalty). This repo implements the algorithms exactly where specified, and uses
+standard DP defaults where the draft is underspecified.
+
+### Run the demo
+
+```bash
+python3 -m pqr.demo
+```
+
+### Run the planned experiments (PPTX slides 41–43)
+
+This runs the experiment suite described on slides 41–43 of `private query refinement.pptx`:
+
+- runtime vs `#tuples` (via downsampling)
+- runtime vs algorithm variant
+- runtime vs `k`
+- runtime vs `#predicates` (approximated by limiting predicate domain values)
+- runtime vs `epsilon`
+- runtime vs `tau`
+- a “quality heatmap grid” varying predicate limit × tau × algorithm × epsilon
+
+```bash
+python3 -m pqr.experiments --dataset pqr/toy.csv --out results
+```
+
+Outputs are written as `*.jsonl` files under the output directory for easy plotting in a notebook.
+
+### Run the slide 41 dataset/query suite (IPUMS-CPS + StackOverflow)
+
+Slide 41 defines two datasets and six specific query-pairs. The experiment runner includes a built-in suite for these.
+
+- **IPUMS-CPS**: requires a manual export (not downloadable automatically). Provide the CSV path via `--dataset-ipums`.
+- **StackOverflow survey**: download the survey CSV in Colab (or locally) and provide the CSV path via `--dataset-stackoverflow`.
+
+Run the suite (with the slide’s default #trials = 10):
+
+```bash
+python3 -m pqr.experiments --suite slide41 --out results --dataset-ipums /path/to/ipums.csv --dataset-stackoverflow /path/to/stackoverflow.csv --repeats 10
+```
+
+This writes per-dataset/per-query outputs under `results/<dataset>/<query_label>/`.
+
+### Generate visualizations (plots + heatmaps)
+
+Install plotting deps:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+Generate PNGs from the `results/*.jsonl` files:
+
+```bash
+python3 -m pqr.visualize --results results
+```
+
+Plots are saved under `results/plots/`.
+
+### Use as a library
+
+```python
+from pqr.algorithm import generate_simple_predicate_views, private_queries_diff_topk_explanation
+from pqr.query import Condition, Op, Query
+
+dataset = [
+    {"department": "sales", "country": "US", "gender": "F"},
+    {"department": "engineering", "country": "US", "gender": "M"},
+]
+
+q1 = Query((Condition("department", Op.EQ, "sales"),))
+q2 = Query((Condition("department", Op.EQ, "engineering"),))
+
+predicate_views = generate_simple_predicate_views(dataset, predicate_attrs=["country"])
+
+explanations = private_queries_diff_topk_explanation(
+    dataset=dataset,
+    q1=q1,
+    q2=q2,
+    attributes=["gender"],
+    predicate_views=predicate_views,
+    tau=3,
+    k=1,
+    epsilon=1.0,
+)
+print(explanations)
+```
+
