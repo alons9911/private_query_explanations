@@ -16,6 +16,24 @@ standard DP defaults where the draft is underspecified.
 python3 -m pqr.demo
 ```
 
+### Run the planned experiments (PPTX slides 41–43)
+
+This runs the experiment suite described on slides 41–43 of `private query refinement.pptx`:
+
+- runtime vs `#tuples` (via downsampling)
+- runtime vs algorithm variant
+- runtime vs `k`
+- runtime vs `#predicates` (approximated by limiting predicate domain values)
+- runtime vs `epsilon`
+- runtime vs `tau`
+- a “quality heatmap grid” varying predicate limit × tau × algorithm × epsilon
+
+```bash
+python3 -m pqr.experiments --dataset pqr/toy.csv --out results
+```
+
+Outputs are written as `*.jsonl` files under the output directory for easy plotting in a notebook.
+
 ### Use as a library
 
 ```python
