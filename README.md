@@ -34,6 +34,22 @@ python3 -m pqr.experiments --dataset pqr/toy.csv --out results
 
 Outputs are written as `*.jsonl` files under the output directory for easy plotting in a notebook.
 
+### Generate visualizations (plots + heatmaps)
+
+Install plotting deps:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+Generate PNGs from the `results/*.jsonl` files:
+
+```bash
+python3 -m pqr.visualize --results results
+```
+
+Plots are saved under `results/plots/`.
+
 ### Use as a library
 
 ```python
