@@ -1,34 +1,47 @@
-# Default parameters of Section 5.1 and the grids of every experiment.
-# `pqde run <exp> --quick` shrinks trials/repeats for a smoke run.
+# Every experiment starts from `defaults` and changes only the parameter it
+# studies.  The defaults are the realistic deployment of Section 5.1: the whole
+# dataset, every public view, k = 5, lambda = 0.5, eps = 1 split equally, and the
+# derived constants set by the algorithm's own rules:
+#   tau   = min(3k, |P|)                       (Eq. (11))
+#   gamma = 2 ln(tau |Attrs|) k / eps_S        (Eq. (12))
+#   gamma_R = N,  Delta_Use = 7 / (4 |D|)
+# When an experiment varies k, eps or tau, the derived constants follow their
+# rules (that is how the algorithm behaves); `gamma_mult` scales the Eq. (12)
+# value when gamma itself is the studied parameter.
 
 defaults:
   k: 5
   lam: 0.5
   epsilon: 1.0
   split: [0.333333333, 0.333333333, 0.333333334]   # eps_P, eps_S, eps_H
-  tau_factor: 3                                   # tau = min(3k, |P|), Eq. (11)
-  release: pair                                   # noisy (H1, H2); "diff" releases H1 - H2
-  gamma_eval: 0.0                                 # metric uses the unsmoothed HD
-  trials: 40
+  tau_factor: 3
+  gamma_mult: 1.0          # gamma = gamma_mult * Eq. (12)
+  release: pair            # noisy (H1, H2); "diff" releases H1 - H2
+  gamma_eval: 0.0          # the metric scores with the unsmoothed HD
+  data_fraction: 1.0       # N = the whole dataset
+  view_fraction: 1.0       # |P| = every public view
+  trials: 40               # private runs per accuracy point
   seed: 20261031
+  # route used to compute the exact statistics on the server; every route gives
+  # identical numbers (tests/test_stats_modes.py).  direct = the route of
+  # Section 4.2; grouped / closed_form / lazy are the optimisations O1-O3.
+  stats: {mode: grouped, rep: general, hist: eager}
+  b2_max_subsets: 5000000  # B2 above this many subsets is timed on a block and extrapolated
 
-# E1 -- case studies (Section 5.2): one released run per pair + view-stage report
+pairs: [A1, A2, A3, T1, T2, T3, S1, S2, S3, H1, H2, H3, R1, R2, R3, R4, R5, R6, C1, C2, C3, C4]
+datasets: [adult, tax, tax_dirty, hospital, stackoverflow]
+
+# E1 -- one released run per pair: view stage, explanations, exact checks
 e1:
-  pairs: [A1, A2, A3, T1, T2, T3, S1, S2, S3, H1, H2, H3]
   run_seed: 7
 
-# E2 -- quality vs. privacy budget against B1-B3 (Section 5.3.1, Table 3, Figure 6)
+# E2 -- accuracy vs. the privacy budget
 e2:
-  pairs: [A1, A2, A3, T1, T2, T3, S1, S2, S3, H1, H2, H3]
-  figure_pairs: [A1, A2, T1]
   epsilons: [0.1, 0.2, 0.5, 1.0, 2.0, 5.0]
   table_epsilons: [1.0, 5.0]
 
-# E3 -- what drives accuracy: margins, smoothing gamma, the view stage, budget split
+# E3 -- what drives accuracy: margins, bins vs gamma, the view stage alone, the budget split
 e3:
-  pairs: [A1, A2, T1]
-  gamma_multipliers: [0.03, 0.1, 0.3, 1.0, 3.0, 10.0]   # x the Eq. (12) value
-  gamma_percent_of_N: [0.0, 0.1, 0.5, 1.0, 2.0, 5.0]
   view_stage_eps_P: [0.01, 0.0333, 0.1, 0.3333, 1.0, 3.0, 10.0]
   splits:
     - [0.3333, 0.3333, 0.3334]
@@ -38,23 +51,29 @@ e3:
     - [0.05, 0.60, 0.35]
   bin_stat_gamma_percent: [0.5, 5.0]
 
-# E4 -- running time (Section 5.3.2, Figure 7)
+# E4 -- end-to-end running time of PRIV_EXPL, B1, B2, B3; one parameter at a time
 e4:
-  pair: A2
-  repeats: 20
-  ks: [1, 2, 3, 5, 10, 20, 40]
-  n_fractions: [0.1, 0.25, 0.5, 0.75, 1.0]
-  epsilons: [0.1, 0.2, 0.5, 1.0, 2.0, 5.0]
-  view_pool_sizes: [100, 250, 500, 750, 1048]
-  tau_percent_of_P: [1, 2, 5, 10, 20, 40]
-  gamma_percent_of_N: [0.0, 0.1, 0.5, 1.0, 2.0, 5.0]
-  # larger-N sweep on the tax pair T1 (rows re-sampled from the benchmark file)
-  tax_pair: T1
-  tax_rows: [50000, 100000, 200000, 350000, 500000]
+  repeats: 3               # B2 is timed once per point (it is deterministic and slow)
+  sweeps:
+    k: [1, 2, 3, 5, 7, 10]
+    data_fraction: [0.1, 0.25, 0.5, 0.75, 1.0]
+    epsilon: [0.1, 0.2, 0.5, 1.0, 2.0, 5.0]
+    view_fraction: [0.1, 0.25, 0.5, 0.75, 1.0]
+    tau: [5, 10, 15, 30, 60, 120]
+    gamma_mult: [0.0, 0.1, 0.3, 1.0, 3.0, 10.0]
+  extra_data_fraction:
+    tax: [2.5]             # 500k rows, the size quoted in the paper (re-sampled)
 
-# E5 -- cost of privacy in running time (Section 5.3.2, Figure 8)
+# E5 -- end-to-end cost per pair at the defaults, B2 growth, statistics routes
 e5:
-  pairs: [A1, A2, A3, T1, T2, T3, S1, S2, S3, H1, H2, H3]
-  repeats: 20
-  b2_pair: A2
+  repeats: 5
   b2_pool_sizes: [20, 25, 30, 35, 40, 45, 50]
+  routes:
+    - {mode: direct, rep: general, hist: lazy}
+    - {mode: direct, rep: closed_form, hist: lazy}
+    - {mode: grouped, rep: general, hist: eager}
+    - {mode: grouped, rep: closed_form, hist: lazy}
+
+# E6 -- accuracy vs. the smoothing constant gamma
+e6:
+  gamma_mults: [0.0, 0.03, 0.1, 0.3, 1.0, 3.0, 10.0, 30.0]

@@ -116,11 +116,31 @@ def resolve_pair(pair_id: str, config_path: Path | str | None = None) -> QueryPa
     return _resolve(pair_id, str(config_path) if config_path else None)
 
 
-@lru_cache(maxsize=32)
-def pair_cache(pair_id: str) -> StatsCache:
-    """Statistics cache of a pair with the default views (memoised)."""
-    return resolve_pair(pair_id).cache()
+@lru_cache(maxsize=64)
+def pair_cache(pair_id: str, mode: str = "grouped", rep: str = "general", hist: str = "eager") -> StatsCache:
+    """Statistics cache of a pair with the default views (memoised per route)."""
+    return resolve_pair(pair_id).cache(mode=mode, rep=rep, hist=hist)
 
 
-ALL_PAIRS = ["A1", "A2", "A3", "T1", "T2", "T3", "S1", "S2", "S3", "H1", "H2", "H3"]
+def pair_on_sample(pair: QueryPair, fraction: float, seed: int = 0) -> tuple[EncodedDataset, np.ndarray, np.ndarray]:
+    """The pair evaluated on a uniform sample of ``fraction * N`` tuples (same public bins and views).
+
+    ``fraction > 1`` re-samples with replacement.  For a CQA pair the conflict
+    hypergraph and the consistent answer are recomputed on the sample.
+    """
+    if fraction == 1.0:
+        return pair.dataset, pair.q1, pair.q2
+    n = max(2, int(round(fraction * pair.dataset.N)))
+    ds = pair.dataset.subsample(n, seed=seed, replace=fraction > 1.0)
+    q1 = parse(pair.q1_sql).evaluate(ds.raw)
+    if pair.kind == "cqa":
+        graph = conflict_hypergraph(ds.raw, [tuple(fd) for fd in ds.meta["fds"]])
+        q2 = q1 & ~graph.in_conflict
+    else:
+        q2 = parse(pair.q2_sql).evaluate(ds.raw)
+    return ds, q1, q2
+
+
+TABLE2_PAIRS = ["A1", "A2", "A3", "T1", "T2", "T3", "S1", "S2", "S3", "H1", "H2", "H3"]
 CASE_STUDY_PAIRS = ["R1", "R2", "R3", "R4", "R5", "R6", "C1", "C2", "C3", "C4"]
+ALL_PAIRS = TABLE2_PAIRS + CASE_STUDY_PAIRS

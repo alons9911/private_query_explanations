@@ -23,10 +23,12 @@ import yaml
 
 from ..algorithm import explain
 from ..data import CONFIG_DIR
-from ..pairs import CASE_STUDY_PAIRS, pair_cache, resolve_pair
+from ..pairs import CASE_STUDY_PAIRS, resolve_pair
 from ..search import hidden_attributes, max_tvd, pinned_attributes, score_refinement
-from . import e1_case_studies, e2_accuracy
-from .common import out_dir, params_from, spawn_rngs, stable_key, to_markdown, write_csv, write_json
+from . import e1_case_studies
+from .accuracy import accuracy_rows, summarise
+from .common import (default_cache, make_params, out_dir, spawn_rngs, stable_key, to_markdown, write_csv,
+                     write_json, write_raw)
 
 
 def _proxies(dataset: str) -> dict:
@@ -63,8 +65,8 @@ def motivation_metrics(pid: str) -> dict:
 
 
 def stability(pid: str, cfg: dict, trials: int) -> dict:
-    cache = pair_cache(pid)
-    params = params_from(cfg["defaults"])
+    cache = default_cache(pid, cfg["defaults"])
+    params = make_params(cfg["defaults"], cache.n_views, len(cache.explain_attrs))
     pairs_c, attrs_c = Counter(), Counter()
     for rng in spawn_rngs(int(cfg["defaults"]["seed"]), trials, stable_key(pid), 7):
         res = explain(cache, params, rng)
@@ -100,8 +102,8 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
         pair = resolve_pair(pid)
         mm = motivation_metrics(pid)
         st = stability(pid, cfg, trials)
-        df, info = e2_accuracy.evaluate_pair(pid, cfg, [0.5, 1.0, 2.0, 5.0], trials)
-        summ = e2_accuracy.summarise(df)
+        rows, _ = accuracy_rows(pid, cfg, "epsilon", [0.5, 1.0, 2.0, 5.0], trials)
+        summ = summarise(pd.DataFrame(rows)).rename(columns={"value": "epsilon"})
         acc_rows.append(summ)
         sd = rep["parameters"]["sigma_of_released_difference"]
         data = {"pair": rep["pair"], "motivation": mm, "stability": st,

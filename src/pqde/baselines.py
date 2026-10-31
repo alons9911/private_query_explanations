@@ -108,16 +108,37 @@ def b2_candidates(cache: StatsCache, params: Params, gamma_eval: float = 0.0, ta
     return cands, np.asarray(scores), np.asarray(aidx)
 
 
-def exhaustive_best(scores: np.ndarray, aidx: np.ndarray, k: int, lam: float, chunk: int = 400_000
-                    ) -> tuple[float, tuple[int, ...], int]:
+def _score_block(idx: np.ndarray, scores: np.ndarray, aidx: np.ndarray, lam: float) -> np.ndarray:
+    a = aidx[idx]
+    rank = np.zeros_like(idx)
+    for j in range(1, idx.shape[1]):
+        rank[:, j] = (a[:, :j] == a[:, j:j + 1]).sum(axis=1)
+    return (scores[idx] * np.power(lam, rank)).sum(axis=1)
+
+
+def exhaustive_best(scores: np.ndarray, aidx: np.ndarray, k: int, lam: float, chunk: int = 400_000,
+                    max_subsets: int | None = None) -> tuple[float, tuple[int, ...], int, dict]:
     """Enumerate every size-k subset; candidates must be sorted by (attribute, score desc).
 
     Inside a subset (indices ascending) members of one attribute appear in
     decreasing score order, so the rank of a member in its group is the number
-    of earlier members with the same attribute.  Returns (best F, best subset, #subsets).
+    of earlier members with the same attribute.
+
+    When ``C(n, k)`` exceeds ``max_subsets`` the enumeration is not run: one
+    calibration block is timed and the full running time is extrapolated
+    (``info["estimated"] = True``, no subset returned).
+
+    Returns ``(best F, best subset, #subsets, info)``.
     """
     n = len(scores)
     k = min(k, n)
+    n_total = math.comb(n, k)
+    if max_subsets is not None and n_total > max_subsets:
+        t0 = time.perf_counter()
+        block = np.asarray(list(islice(combinations(range(n), k), chunk)), dtype=np.int32)
+        _score_block(block, scores, aidx, lam)
+        rate = len(block) / max(time.perf_counter() - t0, 1e-9)
+        return float("nan"), (), n_total, {"estimated": True, "estimated_seconds": n_total / rate}
     best, best_set, total = -math.inf, (), 0
     it = combinations(range(n), k)
     while True:
@@ -126,23 +147,20 @@ def exhaustive_best(scores: np.ndarray, aidx: np.ndarray, k: int, lam: float, ch
             break
         idx = np.asarray(block, dtype=np.int32)
         total += len(idx)
-        a = aidx[idx]
-        rank = np.zeros_like(idx)
-        for j in range(1, k):
-            rank[:, j] = (a[:, :j] == a[:, j:j + 1]).sum(axis=1)
-        f = (scores[idx] * np.power(lam, rank)).sum(axis=1)
+        f = _score_block(idx, scores, aidx, lam)
         b = int(np.argmax(f))
         if f[b] > best:
             best, best_set = float(f[b]), tuple(int(x) for x in idx[b])
-    return best, best_set, total
+    return best, best_set, total, {"estimated": False}
 
 
 def b2(cache: StatsCache, params: Params, gamma_eval: float = 0.0, tau: int | None = None, pool: str = "top-tau",
-       return_info: bool = False):
+       return_info: bool = False, max_subsets: int | None = None):
+    """B2; returns ``None`` as the selection when the enumeration was only estimated."""
     t0 = time.perf_counter()
     cands, scores, aidx = b2_candidates(cache, params, gamma_eval, tau, pool)
-    best, best_set, total = exhaustive_best(scores, aidx, params.k, params.lam)
-    sel = [cands[i] for i in best_set]
+    best, best_set, total, extra = exhaustive_best(scores, aidx, params.k, params.lam, max_subsets=max_subsets)
+    sel = None if extra["estimated"] else [cands[i] for i in best_set]
     if return_info:
-        return sel, {"pool_size": len(cands), "subsets": total, "F": best, "seconds": time.perf_counter() - t0}
+        return sel, {"pool_size": len(cands), "subsets": total, "F": best, "seconds": time.perf_counter() - t0, **extra}
     return sel

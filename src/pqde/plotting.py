@@ -245,3 +245,252 @@ def plot_runtime(methods: pd.DataFrame, b2: pd.DataFrame, path: Path) -> list[Pa
     b.legend()
     fig.tight_layout()
     return _save(fig, path)
+
+
+# =========================================================================== v2 figures
+# Method identity is fixed across every figure (colour follows the method):
+# slot 1 blue = PRIV_EXPL, slot 2 orange = B1, slot 3 aqua = B2, slot 4 yellow = B3,
+# each with its own marker so identity never rests on colour alone.
+
+YELLOW = "#eda100"
+METHOD_COLORS = {"PRIV_EXPL": BLUE, "B1": ORANGE, "B2": AQUA, "B3": YELLOW}
+METHOD_MARKERS = {"PRIV_EXPL": "o", "B1": "s", "B2": "^", "B3": "D"}
+DATASET_TITLES = {"adult": "Adult", "tax": "Tax", "tax_dirty": "Tax (dirty, CQA)", "hospital": "Hospital",
+                  "stackoverflow": "StackOverflow"}
+
+
+def _ds_title(ds: str, synthetic: dict | None) -> str:
+    t = DATASET_TITLES.get(ds, ds)
+    return t + (" [synthetic]" if synthetic and synthetic.get(ds) else "")
+
+
+def _xscale(ax, x, logx: bool):
+    if not logx:
+        return
+    if (np.asarray(x) <= 0).any():
+        pos = np.asarray(x)[np.asarray(x) > 0]
+        ax.set_xscale("symlog", linthresh=float(pos.min()) if len(pos) else 1e-3)
+    else:
+        ax.set_xscale("log")
+
+
+def plot_accuracy_grid(summary: pd.DataFrame, by_ds: dict, metric: str, label: str, path: Path, *, xlabel: str,
+                       logx: bool, synthetic: dict | None = None) -> list[Path]:
+    """One row per dataset, one panel per pair; lines = PRIV_EXPL measured against B1, B2, B3."""
+    ncol = max(len(v) for v in by_ds.values())
+    fig, axes = plt.subplots(len(by_ds), ncol, figsize=(2.55 * ncol, 2.3 * len(by_ds)), squeeze=False)
+    for i, (ds, pids) in enumerate(by_ds.items()):
+        for j in range(ncol):
+            ax = axes[i, j]
+            if j >= len(pids):
+                ax.axis("off")
+                continue
+            sub = summary[summary.pair == pids[j]].sort_values("value")
+            for b in ("B1", "B2", "B3"):
+                ax.plot(sub.value, sub[f"{metric}_{b}_mean"], marker=METHOD_MARKERS[b], color=METHOD_COLORS[b],
+                        markersize=4, linewidth=1.6, linestyle="--" if b == "B3" else "-", label=f"vs {b}")
+            _xscale(ax, sub.value, logx)
+            if metric == "ratio":
+                ax.axhline(1.0, color=MUTED, linestyle=":", linewidth=1)
+                ax.set_ylim(0, max(1.1, float(np.nanmax(sub[[f"ratio_{b}_mean" for b in ("B1", "B2", "B3")]].to_numpy())) * 1.05))
+            else:
+                ax.set_ylim(0, 1.05)
+            ax.set_title(pids[j] if j else f"{_ds_title(ds, synthetic)} — {pids[j]}", fontsize=7.5)
+            if j == 0:
+                ax.set_ylabel(label)
+            if i == len(by_ds) - 1 or j >= len(list(by_ds.values())[min(i + 1, len(by_ds) - 1)]):
+                ax.set_xlabel(xlabel)
+    handles, labels = axes[0, 0].get_legend_handles_labels()
+    fig.suptitle(f"PRIV_EXPL: {label} against each baseline", fontsize=9)
+    fig.tight_layout(rect=(0, 0, 1, 0.97))
+    fig.legend(handles, labels, loc="upper right", ncol=3)
+    return _save(fig, path)
+
+
+def plot_accuracy_datasets(summary: pd.DataFrame, by_ds: dict, metric: str, label: str, path: Path, *, xlabel: str,
+                           logx: bool, synthetic: dict | None = None) -> list[Path]:
+    """One panel per dataset (mean over its pairs); lines = against B1, B2, B3."""
+    fig, axes = plt.subplots(1, len(by_ds), figsize=(3.0 * len(by_ds), 2.6), squeeze=False)
+    for j, (ds, pids) in enumerate(by_ds.items()):
+        ax = axes[0, j]
+        sub = summary[summary.pair.isin(pids)].groupby("value", as_index=False).mean(numeric_only=True)
+        for b in ("B1", "B2", "B3"):
+            ax.plot(sub.value, sub[f"{metric}_{b}_mean"], marker=METHOD_MARKERS[b], color=METHOD_COLORS[b],
+                    linestyle="--" if b == "B3" else "-", label=f"vs {b}")
+        _xscale(ax, sub.value, logx)
+        if metric == "ratio":
+            ax.axhline(1.0, color=MUTED, linestyle=":", linewidth=1)
+        ax.set_ylim(0, 1.1 if metric == "ratio" else 1.05)
+        ax.set_title(f"{_ds_title(ds, synthetic)} ({len(pids)} pairs)")
+        ax.set_xlabel(xlabel)
+        if j == 0:
+            ax.set_ylabel(label)
+    axes[0, 0].legend(loc="lower right")
+    fig.suptitle(f"PRIV_EXPL: {label} against each baseline, mean over the pairs of each dataset", fontsize=9)
+    fig.tight_layout()
+    return _save(fig, path)
+
+
+def plot_release_quality(summary: pd.DataFrame, by_ds: dict, path: Path, *, xlabel: str, logx: bool,
+                         synthetic: dict | None = None) -> list[Path]:
+    """Two rows: relative L1 error of the released histograms, and sign agreement of the released differences."""
+    fig, axes = plt.subplots(2, len(by_ds), figsize=(3.0 * len(by_ds), 4.8), squeeze=False)
+    for j, (ds, pids) in enumerate(by_ds.items()):
+        sub = summary[summary.pair.isin(pids)].groupby("value", as_index=False).mean(numeric_only=True)
+        for i, (col, lab) in enumerate((("hist_rel_l1_mean", "relative L1 error of the release"),
+                                        ("diff_sign_acc_mean", "sign agreement of H1 - H2"))):
+            ax = axes[i, j]
+            ax.plot(sub.value, sub[col], marker="o", color=BLUE)
+            _xscale(ax, sub.value, logx)
+            ax.set_ylim(0, max(1.05, float(np.nanmax(sub[col])) * 1.1) if i == 0 else 1.05)
+            if i == 0:
+                ax.set_title(f"{_ds_title(ds, synthetic)} ({len(pids)} pairs)")
+            if j == 0:
+                ax.set_ylabel(lab)
+            if i == 1:
+                ax.set_xlabel(xlabel)
+    fig.suptitle("PRIV_EXPL: quality of the released histograms (mean over pairs)", fontsize=9)
+    fig.tight_layout()
+    return _save(fig, path)
+
+
+RUNTIME_SWEEPS = [("k", "number of explanations k", False), ("data_fraction", "database size N", False),
+                  ("epsilon", "privacy budget eps", True), ("view_fraction", "view pool |P|", False),
+                  ("tau", "views kept tau", True), ("gamma_mult", "gamma / gamma_Eq.(12)", True)]
+
+
+def _runtime_panel(ax, sub: pd.DataFrame, x: str, logx: bool) -> None:
+    measured_max = float(sub[~sub.estimated].total_s.max()) if (~sub.estimated).any() else 1.0
+    cap = measured_max * 30.0  # extrapolated points above this are drawn at the cap and labelled
+    for m in ("PRIV_EXPL", "B1", "B2", "B3"):
+        d = sub[sub.method == m].sort_values(x)
+        if d.empty:
+            continue
+        meas, est = d[~d.estimated], d[d.estimated]
+        ax.plot(meas[x], meas.total_s, marker=METHOD_MARKERS[m], color=METHOD_COLORS[m], markersize=4,
+                linewidth=2.2 if m == "PRIV_EXPL" else 1.6, label=m, zorder=3 if m == "PRIV_EXPL" else 2)
+        if len(est):
+            y = est.total_s.clip(upper=cap)
+            joined_x = list(meas[x].tail(1)) + list(est[x])
+            joined_y = list(meas.total_s.tail(1)) + list(y)
+            ax.plot(joined_x, joined_y, color=METHOD_COLORS[m], linestyle="--", linewidth=1.2)
+            ax.plot(est[x], y, linestyle="none", marker=METHOD_MARKERS[m], markerfacecolor=SURFACE,
+                    markeredgecolor=METHOD_COLORS[m], markersize=5, label=f"{m} (extrapolated)")
+            for xv, yv, tv in zip(est[x], y, est.total_s):
+                if tv > cap:
+                    ax.annotate(f"{tv:.0e} s", (xv, yv), textcoords="offset points", xytext=(-2, -9), ha="right",
+                                fontsize=6, color=INK2)
+    ax.set_yscale("log")
+    _xscale(ax, sub[x], logx)
+
+
+def plot_runtime_row(points: pd.DataFrame, dataset: str, path: Path, synthetic: bool = False) -> list[Path]:
+    """One dataset: one panel per varied parameter, end-to-end time of the four methods."""
+    sweeps = [s for s in RUNTIME_SWEEPS if s[0] in set(points.sweep)]
+    fig, axes = plt.subplots(1, len(sweeps), figsize=(2.75 * len(sweeps), 2.7), squeeze=False)
+    for j, (sw, xl, logx) in enumerate(sweeps):
+        sub = points[(points.dataset == dataset) & (points.sweep == sw)].rename(columns={"value": sw})
+        _runtime_panel(axes[0, j], sub, sw, logx)
+        axes[0, j].set_xlabel(xl)
+        if sw == "data_fraction":
+            n_full = sub["N"].max() / max(sub[sw].max(), 1e-9)
+            axes[0, j].set_xlabel(f"{xl} (fraction of {n_full:,.0f})")
+        if sw == "view_fraction":
+            axes[0, j].set_xlabel(f"{xl} (fraction of all views)")
+        if j == 0:
+            axes[0, j].set_ylabel("end-to-end time (s, log)")
+    handles, labels = axes[0, 0].get_legend_handles_labels()
+    for ax in axes[0, 1:]:
+        for h, l in zip(*ax.get_legend_handles_labels()):
+            if l not in labels:
+                handles.append(h)
+                labels.append(l)
+    title = DATASET_TITLES.get(dataset, dataset) + (" [synthetic data]" if synthetic else "")
+    fig.suptitle(f"{title}: end-to-end running time (mean over the dataset's pairs)", fontsize=9)
+    fig.tight_layout(rect=(0, 0, 1, 0.9))
+    fig.legend(handles, labels, loc="upper right", ncol=6, fontsize=6.5)
+    return _save(fig, path)
+
+
+def plot_runtime_grid(points: pd.DataFrame, path: Path, synthetic: dict | None = None) -> list[Path]:
+    datasets = list(dict.fromkeys(points.dataset))
+    sweeps = [s for s in RUNTIME_SWEEPS if s[0] in set(points.sweep)]
+    fig, axes = plt.subplots(len(datasets), len(sweeps), figsize=(2.6 * len(sweeps), 2.2 * len(datasets)),
+                             squeeze=False)
+    for i, ds in enumerate(datasets):
+        for j, (sw, xl, logx) in enumerate(sweeps):
+            sub = points[(points.dataset == ds) & (points.sweep == sw)].rename(columns={"value": sw})
+            _runtime_panel(axes[i, j], sub, sw, logx)
+            if i == 0:
+                axes[i, j].set_title(f"vs {xl}", fontsize=8)
+            if i == len(datasets) - 1:
+                axes[i, j].set_xlabel(xl)
+            if j == 0:
+                axes[i, j].set_ylabel(f"{_ds_title(ds, synthetic)}\ntime (s, log)", fontsize=7.5)
+    handles, labels = axes[0, 0].get_legend_handles_labels()
+    fig.suptitle("End-to-end running time; rows = datasets, columns = the varied parameter", fontsize=9)
+    fig.tight_layout(rect=(0, 0, 1, 0.97))
+    fig.legend(handles, labels, loc="upper right", ncol=4)
+    return _save(fig, path)
+
+
+def plot_method_bars(table: pd.DataFrame, path: Path, title: str, synthetic: dict | None = None) -> list[Path]:
+    """Grouped bars: datasets on the x axis, one bar per method (end-to-end, log scale)."""
+    datasets = list(dict.fromkeys(table.dataset))
+    methods = [m for m in ("PRIV_EXPL", "B1", "B2", "B3") if m in set(table.method)]
+    fig, ax = plt.subplots(figsize=(1.6 * len(datasets) + 1.5, 3.0))
+    w = 0.8 / len(methods)
+    for i, m in enumerate(methods):
+        vals = [float(table[(table.dataset == d) & (table.method == m)].total_s.mean()) for d in datasets]
+        ax.bar(np.arange(len(datasets)) + (i - (len(methods) - 1) / 2) * (w + 0.01), vals, w,
+               color=METHOD_COLORS[m], label=m)
+    ax.set_xticks(range(len(datasets)), [_ds_title(d, synthetic) for d in datasets], rotation=15)
+    ax.set_yscale("log")
+    ax.set_ylabel("end-to-end time (s, log)")
+    ax.set_title(title)
+    ax.grid(axis="x", visible=False)
+    ax.legend(ncol=4)
+    fig.tight_layout()
+    return _save(fig, path)
+
+
+def plot_b2_growth(growth: pd.DataFrame, path: Path, synthetic: dict | None = None) -> list[Path]:
+    """B2 end-to-end time against the candidate pool, one panel per dataset, PRIV_EXPL as reference."""
+    datasets = list(dict.fromkeys(growth.dataset))
+    fig, axes = plt.subplots(1, len(datasets), figsize=(2.9 * len(datasets), 2.7), squeeze=False)
+    for j, ds in enumerate(datasets):
+        ax = axes[0, j]
+        sub = growth[growth.dataset == ds].groupby("pool_size", as_index=False).mean(numeric_only=True)
+        ax.plot(sub.pool_size, sub.b2_total_s, marker=METHOD_MARKERS["B2"], color=METHOD_COLORS["B2"], label="B2")
+        ax.plot(sub.pool_size, sub.priv_total_s, marker=METHOD_MARKERS["PRIV_EXPL"], color=METHOD_COLORS["PRIV_EXPL"],
+                label="PRIV_EXPL")
+        ax.set_yscale("log")
+        ax.set_xlabel("B2 candidate pool size")
+        ax.set_title(_ds_title(ds, synthetic))
+        if j == 0:
+            ax.set_ylabel("end-to-end time (s, log)")
+    axes[0, 0].legend()
+    fig.suptitle("B2 grows combinatorially with its candidate pool (end to end, k = 5)", fontsize=9)
+    fig.tight_layout()
+    return _save(fig, path)
+
+
+def plot_routes(table: pd.DataFrame, path: Path, synthetic: dict | None = None) -> list[Path]:
+    """End-to-end PRIV_EXPL time per statistics route (grouped bars per dataset)."""
+    datasets = list(dict.fromkeys(table.dataset))
+    routes = list(dict.fromkeys(table.route))
+    colors = [MUTED, "#c9c8c3", BLUE, "#6250d6", AQUA, ORANGE]
+    fig, ax = plt.subplots(figsize=(1.7 * len(datasets) + 1.5, 3.0))
+    w = 0.8 / len(routes)
+    for i, r in enumerate(routes):
+        vals = [float(table[(table.dataset == d) & (table.route == r)].total_s.mean()) for d in datasets]
+        ax.bar(np.arange(len(datasets)) + (i - (len(routes) - 1) / 2) * (w + 0.01), vals, w, color=colors[i % len(colors)],
+               label=r)
+    ax.set_xticks(range(len(datasets)), [_ds_title(d, synthetic) for d in datasets], rotation=15)
+    ax.set_yscale("log")
+    ax.set_ylabel("PRIV_EXPL end-to-end (s, log)")
+    ax.set_title("Statistics routes: the direct route of Section 4.2 against optimisations O1-O3")
+    ax.grid(axis="x", visible=False)
+    ax.legend(fontsize=6.5)
+    fig.tight_layout()
+    return _save(fig, path)

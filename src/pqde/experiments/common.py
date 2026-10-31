@@ -25,12 +25,68 @@ def experiments_config(path: Path | None = None) -> dict:
 
 
 def params_from(defaults: dict, **overrides) -> Params:
+    """Params from the defaults with ``overrides``; tau/gamma follow their rules unless given.
+
+    ``gamma_mult`` != 1 cannot be resolved here (it needs |P| and |Attrs|); use
+    :func:`make_params` for that.
+    """
     d = {**defaults, **overrides}
     return Params(
         k=int(d["k"]), lam=float(d["lam"]), epsilon=float(d["epsilon"]), split=tuple(d["split"]),
         tau_factor=int(d.get("tau_factor", 3)), release=d.get("release", "pair"),
         tau=d.get("tau"), gamma=d.get("gamma"),
     )
+
+
+def make_params(defaults: dict, n_views: int, n_attrs: int, **overrides) -> Params:
+    """Params with every derived constant resolved for a dataset with ``n_views`` views and ``n_attrs`` attributes.
+
+    tau = min(tau_factor * k, |P|) unless ``tau`` is given; gamma = gamma_mult * Eq. (12)
+    (computed with that tau) unless ``gamma`` is given.
+    """
+    from ..algorithm import choose_gamma, choose_tau
+
+    d = {**defaults, **overrides}
+    p = params_from(d)
+    tau = int(min(d["tau"], n_views)) if d.get("tau") is not None else choose_tau(p.k, n_views, p.tau_factor)
+    if d.get("gamma") is not None:
+        gamma = float(d["gamma"])
+    else:
+        gamma = float(d.get("gamma_mult", 1.0)) * choose_gamma(tau, n_attrs, p.k, p.budgets()[1])
+    return p.with_(tau=tau, gamma=gamma)
+
+
+def stats_route(defaults: dict) -> dict:
+    s = defaults.get("stats") or {}
+    return {"mode": s.get("mode", "grouped"), "rep": s.get("rep", "general"), "hist": s.get("hist", "eager")}
+
+
+def default_cache(pair_id: str, defaults: dict):
+    """The memoised statistics cache of a pair under the configured route."""
+    from ..pairs import pair_cache
+
+    return pair_cache(pair_id, **stats_route(defaults))
+
+
+def pairs_by_dataset(pair_ids: list[str], datasets: list[str] | None = None) -> dict[str, list[str]]:
+    from ..pairs import pairs_config
+
+    spec = pairs_config()
+    out: dict[str, list[str]] = {d: [] for d in (datasets or [])}
+    for pid in pair_ids:
+        out.setdefault(spec[pid]["dataset"], []).append(pid)
+    return {d: v for d, v in out.items() if v}
+
+
+def write_raw(df: pd.DataFrame, exp: str, name: str, base: Path | None = None) -> Path:
+    """Raw per-run data of an experiment: ``results/<exp>/raw/<name>.csv`` (figures are rebuilt from these)."""
+    p = out_dir(f"{exp}/raw", base) / f"{name}.csv"
+    df.to_csv(p, index=False)
+    return p
+
+
+def read_raw(exp: str, name: str, base: Path | None = None) -> pd.DataFrame:
+    return pd.read_csv(Path(base or RESULTS_DIR) / exp / "raw" / f"{name}.csv")
 
 
 def out_dir(name: str, base: Path | None = None) -> Path:

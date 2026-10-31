@@ -67,7 +67,7 @@ def test_exhaustive_best_matches_set_objective():
     rng = np.random.default_rng(0)
     aidx = np.repeat(np.arange(4), 4)
     scores = np.concatenate([np.sort(rng.random(4))[::-1] for _ in range(4)])
-    best, best_set, total = exhaustive_best(scores, aidx, 3, 0.5)
+    best, best_set, total, _ = exhaustive_best(scores, aidx, 3, 0.5)
     assert total == 560
     assert best == pytest.approx(set_objective([(aidx[i], scores[i]) for i in best_set], lam=0.5))
 

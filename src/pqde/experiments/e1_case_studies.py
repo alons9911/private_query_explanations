@@ -19,7 +19,7 @@ from .. import plotting
 from ..algorithm import explain
 from ..baselines import exact_top_views
 from ..pairs import pair_cache, resolve_pair
-from .common import out_dir, params_from, run_metadata, stable_key, write_csv, write_json
+from .common import default_cache, make_params, out_dir, run_metadata, stable_key, write_csv, write_json
 
 
 def _view_ranking(cache) -> pd.DataFrame:
@@ -55,9 +55,9 @@ def _query_attr_views(pair, ranking: pd.DataFrame) -> list[dict]:
 
 def run_pair(pair_id: str, cfg: dict, base=None, subdir: str = "e1") -> dict:
     d = cfg["defaults"]
-    params = params_from(d)
     pair = resolve_pair(pair_id)
-    cache = pair_cache(pair_id)
+    cache = default_cache(pair_id, d)
+    params = make_params(d, cache.n_views, len(cache.explain_attrs))
     res = explain(cache, params, rng=np.random.default_rng([cfg["e1"].get("run_seed", 7), stable_key(pair_id)]))
     ranking = _view_ranking(cache)
     rank_series = pd.Series(ranking["rank"].to_numpy(), index=ranking.index)
@@ -114,8 +114,28 @@ def run_pair(pair_id: str, cfg: dict, base=None, subdir: str = "e1") -> dict:
     return report
 
 
+def plot(cfg: dict, base=None, subdir: str = "e1") -> None:
+    """Rebuild every explanation figure from the saved ``report.json`` files."""
+    import json
+
+    root = out_dir(subdir, base)
+    for rp in sorted(root.glob("*/report.json")):
+        rep = json.loads(rp.read_text())
+        p, prm = rep["pair"], rep["parameters"]
+        syn = " [SYNTHETIC DATA]" if p.get("synthetic_data") else ""
+        title = (f"{p['pair']} ({p['dataset']}{syn}): released DP explanations "
+                 f"(eps = {prm['epsilon']:g}, k = {prm['k']}; paired release)")
+        q2n = "Q_Sigma" if p["kind"] == "cqa" else ("Q2" if p["kind"] == "contrast" else "Q'")
+        q1n = "Q1" if p["kind"] == "contrast" else "Q"
+        plotting.plot_explanations(rep["explanations"], title, rp.parent / "explanations", q1_name=q1n, q2_name=q2n)
+        if rep["explanations"]:
+            plotting.plot_release_leaves(rep["explanations"][0], prm["sigma_of_released_difference"],
+                                         rp.parent / "release_leaves",
+                                         f"{p['pair']}: first explanation, per-bin |H1 - H2| of the release")
+
+
 def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = False) -> dict:
-    pairs = pairs or cfg["e1"]["pairs"]
+    pairs = pairs or cfg["pairs"]
     summary = []
     for pid in pairs:
         rep = run_pair(pid, cfg, base)
