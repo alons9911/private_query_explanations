@@ -10,7 +10,7 @@ draft still lists as TODO.
 pip install -e ".[test]"      # numpy, pandas, matplotlib, pyyaml (+ pytest)
 make data                     # download Adult, Tax, Hospital (+ StackOverflow if reachable)
 make test                     # unit tests, incl. empirical checks of the sensitivity bounds
-make all                      # E1-E5 + results/REPORT.md  (about 2 minutes on a laptop)
+make all                      # E1-E6 + case studies + results/REPORT.md (about 2 hours, mostly E4)
 ```
 
 `results/` is committed, so the numbers and figures of the last full run can be
@@ -42,11 +42,12 @@ releases on them (`pqde run search`, then `pqde run cases`).
 
 | ID | Question | Driver | Main outputs |
 |---|---|---|---|
-| E1 | Case studies (§5.2): what each pair's queries say, which views the first stage keeps, what the released histograms say | `experiments/e1_case_studies.py` | `results/e1/<pair>/report.json`, `explanations.png` (Fig. 4/5), `release_leaves.png` (Fig. 3), `views_by_use.csv` |
-| E2 | Quality vs. privacy budget against B1–B3 (§5.3.1) | `experiments/e2_accuracy.py` | `results/e2/table3_approx_ratio.md` (Table 3), `fig6_approx_ratio.png` (Fig. 6), `trials.csv` |
-| E3 | What drives accuracy: margins, `γ`, bins, the view stage alone, the budget split (§5.3.1) | `experiments/e3_drivers.py` | `results/e3/*.csv`, `view_stage_overlap.png`, `gamma_*.png` |
-| E4 | Running time vs. `k, N, ε, |P|, τ, γ` (§5.3.2) | `experiments/e4_scalability.py` | `results/e4/fig7_scalability.png` (Fig. 7), `time_vs_*.csv` |
-| E5 | Running-time cost of privacy, B2 blow-up, end-to-end time per pair (§5.3.2) | `experiments/e5_runtime.py` | `results/e5/fig8_runtime.png` (Fig. 8), `runtime_per_pair.csv` |
+| E1 | One release per pair (§5.2): what the queries say, which views the first stage keeps, what the released histograms say | `experiments/e1_case_studies.py` | `results/e1/<pair>/report.json`, `explanations.png` (Fig. 4/5), `release_leaves.png` (Fig. 3) |
+| E2 | Accuracy vs. ε against B1–B3: ApproxRatio, Jaccard, precision@k, attribute precision@k, view Jaccard, release error (§5.3.1) | `experiments/e2_accuracy.py` | `results/e2/table3_approx_ratio.md`, `table_set_metrics.md`, `eps_<metric>_by_{dataset,pair}.png` |
+| E3 | What drives accuracy: margins, bins vs γ, the view stage alone, the budget split | `experiments/e3_drivers.py` | `results/e3/*.md`, `view_stage_<dataset>.png` |
+| E4 | End-to-end running time of PRIV_EXPL, OPT_PRIV_EXPL, B1, B2, B3 vs. k, N, ε, \|P\|, τ, γ, one row of panels per dataset, with a time limit per run (§5.3.2) | `experiments/e4_scalability.py` | `results/e4/runtime_<dataset>.png`, `runtime_all_datasets.png` |
+| E5 | End-to-end cost per pair at the defaults, B2 growth, statistics routes (original vs O1 vs O1+O3), identity of OPT_PRIV_EXPL and PRIV_EXPL | `experiments/e5_runtime.py` | `results/e5/default_point_per_pair.md`, `routes.md`, `identity.md`, `fig8*.png` |
+| E6 | Accuracy vs. the smoothing constant γ (multiples of Eq. (12), 0 = unsmoothed) | `experiments/e6_gamma.py` | `results/e6/ratio_B2_by_gamma.md`, `gamma_<metric>_by_{dataset,pair}.png` |
 | search | Which pairs best show the motivation: hidden drift, drift inside the constrained group, unexplained aggregate change, CQA drop/unevenness, DP visibility | `experiments/pair_search.py`, `search.py`, `configs/pair_search.yaml` | `results/pair_search/*.csv` |
 | cases | Case studies R1–R6, C1–C4: release, stability over 40 runs, ApproxRatio | `experiments/case_studies.py` | `results/case_studies/`, `docs/CASE_STUDIES.md` |
 
@@ -70,7 +71,8 @@ pqde data                         # fetch + describe the datasets
 pqde pairs A2 T1                  # resolve pairs (sizes, constraint shares, how Q' / Q_Sigma was made)
 pqde explain A2 --epsilon 1 --seed 0      # one private run, printed
 pqde run e2 --pairs A1 A2 T1 --trials 40  # one experiment, any subset of pairs
-pqde run e1 e2 e3 e4 e5 --quick --out results/_scratch   # smoke run
+pqde run e1 e2 e3 e4 e5 e6 --quick --out results/_scratch   # smoke run
+pqde plot e2 e4                   # rebuild figures from the saved raw data only (no re-run)
 pqde all                          # everything + results/REPORT.md
 ```
 
@@ -89,10 +91,37 @@ for e in res.explanations:                 # only view, attribute and noisy hist
 
 ## Parameters (Section 5.1 defaults, `configs/experiments.yaml`)
 
-`k = 5`, `λ = 0.5`, `ε = 1` split equally between view selection,
-explanation selection and histogram release, `τ = min(3k, |P|) = 15`,
-`γ = 2 ln(τ|Attrs|) k / ε_S ≈ 150`, `γR = N`, 40 trials, metric `F_λ` with
-`γ_eval = 0`.  All randomness is seeded (`defaults.seed`).
+Every experiment starts from one `defaults` block and changes only the
+parameter it studies: the whole dataset, every public view, `k = 5`,
+`λ = 0.5`, `ε = 1` split equally between view selection, explanation selection
+and histogram release.  The derived constants follow the algorithm's rules
+(also when k, ε or τ is the varied parameter): `τ = min(3k, |P|)`,
+`γ = 2 ln(τ|Attrs|) k / ε_S`, `γR = N`.  40 private runs per accuracy point,
+metric `F_λ` with `γ_eval = 0`, time limit 60 s per timed run.  All randomness
+is seeded (`defaults.seed`).
+
+## Raw data and figures
+
+Each experiment writes one row per run to `results/<exp>/raw/*.csv` (for the
+accuracy experiments including the released set and the retained views), and
+builds its figures only from those files: `pqde plot <exp>` re-draws them
+without re-running anything.
+
+## Methods compared and the optimisations
+
+| method | what it is |
+|---|---|
+| `PRIV_EXPL` | Algorithm 1, statistics by the route of Section 4.2 (one pass per view; histograms only for the views scored) |
+| `OPT_PRIV_EXPL` | the same algorithm with O1 (views constraining the same attributes computed together in one grouped pass) and O3 (the three histograms of a scored view in one combined pass) |
+| `B1`, `B2`, `B3` | the baselines of Section 5.1, on the original route |
+
+O1 and O3 compute exactly the same numbers, so the mechanisms receive
+identical inputs and the release has the same distribution (the privacy
+analysis is unchanged); `tests/test_stats_modes.py` and E5 check that both
+methods release identical outputs for the same randomness.  Every experiment
+other than the running-time comparison uses the original route.  The closed
+form of Rep at `γR = N` (Eq. (10)) is not used as an optimisation: at
+`γR = N`, Rep depends only on the view size (see the reproduction notes).
 
 ## Reproduction notes
 

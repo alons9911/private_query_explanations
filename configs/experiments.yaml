@@ -22,11 +22,12 @@ defaults:
   view_fraction: 1.0       # |P| = every public view
   trials: 40               # private runs per accuracy point
   seed: 20261031
-  # route used to compute the exact statistics on the server; every route gives
-  # identical numbers (tests/test_stats_modes.py).  direct = the route of
-  # Section 4.2; grouped / closed_form / lazy are the optimisations O1-O3.
-  stats: {mode: grouped, rep: general, hist: eager}
-  b2_max_subsets: 5000000  # B2 above this many subsets is timed on a block and extrapolated
+  # Every experiment uses the original route of Section 4.2 (one pass per view,
+  # histograms only for the views scored).  The optimised route (O1 grouped pass +
+  # O3 lazy histograms in one combined pass) appears only as the method
+  # OPT_PRIV_EXPL in the running-time experiments; it returns identical outputs.
+  stats: {mode: direct, rep: general, hist: lazy}
+  timeout_s: 60            # time limit of every timed run (E4, E5); a run that hits it is a timeout
 
 pairs: [A1, A2, A3, T1, T2, T3, S1, S2, S3, H1, H2, H3, R1, R2, R3, R4, R5, R6, C1, C2, C3, C4]
 datasets: [adult, tax, tax_dirty, hospital, stackoverflow]
@@ -51,9 +52,9 @@ e3:
     - [0.05, 0.60, 0.35]
   bin_stat_gamma_percent: [0.5, 5.0]
 
-# E4 -- end-to-end running time of PRIV_EXPL, B1, B2, B3; one parameter at a time
+# E4 -- end-to-end running time of PRIV_EXPL, OPT_PRIV_EXPL, B1, B2, B3; one parameter at a time
 e4:
-  repeats: 3               # B2 is timed once per point (it is deterministic and slow)
+  repeats: 2               # B2 is timed once per point (it is deterministic and slow)
   sweeps:
     k: [1, 2, 3, 5, 7, 10]
     data_fraction: [0.1, 0.25, 0.5, 0.75, 1.0]
@@ -68,11 +69,10 @@ e4:
 e5:
   repeats: 5
   b2_pool_sizes: [20, 25, 30, 35, 40, 45, 50]
-  routes:
+  routes:                  # original (Section 4.2), O1 alone, O1+O3 (= OPT_PRIV_EXPL)
     - {mode: direct, rep: general, hist: lazy}
-    - {mode: direct, rep: closed_form, hist: lazy}
     - {mode: grouped, rep: general, hist: eager}
-    - {mode: grouped, rep: closed_form, hist: lazy}
+    - {mode: grouped, rep: general, hist: lazy}
 
 # E6 -- accuracy vs. the smoothing constant gamma
 e6:

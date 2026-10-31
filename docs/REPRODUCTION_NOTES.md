@@ -40,11 +40,22 @@ Differences worth knowing before quoting numbers:
 * **Runtime.** The cache build here is one grouped `bincount` per (attribute set, attribute, population) — the "one pass + per-tuple matching" route the draft lists as a possible optimisation — so it takes 0.05 s on Adult and 0.5–0.8 s on Tax instead of the 16.7–23.2 s of Fig. 7. The per-invocation mechanism takes ≈0.5–1 ms (draft 8.1 ms).
 * **Hospital.** 902 of the 1,000 tuples lie on a conflict hyperedge (a single typo in a hospital's zip, phone or city puts all of that hospital's rows in conflict), so every `Q_Σ` is small. At `ε = 1` the view stage is close to random (`N = 1,000` makes `Δ_Use = 7/4000`): ApproxRatio vs B2 is 0.83 / 0.85 / 0.18 for H1 / H2 / H3, and 0.93 / 0.98 / 0.88 at `ε = 5`.
 
+**Optimisations (OPT_PRIV_EXPL).** O1 computes every view of one attribute set
+with one grouped pass (21 passes instead of 1,048 on Adult); O3 materialises the
+histograms of a scored view with one combined pass over a 4-way population code
+(Q1 only / Q2 only / both / neither).  Both are pure reorganisations of exact
+server-side computation: identical numbers, identical releases for identical
+randomness (checked in tests and in E5), unchanged privacy analysis.  All other
+experiments use the original route.
+
 An observation the draft states (Eq. 10) but may want to stress: at `γR = N`
 every summand of Eq. (2) is non-negative, so `Rep_N(p, D) = (2m + N) / (2(m + N))`
 for **every** view, independent of the attribute distributions (unit test
 `test_rep_collapses_at_gamma_R_equals_N`). With the default `γR`, `Use` is thus a
-function of the view size and the two output counts only.
+function of the view size and the two output counts only.  Two Adult views of
+almost the same size (1,580 and 1,585 tuples) get the same Rep (0.5157) although
+their distributional similarity to D (1 − TVD) is 0.931 and 0.713, so the
+"typical region" guard of §3.2 does not act at γR = N.
 
 ## 3. Draft TODOs and where the answer is
 

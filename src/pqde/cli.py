@@ -6,7 +6,7 @@
     pqde run EXP [--pairs ...] [--quick] [--trials N] [--out DIR]
                                              EXP in e1..e6, search (case-study pair search), cases (R1-R6, C1-C4)
     pqde plot EXP...                         rebuild the figures of EXP from its saved raw data only
-    pqde all [--quick]                       E1-E5 + the summary report
+    pqde all [--quick]                       E1-E6 + case studies + the summary report
 """
 
 from __future__ import annotations

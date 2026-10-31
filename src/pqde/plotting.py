@@ -253,8 +253,10 @@ def plot_runtime(methods: pd.DataFrame, b2: pd.DataFrame, path: Path) -> list[Pa
 # each with its own marker so identity never rests on colour alone.
 
 YELLOW = "#eda100"
-METHOD_COLORS = {"PRIV_EXPL": BLUE, "B1": ORANGE, "B2": AQUA, "B3": YELLOW}
-METHOD_MARKERS = {"PRIV_EXPL": "o", "B1": "s", "B2": "^", "B3": "D"}
+MAGENTA = "#e87ba4"
+METHOD_COLORS = {"PRIV_EXPL": BLUE, "B1": ORANGE, "B2": AQUA, "B3": YELLOW, "OPT_PRIV_EXPL": MAGENTA}
+METHOD_MARKERS = {"PRIV_EXPL": "o", "B1": "s", "B2": "^", "B3": "D", "OPT_PRIV_EXPL": "P"}
+RUNTIME_METHODS = ("PRIV_EXPL", "OPT_PRIV_EXPL", "B1", "B2", "B3")
 DATASET_TITLES = {"adult": "Adult", "tax": "Tax", "tax_dirty": "Tax (dirty, CQA)", "hospital": "Hospital",
                   "stackoverflow": "StackOverflow"}
 
@@ -360,26 +362,22 @@ RUNTIME_SWEEPS = [("k", "number of explanations k", False), ("data_fraction", "d
 
 
 def _runtime_panel(ax, sub: pd.DataFrame, x: str, logx: bool) -> None:
-    measured_max = float(sub[~sub.estimated].total_s.max()) if (~sub.estimated).any() else 1.0
-    cap = measured_max * 30.0  # extrapolated points above this are drawn at the cap and labelled
-    for m in ("PRIV_EXPL", "B1", "B2", "B3"):
+    """Five methods; a timed-out point is drawn at the time limit with an open 'x' and a dashed segment."""
+    for m in RUNTIME_METHODS:
         d = sub[sub.method == m].sort_values(x)
         if d.empty:
             continue
-        meas, est = d[~d.estimated], d[d.estimated]
-        ax.plot(meas[x], meas.total_s, marker=METHOD_MARKERS[m], color=METHOD_COLORS[m], markersize=4,
+        ok, to = d[~d.timeout.astype(bool)], d[d.timeout.astype(bool)]
+        ax.plot(ok[x], ok.total_s, marker=METHOD_MARKERS[m], color=METHOD_COLORS[m], markersize=4,
                 linewidth=2.2 if m == "PRIV_EXPL" else 1.6, label=m, zorder=3 if m == "PRIV_EXPL" else 2)
-        if len(est):
-            y = est.total_s.clip(upper=cap)
-            joined_x = list(meas[x].tail(1)) + list(est[x])
-            joined_y = list(meas.total_s.tail(1)) + list(y)
-            ax.plot(joined_x, joined_y, color=METHOD_COLORS[m], linestyle="--", linewidth=1.2)
-            ax.plot(est[x], y, linestyle="none", marker=METHOD_MARKERS[m], markerfacecolor=SURFACE,
-                    markeredgecolor=METHOD_COLORS[m], markersize=5, label=f"{m} (extrapolated)")
-            for xv, yv, tv in zip(est[x], y, est.total_s):
-                if tv > cap:
-                    ax.annotate(f"{tv:.0e} s", (xv, yv), textcoords="offset points", xytext=(-2, -9), ha="right",
-                                fontsize=6, color=INK2)
+        if len(to):
+            xs = list(ok[x].tail(1)) + list(to[x])
+            ys = list(ok.total_s.tail(1)) + list(to.total_s)
+            ax.plot(xs, ys, color=METHOD_COLORS[m], linestyle="--", linewidth=1.1)
+            ax.plot(to[x], to.total_s, linestyle="none", marker="x", color=METHOD_COLORS[m], markersize=6,
+                    markeredgewidth=1.8, label=f"{m} timeout")
+    if sub.timeout.astype(bool).any():
+        ax.axhline(float(sub[sub.timeout.astype(bool)].total_s.max()), color=MUTED, linestyle=":", linewidth=0.8)
     ax.set_yscale("log")
     _xscale(ax, sub[x], logx)
 
@@ -406,9 +404,9 @@ def plot_runtime_row(points: pd.DataFrame, dataset: str, path: Path, synthetic: 
                 handles.append(h)
                 labels.append(l)
     title = DATASET_TITLES.get(dataset, dataset) + (" [synthetic data]" if synthetic else "")
-    fig.suptitle(f"{title}: end-to-end running time (mean over the dataset's pairs)", fontsize=9)
-    fig.tight_layout(rect=(0, 0, 1, 0.9))
-    fig.legend(handles, labels, loc="upper right", ncol=6, fontsize=6.5)
+    fig.suptitle(f"{title}: end-to-end running time (mean over the dataset's pairs)", fontsize=9, x=0.3)
+    fig.tight_layout(rect=(0, 0, 1, 0.88))
+    fig.legend(handles, labels, loc="upper right", ncol=5, fontsize=6.5)
     return _save(fig, path)
 
 
@@ -427,17 +425,22 @@ def plot_runtime_grid(points: pd.DataFrame, path: Path, synthetic: dict | None =
                 axes[i, j].set_xlabel(xl)
             if j == 0:
                 axes[i, j].set_ylabel(f"{_ds_title(ds, synthetic)}\ntime (s, log)", fontsize=7.5)
-    handles, labels = axes[0, 0].get_legend_handles_labels()
-    fig.suptitle("End-to-end running time; rows = datasets, columns = the varied parameter", fontsize=9)
-    fig.tight_layout(rect=(0, 0, 1, 0.97))
-    fig.legend(handles, labels, loc="upper right", ncol=4)
+    handles, labels = [], []
+    for ax in axes.ravel():
+        for h, l in zip(*ax.get_legend_handles_labels()):
+            if l not in labels:
+                handles.append(h)
+                labels.append(l)
+    fig.suptitle("End-to-end running time; rows = datasets, columns = the varied parameter", fontsize=9, x=0.3)
+    fig.tight_layout(rect=(0, 0, 1, 0.96))
+    fig.legend(handles, labels, loc="upper right", ncol=5, fontsize=7)
     return _save(fig, path)
 
 
 def plot_method_bars(table: pd.DataFrame, path: Path, title: str, synthetic: dict | None = None) -> list[Path]:
     """Grouped bars: datasets on the x axis, one bar per method (end-to-end, log scale)."""
     datasets = list(dict.fromkeys(table.dataset))
-    methods = [m for m in ("PRIV_EXPL", "B1", "B2", "B3") if m in set(table.method)]
+    methods = [m for m in RUNTIME_METHODS if m in set(table.method)]
     fig, ax = plt.subplots(figsize=(1.6 * len(datasets) + 1.5, 3.0))
     w = 0.8 / len(methods)
     for i, m in enumerate(methods):
@@ -449,7 +452,7 @@ def plot_method_bars(table: pd.DataFrame, path: Path, title: str, synthetic: dic
     ax.set_ylabel("end-to-end time (s, log)")
     ax.set_title(title)
     ax.grid(axis="x", visible=False)
-    ax.legend(ncol=4)
+    ax.legend(ncol=5, fontsize=6.5)
     fig.tight_layout()
     return _save(fig, path)
 
@@ -462,6 +465,10 @@ def plot_b2_growth(growth: pd.DataFrame, path: Path, synthetic: dict | None = No
         ax = axes[0, j]
         sub = growth[growth.dataset == ds].groupby("pool_size", as_index=False).mean(numeric_only=True)
         ax.plot(sub.pool_size, sub.b2_total_s, marker=METHOD_MARKERS["B2"], color=METHOD_COLORS["B2"], label="B2")
+        if "timeout" in sub and (sub.timeout > 0).any():
+            t = sub[sub.timeout > 0]
+            ax.plot(t.pool_size, t.b2_total_s, linestyle="none", marker="x", color=METHOD_COLORS["B2"],
+                    markersize=6, markeredgewidth=1.8, label="B2 timeout")
         ax.plot(sub.pool_size, sub.priv_total_s, marker=METHOD_MARKERS["PRIV_EXPL"], color=METHOD_COLORS["PRIV_EXPL"],
                 label="PRIV_EXPL")
         ax.set_yscale("log")
@@ -489,7 +496,7 @@ def plot_routes(table: pd.DataFrame, path: Path, synthetic: dict | None = None) 
     ax.set_xticks(range(len(datasets)), [_ds_title(d, synthetic) for d in datasets], rotation=15)
     ax.set_yscale("log")
     ax.set_ylabel("PRIV_EXPL end-to-end (s, log)")
-    ax.set_title("Statistics routes: the direct route of Section 4.2 against optimisations O1-O3")
+    ax.set_title("PRIV_EXPL end to end by statistics route: original (Section 4.2) vs O1 and O1 + O3")
     ax.grid(axis="x", visible=False)
     ax.legend(fontsize=6.5)
     fig.tight_layout()

@@ -23,6 +23,7 @@ from itertools import combinations, islice
 
 import numpy as np
 
+from . import timeouts
 from .algorithm import Params, Result, choose_tau, explain
 from .measures import set_objective, smoothed_hd
 from .stats import StatsCache
@@ -141,7 +142,15 @@ def exhaustive_best(scores: np.ndarray, aidx: np.ndarray, k: int, lam: float, ch
         return float("nan"), (), n_total, {"estimated": True, "estimated_seconds": n_total / rate}
     best, best_set, total = -math.inf, (), 0
     it = combinations(range(n), k)
+    t_start = time.perf_counter()
     while True:
+        try:
+            timeouts.check()
+        except timeouts.RunTimeout as exc:
+            el = time.perf_counter() - t_start
+            exc.info = {"subsets_done": total, "subsets_total": n_total,
+                        "estimated_seconds": n_total * el / max(total, 1)}
+            raise
         block = list(islice(it, chunk))
         if not block:
             break

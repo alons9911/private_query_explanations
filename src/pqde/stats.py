@@ -45,6 +45,7 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
+from . import timeouts
 from .data.encode import EncodedDataset
 from .measures import coverage, representativeness, smoothed_hd, usefulness
 from .views import View, enumerate_views
@@ -107,6 +108,7 @@ class StatsCache:
         ds = self.ds
         pop = self.q1.astype(np.int64) + 2 * self.q2.astype(np.int64)  # 0 none, 1 Q1 only, 2 Q2 only, 3 both
         for r in np.unique(missing):
+            timeouts.check()
             v = self.views[r]
             idx = np.flatnonzero(v.mask(ds))
             pv = pop[idx]
@@ -140,6 +142,22 @@ class StatsCache:
         self.ensure_histograms([view])
         n, h1, h2 = self.hist[attr]
         return n[view], h1[view], h2[view]
+
+    def fresh_copy(self) -> "StatsCache":
+        """A copy whose lazily materialised histograms are discarded (the view statistics are kept).
+
+        Used to time several methods on one build: each method then pays for the
+        histograms it materialises itself.
+        """
+        import copy
+
+        c = copy.copy(self)
+        if self.have_hist.all():
+            return c
+        c.hist = {a: tuple(np.zeros_like(x) for x in h) for a, h in self.hist.items()}
+        c.have_hist = np.zeros_like(self.have_hist)
+        c.lazy_seconds = 0.0
+        return c
 
     def candidate_count(self) -> int:
         return int(sum(v.sum() for v in self.valid.values()))
@@ -201,6 +219,7 @@ def build_cache(
 
     if mode == "direct":
         for i, v in enumerate(views):
+            timeouts.check()
             pm = v.mask(ds)
             m[i] = pm.sum()
             s1[i] = (pm & q1).sum()
@@ -227,6 +246,7 @@ def build_cache(
         codes_q1 = {a: ds.codes[a][q1] for a in stat_attrs}
         codes_q2 = {a: ds.codes[a][q2] for a in stat_attrs}
         for attrs, rows in groups.items():
+            timeouts.check()
             rows = np.asarray(rows)
             sizes = [ds.domain_size(a) for a in attrs]
             G = int(np.prod(sizes))
