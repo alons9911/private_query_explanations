@@ -18,7 +18,7 @@
       "original": "Salary >= 60000 AND Rate <= 2",
       "refined": "Salary >= 60000 AND Rate <= 3.9",
       "predicate_distance": 0.2043010752688172,
-      "output_jaccard_distance": 0.4041754706865559,
+      "output_jaccard_distance": 0.40417546033859253,
       "original_share": {
         ">= 40% with Rate > 0": 0.0
       },
@@ -1480,10 +1480,10 @@
     }
   ],
   "timings": {
-    "view_stage_ms": 0.2335100000436796,
-    "explanation_stage_ms": 0.5188009999983478,
-    "mechanism_ms": 0.7523110000420274,
-    "cache_build_s": 0.4731015130000742
+    "view_stage_ms": 0.20289199983380968,
+    "explanation_stage_ms": 0.5713119999199989,
+    "mechanism_ms": 0.7742039997538086,
+    "cache_build_s": 0.4793830559997332
   },
   "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
 }

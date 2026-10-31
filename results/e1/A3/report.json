@@ -18,7 +18,7 @@
       "original": "maritalStatus = 'Married-civ-spouse' AND hoursPerWeek >= 45",
       "refined": "maritalStatus IN ('Divorced', 'Married-civ-spouse', 'Never-married') AND hoursPerWeek >= 38",
       "predicate_distance": 0.738095238095238,
-      "output_jaccard_distance": 0.7682107995260397,
+      "output_jaccard_distance": 0.768210768699646,
       "original_share": {
         ">= 25% with gender = 'Female'": 0.04965920155793573
       },
@@ -1023,10 +1023,10 @@
     }
   ],
   "timings": {
-    "view_stage_ms": 0.15475600002901047,
-    "explanation_stage_ms": 0.6700289998207154,
-    "mechanism_ms": 0.8247849998497259,
-    "cache_build_s": 0.09012593400007063
+    "view_stage_ms": 0.18143399984182906,
+    "explanation_stage_ms": 0.5021540000598179,
+    "mechanism_ms": 0.683587999901647,
+    "cache_build_s": 0.13095276300009573
   },
   "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
 }

@@ -116,7 +116,7 @@ def _numeric_thresholds(x: np.ndarray, max_candidates: int) -> np.ndarray:
 
 
 def _atom_options(atom: Atom, df: pd.DataFrame, max_set_edits: int, max_thresholds: int, allow_drop: bool,
-                  max_domain: int = 60) -> list[_Option]:
+                  max_domain: int = 60, allow_replace: bool = True) -> list[_Option]:
     opts = [_Option(atom, 0.0, atom.evaluate(df))]
     if allow_drop:
         opts.append(_Option(TrueP(), 1.0, np.ones(len(df), dtype=bool)))
@@ -149,6 +149,8 @@ def _atom_options(atom: Atom, df: pd.DataFrame, max_set_edits: int, max_threshol
                         new = (cur - set(rem)) | set(add)
                         if not new or frozenset(new) in seen or new >= full:
                             continue  # empty, already seen, or equivalent to dropping the condition
+                        if not allow_replace and not (new & cur):
+                            continue  # swapping the whole value set is not a refinement of it
                         seen.add(frozenset(new))
                         vals = tuple(sorted(new))
                         if numeric_col:
@@ -186,48 +188,74 @@ class RefinementResult:
 
 
 def refine(query: str | Predicate, constraints: list[Constraint], df: pd.DataFrame, *, max_set_edits: int = 2,
-           max_thresholds: int = 60, allow_drop: bool = True, min_size: int = 1, max_changed: int | None = None
-           ) -> RefinementResult:
-    """Minimal-distance refinement of a conjunctive query satisfying all constraints."""
+           max_thresholds: int = 60, allow_drop: bool = True, min_size: int = 1, max_changed: int | None = None,
+           allow_replace: bool = True) -> RefinementResult:
+    """Minimal-distance refinement of a conjunctive query satisfying all constraints.
+
+    Candidates are scored in blocks: for the last two conditions every
+    (option, option) combination is evaluated at once with matrix products of
+    the option masks, so a two-condition query costs two small GEMMs.
+    """
     q = parse(query)
     atoms = conjuncts(q)
     if not all(isinstance(a, Atom) for a in atoms):
         raise ValueError("refinement supports conjunctions of atomic conditions only")
-    options = [_atom_options(a, df, max_set_edits, max_thresholds, allow_drop) for a in atoms]
+    options = [_atom_options(a, df, max_set_edits, max_thresholds, allow_drop, allow_replace=allow_replace)
+               for a in atoms]
     groups = [c.group_mask(df) for c in constraints]
     q_mask = q.evaluate(df)
+    n_q = int(q_mask.sum())
+    n = len(df)
+    if len(options) == 1:  # pad with a no-op condition so that the block evaluation always has two axes
+        options.append([_Option(TrueP(), 0.0, np.ones(n, dtype=bool))])
+    head, (oa, ob) = options[:-2], options[-2:]
+    A = np.stack([o.mask for o in oa]).astype(np.float32)
+    B = np.stack([o.mask for o in ob]).astype(np.float32)
+    da = np.array([o.distance for o in oa])
+    db = np.array([o.distance for o in ob])
     best = None
     n_eval = 0
-    for combo in product(*[range(len(o)) for o in options]):
-        changed = sum(1 for c in combo if c != 0)
-        if changed == 0 or (max_changed is not None and changed > max_changed):
+    for hcombo in product(*[range(len(o)) for o in head]):
+        hmask = np.ones(n, dtype=np.float32)
+        hdist = 0.0
+        for i, c in enumerate(hcombo):
+            hmask *= head[i][c].mask
+            hdist += head[i][c].distance
+        Bh = B * hmask[None, :]
+        size = A @ Bh.T
+        inter = A @ (Bh * q_mask[None, :]).T
+        ok = size >= max(min_size, 1)
+        for con, g in zip(constraints, groups):
+            gc = A @ (Bh * g[None, :]).T
+            ok &= con.satisfied_counts(gc, size)
+        changed = (np.arange(len(oa)) != 0)[:, None].astype(int) + (np.arange(len(ob)) != 0)[None, :].astype(int)
+        changed = changed + sum(1 for c in hcombo if c != 0)
+        valid = changed > 0
+        if max_changed is not None:
+            valid &= changed <= max_changed
+        n_eval += int(valid.sum())
+        ok &= valid
+        if not ok.any():
             continue
-        n_eval += 1
-        dist = sum(options[i][c].distance for i, c in enumerate(combo))
-        if best is not None and dist > best[0]:
-            continue
-        mask = np.ones(len(df), dtype=bool)
-        for i, c in enumerate(combo):
-            mask &= options[i][c].mask
-        size = int(mask.sum())
-        if size < min_size:
-            continue
-        ok = all(con.satisfied_counts(np.array([(g & mask).sum()]), np.array([size]))[0]
-                 for con, g in zip(constraints, groups))
-        if not ok:
-            continue
-        inter = int((mask & q_mask).sum())
-        union = int((mask | q_mask).sum())
-        jd = 1 - inter / union if union else 0.0
-        key = (dist, jd)
+        dist = hdist + da[:, None] + db[None, :]
+        union = size + n_q - inter
+        jd = np.where(union > 0, 1 - inter / np.maximum(union, 1), 0.0)
+        cand = np.flatnonzero(ok.ravel())
+        order = np.lexsort((jd.ravel()[cand], dist.ravel()[cand]))  # by distance, then output Jaccard
+        k = cand[order[0]]
+        key = (float(dist.ravel()[k]), float(jd.ravel()[k]))
         if best is None or key < best[:2]:
-            best = (dist, jd, combo, mask)
+            i, j = divmod(int(k), len(ob))
+            best = (key[0], key[1], (*hcombo, i, j))
     shares0 = {c.describe(): c.share(df, q_mask) for c in constraints}
     if best is None:
-        return RefinementResult(q, None, float("inf"), float("nan"), shares0, {}, n_eval, int(q_mask.sum()), 0)
-    dist, jd, combo, mask = best
+        return RefinementResult(q, None, float("inf"), float("nan"), shares0, {}, n_eval, n_q, 0)
+    dist, jd, combo = best
+    mask = np.ones(n, dtype=bool)
+    for i, c in enumerate(combo):
+        mask &= options[i][c].mask
     refined = And([options[i][c].pred for i, c in enumerate(combo)])
     parts = conjuncts(refined)
     refined = TrueP() if not parts else (parts[0] if len(parts) == 1 else refined)
     shares1 = {c.describe(): c.share(df, mask) for c in constraints}
-    return RefinementResult(q, refined, dist, jd, shares0, shares1, n_eval, int(q_mask.sum()), int(mask.sum()))
+    return RefinementResult(q, refined, dist, jd, shares0, shares1, n_eval, n_q, int(mask.sum()))

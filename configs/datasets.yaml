@@ -29,6 +29,28 @@ tax:
   ref_attrs: [Gender, State, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
   view_attrs: [Gender, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp, State]
 
+tax_dirty:
+  # The same 200k tuples with injected errors; used for consistent query answering.
+  loader: tax_dirty
+  declared_domains: true
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
+  categorical: [Gender, State, MaritalStatus, HasChild]
+  explain_attrs: [Gender, State, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
+  ref_attrs: [Gender, State, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
+  view_attrs: [Gender, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp, State]
+  # the conditional functional dependencies of the tax benchmark that hold on the
+  # clean file (area_code -> state is left out: 600 state typos put 82% of the
+  # tuples in conflict through it)
+  fds:
+    - [Zip, City]
+    - [Zip, State]
+    - [[State, MaritalStatus], SingleExemp]
+    - [[State, MaritalStatus], MarriedExemp]
+    - [[State, HasChild], ChildExemp]
+    - [[State, Salary], Rate]
+
 stackoverflow:
   loader: stackoverflow
   allow_synthetic: true

@@ -53,7 +53,7 @@ def _query_attr_views(pair, ranking: pd.DataFrame) -> list[dict]:
     return rows
 
 
-def run_pair(pair_id: str, cfg: dict, base=None) -> dict:
+def run_pair(pair_id: str, cfg: dict, base=None, subdir: str = "e1") -> dict:
     d = cfg["defaults"]
     params = params_from(d)
     pair = resolve_pair(pair_id)
@@ -99,7 +99,7 @@ def run_pair(pair_id: str, cfg: dict, base=None) -> dict:
         "timings": res.timings,
         "note": "exact_* fields are NOT differentially private; they are reported only to check the text.",
     }
-    od = out_dir(f"e1/{pair_id}", base)
+    od = out_dir(f"{subdir}/{pair_id}", base)
     write_json(report, od / "report.json")
     write_csv(ranking, od / "views_by_use.csv")
     syn = " [SYNTHETIC DATA]" if pair.dataset.meta.get("synthetic") else ""

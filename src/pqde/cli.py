@@ -4,6 +4,7 @@
     pqde pairs [IDS...]                      resolve the query pairs of Table 2 and print them
     pqde explain PAIR [--epsilon 1 --k 5 --seed 0]   one private run, printed
     pqde run EXP [--pairs ...] [--quick] [--trials N] [--out DIR]
+                                             EXP in e1..e5, search (case-study pair search), cases (R1-R6, C1-C4)
     pqde all [--quick]                       E1-E5 + the summary report
 """
 
@@ -80,7 +81,7 @@ def _cmd_run(args) -> int:
     for exp in args.experiments:
         mod = EXPERIMENTS[exp]
         kw = {"pairs": args.pairs, "base": Path(args.out) if args.out else None, "quick": args.quick}
-        if args.trials and exp in ("e2", "e3"):
+        if args.trials and exp in ("e2", "e3", "cases"):
             kw["trials"] = args.trials
         t0 = time.perf_counter()
         print(f"== {exp} ({mod.__doc__.strip().splitlines()[0]})")
@@ -121,7 +122,7 @@ def main(argv: list[str] | None = None) -> int:
     for name, fn in (("run", _cmd_run), ("all", _cmd_all)):
         r = sub.add_parser(name)
         if name == "run":
-            r.add_argument("experiments", nargs="+", choices=["e1", "e2", "e3", "e4", "e5"])
+            r.add_argument("experiments", nargs="+", choices=["e1", "e2", "e3", "e4", "e5", "search", "cases"])
             r.add_argument("--pairs", nargs="*")
         r.add_argument("--quick", action="store_true", help="few trials / repeats (smoke run)")
         r.add_argument("--trials", type=int)

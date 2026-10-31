@@ -18,7 +18,7 @@
       "original": "MaritalStatus = 'S' AND HasChild = 'N' AND Salary >= 50000",
       "refined": "MaritalStatus = 'S' AND Salary >= 50000",
       "predicate_distance": 1.0,
-      "output_jaccard_distance": 0.4982516532294592,
+      "output_jaccard_distance": 0.49825167655944824,
       "original_share": {
         ">= 30% with HasChild = 'Y'": 0.0
       },
@@ -2439,10 +2439,10 @@
     }
   ],
   "timings": {
-    "view_stage_ms": 0.24575900010859186,
-    "explanation_stage_ms": 0.5838629999743716,
-    "mechanism_ms": 0.8296220000829635,
-    "cache_build_s": 0.5271975069999826
+    "view_stage_ms": 0.2015430000028573,
+    "explanation_stage_ms": 0.5228420000094047,
+    "mechanism_ms": 0.724385000012262,
+    "cache_build_s": 0.4881379840003319
   },
   "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
 }

@@ -1,0 +1,389 @@
+{
+  "pair": {
+    "pair": "R4",
+    "dataset": "adult",
+    "synthetic_data": false,
+    "N": 48842,
+    "kind": "refinement",
+    "Q1": "occupation = 'Prof-specialty' AND hoursPerWeek >= 50",
+    "Q2": "occupation IN ('Other-service', 'Prof-specialty') AND hoursPerWeek >= 30",
+    "|Q1|": 1681,
+    "|Q2|": 9186,
+    "|Q1 & Q2|": 1681,
+    "constraint: >= 25% with age < 30": {
+      "share_Q1": 0.1469,
+      "share_Q2": 0.2531
+    },
+    "role": "surprising",
+    "aggregate": "income",
+    "AVG_Q1": 0.5817965496728138,
+    "AVG_Q2": 0.3115610711952972
+  },
+  "motivation": {
+    "Q1": "occupation = 'Prof-specialty' AND hoursPerWeek >= 50",
+    "Q2": "occupation IN ('Other-service', 'Prof-specialty') AND hoursPerWeek >= 30",
+    "constraint": ">= 25% with age < 30",
+    "|Q1|": 1681,
+    "|Q2|": 9186,
+    "share_Q1": 0.14693634741225461,
+    "share_Q2": 0.25310254735467014,
+    "output_jaccard": 0.8170041367298062,
+    "hidden_drift": 0.3700701077202422,
+    "hidden_drift_attr": "education",
+    "group_drift": 0.49944016368464583,
+    "group_drift_attr": "education",
+    "nongroup_drift": 0.32328807723479813,
+    "nongroup_drift_attr": "education",
+    "hidden_attrs": "workclass,education,maritalStatus,relationship,race,gender,income",
+    "agg": "income",
+    "agg_Q1": 0.5817965496728138,
+    "agg_Q2": 0.3115610711952972,
+    "agg_counterfactual": 0.5386140582603723,
+    "agg_change": -0.2702354784775166,
+    "agg_unexplained": -0.22705298706507515,
+    "hidden": [
+      "workclass",
+      "education",
+      "maritalStatus",
+      "relationship",
+      "race",
+      "gender",
+      "income"
+    ]
+  },
+  "stability": {
+    "trials": 40,
+    "top_explanations": [
+      {
+        "view": "occupation='Prof-specialty'",
+        "attr": "relationship",
+        "share_of_runs": 0.475
+      },
+      {
+        "view": "occupation='Prof-specialty'",
+        "attr": "workclass",
+        "share_of_runs": 0.45
+      },
+      {
+        "view": "occupation='Prof-specialty'",
+        "attr": "education",
+        "share_of_runs": 0.35
+      },
+      {
+        "view": "occupation='Prof-specialty'",
+        "attr": "age",
+        "share_of_runs": 0.35
+      },
+      {
+        "view": "occupation='Other-service'",
+        "attr": "education",
+        "share_of_runs": 0.35
+      },
+      {
+        "view": "occupation='Other-service'",
+        "attr": "maritalStatus",
+        "share_of_runs": 0.35
+      },
+      {
+        "view": "occupation='Other-service'",
+        "attr": "age",
+        "share_of_runs": 0.325
+      },
+      {
+        "view": "occupation='Other-service'",
+        "attr": "relationship",
+        "share_of_runs": 0.325
+      },
+      {
+        "view": "occupation='Prof-specialty'",
+        "attr": "maritalStatus",
+        "share_of_runs": 0.3
+      },
+      {
+        "view": "occupation='Prof-specialty' AND race='White'",
+        "attr": "workclass",
+        "share_of_runs": 0.225
+      }
+    ],
+    "attribute_share_of_runs": {
+      "education": 1.05,
+      "relationship": 1.0,
+      "age": 1.0,
+      "maritalStatus": 0.925,
+      "workclass": 0.925,
+      "occupation": 0.05,
+      "gender": 0.025,
+      "hoursPerWeek": 0.025
+    }
+  },
+  "accuracy": [
+    {
+      "pair": "R4",
+      "epsilon": 0.5,
+      "F_mean": 27.62254984000561,
+      "F_std": 5.3593160064190934,
+      "B1_F": 25.294935914481556,
+      "B2_F": 27.34703475226815,
+      "B3_F": 27.34703475226815,
+      "ratio_B1_mean": 1.0920189690692783,
+      "ratio_B1_std": 0.21187308102057065,
+      "ratio_B2_mean": 1.0100747700887245,
+      "ratio_B2_std": 0.19597430050344294,
+      "ratio_B3_mean": 1.0100747700887245,
+      "ratio_B3_std": 0.19597430050344294,
+      "gamma": 300.63811794641344,
+      "tau": 15,
+      "trials": 40,
+      "mechanism_ms_median": 0.6606340000416822
+    },
+    {
+      "pair": "R4",
+      "epsilon": 1.0,
+      "F_mean": 26.68191969695212,
+      "F_std": 2.8444868064324904,
+      "B1_F": 25.294935914481556,
+      "B2_F": 27.34703475226815,
+      "B3_F": 27.34703475226815,
+      "ratio_B1_mean": 1.0548324687265367,
+      "ratio_B1_std": 0.11245281727731118,
+      "ratio_B2_mean": 0.9756787139321983,
+      "ratio_B2_std": 0.10401445100721828,
+      "ratio_B3_mean": 0.9756787139321983,
+      "ratio_B3_std": 0.10401445100721828,
+      "gamma": 150.31905897320672,
+      "tau": 15,
+      "trials": 40,
+      "mechanism_ms_median": 0.5023705000439804
+    },
+    {
+      "pair": "R4",
+      "epsilon": 2.0,
+      "F_mean": 26.482267387321464,
+      "F_std": 2.500536656833631,
+      "B1_F": 25.294935914481556,
+      "B2_F": 27.34703475226815,
+      "B3_F": 27.34703475226815,
+      "ratio_B1_mean": 1.046939493219279,
+      "ratio_B1_std": 0.09885522799059761,
+      "ratio_B2_mean": 0.9683780207696936,
+      "ratio_B2_std": 0.09143721355845488,
+      "ratio_B3_mean": 0.9683780207696936,
+      "ratio_B3_std": 0.09143721355845488,
+      "gamma": 75.15952948660336,
+      "tau": 15,
+      "trials": 40,
+      "mechanism_ms_median": 0.8291579999877285
+    },
+    {
+      "pair": "R4",
+      "epsilon": 5.0,
+      "F_mean": 25.726482781568517,
+      "F_std": 1.888483492363137,
+      "B1_F": 25.419447045199103,
+      "B2_F": 27.34703475226815,
+      "B3_F": 27.34703475226815,
+      "ratio_B1_mean": 1.0120787732252186,
+      "ratio_B1_std": 0.0742928628229074,
+      "ratio_B2_mean": 0.94074121800115,
+      "ratio_B2_std": 0.06905624355512649,
+      "ratio_B3_mean": 0.94074121800115,
+      "ratio_B3_std": 0.06905624355512649,
+      "gamma": 30.06381179464134,
+      "tau": 15,
+      "trials": 40,
+      "mechanism_ms_median": 0.7928089999040822
+    }
+  ],
+  "explanations_key_bins": [
+    {
+      "view": "occupation='Prof-specialty'",
+      "attr": "education",
+      "bins": [
+        {
+          "bin": "Bachelors",
+          "noisy_Q1": 538,
+          "noisy_Q2": 2009,
+          "exact_Q1": 530,
+          "exact_Q2": 2050,
+          "clears_2sd": true
+        },
+        {
+          "bin": "Masters",
+          "noisy_Q1": 309,
+          "noisy_Q2": 1146,
+          "exact_Q1": 357,
+          "exact_Q2": 1203,
+          "clears_2sd": true
+        },
+        {
+          "bin": "Some-college",
+          "noisy_Q1": 41,
+          "noisy_Q2": 479,
+          "exact_Q1": 87,
+          "exact_Q2": 497,
+          "clears_2sd": true
+        },
+        {
+          "bin": "Prof-school",
+          "noisy_Q1": 335,
+          "noisy_Q2": 705,
+          "exact_Q1": 356,
+          "exact_Q2": 632,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "occupation='Prof-specialty' AND race='White'",
+      "attr": "age",
+      "bins": [
+        {
+          "bin": "(37, 44]",
+          "noisy_Q1": 374,
+          "noisy_Q2": 1245,
+          "exact_Q1": 369,
+          "exact_Q2": 1126,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(44, 53]",
+          "noisy_Q1": 404,
+          "noisy_Q2": 1083,
+          "exact_Q1": 378,
+          "exact_Q2": 1063,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(24, 31]",
+          "noisy_Q1": 271,
+          "noisy_Q2": 900,
+          "exact_Q1": 275,
+          "exact_Q2": 890,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(31, 37]",
+          "noisy_Q1": 363,
+          "noisy_Q2": 898,
+          "exact_Q1": 279,
+          "exact_Q2": 895,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "occupation='Prof-specialty'",
+      "attr": "relationship",
+      "bins": [
+        {
+          "bin": "Husband",
+          "noisy_Q1": 1003,
+          "noisy_Q2": 2514,
+          "exact_Q1": 968,
+          "exact_Q2": 2567,
+          "clears_2sd": true
+        },
+        {
+          "bin": "Not-in-family",
+          "noisy_Q1": 426,
+          "noisy_Q2": 1642,
+          "exact_Q1": 473,
+          "exact_Q2": 1736,
+          "clears_2sd": true
+        },
+        {
+          "bin": "Unmarried",
+          "noisy_Q1": 115,
+          "noisy_Q2": 443,
+          "exact_Q1": 98,
+          "exact_Q2": 501,
+          "clears_2sd": true
+        },
+        {
+          "bin": "Wife",
+          "noisy_Q1": 49,
+          "noisy_Q2": 375,
+          "exact_Q1": 84,
+          "exact_Q2": 385,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "occupation='Prof-specialty' AND race='White'",
+      "attr": "maritalStatus",
+      "bins": [
+        {
+          "bin": "Married-civ-spouse",
+          "noisy_Q1": 990,
+          "noisy_Q2": 2644,
+          "exact_Q1": 977,
+          "exact_Q2": 2669,
+          "clears_2sd": true
+        },
+        {
+          "bin": "Never-married",
+          "noisy_Q1": 342,
+          "noisy_Q2": 1390,
+          "exact_Q1": 346,
+          "exact_Q2": 1368,
+          "clears_2sd": true
+        },
+        {
+          "bin": "Divorced",
+          "noisy_Q1": 179,
+          "noisy_Q2": 710,
+          "exact_Q1": 172,
+          "exact_Q2": 648,
+          "clears_2sd": true
+        },
+        {
+          "bin": "Separated",
+          "noisy_Q1": 33,
+          "noisy_Q2": 105,
+          "exact_Q1": 22,
+          "exact_Q2": 104,
+          "clears_2sd": false
+        }
+      ]
+    },
+    {
+      "view": "occupation='Prof-specialty'",
+      "attr": "workclass",
+      "bins": [
+        {
+          "bin": "Private",
+          "noisy_Q1": 871,
+          "noisy_Q2": 3097,
+          "exact_Q1": 878,
+          "exact_Q2": 3108,
+          "clears_2sd": true
+        },
+        {
+          "bin": "Local-gov",
+          "noisy_Q1": 365,
+          "noisy_Q2": 986,
+          "exact_Q1": 258,
+          "exact_Q2": 982,
+          "clears_2sd": true
+        },
+        {
+          "bin": "State-gov",
+          "noisy_Q1": 190,
+          "noisy_Q2": 526,
+          "exact_Q1": 140,
+          "exact_Q2": 532,
+          "clears_2sd": true
+        },
+        {
+          "bin": "Self-emp-not-inc",
+          "noisy_Q1": 232,
+          "noisy_Q2": 485,
+          "exact_Q1": 215,
+          "exact_Q2": 482,
+          "clears_2sd": true
+        }
+      ]
+    }
+  ]
+}

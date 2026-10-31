@@ -7,6 +7,7 @@ from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import yaml
 
 from .cqa import choose_cqa_selection, conflict_hypergraph
@@ -100,6 +101,13 @@ def _resolve(pair_id: str, config_path: str | None) -> QueryPair:
         q2 = parse(q2_sql).evaluate(df)
     if "paper" in spec:
         info["paper_reported"] = spec["paper"]
+    for key in ("role", "aggregate"):
+        if key in spec:
+            info[key] = spec[key]
+    if "aggregate" in spec:
+        y = pd.to_numeric(df[spec["aggregate"]], errors="coerce").to_numpy(dtype=float)
+        info["AVG_Q1"] = float(np.nanmean(y[q1])) if q1.any() else float("nan")
+        info["AVG_Q2"] = float(np.nanmean(y[q2])) if q2.any() else float("nan")
     return QueryPair(pair_id, ds, kind, q1_sql, q2_sql, q1, q2, constraints, info)
 
 
@@ -115,3 +123,4 @@ def pair_cache(pair_id: str) -> StatsCache:
 
 
 ALL_PAIRS = ["A1", "A2", "A3", "T1", "T2", "T3", "S1", "S2", "S3", "H1", "H2", "H3"]
+CASE_STUDY_PAIRS = ["R1", "R2", "R3", "R4", "R5", "R6", "C1", "C2", "C3", "C4"]

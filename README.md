@@ -16,6 +16,11 @@ make all                      # E1-E5 + results/REPORT.md  (about 2 minutes on a
 `results/` is committed, so the numbers and figures of the last full run can be
 read without running anything: start at [`results/REPORT.md`](results/REPORT.md).
 
+**Case studies.** [`docs/CASE_STUDIES.md`](docs/CASE_STUDIES.md) presents six
+refinement pairs (R1–R6) and four CQA pairs (C1–C4) chosen by a pair search
+for the paper's motivation, with the explanations the private algorithm
+releases on them (`pqde run search`, then `pqde run cases`).
+
 ## What is implemented
 
 | Paper | Code |
@@ -42,6 +47,8 @@ read without running anything: start at [`results/REPORT.md`](results/REPORT.md)
 | E3 | What drives accuracy: margins, `γ`, bins, the view stage alone, the budget split (§5.3.1) | `experiments/e3_drivers.py` | `results/e3/*.csv`, `view_stage_overlap.png`, `gamma_*.png` |
 | E4 | Running time vs. `k, N, ε, |P|, τ, γ` (§5.3.2) | `experiments/e4_scalability.py` | `results/e4/fig7_scalability.png` (Fig. 7), `time_vs_*.csv` |
 | E5 | Running-time cost of privacy, B2 blow-up, end-to-end time per pair (§5.3.2) | `experiments/e5_runtime.py` | `results/e5/fig8_runtime.png` (Fig. 8), `runtime_per_pair.csv` |
+| search | Which pairs best show the motivation: hidden drift, drift inside the constrained group, unexplained aggregate change, CQA drop/unevenness, DP visibility | `experiments/pair_search.py`, `search.py`, `configs/pair_search.yaml` | `results/pair_search/*.csv` |
+| cases | Case studies R1–R6, C1–C4: release, stability over 40 runs, ApproxRatio | `experiments/case_studies.py` | `results/case_studies/`, `docs/CASE_STUDIES.md` |
 
 ## Datasets
 
@@ -50,7 +57,8 @@ read without running anything: start at [`results/REPORT.md`](results/REPORT.md)
 | Adult | UCI census extract (train + test); falls back to a GitHub mirror when UCI is unreachable | 48,842 | |
 | Tax | Tax benchmark of the data-cleaning literature (BigDaMa/raha copy, clean version) | 200,000 | the paper quotes N = 500,000; set `target_rows: 500000` in `configs/datasets.yaml` to up-sample (E4 does so for its N sweep) |
 | StackOverflow | Developer Survey 2024 (`survey_results_public.csv`) | ≈65k | if the official file cannot be downloaded, a **synthetic** generator with the same normalised schema is used and every output is flagged `synthetic` — put the CSV in `data/raw/stackoverflow/` to use the real survey |
-| Hospital | HoloClean hospital benchmark (dirty), FDs `HospitalName→ZipCode`, `HospitalName→PhoneNumber`, `ZipCode→City` | 1,000 | |
+| Tax (dirty) | the same 200k tuples with injected errors (BigDaMa/raha `dirty.csv`), formatting differences normalised; FDs `Zip→City`, `Zip→State`, `(State, MaritalStatus)→Single/MarriedExemp`, `(State, HasChild)→ChildExemp`, `(State, Salary)→Rate` | 200,000 | used for the CQA case studies C1–C3 |
+| Hospital | HoloClean hospital benchmark (dirty), FDs `HospitalName→ZipCode`, `HospitalName→PhoneNumber`, `ZipCode→City` | 1,000 | categorical domains declared by the clean file; typos fall into `Other` |
 
 The public schema of every dataset (explanation attributes, reference
 attributes, view attributes, bins) lives in `configs/datasets.yaml`.

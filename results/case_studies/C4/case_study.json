@@ -1,0 +1,424 @@
+{
+  "pair": {
+    "pair": "C4",
+    "dataset": "hospital",
+    "synthetic_data": false,
+    "N": 1000,
+    "kind": "cqa",
+    "Q1": "HospitalType = 'acute care hospitals'",
+    "Q2": "Q_Sigma(HospitalType = 'acute care hospitals')",
+    "|Q1|": 968,
+    "|Q2|": 93,
+    "|Q1 & Q2|": 93,
+    "conflicts": {
+      "tuples_in_conflict": 902,
+      "edges": 2170,
+      "HospitalName->ZipCode": {
+        "tuples": 477,
+        "edges": 644
+      },
+      "HospitalName->PhoneNumber": {
+        "tuples": 517,
+        "edges": 721
+      },
+      "ZipCode->City": {
+        "tuples": 603,
+        "edges": 805
+      }
+    },
+    "role": "small-data",
+    "aggregate": "Score",
+    "AVG_Q1": 89.50508905852418,
+    "AVG_Q2": 92.60714285714286
+  },
+  "motivation": {
+    "drop": 0.9039256198347108,
+    "unevenness": 0.08143683589138134,
+    "unevenness_attr": "City",
+    "hidden_drift": 0.7662067893006309,
+    "hidden_drift_attr": "City",
+    "hidden": [
+      "City",
+      "CountyName",
+      "State",
+      "HospitalOwner",
+      "EmergencyService",
+      "Condition",
+      "MeasureCode",
+      "Score",
+      "Sample"
+    ],
+    "largest_losses": [
+      {
+        "value": "birmingham",
+        "|Q|": 73,
+        "|Q_Sigma|": 5,
+        "kept": 0.068
+      },
+      {
+        "value": "montgomery",
+        "|Q|": 48,
+        "|Q_Sigma|": 1,
+        "kept": 0.021
+      },
+      {
+        "value": "gadsden",
+        "|Q|": 49,
+        "|Q_Sigma|": 3,
+        "kept": 0.061
+      },
+      {
+        "value": "dothan",
+        "|Q|": 41,
+        "|Q_Sigma|": 2,
+        "kept": 0.049
+      },
+      {
+        "value": "Other",
+        "|Q|": 32,
+        "|Q_Sigma|": 0,
+        "kept": 0.0
+      },
+      {
+        "value": "anniston",
+        "|Q|": 26,
+        "|Q_Sigma|": 0,
+        "kept": 0.0
+      }
+    ]
+  },
+  "stability": {
+    "trials": 40,
+    "top_explanations": [
+      {
+        "view": "State='al'",
+        "attr": "City",
+        "share_of_runs": 0.875
+      },
+      {
+        "view": "State='al'",
+        "attr": "CountyName",
+        "share_of_runs": 0.85
+      },
+      {
+        "view": "State='al'",
+        "attr": "MeasureCode",
+        "share_of_runs": 0.8
+      },
+      {
+        "view": "State='al'",
+        "attr": "Sample",
+        "share_of_runs": 0.5
+      },
+      {
+        "view": "State='al'",
+        "attr": "HospitalOwner",
+        "share_of_runs": 0.475
+      },
+      {
+        "view": "State='al'",
+        "attr": "Score",
+        "share_of_runs": 0.3
+      },
+      {
+        "view": "State='al' AND EmergencyService='yes'",
+        "attr": "HospitalOwner",
+        "share_of_runs": 0.175
+      },
+      {
+        "view": "EmergencyService='yes'",
+        "attr": "Sample",
+        "share_of_runs": 0.175
+      },
+      {
+        "view": "State='al' AND EmergencyService='yes'",
+        "attr": "Sample",
+        "share_of_runs": 0.125
+      },
+      {
+        "view": "State='al'",
+        "attr": "Condition",
+        "share_of_runs": 0.1
+      }
+    ],
+    "attribute_share_of_runs": {
+      "City": 1.025,
+      "MeasureCode": 1.025,
+      "CountyName": 1.0,
+      "Sample": 0.8,
+      "HospitalOwner": 0.675,
+      "Score": 0.325,
+      "Condition": 0.15
+    }
+  },
+  "accuracy": [
+    {
+      "pair": "C4",
+      "epsilon": 0.5,
+      "F_mean": 70.30506111813511,
+      "F_std": 26.92387634842933,
+      "B1_F": 96.91370924703193,
+      "B2_F": 115.46221538580885,
+      "B3_F": 115.46221538580885,
+      "ratio_B1_mean": 0.7254397924129427,
+      "ratio_B1_std": 0.2778128766055241,
+      "ratio_B2_mean": 0.6089010234492359,
+      "ratio_B2_std": 0.23318343804910632,
+      "ratio_B3_mean": 0.6089010234492359,
+      "ratio_B3_std": 0.23318343804910632,
+      "gamma": 300.63811794641344,
+      "tau": 15,
+      "trials": 40,
+      "mechanism_ms_median": 0.49008399992089835
+    },
+    {
+      "pair": "C4",
+      "epsilon": 1.0,
+      "F_mean": 94.03953216585931,
+      "F_std": 7.489569877623734,
+      "B1_F": 96.91370924703193,
+      "B2_F": 115.46221538580885,
+      "B3_F": 115.46221538580885,
+      "ratio_B1_mean": 0.9703429256448499,
+      "ratio_B1_std": 0.07728080924580964,
+      "ratio_B2_mean": 0.8144615262372443,
+      "ratio_B2_std": 0.06486598107093183,
+      "ratio_B3_mean": 0.8144615262372443,
+      "ratio_B3_std": 0.06486598107093183,
+      "gamma": 150.31905897320672,
+      "tau": 15,
+      "trials": 40,
+      "mechanism_ms_median": 0.4928394998842123
+    },
+    {
+      "pair": "C4",
+      "epsilon": 2.0,
+      "F_mean": 97.06955470129617,
+      "F_std": 2.353491424460841,
+      "B1_F": 96.91370924703193,
+      "B2_F": 115.46221538580885,
+      "B3_F": 115.46221538580885,
+      "ratio_B1_mean": 1.0016080847124216,
+      "ratio_B1_std": 0.024284401481959803,
+      "ratio_B2_mean": 0.8407040725569408,
+      "ratio_B2_std": 0.020383217285384805,
+      "ratio_B3_mean": 0.8407040725569408,
+      "ratio_B3_std": 0.020383217285384805,
+      "gamma": 75.15952948660336,
+      "tau": 15,
+      "trials": 40,
+      "mechanism_ms_median": 0.4791885000940965
+    },
+    {
+      "pair": "C4",
+      "epsilon": 5.0,
+      "F_mean": 106.88802521786906,
+      "F_std": 1.6917044525900673,
+      "B1_F": 107.93041226111808,
+      "B2_F": 115.46221538580885,
+      "B3_F": 115.46221538580885,
+      "ratio_B1_mean": 0.9903420451992053,
+      "ratio_B1_std": 0.01567402937827473,
+      "ratio_B2_mean": 0.9257402940062276,
+      "ratio_B2_std": 0.014651584909724399,
+      "ratio_B3_mean": 0.9257402940062276,
+      "ratio_B3_std": 0.014651584909724399,
+      "gamma": 30.06381179464134,
+      "tau": 15,
+      "trials": 40,
+      "mechanism_ms_median": 0.509276000002501
+    }
+  ],
+  "explanations_key_bins": [
+    {
+      "view": "State='al'",
+      "attr": "MeasureCode",
+      "bins": [
+        {
+          "bin": "ami-7a",
+          "noisy_Q1": -86,
+          "noisy_Q2": 46,
+          "exact_Q1": 37,
+          "exact_Q2": 3,
+          "clears_2sd": true
+        },
+        {
+          "bin": "ami-5",
+          "noisy_Q1": 35,
+          "noisy_Q2": -89,
+          "exact_Q1": 37,
+          "exact_Q2": 4,
+          "clears_2sd": true
+        },
+        {
+          "bin": "scip-inf-3",
+          "noisy_Q1": 108,
+          "noisy_Q2": -8,
+          "exact_Q1": 33,
+          "exact_Q2": 3,
+          "clears_2sd": false
+        },
+        {
+          "bin": "pn-5c",
+          "noisy_Q1": -12,
+          "noisy_Q2": -124,
+          "exact_Q1": 34,
+          "exact_Q2": 3,
+          "clears_2sd": false
+        }
+      ]
+    },
+    {
+      "view": "State='al'",
+      "attr": "CountyName",
+      "bins": [
+        {
+          "bin": "marshall",
+          "noisy_Q1": 183,
+          "noisy_Q2": -13,
+          "exact_Q1": 46,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "talladega",
+          "noisy_Q1": 100,
+          "noisy_Q2": -22,
+          "exact_Q1": 17,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "randolph",
+          "noisy_Q1": 58,
+          "noisy_Q2": -50,
+          "exact_Q1": 25,
+          "exact_Q2": 0,
+          "clears_2sd": false
+        },
+        {
+          "bin": "cherokee",
+          "noisy_Q1": -53,
+          "noisy_Q2": 44,
+          "exact_Q1": 19,
+          "exact_Q2": 0,
+          "clears_2sd": false
+        }
+      ]
+    },
+    {
+      "view": "State='al'",
+      "attr": "City",
+      "bins": [
+        {
+          "bin": "mobile",
+          "noisy_Q1": 92,
+          "noisy_Q2": -91,
+          "exact_Q1": 12,
+          "exact_Q2": 2,
+          "clears_2sd": true
+        },
+        {
+          "bin": "oneonta",
+          "noisy_Q1": 142,
+          "noisy_Q2": -27,
+          "exact_Q1": 19,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "ozark",
+          "noisy_Q1": 16,
+          "noisy_Q2": -144,
+          "exact_Q1": 20,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "prattville",
+          "noisy_Q1": 147,
+          "noisy_Q2": 3,
+          "exact_Q1": 18,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "State='al' AND EmergencyService='yes'",
+      "attr": "Sample",
+      "bins": [
+        {
+          "bin": "(107, 210]",
+          "noisy_Q1": 142,
+          "noisy_Q2": -78,
+          "exact_Q1": 130,
+          "exact_Q2": 16,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(58, 107]",
+          "noisy_Q1": 127,
+          "noisy_Q2": -90,
+          "exact_Q1": 117,
+          "exact_Q2": 6,
+          "clears_2sd": true
+        },
+        {
+          "bin": "[0, 3]",
+          "noisy_Q1": 144,
+          "noisy_Q2": -28,
+          "exact_Q1": 118,
+          "exact_Q2": 12,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(3, 19]",
+          "noisy_Q1": 161,
+          "noisy_Q2": 32,
+          "exact_Q1": 105,
+          "exact_Q2": 11,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "EmergencyService='yes'",
+      "attr": "Score",
+      "bins": [
+        {
+          "bin": "(96, 99]",
+          "noisy_Q1": 179,
+          "noisy_Q2": -6,
+          "exact_Q1": 118,
+          "exact_Q2": 20,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(91, 96]",
+          "noisy_Q1": 141,
+          "noisy_Q2": -43,
+          "exact_Q1": 126,
+          "exact_Q2": 17,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(99, 100]",
+          "noisy_Q1": 176,
+          "noisy_Q2": 2,
+          "exact_Q1": 203,
+          "exact_Q2": 22,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(82, 91]",
+          "noisy_Q1": 121,
+          "noisy_Q2": -37,
+          "exact_Q1": 119,
+          "exact_Q2": 11,
+          "clears_2sd": true
+        }
+      ]
+    }
+  ]
+}

@@ -45,6 +45,8 @@ URLS = {
     # mirror with train+test concatenated (48,842 rows, no header)
     "adult_mirror": ["https://raw.githubusercontent.com/jbrownlee/Datasets/master/adult-all.csv"],
     "tax": ["https://raw.githubusercontent.com/BigDaMa/raha/master/datasets/tax/clean.csv"],
+    # the same 200k tuples with injected errors (typos, flipped flags, wrong exemptions)
+    "tax_dirty": ["https://raw.githubusercontent.com/BigDaMa/raha/master/datasets/tax/dirty.csv"],
     "hospital": ["https://raw.githubusercontent.com/HoloClean/holoclean/master/testdata/hospital.csv"],
     # ground truth in (tid, attribute, correct_val) form; used only to read the declared value domains
     "hospital_clean": ["https://raw.githubusercontent.com/HoloClean/holoclean/master/testdata/hospital_clean.csv"],
@@ -112,9 +114,10 @@ def fetch(name: str, raw_dir: Path | None = None, force: bool = False) -> dict:
                 out["errors"].append(f"mirror: {e2}")
         if target.exists():
             out["files"]["adult-all.csv"] = sha256(target)
-    elif name in ("tax", "hospital"):
-        d = raw_dir / name
+    elif name in ("tax", "tax_dirty", "hospital"):
+        d = raw_dir / ("tax" if name == "tax_dirty" else name)
         targets = [(URLS["tax"][0], d / "tax_clean.csv")] if name == "tax" else [
+            (URLS["tax"][0], d / "tax_clean.csv"), (URLS["tax_dirty"][0], d / "tax_dirty.csv")] if name == "tax_dirty" else [
             (URLS["hospital"][0], d / "hospital.csv"), (URLS["hospital_clean"][0], d / "hospital_clean.csv")]
         for url, target in targets:
             if not target.exists() or force:
@@ -190,6 +193,31 @@ def load_tax(raw_dir: Path | None = None, target_rows: int | None = None, seed: 
         df = df.iloc[np.sort(idx)].reset_index(drop=True)
         meta["resampled_to"] = target_rows
         meta["resample_seed"] = seed
+    return df, meta
+
+
+def load_tax_dirty(raw_dir: Path | None = None) -> tuple[pd.DataFrame, dict]:
+    """The dirty tax relation, for consistent query answering.
+
+    Pure formatting differences of the dirty file (``'01907'`` vs ``'1907'``,
+    ``'7.0'`` vs ``'7'``) are normalised so that only the injected errors remain
+    (typos in City/State, flipped MaritalStatus/HasChild, wrong exemptions).
+    ``meta["declared_domains"]`` holds the categorical domains of the clean file.
+    """
+    raw_dir = Path(raw_dir or DEFAULT_RAW_DIR)
+    path = raw_dir / "tax" / "tax_dirty.csv"
+    clean = raw_dir / "tax" / "tax_clean.csv"
+    if not path.exists() or not clean.exists():
+        fetch("tax_dirty", raw_dir)
+    df = pd.read_csv(path, dtype=str, keep_default_na=False, na_values=[""]).rename(columns=TAX_RENAME)
+    df["Zip"] = df["Zip"].str.lstrip("0")
+    for c in ["Salary", "Rate", "SingleExemp", "MarriedExemp", "ChildExemp"]:
+        df[c] = pd.to_numeric(df[c], errors="coerce")
+    meta = {"source": str(path), "synthetic": False}
+    if clean.exists():
+        cl = pd.read_csv(clean, dtype=str, keep_default_na=False, na_values=[""]).rename(columns=TAX_RENAME)
+        meta["declared_domains"] = {a: sorted(cl[a].dropna().unique().tolist())
+                                    for a in ["Gender", "State", "MaritalStatus", "HasChild"]}
     return df, meta
 
 
@@ -355,6 +383,7 @@ def load_stackoverflow(raw_dir: Path | None = None, allow_synthetic: bool = True
 LOADERS = {
     "adult": load_adult,
     "tax": load_tax,
+    "tax_dirty": load_tax_dirty,
     "hospital": load_hospital,
     "stackoverflow": load_stackoverflow,
 }

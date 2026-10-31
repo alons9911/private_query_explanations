@@ -78,15 +78,18 @@ def plot_explanations(explanations: list[dict], title: str, path: Path, q1_name:
         bins = list(e["bins"])
         h1 = np.asarray(e["noisy_h1"], float)
         h2 = np.asarray(e["noisy_h2"], float)
-        if len(bins) > max_bins:  # keep the bins with the largest released mass
-            keep = np.sort(np.argsort(-(np.abs(h1) + np.abs(h2)))[:max_bins])
+        if len(bins) > max_bins:  # keep the bins where the release shows the largest difference
+            keep = np.argsort(-np.abs(h1 - h2), kind="stable")[:max_bins]
             bins, h1, h2 = [bins[i] for i in keep], h1[keep], h2[keep]
+            sub = f"\n({max_bins} of {len(e['bins'])} bins, largest |difference| first)"
+        else:
+            sub = ""
         x = np.arange(len(bins))
         w = 0.4
         ax.bar(x - w / 2 - 0.01, np.maximum(h1, 0), w, color=BLUE, label=f"{q1_name} (noisy, DP)")
         ax.bar(x + w / 2 + 0.01, np.maximum(h2, 0), w, color=ORANGE, label=f"{q2_name} (noisy, DP)")
         ax.set_xticks(x, [_short(b) for b in bins], rotation=55, ha="right")
-        ax.set_title(f"{_short(e['view'], 48)}\nattribute = {e['attr']}", fontsize=7.5)
+        ax.set_title(f"{_short(e['view'], 48)}\nattribute = {e['attr']}{sub}", fontsize=7.5)
         ax.set_ylabel("noisy count")
         ax.grid(axis="x", visible=False)
     for ax in axes.ravel()[k:]:

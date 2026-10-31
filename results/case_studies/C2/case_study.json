@@ -1,0 +1,416 @@
+{
+  "pair": {
+    "pair": "C2",
+    "dataset": "tax_dirty",
+    "synthetic_data": false,
+    "N": 200000,
+    "kind": "cqa",
+    "Q1": "State IN ('NJ', 'NY', 'PA', 'CT', 'MA')",
+    "Q2": "Q_Sigma(State IN ('NJ', 'NY', 'PA', 'CT', 'MA'))",
+    "|Q1|": 19466,
+    "|Q2|": 15342,
+    "|Q1 & Q2|": 15342,
+    "conflicts": {
+      "tuples_in_conflict": 18192,
+      "edges": 3328948,
+      "Zip->City": {
+        "tuples": 659,
+        "edges": 83553
+      },
+      "Zip->State": {
+        "tuples": 4766,
+        "edges": 86076
+      },
+      "State+MaritalStatus->SingleExemp": {
+        "tuples": 8117,
+        "edges": 1306780
+      },
+      "State+MaritalStatus->MarriedExemp": {
+        "tuples": 4062,
+        "edges": 556674
+      },
+      "State+HasChild->ChildExemp": {
+        "tuples": 7969,
+        "edges": 1219815
+      },
+      "State+Salary->Rate": {
+        "tuples": 8006,
+        "edges": 76050
+      }
+    },
+    "role": "surprising",
+    "aggregate": "Rate",
+    "AVG_Q1": 3.8871082705897613,
+    "AVG_Q2": 4.364910547855635
+  },
+  "motivation": {
+    "drop": 0.2118565704304942,
+    "unevenness": 0.7606233874118897,
+    "unevenness_attr": "State",
+    "hidden_drift": 0.2044590568170143,
+    "hidden_drift_attr": "State",
+    "hidden": [
+      "Gender",
+      "State",
+      "MaritalStatus",
+      "HasChild",
+      "Salary",
+      "Rate",
+      "SingleExemp",
+      "MarriedExemp",
+      "ChildExemp"
+    ],
+    "largest_losses": [
+      {
+        "value": "NJ",
+        "|Q|": 3980,
+        "|Q_Sigma|": 0,
+        "kept": 0.0
+      },
+      {
+        "value": "MA",
+        "|Q|": 3798,
+        "|Q_Sigma|": 3752,
+        "kept": 0.988
+      },
+      {
+        "value": "CT",
+        "|Q|": 3884,
+        "|Q_Sigma|": 3842,
+        "kept": 0.989
+      },
+      {
+        "value": "NY",
+        "|Q|": 3908,
+        "|Q_Sigma|": 3870,
+        "kept": 0.99
+      },
+      {
+        "value": "PA",
+        "|Q|": 3896,
+        "|Q_Sigma|": 3878,
+        "kept": 0.995
+      }
+    ]
+  },
+  "stability": {
+    "trials": 40,
+    "top_explanations": [
+      {
+        "view": "Gender='F'",
+        "attr": "State",
+        "share_of_runs": 0.275
+      },
+      {
+        "view": "HasChild='N'",
+        "attr": "State",
+        "share_of_runs": 0.25
+      },
+      {
+        "view": "MarriedExemp IN [0, 174] AND ChildExemp IN [0, 103]",
+        "attr": "State",
+        "share_of_runs": 0.225
+      },
+      {
+        "view": "MaritalStatus='M'",
+        "attr": "State",
+        "share_of_runs": 0.2
+      },
+      {
+        "view": "SingleExemp IN [0, 87]",
+        "attr": "State",
+        "share_of_runs": 0.2
+      },
+      {
+        "view": "ChildExemp IN [0, 103]",
+        "attr": "State",
+        "share_of_runs": 0.175
+      },
+      {
+        "view": "MaritalStatus='S' AND MarriedExemp IN [0, 174]",
+        "attr": "State",
+        "share_of_runs": 0.175
+      },
+      {
+        "view": "HasChild='Y'",
+        "attr": "State",
+        "share_of_runs": 0.175
+      },
+      {
+        "view": "MaritalStatus='S'",
+        "attr": "State",
+        "share_of_runs": 0.15
+      },
+      {
+        "view": "Gender='M'",
+        "attr": "State",
+        "share_of_runs": 0.15
+      }
+    ],
+    "attribute_share_of_runs": {
+      "State": 2.575,
+      "Rate": 0.375,
+      "MarriedExemp": 0.35,
+      "Salary": 0.35,
+      "Gender": 0.325,
+      "HasChild": 0.275,
+      "ChildExemp": 0.25,
+      "SingleExemp": 0.25,
+      "MaritalStatus": 0.25
+    }
+  },
+  "accuracy": [
+    {
+      "pair": "C2",
+      "epsilon": 0.5,
+      "F_mean": 1.771030924929176,
+      "F_std": 0.15643531784361744,
+      "B1_F": 2.082145340258406,
+      "B2_F": 2.0836219725419296,
+      "B3_F": 2.0836219725419296,
+      "ratio_B1_mean": 0.8505798758070275,
+      "ratio_B1_std": 0.0751317954702446,
+      "ratio_B2_mean": 0.8499770823440658,
+      "ratio_B2_std": 0.07507855067048126,
+      "ratio_B3_mean": 0.8499770823440658,
+      "ratio_B3_std": 0.07507855067048126,
+      "gamma": 294.31648700062226,
+      "tau": 15,
+      "trials": 40,
+      "mechanism_ms_median": 0.7280525001078786
+    },
+    {
+      "pair": "C2",
+      "epsilon": 1.0,
+      "F_mean": 1.7541118715477289,
+      "F_std": 0.2328590655105381,
+      "B1_F": 2.082145340258406,
+      "B2_F": 2.0836219725419296,
+      "B3_F": 2.0836219725419296,
+      "ratio_B1_mean": 0.8424540965665891,
+      "ratio_B1_std": 0.11183612450494881,
+      "ratio_B2_mean": 0.8418570617240071,
+      "ratio_B2_std": 0.11175686788638536,
+      "ratio_B3_mean": 0.8418570617240071,
+      "ratio_B3_std": 0.11175686788638536,
+      "gamma": 147.15824350031113,
+      "tau": 15,
+      "trials": 40,
+      "mechanism_ms_median": 0.7295810000869096
+    },
+    {
+      "pair": "C2",
+      "epsilon": 2.0,
+      "F_mean": 1.8014028661464299,
+      "F_std": 0.17240855605931993,
+      "B1_F": 2.082145340258406,
+      "B2_F": 2.0836219725419296,
+      "B3_F": 2.0836219725419296,
+      "ratio_B1_mean": 0.8651667255480184,
+      "ratio_B1_std": 0.08280332440093884,
+      "ratio_B2_mean": 0.8645535945989261,
+      "ratio_B2_std": 0.08274464290131713,
+      "ratio_B3_mean": 0.8645535945989261,
+      "ratio_B3_std": 0.08274464290131713,
+      "gamma": 73.57912175015556,
+      "tau": 15,
+      "trials": 40,
+      "mechanism_ms_median": 0.7226904999697581
+    },
+    {
+      "pair": "C2",
+      "epsilon": 5.0,
+      "F_mean": 1.8794299273523756,
+      "F_std": 0.12263669206818373,
+      "B1_F": 2.0831444851165295,
+      "B2_F": 2.0836219725419296,
+      "B3_F": 2.0836219725419296,
+      "ratio_B1_mean": 0.9022081477210839,
+      "ratio_B1_std": 0.05887094867609413,
+      "ratio_B2_mean": 0.9020013957040159,
+      "ratio_B2_std": 0.058857457679126035,
+      "ratio_B3_mean": 0.9020013957040159,
+      "ratio_B3_std": 0.058857457679126035,
+      "gamma": 29.431648700062222,
+      "tau": 15,
+      "trials": 40,
+      "mechanism_ms_median": 0.7133885001167073
+    }
+  ],
+  "explanations_key_bins": [
+    {
+      "view": "HasChild='N' AND ChildExemp IN [0, 103]",
+      "attr": "State",
+      "bins": [
+        {
+          "bin": "NJ",
+          "noisy_Q1": 1914,
+          "noisy_Q2": 13,
+          "exact_Q1": 1877,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "Other",
+          "noisy_Q1": -98,
+          "noisy_Q2": 74,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "NV",
+          "noisy_Q1": -89,
+          "noisy_Q2": 77,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "KY",
+          "noisy_Q1": -23,
+          "noisy_Q2": -189,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "MaritalStatus='M' AND SingleExemp IN [0, 87]",
+      "attr": "State",
+      "bins": [
+        {
+          "bin": "NJ",
+          "noisy_Q1": 1919,
+          "noisy_Q2": 22,
+          "exact_Q1": 1935,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "ID",
+          "noisy_Q1": -130,
+          "noisy_Q2": 66,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "UT",
+          "noisy_Q1": 143,
+          "noisy_Q2": 13,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "NH",
+          "noisy_Q1": 128,
+          "noisy_Q2": 12,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": false
+        }
+      ]
+    },
+    {
+      "view": "SingleExemp IN [0, 87] AND ChildExemp IN [0, 103]",
+      "attr": "Rate",
+      "bins": [
+        {
+          "bin": "[0, 3.07]",
+          "noisy_Q1": 4982,
+          "noisy_Q2": 3987,
+          "exact_Q1": 4975,
+          "exact_Q2": 3969,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(4.75, 5.95]",
+          "noisy_Q1": 2665,
+          "noisy_Q2": 2758,
+          "exact_Q1": 2735,
+          "exact_Q2": 2705,
+          "clears_2sd": false
+        },
+        {
+          "bin": "(5.95, 7]",
+          "noisy_Q1": -17,
+          "noisy_Q2": 43,
+          "exact_Q1": 7,
+          "exact_Q2": 0,
+          "clears_2sd": false
+        },
+        {
+          "bin": "NA",
+          "noisy_Q1": 111,
+          "noisy_Q2": 55,
+          "exact_Q1": 86,
+          "exact_Q2": 85,
+          "clears_2sd": false
+        }
+      ]
+    },
+    {
+      "view": "Gender='M'",
+      "attr": "State",
+      "bins": [
+        {
+          "bin": "NJ",
+          "noisy_Q1": 2040,
+          "noisy_Q2": 3,
+          "exact_Q1": 1961,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "FL",
+          "noisy_Q1": 23,
+          "noisy_Q2": -99,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "AL",
+          "noisy_Q1": 40,
+          "noisy_Q2": -78,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": false
+        },
+        {
+          "bin": "TX",
+          "noisy_Q1": 60,
+          "noisy_Q2": -43,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": false
+        }
+      ]
+    },
+    {
+      "view": "SingleExemp IN [0, 87] AND MarriedExemp IN [0, 174]",
+      "attr": "MaritalStatus",
+      "bins": [
+        {
+          "bin": "S",
+          "noisy_Q1": 3946,
+          "noisy_Q2": 3850,
+          "exact_Q1": 3939,
+          "exact_Q2": 3868,
+          "clears_2sd": false
+        },
+        {
+          "bin": "M",
+          "noisy_Q1": 3968,
+          "noisy_Q2": 3876,
+          "exact_Q1": 3945,
+          "exact_Q2": 3880,
+          "clears_2sd": false
+        }
+      ]
+    }
+  ]
+}

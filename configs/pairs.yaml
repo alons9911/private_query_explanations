@@ -88,3 +88,92 @@ H3:
   dataset: hospital
   kind: cqa
   q1: {auto: HospitalOwner}
+
+# ---------------------------------------------------------------------------
+# Case-study pairs selected by the pair search (results/pair_search/,
+# scripts: `pqde search`).  Refinement pairs: Q' produced by the ERICA-style
+# search with categorical edits restricted to relaxing/contracting the value
+# set.  CQA pairs: consistent answers under the dataset's FDs.
+# `aggregate` is the attribute whose AVG the analyst is assumed to compute.
+
+R1:  # graduate degrees + long hours; >= 30% women
+  dataset: adult
+  kind: refinement
+  role: surprising
+  aggregate: income
+  q1: "education IN ('Masters', 'Doctorate', 'Prof-school') AND hoursPerWeek >= 50"
+  q2: "education IN ('Doctorate', 'Masters', 'Prof-school', 'Some-college') AND hoursPerWeek >= 35"
+  constraints: [{attr: gender, value: Female, min_share: 0.30}]
+
+R2:  # married professionals; >= 15% non-White
+  dataset: adult
+  kind: refinement
+  role: surprising
+  aggregate: income
+  q1: "occupation = 'Prof-specialty' AND maritalStatus = 'Married-civ-spouse'"
+  q2: "occupation IN ('Other-service', 'Prof-specialty') AND maritalStatus IN ('Married-civ-spouse', 'Never-married')"
+  constraints: [{attr: race, values: [Black, Asian-Pac-Islander, Amer-Indian-Eskimo, Other], min_share: 0.15}]
+
+R3:  # married, 40+; >= 30% women -> the refinement moves to widows and divorcees over 60
+  dataset: adult
+  kind: refinement
+  role: surprising
+  aggregate: income
+  q1: "maritalStatus = 'Married-civ-spouse' AND age >= 40"
+  q2: "maritalStatus IN ('Divorced', 'Married-civ-spouse', 'Widowed') AND age >= 61"
+  constraints: [{attr: gender, value: Female, min_share: 0.30}]
+
+R4:  # long-hours professionals; >= 25% under 30
+  dataset: adult
+  kind: refinement
+  role: surprising
+  aggregate: income
+  q1: "occupation = 'Prof-specialty' AND hoursPerWeek >= 50"
+  q2: "occupation IN ('Other-service', 'Prof-specialty') AND hoursPerWeek >= 30"
+  constraints: [{where: "age < 30", min_share: 0.25}]
+
+R5:  # low-income, low-tax filers; at least half must pay some tax
+  dataset: tax
+  kind: refinement
+  role: surprising
+  aggregate: Salary
+  q1: "Salary <= 30000 AND Rate <= 2"
+  q2: "Salary <= 30000 AND Rate <= 3.2016153"
+  constraints: [{where: "Rate > 0", min_share: 0.50}]
+
+R6:  # sanity check: dropping HasChild brings in parents and nothing else
+  dataset: tax
+  kind: refinement
+  role: sanity
+  aggregate: Rate
+  q1: "MaritalStatus = 'S' AND HasChild = 'N' AND Salary >= 50000"
+  q2: "MaritalStatus = 'S' AND Salary >= 50000"
+  constraints: [{attr: HasChild, value: "Y", min_share: 0.30}]
+
+C1:  # Southern states under repair semantics
+  dataset: tax_dirty
+  kind: cqa
+  role: surprising
+  aggregate: Rate
+  q1: "State IN ('AL', 'AR', 'GA', 'MS', 'TN')"
+
+C2:  # Northeast under repair semantics
+  dataset: tax_dirty
+  kind: cqa
+  role: surprising
+  aggregate: Rate
+  q1: "State IN ('NJ', 'NY', 'PA', 'CT', 'MA')"
+
+C3:  # a query that never mentions geography
+  dataset: tax_dirty
+  kind: cqa
+  role: surprising
+  aggregate: Rate
+  q1: "Salary >= 70000"
+
+C4:  # the paper's H1 on the hospital benchmark
+  dataset: hospital
+  kind: cqa
+  role: small-data
+  aggregate: Score
+  q1: "HospitalType = 'acute care hospitals'"
