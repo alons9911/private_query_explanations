@@ -1,0 +1,136 @@
+"""Command line interface.
+
+    pqde data [--force]                      download / prepare all datasets
+    pqde pairs [IDS...]                      resolve the query pairs of Table 2 and print them
+    pqde explain PAIR [--epsilon 1 --k 5 --seed 0]   one private run, printed
+    pqde run EXP [--pairs ...] [--quick] [--trials N] [--out DIR]
+    pqde all [--quick]                       E1-E5 + the summary report
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+import time
+import warnings
+from pathlib import Path
+
+import numpy as np
+
+
+def _cmd_data(args) -> int:
+    from .data import fetch, load_dataset
+
+    ok = True
+    for name in args.datasets:
+        info = fetch(name, force=args.force)
+        status = "ok" if info["files"] else "MISSING"
+        print(f"[{status}] {name}: {info['files']}")
+        for e in info["errors"]:
+            print(f"    note: {e}")
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            ds = load_dataset(name)
+            for x in w:
+                print(f"    warning: {x.message}")
+        print(f"    N = {ds.N:,}  synthetic = {ds.meta.get('synthetic', False)}  "
+              f"|Attrs| = {len(ds.explain_attrs)}  view attributes = {ds.view_attrs}")
+        ok &= bool(info["files"]) or ds.meta.get("synthetic", False)
+    return 0 if ok else 1
+
+
+def _cmd_pairs(args) -> int:
+    from .pairs import ALL_PAIRS, resolve_pair
+
+    for pid in args.ids or ALL_PAIRS:
+        print(json.dumps(resolve_pair(pid).summary(), indent=2, default=str))
+    return 0
+
+
+def _cmd_explain(args) -> int:
+    from .algorithm import Params, explain
+    from .baselines import b2, objective
+    from .pairs import pair_cache, resolve_pair
+
+    pair = resolve_pair(args.pair)
+    cache = pair_cache(args.pair)
+    params = Params(k=args.k, lam=args.lam, epsilon=args.epsilon, release=args.release)
+    res = explain(cache, params, np.random.default_rng(args.seed))
+    print(f"{args.pair} on {pair.dataset.name}: Q1 = {pair.q1_sql}  |  Q2 = {pair.q2_sql}")
+    print(f"|Q1| = {pair.q1.sum():,}, |Q2| = {pair.q2.sum():,}, |P| = {cache.n_views}, tau = {res.tau}, "
+          f"gamma = {res.gamma:.1f}, eps = {params.epsilon} -> ({res.eps_P:.3f}, {res.eps_S:.3f}, {res.eps_H:.3f})")
+    print("retained views:", [cache.view_label(v) for v in res.retained])
+    for e in res.explanations:
+        print(f"\n#{e.round}  view: {e.view_label}   attribute: {e.attr}")
+        for b, x, y in zip(e.bins, e.noisy_h1, e.noisy_h2):
+            print(f"    {b:<34} Q1 ~ {x:9.1f}   Q2 ~ {y:9.1f}")
+    F = objective(cache, res.selections, params.lam)
+    F2 = objective(cache, b2(cache, params), params.lam)
+    print(f"\nF_lambda (gamma_eval = 0) = {F:.3f}; ApproxRatio vs B2 = {F / F2:.3f}  "
+          f"[mechanism {res.timings['mechanism_ms']:.2f} ms, cache build {cache.build_seconds:.2f} s]")
+    return 0
+
+
+def _cmd_run(args) -> int:
+    from .experiments import EXPERIMENTS
+    from .experiments.common import experiments_config
+
+    cfg = experiments_config(Path(args.config) if args.config else None)
+    for exp in args.experiments:
+        mod = EXPERIMENTS[exp]
+        kw = {"pairs": args.pairs, "base": Path(args.out) if args.out else None, "quick": args.quick}
+        if args.trials and exp in ("e2", "e3"):
+            kw["trials"] = args.trials
+        t0 = time.perf_counter()
+        print(f"== {exp} ({mod.__doc__.strip().splitlines()[0]})")
+        mod.run(cfg, **kw)
+        print(f"== {exp} done in {time.perf_counter() - t0:.1f}s")
+    return 0
+
+
+def _cmd_all(args) -> int:
+    args.experiments = ["e1", "e2", "e3", "e4", "e5"]
+    args.pairs = None
+    rc = _cmd_run(args)
+    from .report import build_report
+
+    path = build_report(Path(args.out) if args.out else None)
+    print(f"report written to {path}")
+    return rc
+
+
+def main(argv: list[str] | None = None) -> int:
+    p = argparse.ArgumentParser(prog="pqde", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    sub = p.add_subparsers(dest="cmd", required=True)
+    d = sub.add_parser("data")
+    d.add_argument("datasets", nargs="*", default=["adult", "tax", "hospital", "stackoverflow"])
+    d.add_argument("--force", action="store_true")
+    d.set_defaults(fn=_cmd_data)
+    q = sub.add_parser("pairs")
+    q.add_argument("ids", nargs="*")
+    q.set_defaults(fn=_cmd_pairs)
+    x = sub.add_parser("explain")
+    x.add_argument("pair")
+    x.add_argument("--epsilon", type=float, default=1.0)
+    x.add_argument("--k", type=int, default=5)
+    x.add_argument("--lam", type=float, default=0.5)
+    x.add_argument("--seed", type=int, default=0)
+    x.add_argument("--release", choices=["pair", "diff"], default="pair")
+    x.set_defaults(fn=_cmd_explain)
+    for name, fn in (("run", _cmd_run), ("all", _cmd_all)):
+        r = sub.add_parser(name)
+        if name == "run":
+            r.add_argument("experiments", nargs="+", choices=["e1", "e2", "e3", "e4", "e5"])
+            r.add_argument("--pairs", nargs="*")
+        r.add_argument("--quick", action="store_true", help="few trials / repeats (smoke run)")
+        r.add_argument("--trials", type=int)
+        r.add_argument("--out", help="results directory (default: results/)")
+        r.add_argument("--config", help="experiments.yaml to use")
+        r.set_defaults(fn=fn)
+    args = p.parse_args(argv)
+    return args.fn(args)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

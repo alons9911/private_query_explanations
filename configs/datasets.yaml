@@ -1,0 +1,60 @@
+# Public schema of every dataset: which attributes are bucketed, which are
+# explanation attributes (Attrs), reference attributes (A_R) and view attributes.
+# Views are conjunctions of at most `max_view_atoms` (= l) atomic conditions
+# `A = bin` over the view attributes.  Numeric attributes are bucketed into
+# `n_bins` quantile bins (Section 5.1).
+
+adult:
+  loader: adult
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [age, hoursPerWeek]
+  categorical: [workclass, education, maritalStatus, occupation, relationship, race, gender, income]
+  explain_attrs: [age, workclass, education, maritalStatus, occupation, relationship, race, gender, hoursPerWeek, income]
+  ref_attrs: [age, workclass, education, maritalStatus, occupation, relationship, race, gender, hoursPerWeek, income]
+  # |P| = 1,048 public views (the paper reports 1,052)
+  view_attrs: [workclass, education, occupation, race, gender, hoursPerWeek]
+
+tax:
+  loader: tax
+  # The benchmark file has 200,000 rows; set to 500000 to up-sample to the size
+  # quoted in the paper (rows are re-sampled with replacement, seed below).
+  target_rows: null
+  resample_seed: 0
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
+  categorical: [Gender, State, MaritalStatus, HasChild]
+  explain_attrs: [Gender, State, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
+  ref_attrs: [Gender, State, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
+  view_attrs: [Gender, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp, State]
+
+stackoverflow:
+  loader: stackoverflow
+  allow_synthetic: true
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [YearsCodePro, JobSat, CompYearly]
+  categorical: [WorkRemote, UsingAI, OrgSize, Country, Age, EdLevel, DevType, UsesPython]
+  top_values: {Country: 10, DevType: 8}
+  explain_attrs: [YearsCodePro, WorkRemote, OrgSize, Country, Age, EdLevel, DevType, UsesPython, UsingAI, JobSat]
+  ref_attrs: [YearsCodePro, WorkRemote, OrgSize, Country, Age, EdLevel, DevType, UsesPython, UsingAI, JobSat]
+  view_attrs: [WorkRemote, OrgSize, Age, EdLevel, UsingAI, UsesPython, JobSat, YearsCodePro, Country]
+
+hospital:
+  loader: hospital
+  # Dom(A) of the categorical attributes is the domain declared by the clean
+  # ground truth; typo values of the dirty relation fall into an "Other" bin.
+  declared_domains: true
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [Score, Sample]
+  categorical: [City, State, CountyName, HospitalType, HospitalOwner, EmergencyService, Condition, MeasureCode]
+  explain_attrs: [City, CountyName, State, HospitalType, HospitalOwner, EmergencyService, Condition, MeasureCode, Score, Sample]
+  ref_attrs: [City, CountyName, State, HospitalType, HospitalOwner, EmergencyService, Condition, MeasureCode, Score, Sample]
+  view_attrs: [State, HospitalOwner, EmergencyService, Condition, Score, Sample]
+  # integrity constraints used for consistent query answering (Section 5.1)
+  fds:
+    - [HospitalName, ZipCode]
+    - [HospitalName, PhoneNumber]
+    - [ZipCode, City]

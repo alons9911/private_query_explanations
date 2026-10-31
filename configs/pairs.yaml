@@ -1,0 +1,90 @@
+# The twelve query pairs of Table 2.
+#
+# kind: refinement  -> q2 is the refined query Q'.  `q2: auto` runs the
+#                      ERICA-style refinement search of pqde.refinement on q1 and
+#                      the constraint(s) (used for the pairs the paper leaves TBD).
+# kind: cqa         -> q2 is the consistent answer Q_Sigma(D) of q1 under the
+#                      dataset's functional dependencies.  `q1: {auto: Attr}`
+#                      applies the selection rule of Section 5.1 to Attr.
+# kind: contrast    -> two sub-populations.
+#
+# Constraints: {attr, value(s), min_share|max_share|min_count|max_count} or
+#              {where: <predicate>, ...}.
+
+A1:
+  dataset: adult
+  kind: refinement
+  q1: "occupation = 'Craft-repair' AND hoursPerWeek >= 40"
+  q2: "hoursPerWeek >= 40"
+  constraints: [{attr: gender, value: Female, min_share: 0.25}]
+  paper: {share_q1: 0.047, share_q2: 0.269}
+
+A2:
+  dataset: adult
+  kind: refinement
+  q1: "education IN ('Bachelors', 'Masters') AND hoursPerWeek >= 50"
+  q2: "education = 'Masters' AND hoursPerWeek >= 30"
+  constraints: [{attr: gender, value: Female, min_share: 0.25}]
+  paper: {share_q1: 0.195, share_q2: 0.306, size_q1: 3055, size_q2: 2453}
+
+A3:  # TBD in the paper: chosen here, Q' produced by the refinement search
+  dataset: adult
+  kind: refinement
+  q1: "maritalStatus = 'Married-civ-spouse' AND hoursPerWeek >= 45"
+  q2: auto
+  constraints: [{attr: gender, value: Female, min_share: 0.25}]
+
+T1:
+  dataset: tax
+  kind: refinement
+  q1: "MaritalStatus = 'M' AND Rate <= 5"
+  q2: "Rate <= 5"
+  constraints: [{attr: HasChild, value: "Y", min_share: 0.30}]
+  paper: {share_q1: 0.035, share_q2: 0.501}
+
+T2:  # TBD in the paper (sanity check: the refinement must bring in parents)
+  dataset: tax
+  kind: refinement
+  q1: "MaritalStatus = 'S' AND HasChild = 'N' AND Salary >= 50000"
+  q2: auto
+  constraints: [{attr: HasChild, value: "Y", min_share: 0.30}]
+
+T3:  # TBD in the paper (high earners in low-tax places; constraint on taxed share)
+  dataset: tax
+  kind: refinement
+  q1: "Salary >= 60000 AND Rate <= 2"
+  q2: auto
+  constraints: [{where: "Rate > 0", min_share: 0.40}]
+
+S1:
+  dataset: stackoverflow
+  kind: contrast
+  q1: "YearsCodePro >= 10"
+  q2: "YearsCodePro < 4"
+
+S2:
+  dataset: stackoverflow
+  kind: contrast
+  q1: "WorkRemote = 'Fully remote'"
+  q2: "WorkRemote = 'On-site'"
+
+S3:
+  dataset: stackoverflow
+  kind: contrast
+  q1: "JobSat > 5 AND UsingAI = 'Yes'"
+  q2: "JobSat > 5 AND UsingAI = 'No'"
+
+H1:
+  dataset: hospital
+  kind: cqa
+  q1: "HospitalType = 'acute care hospitals'"
+
+H2:
+  dataset: hospital
+  kind: cqa
+  q1: {auto: EmergencyService}
+
+H3:
+  dataset: hospital
+  kind: cqa
+  q1: {auto: HospitalOwner}
