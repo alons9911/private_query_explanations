@@ -5,14 +5,14 @@
     "synthetic_data": false,
     "N": 200000,
     "kind": "cqa",
-    "Q1": "State IN ('AL', 'AR', 'GA', 'MS', 'TN')",
-    "Q2": "Q_Sigma(State IN ('AL', 'AR', 'GA', 'MS', 'TN'))",
-    "|Q1|": 19515,
-    "|Q2|": 12290,
-    "|Q1 & Q2|": 12290,
+    "Q1": "State IN ('AK', 'CA', 'HI', 'OR', 'WA')",
+    "Q2": "Q_Sigma(State IN ('AK', 'CA', 'HI', 'OR', 'WA'))",
+    "|Q1|": 18729,
+    "|Q2|": 16404,
+    "|Q1 & Q2|": 16404,
     "conflicts": {
-      "tuples_in_conflict": 18192,
-      "edges": 3328948,
+      "tuples_in_conflict": 7851,
+      "edges": 231552,
       "Zip->City": {
         "tuples": 659,
         "edges": 83553
@@ -21,33 +21,37 @@
         "tuples": 4766,
         "edges": 86076
       },
-      "State+MaritalStatus->SingleExemp": {
-        "tuples": 8117,
-        "edges": 1306780
+      "Zip+HasChild->ChildExemp": {
+        "tuples": 2165,
+        "edges": 21555
       },
-      "State+MaritalStatus->MarriedExemp": {
-        "tuples": 4062,
-        "edges": 556674
+      "Zip+MaritalStatus->SingleExemp": {
+        "tuples": 1887,
+        "edges": 20906
       },
-      "State+HasChild->ChildExemp": {
-        "tuples": 7969,
-        "edges": 1219815
+      "Zip+MaritalStatus->MarriedExemp": {
+        "tuples": 824,
+        "edges": 19462
       },
-      "State+Salary->Rate": {
-        "tuples": 8006,
-        "edges": 76050
+      "FName->Gender": {
+        "tuples": 0,
+        "edges": 0
+      },
+      "Phone+Zip->AreaCode": {
+        "tuples": 0,
+        "edges": 0
       }
     },
     "role": "surprising",
     "aggregate": "Rate",
-    "AVG_Q1": 4.401311020860876,
-    "AVG_Q2": 3.7023108218063463
+    "AVG_Q1": 4.735272641977682,
+    "AVG_Q2": 5.232021164679346
   },
   "motivation": {
-    "drop": 0.37022802972072766,
-    "unevenness": 0.5786048350705295,
+    "drop": 0.12413903572000641,
+    "unevenness": 0.6185492568881448,
     "unevenness_attr": "State",
-    "hidden_drift": 0.34014808245602735,
+    "hidden_drift": 0.08766928933582886,
     "hidden_drift_attr": "State",
     "hidden": [
       "Gender",
@@ -62,34 +66,34 @@
     ],
     "largest_losses": [
       {
-        "value": "AR",
-        "|Q|": 4026,
-        "|Q_Sigma|": 0,
-        "kept": 0.0
+        "value": "AK",
+        "|Q|": 3632,
+        "|Q_Sigma|": 1743,
+        "kept": 0.48
       },
       {
-        "value": "AL",
-        "|Q|": 3868,
-        "|Q_Sigma|": 791,
-        "kept": 0.204
+        "value": "HI",
+        "|Q|": 3771,
+        "|Q_Sigma|": 3526,
+        "kept": 0.935
       },
       {
-        "value": "GA",
-        "|Q|": 3882,
-        "|Q_Sigma|": 3827,
-        "kept": 0.986
+        "value": "OR",
+        "|Q|": 3733,
+        "|Q_Sigma|": 3631,
+        "kept": 0.973
       },
       {
-        "value": "TN",
-        "|Q|": 3864,
-        "|Q_Sigma|": 3812,
-        "kept": 0.987
+        "value": "WA",
+        "|Q|": 3762,
+        "|Q_Sigma|": 3702,
+        "kept": 0.984
       },
       {
-        "value": "MS",
-        "|Q|": 3875,
-        "|Q_Sigma|": 3860,
-        "kept": 0.996
+        "value": "CA",
+        "|Q|": 3831,
+        "|Q_Sigma|": 3802,
+        "kept": 0.992
       }
     ]
   },
@@ -97,66 +101,66 @@
     "trials": 40,
     "top_explanations": [
       {
-        "view": "MaritalStatus='M'",
-        "attr": "State",
-        "share_of_runs": 0.4
-      },
-      {
-        "view": "SingleExemp IN [0, 87] AND ChildExemp IN [0, 103]",
-        "attr": "State",
-        "share_of_runs": 0.35
-      },
-      {
         "view": "HasChild='N'",
         "attr": "State",
-        "share_of_runs": 0.35
+        "share_of_runs": 0.375
       },
       {
         "view": "MarriedExemp IN [0, 174] AND ChildExemp IN [0, 103]",
-        "attr": "State",
+        "attr": "SingleExemp",
         "share_of_runs": 0.25
       },
       {
-        "view": "SingleExemp IN [0, 87]",
-        "attr": "State",
-        "share_of_runs": 0.225
+        "view": "MarriedExemp IN [0, 174]",
+        "attr": "ChildExemp",
+        "share_of_runs": 0.2
       },
       {
-        "view": "ChildExemp IN [0, 103]",
-        "attr": "State",
-        "share_of_runs": 0.225
-      },
-      {
-        "view": "Gender='F'",
-        "attr": "State",
-        "share_of_runs": 0.225
-      },
-      {
-        "view": "MaritalStatus='M' AND SingleExemp IN [0, 87]",
-        "attr": "State",
-        "share_of_runs": 0.225
+        "view": "MarriedExemp IN [0, 174]",
+        "attr": "SingleExemp",
+        "share_of_runs": 0.2
       },
       {
         "view": "HasChild='N'",
         "attr": "ChildExemp",
-        "share_of_runs": 0.2
+        "share_of_runs": 0.175
       },
       {
         "view": "HasChild='N' AND ChildExemp IN [0, 103]",
         "attr": "State",
         "share_of_runs": 0.175
+      },
+      {
+        "view": "Gender='M'",
+        "attr": "State",
+        "share_of_runs": 0.175
+      },
+      {
+        "view": "SingleExemp IN [0, 87] AND MarriedExemp IN [0, 174]",
+        "attr": "ChildExemp",
+        "share_of_runs": 0.15
+      },
+      {
+        "view": "MaritalStatus='M'",
+        "attr": "State",
+        "share_of_runs": 0.125
+      },
+      {
+        "view": "SingleExemp IN [0, 87]",
+        "attr": "State",
+        "share_of_runs": 0.125
       }
     ],
     "attribute_share_of_runs": {
-      "State": 2.9,
-      "Rate": 0.5,
-      "Salary": 0.4,
-      "ChildExemp": 0.35,
-      "SingleExemp": 0.325,
-      "MarriedExemp": 0.175,
-      "MaritalStatus": 0.15,
-      "Gender": 0.125,
-      "HasChild": 0.075
+      "State": 1.5,
+      "SingleExemp": 1.075,
+      "ChildExemp": 0.975,
+      "Gender": 0.325,
+      "Salary": 0.325,
+      "Rate": 0.275,
+      "MaritalStatus": 0.225,
+      "HasChild": 0.175,
+      "MarriedExemp": 0.125
     }
   },
   "accuracy": [
@@ -166,47 +170,47 @@
       "synthetic": false,
       "sweep": "epsilon",
       "epsilon": 0.5,
-      "ratio_B1_mean": 0.7179300808518815,
-      "jaccard_B1_mean": 0.15228174603174602,
-      "precision_at_k_B1_mean": 0.25,
-      "attr_precision_B1_mean": 0.6900000000000001,
-      "view_jaccard_B1_mean": 0.24425595238095238,
-      "ratio_B2_mean": 0.653682117613514,
-      "jaccard_B2_mean": 0.0746031746031746,
-      "precision_at_k_B2_mean": 0.125,
-      "attr_precision_B2_mean": 0.5900000000000001,
-      "view_jaccard_B2_mean": 0.20535714285714285,
-      "ratio_B3_mean": 0.653682117613514,
-      "jaccard_B3_mean": 0.0746031746031746,
-      "precision_at_k_B3_mean": 0.125,
-      "attr_precision_B3_mean": 0.5900000000000001,
-      "view_jaccard_B3_mean": 0.20535714285714285,
-      "hist_rel_l1_mean": 0.21432587564439282,
-      "diff_sign_acc_mean": 0.8264737513543375,
-      "F_mean": 3.892724558445033,
-      "F_B1_mean": 5.422149958984869,
-      "F_B2_mean": 5.955072738805722,
-      "F_B3_mean": 5.955072738805722,
+      "ratio_B1_mean": 0.6432028577281232,
+      "jaccard_B1_mean": 0.09821428571428571,
+      "precision_at_k_B1_mean": 0.165,
+      "attr_precision_B1_mean": 0.5900000000000001,
+      "view_jaccard_B1_mean": 0.24186507936507934,
+      "ratio_B2_mean": 0.6280807151712972,
+      "jaccard_B2_mean": 0.06875,
+      "precision_at_k_B2_mean": 0.12000000000000002,
+      "attr_precision_B2_mean": 0.515,
+      "view_jaccard_B2_mean": 0.24186507936507934,
+      "ratio_B3_mean": 0.628080715171297,
+      "jaccard_B3_mean": 0.06875,
+      "precision_at_k_B3_mean": 0.12000000000000002,
+      "attr_precision_B3_mean": 0.515,
+      "view_jaccard_B3_mean": 0.24186507936507934,
+      "hist_rel_l1_mean": 0.11958910259492131,
+      "diff_sign_acc_mean": 0.8265940462392039,
+      "F_mean": 2.479552250031209,
+      "F_B1_mean": 3.8550081366076525,
+      "F_B2_mean": 3.947824204974927,
+      "F_B3_mean": 3.947824204974927,
       "gamma_mean": 294.31648700062226,
       "tau_mean": 15.0,
-      "mechanism_ms_mean": 0.6117776250107454,
-      "ratio_B1_std": 0.08880093390698372,
-      "jaccard_B1_std": 0.10976452867658579,
-      "precision_at_k_B1_std": 0.15525000516123696,
-      "attr_precision_B1_std": 0.12770157519659778,
-      "view_jaccard_B1_std": 0.1574911704508752,
-      "ratio_B2_std": 0.08085408881808757,
-      "jaccard_B2_std": 0.09921326797200686,
-      "precision_at_k_B2_std": 0.15483655567842813,
-      "attr_precision_B2_std": 0.13549529275577937,
-      "view_jaccard_B2_std": 0.13320162909166683,
-      "ratio_B3_std": 0.08085408881808757,
-      "jaccard_B3_std": 0.09921326797200686,
-      "precision_at_k_B3_std": 0.15483655567842813,
-      "attr_precision_B3_std": 0.13549529275577937,
-      "view_jaccard_B3_std": 0.13320162909166683,
-      "hist_rel_l1_std": 0.04377402510724648,
-      "diff_sign_acc_std": 0.06045863601399247,
+      "mechanism_ms_mean": 0.8789137249777923,
+      "ratio_B1_std": 0.1894349631591753,
+      "jaccard_B1_std": 0.10064584453638989,
+      "precision_at_k_B1_std": 0.15615574079941918,
+      "attr_precision_B1_std": 0.18646509262923924,
+      "view_jaccard_B1_std": 0.12652606128164803,
+      "ratio_B2_std": 0.18498121659427583,
+      "jaccard_B2_std": 0.07521929004877402,
+      "precision_at_k_B2_std": 0.1264911064067352,
+      "attr_precision_B2_std": 0.16878145480822082,
+      "view_jaccard_B2_std": 0.12652606128164803,
+      "ratio_B3_std": 0.1849812165942758,
+      "jaccard_B3_std": 0.07521929004877402,
+      "precision_at_k_B3_std": 0.1264911064067352,
+      "attr_precision_B3_std": 0.16878145480822082,
+      "view_jaccard_B3_std": 0.12652606128164803,
+      "hist_rel_l1_std": 0.03763322293680728,
+      "diff_sign_acc_std": 0.0879800312539177,
       "trials": 40
     },
     {
@@ -215,47 +219,47 @@
       "synthetic": false,
       "sweep": "epsilon",
       "epsilon": 1.0,
-      "ratio_B1_mean": 0.6872612108122393,
-      "jaccard_B1_mean": 0.139484126984127,
-      "precision_at_k_B1_mean": 0.23000000000000004,
-      "attr_precision_B1_mean": 0.63,
-      "view_jaccard_B1_mean": 0.2894940476190476,
-      "ratio_B2_mean": 0.6868653343298772,
-      "jaccard_B2_mean": 0.1125,
-      "precision_at_k_B2_mean": 0.19,
-      "attr_precision_B2_mean": 0.63,
-      "view_jaccard_B2_mean": 0.21157738095238093,
-      "ratio_B3_mean": 0.6868653343298772,
-      "jaccard_B3_mean": 0.1125,
-      "precision_at_k_B3_mean": 0.19,
-      "attr_precision_B3_mean": 0.63,
-      "view_jaccard_B3_mean": 0.21157738095238093,
-      "hist_rel_l1_mean": 0.11170734357726708,
-      "diff_sign_acc_mean": 0.8413353628798677,
-      "F_mean": 4.090333027698529,
-      "F_B1_mean": 5.951642495383046,
-      "F_B2_mean": 5.955072738805722,
-      "F_B3_mean": 5.955072738805722,
+      "ratio_B1_mean": 0.7991072450811402,
+      "jaccard_B1_mean": 0.1380952380952381,
+      "precision_at_k_B1_mean": 0.225,
+      "attr_precision_B1_mean": 0.6799999999999999,
+      "view_jaccard_B1_mean": 0.26072420634920634,
+      "ratio_B2_mean": 0.780319682909864,
+      "jaccard_B2_mean": 0.10069444444444445,
+      "precision_at_k_B2_mean": 0.17,
+      "attr_precision_B2_mean": 0.66,
+      "view_jaccard_B2_mean": 0.26072420634920634,
+      "ratio_B3_mean": 0.780319682909864,
+      "jaccard_B3_mean": 0.10069444444444445,
+      "precision_at_k_B3_mean": 0.17,
+      "attr_precision_B3_mean": 0.66,
+      "view_jaccard_B3_mean": 0.26072420634920634,
+      "hist_rel_l1_mean": 0.056938957264026334,
+      "diff_sign_acc_mean": 0.8905449832675064,
+      "F_mean": 3.080564931809921,
+      "F_B1_mean": 3.8550081366076525,
+      "F_B2_mean": 3.947824204974927,
+      "F_B3_mean": 3.947824204974927,
       "gamma_mean": 147.15824350031113,
       "tau_mean": 15.0,
-      "mechanism_ms_mean": 0.6089287500230967,
-      "ratio_B1_std": 0.08731001640598518,
-      "jaccard_B1_std": 0.10872544247352185,
-      "precision_at_k_B1_std": 0.16044809049530548,
-      "attr_precision_B1_std": 0.15392305770191705,
-      "view_jaccard_B1_std": 0.17697999733050052,
-      "ratio_B2_std": 0.08725972405480054,
-      "jaccard_B2_std": 0.0935033555166738,
-      "precision_at_k_B2_std": 0.14987174003640066,
-      "attr_precision_B2_std": 0.15392305770191705,
-      "view_jaccard_B2_std": 0.15133017482897532,
-      "ratio_B3_std": 0.08725972405480054,
-      "jaccard_B3_std": 0.0935033555166738,
-      "precision_at_k_B3_std": 0.14987174003640066,
-      "attr_precision_B3_std": 0.15392305770191705,
-      "view_jaccard_B3_std": 0.15133017482897532,
-      "hist_rel_l1_std": 0.02114748757597368,
-      "diff_sign_acc_std": 0.06875347567418656,
+      "mechanism_ms_mean": 0.8650655499877757,
+      "ratio_B1_std": 0.16826371045479838,
+      "jaccard_B1_std": 0.11763920641776676,
+      "precision_at_k_B1_std": 0.17650452162436564,
+      "attr_precision_B1_std": 0.14884168150705018,
+      "view_jaccard_B1_std": 0.15744105370299072,
+      "ratio_B2_std": 0.1643077146347153,
+      "jaccard_B2_std": 0.09533423235883948,
+      "precision_at_k_B2_std": 0.1539230577019171,
+      "attr_precision_B2_std": 0.15819494627086236,
+      "view_jaccard_B2_std": 0.15744105370299072,
+      "ratio_B3_std": 0.1643077146347153,
+      "jaccard_B3_std": 0.09533423235883948,
+      "precision_at_k_B3_std": 0.1539230577019171,
+      "attr_precision_B3_std": 0.15819494627086236,
+      "view_jaccard_B3_std": 0.15744105370299072,
+      "hist_rel_l1_std": 0.0165040349236372,
+      "diff_sign_acc_std": 0.07552960907520287,
       "trials": 40
     },
     {
@@ -264,47 +268,47 @@
       "synthetic": false,
       "sweep": "epsilon",
       "epsilon": 2.0,
-      "ratio_B1_mean": 0.7201119819909704,
-      "jaccard_B1_mean": 0.17976190476190476,
-      "precision_at_k_B1_mean": 0.29000000000000004,
-      "attr_precision_B1_mean": 0.655,
-      "view_jaccard_B1_mean": 0.2978670634920635,
-      "ratio_B2_mean": 0.719697182794024,
-      "jaccard_B2_mean": 0.14990079365079365,
-      "precision_at_k_B2_mean": 0.24500000000000002,
-      "attr_precision_B2_mean": 0.655,
-      "view_jaccard_B2_mean": 0.2270833333333333,
-      "ratio_B3_mean": 0.719697182794024,
-      "jaccard_B3_mean": 0.14990079365079365,
-      "precision_at_k_B3_mean": 0.24500000000000002,
-      "attr_precision_B3_mean": 0.655,
-      "view_jaccard_B3_mean": 0.2270833333333333,
-      "hist_rel_l1_mean": 0.05343012464657672,
-      "diff_sign_acc_mean": 0.8979848331493068,
-      "F_mean": 4.2858490734519705,
-      "F_B1_mean": 5.951642495383046,
-      "F_B2_mean": 5.955072738805722,
-      "F_B3_mean": 5.955072738805722,
+      "ratio_B1_mean": 0.8100057777851146,
+      "jaccard_B1_mean": 0.11626984126984126,
+      "precision_at_k_B1_mean": 0.195,
+      "attr_precision_B1_mean": 0.685,
+      "view_jaccard_B1_mean": 0.2665873015873016,
+      "ratio_B2_mean": 0.7909619835974077,
+      "jaccard_B2_mean": 0.10446428571428572,
+      "precision_at_k_B2_mean": 0.175,
+      "attr_precision_B2_mean": 0.67,
+      "view_jaccard_B2_mean": 0.2665873015873016,
+      "ratio_B3_mean": 0.7909619835974075,
+      "jaccard_B3_mean": 0.10446428571428572,
+      "precision_at_k_B3_mean": 0.175,
+      "attr_precision_B3_mean": 0.67,
+      "view_jaccard_B3_mean": 0.2665873015873016,
+      "hist_rel_l1_mean": 0.02765929916900007,
+      "diff_sign_acc_mean": 0.9333576434959948,
+      "F_mean": 3.1225788640608267,
+      "F_B1_mean": 3.8550081366076525,
+      "F_B2_mean": 3.947824204974927,
+      "F_B3_mean": 3.947824204974927,
       "gamma_mean": 73.57912175015556,
       "tau_mean": 15.0,
-      "mechanism_ms_mean": 0.6001082750060505,
-      "ratio_B1_std": 0.08697573572148451,
-      "jaccard_B1_std": 0.11011897886895741,
-      "precision_at_k_B1_std": 0.1629849764981502,
-      "attr_precision_B1_std": 0.1357788548924222,
-      "view_jaccard_B1_std": 0.1158009211820411,
-      "ratio_B2_std": 0.08692563592279579,
-      "jaccard_B2_std": 0.11219415000287922,
-      "precision_at_k_B2_std": 0.16633299933166198,
-      "attr_precision_B2_std": 0.1357788548924222,
-      "view_jaccard_B2_std": 0.12827877594220358,
-      "ratio_B3_std": 0.08692563592279579,
-      "jaccard_B3_std": 0.11219415000287922,
-      "precision_at_k_B3_std": 0.16633299933166198,
-      "attr_precision_B3_std": 0.1357788548924222,
-      "view_jaccard_B3_std": 0.12827877594220358,
-      "hist_rel_l1_std": 0.009728290488018614,
-      "diff_sign_acc_std": 0.06626602502359154,
+      "mechanism_ms_mean": 0.8296065999957136,
+      "ratio_B1_std": 0.11800670124649078,
+      "jaccard_B1_std": 0.09997948636750638,
+      "precision_at_k_B1_std": 0.15350603429214946,
+      "attr_precision_B1_std": 0.13502136583063154,
+      "view_jaccard_B1_std": 0.17558211529091336,
+      "ratio_B2_std": 0.1152322823559819,
+      "jaccard_B2_std": 0.10214170800062848,
+      "precision_at_k_B2_std": 0.15811388300841897,
+      "attr_precision_B2_std": 0.13243285671789137,
+      "view_jaccard_B2_std": 0.17558211529091336,
+      "ratio_B3_std": 0.11523228235598192,
+      "jaccard_B3_std": 0.10214170800062848,
+      "precision_at_k_B3_std": 0.15811388300841897,
+      "attr_precision_B3_std": 0.13243285671789137,
+      "view_jaccard_B3_std": 0.17558211529091336,
+      "hist_rel_l1_std": 0.010709050462774298,
+      "diff_sign_acc_std": 0.06451426650195605,
       "trials": 40
     },
     {
@@ -313,69 +317,61 @@
       "synthetic": false,
       "sweep": "epsilon",
       "epsilon": 5.0,
-      "ratio_B1_mean": 0.7777738860419148,
-      "jaccard_B1_mean": 0.22708333333333336,
-      "precision_at_k_B1_mean": 0.35500000000000004,
-      "attr_precision_B1_mean": 0.72,
-      "view_jaccard_B1_mean": 0.3206349206349206,
-      "ratio_B2_mean": 0.777325872411529,
-      "jaccard_B2_mean": 0.2265873015873016,
-      "precision_at_k_B2_mean": 0.34500000000000003,
-      "attr_precision_B2_mean": 0.72,
-      "view_jaccard_B2_mean": 0.2957738095238095,
-      "ratio_B3_mean": 0.777325872411529,
-      "jaccard_B3_mean": 0.2265873015873016,
-      "precision_at_k_B3_mean": 0.34500000000000003,
-      "attr_precision_B3_mean": 0.72,
-      "view_jaccard_B3_mean": 0.2957738095238095,
-      "hist_rel_l1_mean": 0.020944293573658464,
-      "diff_sign_acc_mean": 0.9620830472557236,
-      "F_mean": 4.629032111966271,
-      "F_B1_mean": 5.951642495383047,
-      "F_B2_mean": 5.955072738805722,
-      "F_B3_mean": 5.955072738805722,
+      "ratio_B1_mean": 0.8281210374892438,
+      "jaccard_B1_mean": 0.07916666666666666,
+      "precision_at_k_B1_mean": 0.135,
+      "attr_precision_B1_mean": 0.74,
+      "view_jaccard_B1_mean": 0.2001190476190476,
+      "ratio_B2_mean": 0.8279479057350019,
+      "jaccard_B2_mean": 0.07291666666666666,
+      "precision_at_k_B2_mean": 0.125,
+      "attr_precision_B2_mean": 0.74,
+      "view_jaccard_B2_mean": 0.25878968253968254,
+      "ratio_B3_mean": 0.8279479057350019,
+      "jaccard_B3_mean": 0.07291666666666666,
+      "precision_at_k_B3_mean": 0.125,
+      "attr_precision_B3_mean": 0.74,
+      "view_jaccard_B3_mean": 0.25878968253968254,
+      "hist_rel_l1_mean": 0.010868141091267576,
+      "diff_sign_acc_mean": 0.9854090956558063,
+      "F_mean": 3.2685927827189394,
+      "F_B1_mean": 3.9469988501063695,
+      "F_B2_mean": 3.947824204974927,
+      "F_B3_mean": 3.947824204974927,
       "gamma_mean": 29.43164870006222,
       "tau_mean": 15.0,
-      "mechanism_ms_mean": 0.6059351250087275,
-      "ratio_B1_std": 0.09500085297326051,
-      "jaccard_B1_std": 0.11968857267726564,
-      "precision_at_k_B1_std": 0.1600480697021511,
-      "attr_precision_B1_std": 0.11810469062961874,
-      "view_jaccard_B1_std": 0.1284791608810717,
-      "ratio_B2_std": 0.09494613054326624,
-      "jaccard_B2_std": 0.15706236144560892,
-      "precision_at_k_B2_std": 0.19735429549092146,
-      "attr_precision_B2_std": 0.11810469062961874,
-      "view_jaccard_B2_std": 0.15683752990120312,
-      "ratio_B3_std": 0.09494613054326624,
-      "jaccard_B3_std": 0.15706236144560892,
-      "precision_at_k_B3_std": 0.19735429549092146,
-      "attr_precision_B3_std": 0.11810469062961874,
-      "view_jaccard_B3_std": 0.15683752990120312,
-      "hist_rel_l1_std": 0.003927349852447967,
-      "diff_sign_acc_std": 0.03542694186797793,
+      "mechanism_ms_mean": 0.5569239250917235,
+      "ratio_B1_std": 0.11112536833455566,
+      "jaccard_B1_std": 0.08908232158511224,
+      "precision_at_k_B1_std": 0.1459715462262845,
+      "attr_precision_B1_std": 0.1373746514892572,
+      "view_jaccard_B1_std": 0.13700407821918614,
+      "ratio_B2_std": 0.11110213582494706,
+      "jaccard_B2_std": 0.08548677721625965,
+      "precision_at_k_B2_std": 0.1409673539220868,
+      "attr_precision_B2_std": 0.1373746514892572,
+      "view_jaccard_B2_std": 0.1386149269058775,
+      "ratio_B3_std": 0.11110213582494706,
+      "jaccard_B3_std": 0.08548677721625965,
+      "precision_at_k_B3_std": 0.1409673539220868,
+      "attr_precision_B3_std": 0.1373746514892572,
+      "view_jaccard_B3_std": 0.1386149269058775,
+      "hist_rel_l1_std": 0.00355477980506727,
+      "diff_sign_acc_std": 0.028624932577528055,
       "trials": 40
     }
   ],
   "explanations_key_bins": [
     {
-      "view": "MaritalStatus='S' AND MarriedExemp IN [0, 174]",
+      "view": "MaritalStatus='S'",
       "attr": "State",
       "bins": [
         {
-          "bin": "AR",
-          "noisy_Q1": 2196,
-          "noisy_Q2": 0,
-          "exact_Q1": 2140,
-          "exact_Q2": 0,
-          "clears_2sd": true
-        },
-        {
-          "bin": "AL",
-          "noisy_Q1": 1724,
-          "noisy_Q2": 787,
-          "exact_Q1": 1741,
-          "exact_Q2": 791,
+          "bin": "AK",
+          "noisy_Q1": 1820,
+          "noisy_Q2": 1265,
+          "exact_Q1": 1827,
+          "exact_Q2": 1251,
           "clears_2sd": true
         },
         {
@@ -387,12 +383,58 @@
           "clears_2sd": true
         },
         {
-          "bin": "MI",
-          "noisy_Q1": -50,
-          "noisy_Q2": 124,
-          "exact_Q1": 0,
+          "bin": "CA",
+          "noisy_Q1": 2016,
+          "noisy_Q2": 1831,
+          "exact_Q1": 1898,
+          "exact_Q2": 1885,
+          "clears_2sd": true
+        },
+        {
+          "bin": "HI",
+          "noisy_Q1": 1902,
+          "noisy_Q2": 1725,
+          "exact_Q1": 1890,
+          "exact_Q2": 1757,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "SingleExemp IN [0, 87] AND MarriedExemp IN [0, 174]",
+      "attr": "ChildExemp",
+      "bins": [
+        {
+          "bin": "[0, 103]",
+          "noisy_Q1": 8941,
+          "noisy_Q2": 7405,
+          "exact_Q1": 8940,
+          "exact_Q2": 7375,
+          "clears_2sd": true
+        },
+        {
+          "bin": "NA",
+          "noisy_Q1": 206,
+          "noisy_Q2": 47,
+          "exact_Q1": 200,
           "exact_Q2": 0,
           "clears_2sd": true
+        },
+        {
+          "bin": "(1500, 3300]",
+          "noisy_Q1": -101,
+          "noisy_Q2": -19,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": false
+        },
+        {
+          "bin": "(103, 1500]",
+          "noisy_Q1": 1944,
+          "noisy_Q2": 1865,
+          "exact_Q1": 1885,
+          "exact_Q2": 1872,
+          "clears_2sd": false
         }
       ]
     },
@@ -401,150 +443,112 @@
       "attr": "State",
       "bins": [
         {
-          "bin": "AR",
-          "noisy_Q1": 1880,
-          "noisy_Q2": -4,
-          "exact_Q1": 1981,
-          "exact_Q2": 0,
+          "bin": "AK",
+          "noisy_Q1": 1721,
+          "noisy_Q2": 785,
+          "exact_Q1": 1784,
+          "exact_Q2": 823,
           "clears_2sd": true
         },
         {
-          "bin": "AL",
-          "noisy_Q1": 1990,
-          "noisy_Q2": 465,
-          "exact_Q1": 1931,
-          "exact_Q2": 417,
-          "clears_2sd": true
-        },
-        {
-          "bin": "MO",
-          "noisy_Q1": 25,
-          "noisy_Q2": -111,
+          "bin": "DE",
+          "noisy_Q1": 72,
+          "noisy_Q2": -157,
           "exact_Q1": 0,
           "exact_Q2": 0,
           "clears_2sd": true
         },
         {
-          "bin": "MI",
-          "noisy_Q1": 100,
-          "noisy_Q2": -19,
+          "bin": "MN",
+          "noisy_Q1": -5,
+          "noisy_Q2": 123,
           "exact_Q1": 0,
           "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "HI",
+          "noisy_Q1": 1840,
+          "noisy_Q2": 1724,
+          "exact_Q1": 1898,
+          "exact_Q2": 1778,
           "clears_2sd": false
         }
       ]
     },
     {
-      "view": "HasChild='N'",
-      "attr": "ChildExemp",
-      "bins": [
-        {
-          "bin": "[0, 103]",
-          "noisy_Q1": 9740,
-          "noisy_Q2": 5688,
-          "exact_Q1": 9750,
-          "exact_Q2": 5675,
-          "clears_2sd": true
-        },
-        {
-          "bin": "(103, 1500]",
-          "noisy_Q1": 170,
-          "noisy_Q2": -14,
-          "exact_Q1": 200,
-          "exact_Q2": 0,
-          "clears_2sd": true
-        },
-        {
-          "bin": "(1500, 3300]",
-          "noisy_Q1": -73,
-          "noisy_Q2": 18,
-          "exact_Q1": 0,
-          "exact_Q2": 0,
-          "clears_2sd": false
-        },
-        {
-          "bin": "NA",
-          "noisy_Q1": -16,
-          "noisy_Q2": -11,
-          "exact_Q1": 0,
-          "exact_Q2": 0,
-          "clears_2sd": false
-        }
-      ]
-    },
-    {
-      "view": "MarriedExemp IN [0, 174] AND ChildExemp IN [0, 103]",
+      "view": "SingleExemp IN [0, 87] AND ChildExemp IN [0, 103]",
       "attr": "Salary",
       "bins": [
         {
           "bin": "(50000, 70000]",
-          "noisy_Q1": 2129,
-          "noisy_Q2": 1079,
-          "exact_Q1": 2064,
-          "exact_Q2": 1085,
-          "clears_2sd": true
-        },
-        {
-          "bin": "[5000, 20000]",
-          "noisy_Q1": 2143,
-          "noisy_Q2": 1128,
-          "exact_Q1": 2155,
-          "exact_Q2": 1146,
+          "noisy_Q1": 2209,
+          "noisy_Q2": 1820,
+          "exact_Q1": 2144,
+          "exact_Q2": 1826,
           "clears_2sd": true
         },
         {
           "bin": "(70000, 85000]",
-          "noisy_Q1": 1638,
-          "noisy_Q2": 749,
-          "exact_Q1": 1585,
-          "exact_Q2": 825,
+          "noisy_Q1": 1728,
+          "noisy_Q2": 1344,
+          "exact_Q1": 1675,
+          "exact_Q2": 1420,
           "clears_2sd": true
         },
         {
           "bin": "(85000, 100000]",
-          "noisy_Q1": 1669,
-          "noisy_Q2": 807,
-          "exact_Q1": 1633,
-          "exact_Q2": 861,
+          "noisy_Q1": 1627,
+          "noisy_Q2": 1275,
+          "exact_Q1": 1591,
+          "exact_Q2": 1329,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(20000, 35000]",
+          "noisy_Q1": 1675,
+          "noisy_Q2": 1348,
+          "exact_Q1": 1635,
+          "exact_Q2": 1382,
           "clears_2sd": true
         }
       ]
     },
     {
-      "view": "ChildExemp IN [0, 103]",
+      "view": "SingleExemp IN [0, 87]",
       "attr": "Rate",
       "bins": [
         {
-          "bin": "(5.95, 7]",
-          "noisy_Q1": 4899,
-          "noisy_Q2": 1808,
-          "exact_Q1": 4906,
-          "exact_Q2": 1785,
-          "clears_2sd": true
-        },
-        {
-          "bin": "(4.75, 5.95]",
-          "noisy_Q1": 3985,
-          "noisy_Q2": 1827,
-          "exact_Q1": 3983,
-          "exact_Q2": 1848,
-          "clears_2sd": true
-        },
-        {
           "bin": "[0, 3.07]",
-          "noisy_Q1": 4411,
-          "noisy_Q2": 3916,
-          "exact_Q1": 4396,
-          "exact_Q2": 3915,
+          "noisy_Q1": 7933,
+          "noisy_Q2": 6155,
+          "exact_Q1": 7918,
+          "exact_Q2": 6154,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(7, 9.3]",
+          "noisy_Q1": 5859,
+          "noisy_Q2": 5675,
+          "exact_Q1": 5863,
+          "exact_Q2": 5719,
           "clears_2sd": true
         },
         {
           "bin": "(3.07, 4.75]",
-          "noisy_Q1": 303,
-          "noisy_Q2": 27,
-          "exact_Q1": 314,
-          "exact_Q2": 87,
-          "clears_2sd": true
+          "noisy_Q1": 403,
+          "noisy_Q2": 341,
+          "exact_Q1": 414,
+          "exact_Q2": 401,
+          "clears_2sd": false
+        },
+        {
+          "bin": "NA",
+          "noisy_Q1": 55,
+          "noisy_Q2": 2,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": false
         }
       ]
     }

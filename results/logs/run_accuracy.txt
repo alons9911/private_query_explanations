@@ -1,1 +1,158 @@
 == e1 (E1 -- case studies (Section 5.2).)
+== e1 done in 729.5s
+== e2 (E2 -- accuracy of the released explanations vs. the privacy budget (Section 5.3.1).)
+  E2 A1: eps=1  ratio B2 0.948  P@k B2 0.430  Jaccard B2 0.284
+  E2 A2: eps=1  ratio B2 0.898  P@k B2 0.505  Jaccard B2 0.359
+  E2 A3: eps=1  ratio B2 0.953  P@k B2 0.395  Jaccard B2 0.265
+  E2 T1: eps=1  ratio B2 0.983  P@k B2 0.710  Jaccard B2 0.579
+  E2 T2: eps=1  ratio B2 0.987  P@k B2 0.635  Jaccard B2 0.479
+  E2 T3: eps=1  ratio B2 0.898  P@k B2 0.185  Jaccard B2 0.110
+  E2 H1: eps=1  ratio B2 0.821  P@k B2 0.170  Jaccard B2 0.094
+  E2 H2: eps=1  ratio B2 0.843  P@k B2 0.250  Jaccard B2 0.152
+  E2 H3: eps=1  ratio B2 0.223  P@k B2 0.030  Jaccard B2 0.017
+  E2 R1: eps=1  ratio B2 0.964  P@k B2 0.760  Jaccard B2 0.644
+  E2 R2: eps=1  ratio B2 0.940  P@k B2 0.165  Jaccard B2 0.101
+  E2 R3: eps=1  ratio B2 0.931  P@k B2 0.410  Jaccard B2 0.272
+  E2 R4: eps=1  ratio B2 0.979  P@k B2 0.130  Jaccard B2 0.076
+  E2 R5: eps=1  ratio B2 0.968  P@k B2 0.615  Jaccard B2 0.461
+  E2 R6: eps=1  ratio B2 0.983  P@k B2 0.595  Jaccard B2 0.435
+  E2 C1: eps=1  ratio B2 0.780  P@k B2 0.170  Jaccard B2 0.101
+  E2 C2: eps=1  ratio B2 0.440  P@k B2 0.165  Jaccard B2 0.099
+  E2 C3: eps=1  ratio B2 0.707  P@k B2 0.110  Jaccard B2 0.064
+  E2 C4: eps=1  ratio B2 0.822  P@k B2 0.175  Jaccard B2 0.097
+  E2 ACS_Q1C1: eps=1  ratio B2 0.979  P@k B2 0.485  Jaccard B2 0.338
+  E2 ACS_Q1C2: eps=1  ratio B2 0.972  P@k B2 0.760  Jaccard B2 0.631
+  E2 ACS_Q2C1: eps=1  ratio B2 0.860  P@k B2 0.355  Jaccard B2 0.225
+  E2 ACS_Q2C2: eps=1  ratio B2 0.969  P@k B2 0.515  Jaccard B2 0.371
+  E2 ACS_Q2C3: eps=1  ratio B2 0.977  P@k B2 0.690  Jaccard B2 0.554
+  E2 ACS_Q3C4: eps=1  ratio B2 0.918  P@k B2 0.740  Jaccard B2 0.608
+  E2 ACS_Q3C5: eps=1  ratio B2 0.758  P@k B2 0.485  Jaccard B2 0.331
+  E2 ACS_Q3C6: eps=1  ratio B2 0.672  P@k B2 0.455  Jaccard B2 0.308
+  E2 ACS_Q4C7: eps=1  ratio B2 0.413  P@k B2 0.205  Jaccard B2 0.134
+  E2 ACS_Q4C8: eps=1  ratio B2 0.471  P@k B2 0.165  Jaccard B2 0.096
+  E2 I1: eps=1  ratio B2 0.928  P@k B2 0.535  Jaccard B2 0.382
+  E2 I2: eps=1  ratio B2 0.965  P@k B2 0.395  Jaccard B2 0.262
+  E2 I3: eps=1  ratio B2 0.986  P@k B2 0.695  Jaccard B2 0.556
+  E2 I4: eps=1  ratio B2 0.975  P@k B2 0.380  Jaccard B2 0.247
+  E2 I5: eps=1  ratio B2 0.969  P@k B2 0.260  Jaccard B2 0.157
+  E2 I6: eps=1  ratio B2 0.954  P@k B2 0.375  Jaccard B2 0.247
+  E2 I7: eps=1  ratio B2 0.932  P@k B2 0.355  Jaccard B2 0.234
+  E2 I8: eps=1  ratio B2 0.985  P@k B2 0.555  Jaccard B2 0.401
+  E2 I9: eps=1  ratio B2 0.977  P@k B2 0.495  Jaccard B2 0.354
+  E2 I10: eps=1  ratio B2 0.980  P@k B2 0.355  Jaccard B2 0.231
+  E2 I11: eps=1  ratio B2 0.976  P@k B2 0.295  Jaccard B2 0.188
+  E2 I12: eps=1  ratio B2 0.969  P@k B2 0.355  Jaccard B2 0.228
+  E2 I13: eps=1  ratio B2 0.620  P@k B2 0.085  Jaccard B2 0.048
+  E2 I14: eps=1  ratio B2 0.739  P@k B2 0.170  Jaccard B2 0.103
+  E2 I15: eps=1  ratio B2 0.852  P@k B2 0.205  Jaccard B2 0.124
+  E2 I16: eps=1  ratio B2 0.833  P@k B2 0.170  Jaccard B2 0.101
+  E2 I17: eps=1  ratio B2 0.843  P@k B2 0.140  Jaccard B2 0.084
+== e2 done in 252.2s
+== e6 (E6 -- accuracy vs. the smoothing constant gamma.)
+  E6 A1: ratio vs B2 by gamma_mult 0:0.52 0.03:0.68 0.1:0.84 0.3:0.89 1:0.94 3:0.90 10:0.80 30:0.78
+  E6 A2: ratio vs B2 by gamma_mult 0:0.20 0.03:0.29 0.1:0.49 0.3:0.75 1:0.91 3:0.83 10:0.65 30:0.43
+  E6 A3: ratio vs B2 by gamma_mult 0:0.42 0.03:0.56 0.1:0.77 0.3:0.91 1:0.95 3:0.92 10:0.89 30:0.89
+  E6 T1: ratio vs B2 by gamma_mult 0:0.35 0.03:0.62 0.1:0.84 0.3:0.94 1:0.98 3:0.99 10:0.99 30:0.97
+  E6 T2: ratio vs B2 by gamma_mult 0:0.25 0.03:0.55 0.1:0.81 0.3:0.93 1:0.99 3:0.98 10:0.98 30:0.93
+  E6 T3: ratio vs B2 by gamma_mult 0:0.34 0.03:0.44 0.1:0.60 0.3:0.78 1:0.91 3:0.99 10:0.98 30:0.98
+  E6 H1: ratio vs B2 by gamma_mult 0:0.32 0.03:0.67 0.1:0.84 0.3:0.86 1:0.83 3:0.82 10:0.81 30:0.74
+  E6 H2: ratio vs B2 by gamma_mult 0:0.35 0.03:0.68 0.1:0.85 0.3:0.89 1:0.85 3:0.84 10:0.82 30:0.74
+  E6 H3: ratio vs B2 by gamma_mult 0:0.10 0.03:0.15 0.1:0.19 0.3:0.21 1:0.25 3:0.24 10:0.24 30:0.25
+  E6 R1: ratio vs B2 by gamma_mult 0:0.32 0.03:0.46 0.1:0.71 0.3:0.92 1:0.96 3:0.89 10:0.78 30:0.70
+  E6 R2: ratio vs B2 by gamma_mult 0:0.40 0.03:0.47 0.1:0.55 0.3:0.79 1:0.97 3:0.92 10:0.84 30:0.61
+  E6 R3: ratio vs B2 by gamma_mult 0:0.45 0.03:0.49 0.1:0.61 0.3:0.80 1:0.95 3:0.95 10:0.93 30:0.87
+  E6 R4: ratio vs B2 by gamma_mult 0:0.36 0.03:0.50 0.1:0.65 0.3:0.93 1:1.05 3:1.05 10:0.92 30:0.69
+  E6 R5: ratio vs B2 by gamma_mult 0:0.28 0.03:0.56 0.1:0.79 0.3:0.92 1:0.98 3:0.95 10:0.89 30:0.92
+  E6 R6: ratio vs B2 by gamma_mult 0:0.24 0.03:0.54 0.1:0.81 0.3:0.92 1:0.98 3:0.99 10:0.98 30:0.94
+  E6 C1: ratio vs B2 by gamma_mult 0:0.34 0.03:0.36 0.1:0.43 0.3:0.56 1:0.72 3:0.85 10:0.80 30:0.66
+  E6 C2: ratio vs B2 by gamma_mult 0:0.13 0.03:0.13 0.1:0.18 0.3:0.22 1:0.40 3:0.53 10:0.59 30:0.49
+  E6 C3: ratio vs B2 by gamma_mult 0:0.36 0.03:0.36 0.1:0.40 0.3:0.55 1:0.71 3:0.82 10:0.78 30:0.68
+  E6 C4: ratio vs B2 by gamma_mult 0:0.28 0.03:0.69 0.1:0.83 0.3:0.85 1:0.81 3:0.81 10:0.79 30:0.69
+  E6 ACS_Q1C1: ratio vs B2 by gamma_mult 0:0.37 0.03:0.50 0.1:0.73 0.3:0.90 1:0.98 3:0.99 10:0.97 30:0.94
+  E6 ACS_Q1C2: ratio vs B2 by gamma_mult 0:0.20 0.03:0.26 0.1:0.50 0.3:0.73 1:0.97 3:1.00 10:1.00 30:0.96
+  E6 ACS_Q2C1: ratio vs B2 by gamma_mult 0:0.36 0.03:0.39 0.1:0.45 0.3:0.66 1:0.83 3:0.96 10:0.96 30:0.86
+  E6 ACS_Q2C2: ratio vs B2 by gamma_mult 0:0.38 0.03:0.43 0.1:0.61 0.3:0.84 1:0.96 3:0.98 10:0.97 30:0.97
+  E6 ACS_Q2C3: ratio vs B2 by gamma_mult 0:0.30 0.03:0.34 0.1:0.57 0.3:0.82 1:0.98 3:1.00 10:1.00 30:1.00
+  E6 ACS_Q3C4: ratio vs B2 by gamma_mult 0:0.14 0.03:0.17 0.1:0.31 0.3:0.65 1:0.92 3:1.00 10:0.99 30:0.97
+  E6 ACS_Q3C5: ratio vs B2 by gamma_mult 0:0.10 0.03:0.12 0.1:0.16 0.3:0.30 1:0.73 3:0.96 10:0.98 30:0.98
+  E6 ACS_Q3C6: ratio vs B2 by gamma_mult 0:0.09 0.03:0.10 0.1:0.11 0.3:0.22 1:0.65 3:0.94 10:0.96 30:0.97
+  E6 ACS_Q4C7: ratio vs B2 by gamma_mult 0:0.11 0.03:0.12 0.1:0.13 0.3:0.20 1:0.37 3:0.53 10:0.58 30:0.57
+  E6 ACS_Q4C8: ratio vs B2 by gamma_mult 0:0.15 0.03:0.15 0.1:0.16 0.3:0.20 1:0.40 3:0.80 10:0.95 30:0.96
+  E6 I1: ratio vs B2 by gamma_mult 0:0.46 0.03:0.48 0.1:0.57 0.3:0.73 1:0.92 3:0.99 10:0.99 30:0.89
+  E6 I2: ratio vs B2 by gamma_mult 0:0.57 0.03:0.63 0.1:0.71 0.3:0.86 1:0.96 3:0.99 10:0.98 30:0.96
+  E6 I3: ratio vs B2 by gamma_mult 0:0.41 0.03:0.45 0.1:0.64 0.3:0.84 1:0.98 3:1.00 10:1.00 30:0.95
+  E6 I4: ratio vs B2 by gamma_mult 0:0.65 0.03:0.68 0.1:0.81 0.3:0.89 1:0.98 3:0.98 10:0.98 30:0.94
+  E6 I5: ratio vs B2 by gamma_mult 0:0.72 0.03:0.78 0.1:0.84 0.3:0.91 1:0.97 3:0.99 10:0.99 30:0.96
+  E6 I6: ratio vs B2 by gamma_mult 0:0.61 0.03:0.65 0.1:0.81 0.3:0.90 1:0.95 3:0.97 10:0.98 30:0.95
+  E6 I7: ratio vs B2 by gamma_mult 0:0.53 0.03:0.56 0.1:0.67 0.3:0.81 1:0.92 3:0.98 10:0.96 30:0.90
+  E6 I8: ratio vs B2 by gamma_mult 0:0.67 0.03:0.76 0.1:0.83 0.3:0.93 1:0.98 3:0.99 10:0.98 30:0.93
+  E6 I9: ratio vs B2 by gamma_mult 0:0.70 0.03:0.79 0.1:0.86 0.3:0.92 1:0.98 3:0.99 10:0.95 30:0.93
+  E6 I10: ratio vs B2 by gamma_mult 0:0.68 0.03:0.78 0.1:0.86 0.3:0.93 1:0.98 3:0.99 10:0.98 30:0.96
+  E6 I11: ratio vs B2 by gamma_mult 0:0.73 0.03:0.79 0.1:0.87 0.3:0.94 1:0.98 3:0.99 10:0.98 30:0.98
+  E6 I12: ratio vs B2 by gamma_mult 0:0.65 0.03:0.71 0.1:0.85 0.3:0.91 1:0.97 3:0.99 10:0.99 30:0.97
+  E6 I13: ratio vs B2 by gamma_mult 0:0.49 0.03:0.49 0.1:0.50 0.3:0.52 1:0.58 3:0.75 10:0.92 30:0.98
+  E6 I14: ratio vs B2 by gamma_mult 0:0.50 0.03:0.50 0.1:0.51 0.3:0.56 1:0.75 3:0.88 10:0.96 30:0.98
+  E6 I15: ratio vs B2 by gamma_mult 0:0.51 0.03:0.53 0.1:0.58 0.3:0.72 1:0.88 3:0.96 10:0.97 30:0.97
+  E6 I16: ratio vs B2 by gamma_mult 0:0.60 0.03:0.62 0.1:0.65 0.3:0.74 1:0.85 3:0.94 10:0.99 30:0.98
+  E6 I17: ratio vs B2 by gamma_mult 0:0.66 0.03:0.68 0.1:0.71 0.3:0.76 1:0.84 3:0.92 10:0.97 30:0.97
+== e6 done in 208.2s
+== e3 (E3 -- what drives accuracy (Section 5.3.1), on every pair.)
+  E3 A1
+  E3 A2
+  E3 A3
+  E3 T1
+  E3 T2
+  E3 T3
+  E3 H1
+  E3 H2
+  E3 H3
+  E3 R1
+  E3 R2
+  E3 R3
+  E3 R4
+  E3 R5
+  E3 R6
+  E3 C1
+  E3 C2
+  E3 C3
+  E3 C4
+  E3 ACS_Q1C1
+  E3 ACS_Q1C2
+  E3 ACS_Q2C1
+  E3 ACS_Q2C2
+  E3 ACS_Q2C3
+  E3 ACS_Q3C4
+  E3 ACS_Q3C5
+  E3 ACS_Q3C6
+  E3 ACS_Q4C7
+  E3 ACS_Q4C8
+  E3 I1
+  E3 I2
+  E3 I3
+  E3 I4
+  E3 I5
+  E3 I6
+  E3 I7
+  E3 I8
+  E3 I9
+  E3 I10
+  E3 I11
+  E3 I12
+  E3 I13
+  E3 I14
+  E3 I15
+  E3 I16
+  E3 I17
+== e3 done in 86.2s
+== cases (Case studies for the pairs chosen by the pair search (R1-R6, C1-C4).)
+  case study R1
+  case study R2
+  case study R3
+  case study R4
+  case study R5
+  case study R6
+  case study C1
+  case study C2
+  case study C3
+  case study C4
+== cases done in 120.3s
