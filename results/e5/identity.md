@@ -1,0 +1,21 @@
+| dataset | pair | runs | identical_runs | max_abs_use_diff |
+|---|---|---|---|---|
+| adult | A1 | 5 | 5 | 1.11e-16 |
+| adult | A2 | 5 | 5 | 1.39e-17 |
+| adult | R1 | 5 | 5 | 2.78e-17 |
+| adult | R3 | 5 | 5 | 2.78e-17 |
+| acsincome | ACS_Q1C1 | 5 | 5 | 2.78e-17 |
+| acsincome | ACS_Q2C2 | 5 | 5 | 5.55e-17 |
+| acsincome | ACS_Q4C7 | 5 | 5 | 4.34e-19 |
+| tax | T1 | 5 | 5 | 5.55e-17 |
+| tax | T2 | 5 | 5 | 1.39e-17 |
+| tax | R5 | 5 | 5 | 2.78e-17 |
+| tax_dirty | C1 | 5 | 5 | 1.39e-17 |
+| tax_dirty | C2 | 5 | 5 | 6.94e-18 |
+| tax_dirty | C3 | 5 | 5 | 6.94e-18 |
+| hospital | H1 | 5 | 5 | 1.11e-16 |
+| hospital | H2 | 5 | 5 | 1.11e-16 |
+| hospital | H3 | 5 | 5 | 2.78e-17 |
+| ipums | I1 | 5 | 5 | 5.55e-17 |
+| ipums | I6 | 5 | 5 | 5.55e-17 |
+| ipums | I8 | 5 | 5 | 5.55e-17 |
