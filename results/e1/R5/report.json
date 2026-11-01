@@ -28,10 +28,10 @@
     "eps_H": 0.333333334,
     "tau": 15,
     "gamma": 147.15824350031113,
-    "gamma_R": 200000.0,
+    "gamma_R": 2000.0,
     "|P|": 1792,
     "|Attrs|": 9,
-    "Delta_Use": 8.75e-06,
+    "Delta_Use": 2e-05,
     "laplace_scale_per_bin": 29.999999940000002,
     "sigma_of_released_difference": 59.999999880000004
   },
@@ -40,107 +40,107 @@
       {
         "rank": 1,
         "view": "Rate IN [0, 3.07]",
-        "use": 0.13142823039415633,
+        "use": 0.17747831545949205,
         "coverage": 0.21002,
-        "representativeness": 0.6257891171991063
+        "representativeness": 0.8450543541543284
       },
       {
         "rank": 2,
-        "view": "MarriedExemp IN [0, 174]",
-        "use": 0.1268450553971122,
-        "coverage": 0.180855,
-        "representativeness": 0.7013632766421287
+        "view": "ChildExemp IN [0, 103]",
+        "use": 0.16492688988505644,
+        "coverage": 0.17966,
+        "representativeness": 0.9179944889516667
       },
       {
         "rank": 3,
-        "view": "SingleExemp IN [0, 87]",
-        "use": 0.12684349315723992,
-        "coverage": 0.180965,
-        "representativeness": 0.700928318499378
+        "view": "MarriedExemp IN [0, 174]",
+        "use": 0.163991951353536,
+        "coverage": 0.180855,
+        "representativeness": 0.9067592897820687
       },
       {
         "rank": 4,
-        "view": "ChildExemp IN [0, 103]",
-        "use": 0.12596491373101049,
-        "coverage": 0.17966,
-        "representativeness": 0.701129431876937
+        "view": "SingleExemp IN [0, 87]",
+        "use": 0.16397642243565794,
+        "coverage": 0.180965,
+        "representativeness": 0.9061223022996598
       },
       {
         "rank": 5,
         "view": "Rate IN [0, 3.07] AND SingleExemp IN [0, 87]",
-        "use": 0.11018704287642962,
+        "use": 0.15008988568985437,
         "coverage": 0.18003,
-        "representativeness": 0.6120482301640261
+        "representativeness": 0.833693749318749
       },
       {
         "rank": 6,
         "view": "Rate IN [0, 3.07] AND MarriedExemp IN [0, 174]",
-        "use": 0.11007148255475642,
+        "use": 0.14988102979190754,
         "coverage": 0.179835,
-        "representativeness": 0.6120692999402587
+        "representativeness": 0.8334363710729699
       },
       {
         "rank": 7,
-        "view": "SingleExemp IN [0, 87] AND ChildExemp IN [0, 103]",
-        "use": 0.10934360409155643,
-        "coverage": 0.16406,
-        "representativeness": 0.6664854570983568
+        "view": "Salary IN [5000, 20000]",
+        "use": 0.14696742133719792,
+        "coverage": 0.15404,
+        "representativeness": 0.9540860902181116
       },
       {
         "rank": 8,
         "view": "Rate IN [0, 3.07] AND ChildExemp IN [0, 103]",
-        "use": 0.10933841831092485,
+        "use": 0.14691264208435156,
         "coverage": 0.178665,
-        "representativeness": 0.6119744679199891
+        "representativeness": 0.8222799209937681
       },
       {
         "rank": 9,
-        "view": "MarriedExemp IN [0, 174] AND ChildExemp IN [0, 103]",
-        "use": 0.10882787569514558,
-        "coverage": 0.16321,
-        "representativeness": 0.6667966159864321
+        "view": "SingleExemp IN [0, 87] AND ChildExemp IN [0, 103]",
+        "use": 0.1434164278096921,
+        "coverage": 0.16406,
+        "representativeness": 0.8741705949633799
       },
       {
         "rank": 10,
-        "view": "SingleExemp IN [0, 87] AND MarriedExemp IN [0, 174]",
-        "use": 0.09418667957418202,
-        "coverage": 0.149845,
-        "representativeness": 0.6285607098947713
+        "view": "MarriedExemp IN [0, 174] AND ChildExemp IN [0, 103]",
+        "use": 0.14272365735003217,
+        "coverage": 0.16321,
+        "representativeness": 0.8744786309051662
       },
       {
         "rank": 11,
-        "view": "Salary IN [5000, 20000]",
-        "use": 0.08992318785926268,
+        "view": "Salary IN [5000, 20000] AND Rate IN [0, 3.07]",
+        "use": 0.13564171969082814,
         "coverage": 0.15404,
-        "representativeness": 0.583765176962235
+        "representativeness": 0.8805616702858228
       },
       {
         "rank": 12,
-        "view": "Salary IN [5000, 20000] AND Rate IN [0, 3.07]",
-        "use": 0.08371879772839327,
-        "coverage": 0.15404,
-        "representativeness": 0.5434873911217428
+        "view": "SingleExemp IN [0, 87] AND MarriedExemp IN [0, 174]",
+        "use": 0.12178103484182053,
+        "coverage": 0.149845,
+        "representativeness": 0.8127133694272116
       },
       {
         "rank": 13,
-        "view": "Salary IN [5000, 20000] AND SingleExemp IN [0, 87]",
-        "use": 0.07254473926218244,
-        "coverage": 0.129645,
-        "representativeness": 0.5595644973750044
+        "view": "Salary IN [5000, 20000] AND ChildExemp IN [0, 103]",
+        "use": 0.11330441902749146,
+        "coverage": 0.128305,
+        "representativeness": 0.88308654399666
       },
       {
         "rank": 14,
-        "view": "Salary IN [5000, 20000] AND MarriedExemp IN [0, 174]",
-        "use": 0.07241492445293884,
-        "coverage": 0.1294,
-        "representativeness": 0.5596207453859262
+        "view": "Salary IN [5000, 20000] AND SingleExemp IN [0, 87]",
+        "use": 0.11231212973054157,
+        "coverage": 0.129645,
+        "representativeness": 0.8663051388834244
       },
       {
         "rank": 15,
-        "view": "Salary IN [5000, 20000] AND ChildExemp IN [0, 103]",
-        "use": 0.0718041302816126,
-        "coverage": 0.128305,
-        "representativeness": 0.5596362595503885
+        "view": "Salary IN [5000, 20000] AND MarriedExemp IN [0, 174]",
+        "use": 0.11212709391668425,
+        "coverage": 0.1294,
+        "representativeness": 0.8665154089388274
       }
     ],
     "retained": [
@@ -148,121 +148,121 @@
         "noisy_rank": 1,
         "view": "Rate IN [0, 3.07]",
         "exact_rank": 1,
-        "use": 0.13142823039415633,
+        "use": 0.17747831545949205,
         "coverage": 0.21002,
-        "representativeness": 0.6257891171991063
+        "representativeness": 0.8450543541543284
       },
       {
         "noisy_rank": 2,
         "view": "ChildExemp IN [0, 103]",
-        "exact_rank": 4,
-        "use": 0.12596491373101049,
+        "exact_rank": 2,
+        "use": 0.16492688988505644,
         "coverage": 0.17966,
-        "representativeness": 0.701129431876937
+        "representativeness": 0.9179944889516667
       },
       {
         "noisy_rank": 3,
         "view": "MarriedExemp IN [0, 174]",
-        "exact_rank": 2,
-        "use": 0.1268450553971122,
+        "exact_rank": 3,
+        "use": 0.163991951353536,
         "coverage": 0.180855,
-        "representativeness": 0.7013632766421287
+        "representativeness": 0.9067592897820687
       },
       {
         "noisy_rank": 4,
         "view": "SingleExemp IN [0, 87]",
-        "exact_rank": 3,
-        "use": 0.12684349315723992,
+        "exact_rank": 4,
+        "use": 0.16397642243565794,
         "coverage": 0.180965,
-        "representativeness": 0.700928318499378
+        "representativeness": 0.9061223022996598
       },
       {
         "noisy_rank": 5,
         "view": "Rate IN [0, 3.07] AND SingleExemp IN [0, 87]",
         "exact_rank": 5,
-        "use": 0.11018704287642962,
+        "use": 0.15008988568985437,
         "coverage": 0.18003,
-        "representativeness": 0.6120482301640261
+        "representativeness": 0.833693749318749
       },
       {
         "noisy_rank": 6,
-        "view": "Rate IN [0, 3.07] AND ChildExemp IN [0, 103]",
-        "exact_rank": 8,
-        "use": 0.10933841831092485,
-        "coverage": 0.178665,
-        "representativeness": 0.6119744679199891
+        "view": "Rate IN [0, 3.07] AND MarriedExemp IN [0, 174]",
+        "exact_rank": 6,
+        "use": 0.14988102979190754,
+        "coverage": 0.179835,
+        "representativeness": 0.8334363710729699
       },
       {
         "noisy_rank": 7,
-        "view": "Rate IN [0, 3.07] AND MarriedExemp IN [0, 174]",
-        "exact_rank": 6,
-        "use": 0.11007148255475642,
-        "coverage": 0.179835,
-        "representativeness": 0.6120692999402587
+        "view": "Rate IN [0, 3.07] AND ChildExemp IN [0, 103]",
+        "exact_rank": 8,
+        "use": 0.14691264208435156,
+        "coverage": 0.178665,
+        "representativeness": 0.8222799209937681
       },
       {
         "noisy_rank": 8,
-        "view": "SingleExemp IN [0, 87] AND ChildExemp IN [0, 103]",
+        "view": "Salary IN [5000, 20000]",
         "exact_rank": 7,
-        "use": 0.10934360409155643,
-        "coverage": 0.16406,
-        "representativeness": 0.6664854570983568
+        "use": 0.14696742133719792,
+        "coverage": 0.15404,
+        "representativeness": 0.9540860902181116
       },
       {
         "noisy_rank": 9,
-        "view": "MarriedExemp IN [0, 174] AND ChildExemp IN [0, 103]",
+        "view": "SingleExemp IN [0, 87] AND ChildExemp IN [0, 103]",
         "exact_rank": 9,
-        "use": 0.10882787569514558,
-        "coverage": 0.16321,
-        "representativeness": 0.6667966159864321
+        "use": 0.1434164278096921,
+        "coverage": 0.16406,
+        "representativeness": 0.8741705949633799
       },
       {
         "noisy_rank": 10,
-        "view": "SingleExemp IN [0, 87] AND MarriedExemp IN [0, 174]",
+        "view": "MarriedExemp IN [0, 174] AND ChildExemp IN [0, 103]",
         "exact_rank": 10,
-        "use": 0.09418667957418202,
-        "coverage": 0.149845,
-        "representativeness": 0.6285607098947713
+        "use": 0.14272365735003217,
+        "coverage": 0.16321,
+        "representativeness": 0.8744786309051662
       },
       {
         "noisy_rank": 11,
-        "view": "Salary IN [5000, 20000]",
+        "view": "Salary IN [5000, 20000] AND Rate IN [0, 3.07]",
         "exact_rank": 11,
-        "use": 0.08992318785926268,
+        "use": 0.13564171969082814,
         "coverage": 0.15404,
-        "representativeness": 0.583765176962235
+        "representativeness": 0.8805616702858228
       },
       {
         "noisy_rank": 12,
-        "view": "Salary IN [5000, 20000] AND Rate IN [0, 3.07]",
+        "view": "SingleExemp IN [0, 87] AND MarriedExemp IN [0, 174]",
         "exact_rank": 12,
-        "use": 0.08371879772839327,
-        "coverage": 0.15404,
-        "representativeness": 0.5434873911217428
+        "use": 0.12178103484182053,
+        "coverage": 0.149845,
+        "representativeness": 0.8127133694272116
       },
       {
         "noisy_rank": 13,
         "view": "Salary IN [5000, 20000] AND MarriedExemp IN [0, 174]",
-        "exact_rank": 14,
-        "use": 0.07241492445293884,
+        "exact_rank": 15,
+        "use": 0.11212709391668425,
         "coverage": 0.1294,
-        "representativeness": 0.5596207453859262
+        "representativeness": 0.8665154089388274
       },
       {
         "noisy_rank": 14,
         "view": "Salary IN [5000, 20000] AND ChildExemp IN [0, 103]",
-        "exact_rank": 15,
-        "use": 0.0718041302816126,
+        "exact_rank": 13,
+        "use": 0.11330441902749146,
         "coverage": 0.128305,
-        "representativeness": 0.5596362595503885
+        "representativeness": 0.88308654399666
       },
       {
         "noisy_rank": 15,
         "view": "Salary IN [5000, 20000] AND SingleExemp IN [0, 87]",
-        "exact_rank": 13,
-        "use": 0.07254473926218244,
+        "exact_rank": 14,
+        "use": 0.11231212973054157,
         "coverage": 0.129645,
-        "representativeness": 0.5595644973750044
+        "representativeness": 0.8663051388834244
       }
     ],
     "overlap_with_exact_top_tau": 1.0,
@@ -277,86 +277,86 @@
       {
         "view": "Rate IN [0, 3.07]",
         "rank": 1,
-        "use": 0.13142823039415633,
+        "use": 0.17747831545949205,
         "coverage": 0.21002,
-        "representativeness": 0.6257891171991063
+        "representativeness": 0.8450543541543284
       },
       {
         "view": "Salary IN [5000, 20000]",
-        "rank": 11,
-        "use": 0.08992318785926268,
+        "rank": 7,
+        "use": 0.14696742133719792,
         "coverage": 0.15404,
-        "representativeness": 0.583765176962235
+        "representativeness": 0.9540860902181116
       },
       {
         "view": "Salary IN (20000, 35000]",
         "rank": 52,
-        "use": 0.03271681382897687,
+        "use": 0.055935586538105105,
         "coverage": 0.057935,
-        "representativeness": 0.5647158682830218
+        "representativeness": 0.9654886776232865
       },
       {
         "view": "Rate IN (3.07, 4.75]",
-        "rank": 435,
-        "use": 0.00112032178873035,
+        "rank": 410,
+        "use": 0.0017119723970698058,
         "coverage": 0.001955,
-        "representativeness": 0.5730546233914833
+        "representativeness": 0.8756892056623047
       },
       {
         "view": "Salary IN (35000, 50000]",
         "rank": 642,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5654006788441397
+        "representativeness": 0.966786794540767
       },
       {
         "view": "Salary IN (50000, 70000]",
         "rank": 643,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5827787767908178
+        "representativeness": 0.9707614818652384
       },
       {
         "view": "Salary IN (70000, 85000]",
         "rank": 644,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5653477869682573
+        "representativeness": 0.9622802944822102
       },
       {
         "view": "Salary IN (85000, 100000]",
         "rank": 645,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5655366274346241
+        "representativeness": 0.9599866884073176
       },
       {
         "view": "Rate IN (4.75, 5.95]",
         "rank": 646,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.569160509252278
+        "representativeness": 0.8408403490140741
       },
       {
         "view": "Rate IN (5.95, 7]",
         "rank": 647,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5866521719361626
+        "representativeness": 0.8531425549491202
       },
       {
         "view": "Rate IN (7, 9.3]",
         "rank": 648,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5542281460348594
+        "representativeness": 0.8293005927174326
       },
       {
         "view": "Rate='NA'",
         "rank": 649,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5004670632958184
+        "representativeness": 0.5344944718792868
       }
     ]
   },
@@ -1759,6 +1759,64 @@
     {
       "round": 4,
       "view": "Salary IN [5000, 20000] AND Rate IN [0, 3.07]",
+      "attr": "MarriedExemp",
+      "bins": [
+        "[0, 174]",
+        "(174, 4200]",
+        "(4200, 24500]"
+      ],
+      "noisy_h1": [
+        10547.571,
+        863.297,
+        310.447
+      ],
+      "noisy_h2": [
+        15274.634,
+        2595.791,
+        1201.42
+      ],
+      "exact_n": [
+        15314,
+        2542,
+        1196
+      ],
+      "exact_h1": [
+        10566,
+        857,
+        333
+      ],
+      "exact_h2": [
+        15314,
+        2542,
+        1196
+      ],
+      "hd_gamma": 1.5761977610519189,
+      "utility": 1.5761977610519189,
+      "n_candidates": 107,
+      "bins_clearing_2sigma": [
+        "[0, 174]",
+        "(174, 4200]",
+        "(4200, 24500]"
+      ],
+      "exact_share_q1": [
+        0.8988,
+        0.0729,
+        0.0283
+      ],
+      "exact_share_q2": [
+        0.8038,
+        0.1334,
+        0.0628
+      ],
+      "noisy_total_q1": 11721.315,
+      "noisy_total_q2": 19071.845,
+      "exact_total_q1": 11756,
+      "exact_total_q2": 19052,
+      "exact_abs_diff_total": 7296
+    },
+    {
+      "round": 5,
+      "view": "Salary IN [5000, 20000] AND Rate IN [0, 3.07]",
       "attr": "SingleExemp",
       "bins": [
         "[0, 87]",
@@ -1766,14 +1824,14 @@
         "(2100, 12750]"
       ],
       "noisy_h1": [
-        10615.571,
-        843.297,
-        262.447
+        10633.745,
+        860.038,
+        285.37
       ],
       "noisy_h2": [
-        15255.634,
-        2666.791,
-        1149.42
+        15269.728,
+        2634.52,
+        1100.529
       ],
       "exact_n": [
         15295,
@@ -1792,7 +1850,7 @@
       ],
       "hd_gamma": 1.6105715460927275,
       "utility": 1.6105715460927275,
-      "n_candidates": 107,
+      "n_candidates": 106,
       "bins_clearing_2sigma": [
         "[0, 87]",
         "(87, 2100]",
@@ -1808,64 +1866,6 @@
         0.1372,
         0.06
       ],
-      "noisy_total_q1": 11721.315,
-      "noisy_total_q2": 19071.845,
-      "exact_total_q1": 11756,
-      "exact_total_q2": 19052,
-      "exact_abs_diff_total": 7296
-    },
-    {
-      "round": 5,
-      "view": "Salary IN [5000, 20000] AND Rate IN [0, 3.07]",
-      "attr": "ChildExemp",
-      "bins": [
-        "[0, 103]",
-        "(103, 1500]",
-        "(1500, 3300]"
-      ],
-      "noisy_h1": [
-        10415.745,
-        1243.038,
-        120.37
-      ],
-      "noisy_h2": [
-        15219.728,
-        2080.52,
-        1704.529
-      ],
-      "exact_n": [
-        15245,
-        2059,
-        1748
-      ],
-      "exact_h1": [
-        10416,
-        1220,
-        120
-      ],
-      "exact_h2": [
-        15245,
-        2059,
-        1748
-      ],
-      "hd_gamma": 1.5530614528441204,
-      "utility": 1.5530614528441204,
-      "n_candidates": 106,
-      "bins_clearing_2sigma": [
-        "[0, 103]",
-        "(103, 1500]",
-        "(1500, 3300]"
-      ],
-      "exact_share_q1": [
-        0.886,
-        0.1038,
-        0.0102
-      ],
-      "exact_share_q2": [
-        0.8002,
-        0.1081,
-        0.0917
-      ],
       "noisy_total_q1": 11779.153000000002,
       "noisy_total_q2": 19004.777,
       "exact_total_q1": 11756,
@@ -1874,10 +1874,10 @@
     }
   ],
   "timings": {
-    "view_stage_ms": 0.2251199998681841,
-    "explanation_stage_ms": 65.2011790002689,
-    "mechanism_ms": 65.42629900013708,
-    "cache_build_s": 4.17103155399991
+    "view_stage_ms": 0.26358000104664825,
+    "explanation_stage_ms": 147.33005199923355,
+    "mechanism_ms": 147.5936320002802,
+    "cache_build_s": 5.321490562999315
   },
   "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
 }

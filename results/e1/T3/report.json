@@ -39,10 +39,10 @@
     "eps_H": 0.333333334,
     "tau": 15,
     "gamma": 147.15824350031113,
-    "gamma_R": 200000.0,
+    "gamma_R": 2000.0,
     "|P|": 1792,
     "|Attrs|": 9,
-    "Delta_Use": 8.75e-06,
+    "Delta_Use": 2e-05,
     "laplace_scale_per_bin": 29.999999940000002,
     "sigma_of_released_difference": 59.999999880000004
   },
@@ -50,230 +50,230 @@
     "exact_top_tau": [
       {
         "rank": 1,
-        "view": "MarriedExemp IN [0, 174]",
-        "use": 0.1582135279449314,
-        "coverage": 0.22558,
-        "representativeness": 0.7013632766421287
+        "view": "ChildExemp IN [0, 103]",
+        "use": 0.20670022910480204,
+        "coverage": 0.225165,
+        "representativeness": 0.9179944889516667
       },
       {
         "rank": 2,
-        "view": "ChildExemp IN [0, 103]",
-        "use": 0.15786980852857052,
-        "coverage": 0.225165,
-        "representativeness": 0.701129431876937
+        "view": "MarriedExemp IN [0, 174]",
+        "use": 0.20454676058903906,
+        "coverage": 0.22558,
+        "representativeness": 0.9067592897820687
       },
       {
         "rank": 3,
         "view": "SingleExemp IN [0, 87]",
-        "use": 0.1577824691358025,
+        "use": 0.20397266085916493,
         "coverage": 0.225105,
-        "representativeness": 0.700928318499378
+        "representativeness": 0.9061223022996598
       },
       {
         "rank": 4,
         "view": "Rate IN [0, 3.07]",
-        "use": 0.1424389899112746,
+        "use": 0.19234704682083748,
         "coverage": 0.227615,
-        "representativeness": 0.6257891171991063
+        "representativeness": 0.8450543541543284
       },
       {
         "rank": 5,
         "view": "MarriedExemp IN [0, 174] AND ChildExemp IN [0, 103]",
-        "use": 0.14112416979044842,
+        "use": 0.1850790298379239,
         "coverage": 0.211645,
-        "representativeness": 0.6667966159864321
+        "representativeness": 0.8744786309051662
       },
       {
         "rank": 6,
         "view": "SingleExemp IN [0, 87] AND ChildExemp IN [0, 103]",
-        "use": 0.14075839611188748,
+        "use": 0.184620458803291,
         "coverage": 0.211195,
-        "representativeness": 0.6664854570983568
+        "representativeness": 0.8741705949633799
       },
       {
         "rank": 7,
         "view": "Rate IN [0, 3.07] AND MarriedExemp IN [0, 174]",
-        "use": 0.13017795905779395,
+        "use": 0.17725941458165462,
         "coverage": 0.212685,
-        "representativeness": 0.6120692999402587
+        "representativeness": 0.8334363710729699
       },
       {
         "rank": 8,
         "view": "Rate IN [0, 3.07] AND SingleExemp IN [0, 87]",
-        "use": 0.13012451397402275,
+        "use": 0.1772474595739126,
         "coverage": 0.212605,
-        "representativeness": 0.6120482301640261
+        "representativeness": 0.833693749318749
       },
       {
         "rank": 9,
         "view": "Rate IN [0, 3.07] AND ChildExemp IN [0, 103]",
-        "use": 0.13009659226277087,
+        "use": 0.1748043770044602,
         "coverage": 0.212585,
-        "representativeness": 0.6119744679199891
+        "representativeness": 0.8222799209937681
       },
       {
         "rank": 10,
         "view": "SingleExemp IN [0, 87] AND MarriedExemp IN [0, 174]",
-        "use": 0.1242507383284489,
+        "use": 0.16065311530152404,
         "coverage": 0.197675,
-        "representativeness": 0.6285607098947713
+        "representativeness": 0.8127133694272116
       },
       {
         "rank": 11,
         "view": "Gender='F'",
-        "use": 0.08525544862542156,
+        "use": 0.12649330143232246,
         "coverage": 0.12774,
-        "representativeness": 0.6674138768234035
+        "representativeness": 0.9902403431370163
       },
       {
         "rank": 12,
-        "view": "MaritalStatus='S' AND MarriedExemp IN [0, 174]",
-        "use": 0.08464277780366523,
-        "coverage": 0.12687,
-        "representativeness": 0.6671614865899363
+        "view": "HasChild='N' AND ChildExemp IN [0, 103]",
+        "use": 0.12507581124946923,
+        "coverage": 0.12633,
+        "representativeness": 0.990072122611171
       },
       {
         "rank": 13,
-        "view": "MaritalStatus='S'",
-        "use": 0.08464277780366522,
-        "coverage": 0.12687,
-        "representativeness": 0.6671614865899362
+        "view": "Gender='M'",
+        "use": 0.1240239032694998,
+        "coverage": 0.12527,
+        "representativeness": 0.990052712297436
       },
       {
         "rank": 14,
         "view": "HasChild='Y'",
-        "use": 0.0844291094894406,
+        "use": 0.12042912710983718,
         "coverage": 0.12668,
-        "representativeness": 0.6664754459223288
+        "representativeness": 0.9506561975831795
       },
       {
         "rank": 15,
-        "view": "HasChild='N' AND ChildExemp IN [0, 103]",
-        "use": 0.08424412923257331,
+        "view": "HasChild='N'",
+        "use": 0.12022284895291616,
         "coverage": 0.12633,
-        "representativeness": 0.6668576682701917
+        "representativeness": 0.9516571594468152
       }
     ],
     "retained": [
       {
         "noisy_rank": 1,
         "view": "ChildExemp IN [0, 103]",
-        "exact_rank": 2,
-        "use": 0.15786980852857052,
+        "exact_rank": 1,
+        "use": 0.20670022910480204,
         "coverage": 0.225165,
-        "representativeness": 0.701129431876937
+        "representativeness": 0.9179944889516667
       },
       {
         "noisy_rank": 2,
-        "view": "MarriedExemp IN [0, 174]",
-        "exact_rank": 1,
-        "use": 0.1582135279449314,
-        "coverage": 0.22558,
-        "representativeness": 0.7013632766421287
+        "view": "SingleExemp IN [0, 87]",
+        "exact_rank": 3,
+        "use": 0.20397266085916493,
+        "coverage": 0.225105,
+        "representativeness": 0.9061223022996598
       },
       {
         "noisy_rank": 3,
-        "view": "SingleExemp IN [0, 87]",
-        "exact_rank": 3,
-        "use": 0.1577824691358025,
-        "coverage": 0.225105,
-        "representativeness": 0.700928318499378
+        "view": "MarriedExemp IN [0, 174]",
+        "exact_rank": 2,
+        "use": 0.20454676058903906,
+        "coverage": 0.22558,
+        "representativeness": 0.9067592897820687
       },
       {
         "noisy_rank": 4,
-        "view": "MarriedExemp IN [0, 174] AND ChildExemp IN [0, 103]",
-        "exact_rank": 5,
-        "use": 0.14112416979044842,
-        "coverage": 0.211645,
-        "representativeness": 0.6667966159864321
+        "view": "Rate IN [0, 3.07]",
+        "exact_rank": 4,
+        "use": 0.19234704682083748,
+        "coverage": 0.227615,
+        "representativeness": 0.8450543541543284
       },
       {
         "noisy_rank": 5,
         "view": "SingleExemp IN [0, 87] AND ChildExemp IN [0, 103]",
         "exact_rank": 6,
-        "use": 0.14075839611188748,
+        "use": 0.184620458803291,
         "coverage": 0.211195,
-        "representativeness": 0.6664854570983568
+        "representativeness": 0.8741705949633799
       },
       {
         "noisy_rank": 6,
-        "view": "Rate IN [0, 3.07]",
-        "exact_rank": 4,
-        "use": 0.1424389899112746,
-        "coverage": 0.227615,
-        "representativeness": 0.6257891171991063
+        "view": "MarriedExemp IN [0, 174] AND ChildExemp IN [0, 103]",
+        "exact_rank": 5,
+        "use": 0.1850790298379239,
+        "coverage": 0.211645,
+        "representativeness": 0.8744786309051662
       },
       {
         "noisy_rank": 7,
-        "view": "Rate IN [0, 3.07] AND ChildExemp IN [0, 103]",
-        "exact_rank": 9,
-        "use": 0.13009659226277087,
-        "coverage": 0.212585,
-        "representativeness": 0.6119744679199891
+        "view": "Rate IN [0, 3.07] AND SingleExemp IN [0, 87]",
+        "exact_rank": 8,
+        "use": 0.1772474595739126,
+        "coverage": 0.212605,
+        "representativeness": 0.833693749318749
       },
       {
         "noisy_rank": 8,
-        "view": "Rate IN [0, 3.07] AND SingleExemp IN [0, 87]",
-        "exact_rank": 8,
-        "use": 0.13012451397402275,
-        "coverage": 0.212605,
-        "representativeness": 0.6120482301640261
+        "view": "Rate IN [0, 3.07] AND MarriedExemp IN [0, 174]",
+        "exact_rank": 7,
+        "use": 0.17725941458165462,
+        "coverage": 0.212685,
+        "representativeness": 0.8334363710729699
       },
       {
         "noisy_rank": 9,
-        "view": "Rate IN [0, 3.07] AND MarriedExemp IN [0, 174]",
-        "exact_rank": 7,
-        "use": 0.13017795905779395,
-        "coverage": 0.212685,
-        "representativeness": 0.6120692999402587
+        "view": "Rate IN [0, 3.07] AND ChildExemp IN [0, 103]",
+        "exact_rank": 9,
+        "use": 0.1748043770044602,
+        "coverage": 0.212585,
+        "representativeness": 0.8222799209937681
       },
       {
         "noisy_rank": 10,
         "view": "SingleExemp IN [0, 87] AND MarriedExemp IN [0, 174]",
         "exact_rank": 10,
-        "use": 0.1242507383284489,
+        "use": 0.16065311530152404,
         "coverage": 0.197675,
-        "representativeness": 0.6285607098947713
+        "representativeness": 0.8127133694272116
       },
       {
         "noisy_rank": 11,
         "view": "Gender='F'",
         "exact_rank": 11,
-        "use": 0.08525544862542156,
+        "use": 0.12649330143232246,
         "coverage": 0.12774,
-        "representativeness": 0.6674138768234035
+        "representativeness": 0.9902403431370163
       },
       {
         "noisy_rank": 12,
-        "view": "HasChild='N'",
-        "exact_rank": 15,
-        "use": 0.08424412923257331,
+        "view": "HasChild='N' AND ChildExemp IN [0, 103]",
+        "exact_rank": 12,
+        "use": 0.12507581124946923,
         "coverage": 0.12633,
-        "representativeness": 0.6668576682701917
+        "representativeness": 0.990072122611171
       },
       {
         "noisy_rank": 13,
-        "view": "MaritalStatus='S'",
+        "view": "Gender='M'",
         "exact_rank": 13,
-        "use": 0.08464277780366522,
-        "coverage": 0.12687,
-        "representativeness": 0.6671614865899362
+        "use": 0.1240239032694998,
+        "coverage": 0.12527,
+        "representativeness": 0.990052712297436
       },
       {
         "noisy_rank": 14,
-        "view": "MaritalStatus='S' AND MarriedExemp IN [0, 174]",
-        "exact_rank": 12,
-        "use": 0.08464277780366523,
-        "coverage": 0.12687,
-        "representativeness": 0.6671614865899363
+        "view": "HasChild='N'",
+        "exact_rank": 15,
+        "use": 0.12022284895291616,
+        "coverage": 0.12633,
+        "representativeness": 0.9516571594468152
       },
       {
         "noisy_rank": 15,
-        "view": "HasChild='N' AND ChildExemp IN [0, 103]",
+        "view": "MaritalStatus='S' AND MarriedExemp IN [0, 174]",
         "exact_rank": 16,
-        "use": 0.08424412923257331,
-        "coverage": 0.12633,
-        "representativeness": 0.6668576682701917
+        "use": 0.11995769128345429,
+        "coverage": 0.12687,
+        "representativeness": 0.945516601903163
       }
     ],
     "overlap_with_exact_top_tau": 0.9333333333333333,
@@ -283,100 +283,101 @@
       "SingleExemp IN [0, 87]": 4,
       "Rate IN [0, 3.07]": 4,
       "HasChild='N'": 2,
-      "MaritalStatus='S'": 2,
-      "Gender='F'": 1
+      "Gender='F'": 1,
+      "Gender='M'": 1,
+      "MaritalStatus='S'": 1
     },
     "query_attribute_views": [
       {
         "view": "Rate IN [0, 3.07]",
         "rank": 4,
-        "use": 0.1424389899112746,
+        "use": 0.19234704682083748,
         "coverage": 0.227615,
-        "representativeness": 0.6257891171991063
+        "representativeness": 0.8450543541543284
       },
       {
         "view": "Salary IN (50000, 70000]",
-        "rank": 41,
-        "use": 0.049676062933649304,
+        "rank": 38,
+        "use": 0.08274770871419292,
         "coverage": 0.08524,
-        "representativeness": 0.5827787767908178
+        "representativeness": 0.9707614818652384
       },
       {
         "view": "Salary IN (70000, 85000]",
-        "rank": 42,
-        "use": 0.04791039820662496,
+        "rank": 39,
+        "use": 0.0815484435558949,
         "coverage": 0.084745,
-        "representativeness": 0.5653477869682573
+        "representativeness": 0.9622802944822102
       },
       {
         "view": "Salary IN (85000, 100000]",
-        "rank": 43,
-        "use": 0.046953678492759665,
+        "rank": 40,
+        "use": 0.07970289480501755,
         "coverage": 0.083025,
-        "representativeness": 0.5655366274346241
+        "representativeness": 0.9599866884073176
       },
       {
         "view": "Rate IN (3.07, 4.75]",
         "rank": 86,
-        "use": 0.014552722161026719,
+        "use": 0.02223812737779423,
         "coverage": 0.025395,
-        "representativeness": 0.5730546233914833
+        "representativeness": 0.8756892056623047
       },
       {
         "view": "Salary IN [5000, 20000]",
         "rank": 470,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.583765176962235
+        "representativeness": 0.9540860902181116
       },
       {
         "view": "Salary IN (20000, 35000]",
         "rank": 471,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5647158682830218
+        "representativeness": 0.9654886776232865
       },
       {
         "view": "Salary IN (35000, 50000]",
         "rank": 472,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5654006788441397
+        "representativeness": 0.966786794540767
       },
       {
         "view": "Rate IN (4.75, 5.95]",
         "rank": 473,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.569160509252278
+        "representativeness": 0.8408403490140741
       },
       {
         "view": "Rate IN (5.95, 7]",
         "rank": 474,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5866521719361626
+        "representativeness": 0.8531425549491202
       },
       {
         "view": "Rate IN (7, 9.3]",
         "rank": 475,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5542281460348594
+        "representativeness": 0.8293005927174326
       },
       {
         "view": "Rate='NA'",
         "rank": 476,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5004670632958184
+        "representativeness": 0.5344944718792868
       }
     ]
   },
   "explanations": [
     {
       "round": 1,
-      "view": "MaritalStatus='S'",
+      "view": "Gender='M'",
       "attr": "State",
       "bins": [
         "PR",
@@ -433,7 +434,7 @@
         "MI"
       ],
       "noisy_h1": [
-        939.364,
+        926.364,
         -1.952,
         -105.241,
         -17.797,
@@ -448,46 +449,46 @@
         21.354,
         76.643,
         68.351,
-        873.784,
+        875.784,
         61.824,
         36.696,
         -1.143,
         -14.476,
         3.144,
-        801.142,
+        821.142,
         -17.125,
         -45.488,
         12.54,
-        814.709,
+        791.709,
         -188.424,
         6.69,
         -2.713,
-        970.149,
+        943.149,
         -37.065,
         16.524,
         -33.329,
         22.596,
         -28.096,
-        841.398,
+        847.398,
         22.756,
-        816.706,
-        821.785,
+        821.706,
+        785.785,
         41.974,
         6.316,
         -17.384,
         21.122,
         6.054,
-        841.069,
-        846.889,
+        862.069,
+        844.889,
         -126.713,
         17.029,
-        846.596,
+        801.596,
         -15.857,
         25.206,
         122.184
       ],
       "noisy_h2": [
-        885.668,
+        872.668,
         -52.883,
         -21.416,
         81.777,
@@ -495,107 +496,107 @@
         19.513,
         -17.095,
         -15.997,
-        842.011,
+        806.011,
         -29.711,
-        858.387,
+        812.387,
         11.518,
         0.491,
         -50.158,
         -7.178,
-        921.868,
-        770.211,
-        812.468,
+        923.868,
+        822.211,
+        787.468,
         -33.871,
         -22.179,
         -16.488,
-        851.821,
+        871.821,
         23.33,
         -38.205,
         -27.681,
-        769.128,
+        746.128,
         13.776,
         43.952,
         31.846,
-        916.321,
+        889.321,
         -61.71,
         18.256,
         2.727,
         23.914,
-        399.859,
-        776.879,
+        375.859,
+        782.879,
         -20.992,
-        847.988,
-        859.251,
+        852.988,
+        823.251,
         21.781,
-        803.059,
-        713.693,
+        805.059,
+        650.693,
         100.195,
         7.912,
-        807.421,
-        865.422,
+        828.421,
+        863.422,
         49.808,
         -4.37,
-        900.825,
+        855.825,
         25.265,
         1.257,
-        775.747
+        779.747
       ],
       "exact_n": [
-        2016,
-        1981,
-        2009,
-        1976,
-        2017,
+        1945,
+        1946,
+        1996,
+        1974,
         1977,
-        2025,
-        1945,
-        1951,
-        1963,
-        1972,
-        1869,
-        1978,
-        1931,
-        1958,
-        1941,
-        1896,
-        1985,
-        1975,
-        1932,
-        1932,
-        1972,
-        1944,
-        1955,
-        1941,
-        1932,
-        1936,
+        1965,
         1926,
-        1901,
-        1932,
-        1942,
-        1885,
         1931,
-        1924,
-        1969,
-        1911,
-        1874,
-        1912,
-        1944,
-        1958,
-        1896,
+        1950,
+        1916,
         1945,
-        1897,
-        1850,
-        1870,
-        1874,
-        1890,
-        1880,
+        1954,
         1876,
-        1871,
-        1849,
-        1830
+        1937,
+        1935,
+        1985,
+        1941,
+        1944,
+        1947,
+        1949,
+        1940,
+        1926,
+        1932,
+        1934,
+        1911,
+        1885,
+        1895,
+        1943,
+        1881,
+        1875,
+        1876,
+        1881,
+        1940,
+        1881,
+        1883,
+        1912,
+        1902,
+        1873,
+        1857,
+        1953,
+        1854,
+        1870,
+        1901,
+        1920,
+        1854,
+        1865,
+        1905,
+        1845,
+        1822,
+        1875,
+        1808,
+        1788
       ],
       "exact_h1": [
-        901,
+        888,
         0,
         0,
         0,
@@ -610,13 +611,17 @@
         0,
         0,
         0,
-        860,
+        862,
         0,
         0,
         0,
         0,
         0,
-        854,
+        874,
+        0,
+        0,
+        0,
+        843,
         0,
         0,
         0,
@@ -624,32 +629,28 @@
         0,
         0,
         0,
-        893,
+        0,
+        0,
+        851,
+        0,
+        852,
+        811,
         0,
         0,
         0,
         0,
         0,
-        845,
-        0,
-        847,
-        847,
+        848,
+        848,
         0,
         0,
-        0,
-        0,
-        0,
-        827,
-        850,
-        0,
-        0,
-        865,
+        820,
         0,
         0,
         0
       ],
       "exact_h2": [
-        901,
+        888,
         0,
         0,
         0,
@@ -657,20 +658,24 @@
         0,
         0,
         0,
-        909,
+        873,
         0,
-        883,
-        0,
-        0,
-        0,
-        0,
-        860,
-        847,
-        902,
+        837,
         0,
         0,
         0,
-        854,
+        0,
+        862,
+        899,
+        877,
+        0,
+        0,
+        0,
+        874,
+        0,
+        0,
+        0,
+        843,
         0,
         0,
         0,
@@ -678,32 +683,28 @@
         0,
         0,
         0,
-        893,
+        0,
+        382,
+        851,
+        0,
+        852,
+        811,
+        0,
+        839,
+        814,
         0,
         0,
+        848,
+        848,
         0,
         0,
-        406,
-        845,
-        0,
-        847,
-        847,
-        0,
-        837,
-        877,
+        820,
         0,
         0,
-        827,
-        850,
-        0,
-        0,
-        865,
-        0,
-        0,
-        803
+        807
       ],
-      "hd_gamma": 3.1143516041366404,
-      "utility": 3.1143516041366404,
+      "hd_gamma": 3.094228705877824,
+      "utility": 3.094228705877824,
       "n_candidates": 112,
       "bins_clearing_2sigma": [
         "OH",
@@ -719,7 +720,7 @@
         "MI"
       ],
       "exact_share_q1": [
-        0.0953,
+        0.0948,
         0.0,
         0.0,
         0.0,
@@ -733,41 +734,41 @@
         0.0,
         0.0,
         0.0,
+        0.0,
+        0.0921,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0933,
+        0.0,
+        0.0,
+        0.0,
+        0.09,
+        0.0,
+        0.0,
+        0.0,
+        0.0925,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0909,
         0.0,
         0.091,
+        0.0866,
         0.0,
         0.0,
         0.0,
         0.0,
         0.0,
-        0.0903,
+        0.0906,
+        0.0906,
         0.0,
         0.0,
-        0.0,
-        0.0916,
-        0.0,
-        0.0,
-        0.0,
-        0.0944,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0894,
-        0.0,
-        0.0896,
-        0.0896,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0875,
-        0.0899,
-        0.0,
-        0.0,
-        0.0915,
+        0.0876,
         0.0,
         0.0,
         0.0
@@ -781,60 +782,60 @@
         0.0,
         0.0,
         0.0,
-        0.0571,
+        0.0556,
         0.0,
-        0.0555,
+        0.0533,
         0.0,
         0.0,
+        0.0,
+        0.0,
+        0.0549,
+        0.0573,
+        0.0559,
+        0.0,
+        0.0,
+        0.0,
+        0.0557,
+        0.0,
+        0.0,
+        0.0,
+        0.0537,
+        0.0,
+        0.0,
+        0.0,
+        0.0552,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0243,
+        0.0542,
+        0.0,
+        0.0543,
+        0.0517,
+        0.0,
+        0.0535,
+        0.0519,
         0.0,
         0.0,
         0.054,
-        0.0532,
-        0.0567,
+        0.054,
         0.0,
         0.0,
-        0.0,
-        0.0536,
-        0.0,
+        0.0523,
         0.0,
         0.0,
-        0.0544,
-        0.0,
-        0.0,
-        0.0,
-        0.0561,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0255,
-        0.0531,
-        0.0,
-        0.0532,
-        0.0532,
-        0.0,
-        0.0526,
-        0.0551,
-        0.0,
-        0.0,
-        0.052,
-        0.0534,
-        0.0,
-        0.0,
-        0.0543,
-        0.0,
-        0.0,
-        0.0504
+        0.0514
       ],
-      "noisy_total_q1": 9332.872,
-      "noisy_total_q2": 15435.556999999999,
-      "exact_total_q1": 9455,
-      "exact_total_q2": 15919,
-      "exact_abs_diff_total": 6464
+      "noisy_total_q1": 9240.872,
+      "noisy_total_q2": 15207.556999999999,
+      "exact_total_q1": 9363,
+      "exact_total_q2": 15691,
+      "exact_abs_diff_total": 6328
     },
     {
       "round": 2,
-      "view": "HasChild='N'",
+      "view": "HasChild='N' AND ChildExemp IN [0, 103]",
       "attr": "State",
       "bins": [
         "PR",
@@ -1291,114 +1292,56 @@
     },
     {
       "round": 3,
-      "view": "MaritalStatus='S'",
+      "view": "Gender='M'",
       "attr": "HasChild",
       "bins": [
         "N",
         "Y"
       ],
       "noisy_h1": [
-        4754.937,
-        4750.412
+        4709.937,
+        4703.412
       ],
       "noisy_h2": [
-        7977.673,
-        8000.879
+        7903.673,
+        7846.879
       ],
       "exact_n": [
-        50405,
-        50041
+        49755,
+        49571
       ],
       "exact_h1": [
-        4726,
-        4729
+        4681,
+        4682
       ],
       "exact_h2": [
-        7956,
-        7963
+        7882,
+        7809
       ],
-      "hd_gamma": 0.12833191458934795,
-      "utility": 0.12833191458934795,
+      "hd_gamma": 0.12704004828535342,
+      "utility": 0.12704004828535342,
       "n_candidates": 110,
       "bins_clearing_2sigma": [
         "N",
         "Y"
       ],
       "exact_share_q1": [
-        0.4998,
-        0.5002
+        0.4999,
+        0.5001
       ],
       "exact_share_q2": [
-        0.4998,
-        0.5002
+        0.5023,
+        0.4977
       ],
-      "noisy_total_q1": 9505.349,
-      "noisy_total_q2": 15978.552,
-      "exact_total_q1": 9455,
-      "exact_total_q2": 15919,
-      "exact_abs_diff_total": 6464
+      "noisy_total_q1": 9413.349,
+      "noisy_total_q2": 15750.552,
+      "exact_total_q1": 9363,
+      "exact_total_q2": 15691,
+      "exact_abs_diff_total": 6328
     },
     {
       "round": 4,
-      "view": "Rate IN [0, 3.07]",
-      "attr": "MarriedExemp",
-      "bins": [
-        "[0, 174]",
-        "(174, 4200]",
-        "(4200, 24500]"
-      ],
-      "noisy_h1": [
-        18892.143,
-        -14.847,
-        -4.533
-      ],
-      "noisy_h2": [
-        23598.753,
-        2114.654,
-        906.946
-      ],
-      "exact_n": [
-        57778,
-        6642,
-        2809
-      ],
-      "exact_h1": [
-        18893,
-        0,
-        0
-      ],
-      "exact_h2": [
-        23644,
-        2074,
-        912
-      ],
-      "hd_gamma": 0.696015208864853,
-      "utility": 0.696015208864853,
-      "n_candidates": 109,
-      "bins_clearing_2sigma": [
-        "[0, 174]",
-        "(174, 4200]",
-        "(4200, 24500]"
-      ],
-      "exact_share_q1": [
-        1.0,
-        0.0,
-        0.0
-      ],
-      "exact_share_q2": [
-        0.8879,
-        0.0779,
-        0.0342
-      ],
-      "noisy_total_q1": 18872.763,
-      "noisy_total_q2": 26620.353,
-      "exact_total_q1": 18893,
-      "exact_total_q2": 26630,
-      "exact_abs_diff_total": 7737
-    },
-    {
-      "round": 5,
-      "view": "MarriedExemp IN [0, 174]",
+      "view": "ChildExemp IN [0, 103]",
       "attr": "Salary",
       "bins": [
         "[5000, 20000]",
@@ -1409,28 +1352,28 @@
         "(85000, 100000]"
       ],
       "noisy_h1": [
-        -180.033,
-        -30.874,
-        -11.084,
-        6254.234,
-        6344.076,
-        6287.474
+        -0.857,
+        -14.847,
+        -4.533,
+        6204.753,
+        6374.654,
+        6303.946
       ],
       "noisy_h2": [
-        -71.071,
-        14.813,
-        -14.658,
-        8790.89,
-        8787.838,
-        8626.798
+        1.385,
+        -0.297,
+        -26.463,
+        8804.287,
+        8703.555,
+        8767.303
       ],
       "exact_n": [
-        27077,
-        20147,
-        20291,
-        26710,
-        20246,
-        20384
+        27085,
+        20184,
+        20327,
+        26690,
+        20117,
+        20190
       ],
       "exact_h1": [
         0,
@@ -1444,13 +1387,13 @@
         0,
         0,
         0,
-        8803,
-        8813,
-        8607
+        8786,
+        8759,
+        8595
       ],
-      "hd_gamma": 0.32854627382455687,
-      "utility": 0.32854627382455687,
-      "n_candidates": 108,
+      "hd_gamma": 0.32657034882842984,
+      "utility": 0.32657034882842984,
+      "n_candidates": 109,
       "bins_clearing_2sigma": [
         "(50000, 70000]",
         "(70000, 85000]",
@@ -1468,22 +1411,80 @@
         0.0,
         0.0,
         0.0,
-        0.3357,
         0.3361,
-        0.3282
+        0.3351,
+        0.3288
       ],
-      "noisy_total_q1": 18663.792999999998,
-      "noisy_total_q2": 26134.61,
+      "noisy_total_q1": 18863.116,
+      "noisy_total_q2": 26249.77,
       "exact_total_q1": 18893,
-      "exact_total_q2": 26223,
-      "exact_abs_diff_total": 7330
+      "exact_total_q2": 26140,
+      "exact_abs_diff_total": 7247
+    },
+    {
+      "round": 5,
+      "view": "Rate IN [0, 3.07] AND SingleExemp IN [0, 87]",
+      "attr": "MarriedExemp",
+      "bins": [
+        "[0, 174]",
+        "(174, 4200]",
+        "(4200, 24500]"
+      ],
+      "noisy_h1": [
+        18821.929,
+        14.813,
+        -14.658
+      ],
+      "noisy_h2": [
+        20629.89,
+        2048.838,
+        931.798
+      ],
+      "exact_n": [
+        48313,
+        6642,
+        2809
+      ],
+      "exact_h1": [
+        18893,
+        0,
+        0
+      ],
+      "exact_h2": [
+        20642,
+        2074,
+        912
+      ],
+      "hd_gamma": 0.6500870837745996,
+      "utility": 0.6500870837745996,
+      "n_candidates": 108,
+      "bins_clearing_2sigma": [
+        "[0, 174]",
+        "(174, 4200]",
+        "(4200, 24500]"
+      ],
+      "exact_share_q1": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "exact_share_q2": [
+        0.8736,
+        0.0878,
+        0.0386
+      ],
+      "noisy_total_q1": 18822.084,
+      "noisy_total_q2": 23610.525999999998,
+      "exact_total_q1": 18893,
+      "exact_total_q2": 23628,
+      "exact_abs_diff_total": 4735
     }
   ],
   "timings": {
-    "view_stage_ms": 0.19600699988586712,
-    "explanation_stage_ms": 85.58095500029594,
-    "mechanism_ms": 85.77696200018181,
-    "cache_build_s": 4.394281399000192
+    "view_stage_ms": 0.1779850008460926,
+    "explanation_stage_ms": 73.66160699893953,
+    "mechanism_ms": 73.83959199978563,
+    "cache_build_s": 5.63657055099975
   },
   "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
 }

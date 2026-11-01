@@ -1,531 +1,531 @@
 rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
-1,race='White',0.0745689,0.102084,0.730464,41762,2812,2174
-2,gender='Male',0.059663,0.0851931,0.700326,32650,2459,1702
-3,race='White' AND gender='Male',0.0533802,0.0779043,0.685203,28735,2283,1522
-4,workclass='Private',0.0456043,0.0646984,0.704875,33906,1871,1289
-5,workclass='Private' AND race='White',0.0403599,0.0588019,0.686371,29024,1728,1144
-6,education='Masters',0.035816,0.0681176,0.525797,2657,874,2453
-7,workclass='Private' AND gender='Male',0.0334419,0.0509193,0.656763,22307,1542,945
-8,education='Masters' AND race='White',0.0319808,0.0611564,0.522934,2348,813,2174
-9,"hoursPerWeek IN (40, 50]",0.0269085,0.0466197,0.577191,8917,1521,756
-10,education='Bachelors',0.0254779,0.0446542,0.570559,8025,2181,0
-11,education='Masters' AND gender='Male',0.0253631,0.0489742,0.517886,1812,690,1702
-12,"race='White' AND hoursPerWeek IN (40, 50]",0.0245932,0.0430163,0.571719,8179,1405,696
-13,occupation='Prof-specialty',0.0237959,0.042791,0.556095,6172,887,1203
-14,education='Bachelors' AND race='White',0.0230401,0.0409279,0.562943,7034,1999,0
-15,"hoursPerWeek IN (50, 99]",0.0223216,0.0405798,0.550067,5435,1534,448
-16,occupation='Prof-specialty' AND race='White',0.0213254,0.0387781,0.549935,5419,829,1065
-17,occupation='Exec-managerial',0.021037,0.0378772,0.5554,6086,1093,757
-18,"gender='Male' AND hoursPerWeek IN (40, 50]",0.0205518,0.036444,0.563926,7160,1208,572
-19,"race='White' AND hoursPerWeek IN (50, 99]",0.0204179,0.0374063,0.545842,4930,1407,420
-20,education='Bachelors' AND gender='Male',0.0199566,0.0362188,0.551002,5548,1769,0
-21,occupation='Exec-managerial' AND race='White',0.0191231,0.0347447,0.55039,5474,1016,681
-22,workclass='Private' AND education='Masters',0.0185636,0.0361369,0.5137,1376,476,1289
-23,"gender='Male' AND hoursPerWeek IN (50, 99]",0.0179458,0.0330658,0.542729,4564,1251,364
-24,gender='Female',0.0172226,0.0275787,0.624489,16192,596,751
-25,occupation='Exec-managerial' AND gender='Male',0.0166636,0.0308136,0.540786,4338,919,586
-26,education='Masters' AND occupation='Prof-specialty',0.0163845,0.0319397,0.512983,1302,357,1203
-27,"hoursPerWeek IN (32, 40]",0.0163391,0.024221,0.674586,26204,0,1183
-28,"workclass='Private' AND hoursPerWeek IN (40, 50]",0.0162765,0.0291962,0.557486,6345,985,441
-29,workclass='Private' AND education='Bachelors',0.0156794,0.0285615,0.54897,5303,1395,0
-30,occupation='Prof-specialty' AND gender='Male',0.0150803,0.0280701,0.537236,3930,627,744
-31,race='White' AND gender='Female',0.0146356,0.02418,0.605279,13027,529,652
-32,workclass='Private' AND occupation='Exec-managerial',0.0136538,0.025388,0.537805,3995,752,488
-33,"race='White' AND hoursPerWeek IN (32, 40]",0.0133599,0.0204537,0.65318,21572,0,999
-34,"education='Masters' AND hoursPerWeek IN (32, 40]",0.0123969,0.024221,0.511824,1183,0,1183
-35,"education='Masters' AND hoursPerWeek IN (40, 50]",0.0122847,0.0242005,0.507621,756,426,756
-36,"workclass='Private' AND hoursPerWeek IN (50, 99]",0.0121601,0.0229106,0.530762,3202,886,233
-37,"education='Bachelors' AND hoursPerWeek IN (40, 50]",0.0116709,0.0224192,0.520574,2096,1095,0
-38,education='Masters' AND occupation='Exec-managerial',0.0115832,0.0228082,0.507849,779,357,757
-39,"education='Bachelors' AND hoursPerWeek IN (50, 99]",0.0113593,0.022235,0.510876,1086,1086,0
-40,workclass='Private' AND occupation='Prof-specialty',0.0109704,0.020597,0.532621,3409,473,533
-41,education='Masters' AND gender='Female',0.00973446,0.0191434,0.508503,845,184,751
-42,"gender='Male' AND hoursPerWeek IN (32, 40]",0.0094413,0.0150076,0.629103,17001,0,733
-43,"education='Masters' AND hoursPerWeek IN (50, 99]",0.0092558,0.0183449,0.504545,448,448,448
-44,workclass='Local-gov',0.00893344,0.0168503,0.530167,3136,318,505
-45,"occupation='Exec-managerial' AND hoursPerWeek IN (40, 50]",0.00882194,0.0170345,0.517886,1812,551,281
-46,"occupation='Prof-specialty' AND hoursPerWeek IN (40, 50]",0.00846484,0.0164408,0.514869,1497,462,341
-47,occupation='Sales',0.00834267,0.0151509,0.550639,5504,552,188
-48,workclass='Private' AND gender='Female',0.00821171,0.0137791,0.595953,11599,329,344
-49,workclass='Local-gov' AND race='White',0.00795259,0.0151509,0.524893,2559,295,445
-50,education='Bachelors' AND occupation='Exec-managerial',0.00783445,0.015069,0.519905,2025,736,0
-51,"workclass='Private' AND hoursPerWeek IN (32, 40]",0.00770356,0.0120388,0.639893,18974,0,588
-52,occupation='Prof-specialty' AND gender='Female',0.00768351,0.0147209,0.521944,2242,260,459
-53,occupation='Sales' AND race='White',0.00764179,0.0140043,0.545673,4910,509,175
-54,"occupation='Exec-managerial' AND hoursPerWeek IN (50, 99]",0.00757983,0.0148233,0.511345,1134,542,182
-55,occupation='Sales' AND gender='Male',0.00706208,0.0132263,0.533941,3557,488,158
-56,"occupation='Prof-specialty' AND hoursPerWeek IN (32, 40]",0.00692064,0.013083,0.528979,3005,0,639
-57,workclass='Local-gov' AND education='Masters',0.00684916,0.0135539,0.505327,526,157,505
-58,workclass='Local-gov' AND occupation='Prof-specialty',0.00670149,0.013124,0.510631,1061,234,407
-59,"occupation='Prof-specialty' AND hoursPerWeek IN (50, 99]",0.00636544,0.0125097,0.508839,879,425,186
-60,education='Bachelors' AND occupation='Prof-specialty',0.00566287,0.0108513,0.52186,2233,530,0
-61,workclass='Self-emp-not-inc',0.00548263,0.0102166,0.536639,3862,326,173
-62,workclass='Private' AND occupation='Sales',0.00535646,0.00988903,0.541657,4439,372,111
-63,"gender='Female' AND hoursPerWeek IN (32, 40]",0.00533708,0.00921338,0.579275,9203,0,450
-64,"gender='Female' AND hoursPerWeek IN (40, 50]",0.0052645,0.0101757,0.517362,1757,313,184
-65,workclass='Self-emp-not-inc' AND race='White',0.00499751,0.0093567,0.53411,3576,297,160
-66,education='Bachelors' AND occupation='Sales',0.0048912,0.00954097,0.512652,1268,466,0
-67,workclass='Local-gov' AND gender='Male',0.00474541,0.00915196,0.518513,1878,179,268
-68,workclass='Self-emp-not-inc' AND gender='Male',0.00455564,0.00857868,0.531042,3233,285,134
-69,education='Bachelors' AND gender='Female',0.00442126,0.00843536,0.524133,2477,412,0
-70,workclass='Self-emp-inc',0.00426392,0.0082511,0.51677,1695,292,111
-71,workclass='Local-gov' AND gender='Female',0.0039458,0.00769829,0.512555,1258,139,237
-72,workclass='Self-emp-inc' AND race='White',0.00390678,0.00757545,0.515716,1585,273,97
-73,"gender='Female' AND hoursPerWeek IN (50, 99]",0.00382284,0.00751402,0.50876,871,283,84
-74,workclass='Self-emp-inc' AND gender='Male',0.00380456,0.00739118,0.514744,1484,267,94
-75,workclass='State-gov',0.003712,0.00714549,0.519489,1981,123,226
-76,occupation='Exec-managerial' AND gender='Female',0.00365383,0.00706359,0.517276,1748,174,171
-77,"occupation='Sales' AND hoursPerWeek IN (50, 99]",0.00350686,0.0068998,0.508256,820,292,45
-78,"occupation='Sales' AND hoursPerWeek IN (40, 50]",0.00342369,0.00667458,0.512944,1298,260,66
-79,workclass='State-gov' AND race='White',0.00325376,0.00630605,0.515975,1612,113,195
-80,"workclass='Local-gov' AND hoursPerWeek IN (40, 50]",0.00318693,0.00630605,0.505377,531,162,146
-81,"occupation='Exec-managerial' AND hoursPerWeek IN (32, 40]",0.0030622,0.00581467,0.526633,2748,0,284
-82,workclass='State-gov' AND education='Masters',0.00299471,0.00595799,0.502637,259,65,226
-83,"workclass='Local-gov' AND hoursPerWeek IN (32, 40]",0.0029008,0.00558945,0.518978,1927,0,273
-84,education='Masters' AND occupation='Sales',0.00281674,0.00560993,0.5021,206,86,188
-85,race='Black',0.00278328,0.00511855,0.543763,4685,116,134
-86,workclass='State-gov' AND gender='Male',0.00262154,0.00511855,0.512165,1218,97,153
-87,workclass='Self-emp-not-inc' AND education='Masters',0.00258035,0.00513902,0.50211,207,78,173
-88,workclass='Self-emp-not-inc' AND education='Bachelors',0.00256996,0.0050776,0.506138,607,248,0
-89,race='Asian-Pac-Islander',0.00240446,0.00466811,0.515081,1519,107,121
-90,"workclass='Local-gov' AND hoursPerWeek IN (50, 99]",0.00240062,0.00477048,0.503224,317,156,77
-91,workclass='Self-emp-inc' AND education='Bachelors',0.00234354,0.00464764,0.504243,418,227,0
-92,"workclass='Self-emp-not-inc' AND hoursPerWeek IN (50, 99]",0.00233745,0.00458622,0.509668,963,177,47
-93,"workclass='Self-emp-inc' AND hoursPerWeek IN (50, 99]",0.00230779,0.00456574,0.505458,539,180,43
-94,occupation='Adm-clerical',0.00230356,0.00417673,0.551521,5611,109,95
-95,workclass='State-gov' AND occupation='Prof-specialty',0.00217712,0.00429958,0.506357,629,67,143
-96,"workclass='Self-emp-not-inc' AND hoursPerWeek IN (40, 50]",0.00209444,0.00411531,0.508938,889,149,52
-97,workclass='Self-emp-inc' AND occupation='Exec-managerial',0.00200041,0.00395152,0.506237,617,142,51
-98,workclass='Federal-gov',0.00193728,0.00376725,0.514242,1432,77,107
-99,occupation='Adm-clerical' AND race='White',0.00186722,0.00343966,0.542849,4578,88,80
-100,race='Asian-Pac-Islander' AND gender='Male',0.0018275,0.00358298,0.510051,1002,83,92
-101,workclass='Self-emp-inc' AND education='Masters',0.00180585,0.00360346,0.501144,112,65,111
-102,workclass='Federal-gov' AND race='White',0.00170439,0.00333729,0.510709,1069,66,97
-103,workclass='Local-gov' AND education='Bachelors',0.00167146,0.00329634,0.507065,700,161,0
-104,race='Black' AND gender='Male',0.00166039,0.0031735,0.523204,2377,80,75
-105,education='Masters' AND race='Black',0.00165298,0.00329634,0.50146,143,27,134
-106,occupation='Craft-repair',0.00156984,0.00282544,0.55561,6112,106,32
-107,workclass='Private' AND occupation='Adm-clerical',0.00155792,0.00288686,0.539661,4208,84,57
-108,education='Masters' AND race='Asian-Pac-Islander',0.00153995,0.00307113,0.501429,140,29,121
-109,workclass='Private' AND race='Asian-Pac-Islander',0.00153632,0.0030097,0.510454,1043,64,83
-110,occupation='Craft-repair' AND gender='Male',0.00149449,0.00270259,0.552983,5789,103,29
-111,"workclass='Self-emp-inc' AND hoursPerWeek IN (40, 50]",0.00146857,0.00290733,0.505127,506,112,30
-112,occupation='Craft-repair' AND race='White',0.00145433,0.00264117,0.550639,5504,102,27
-113,workclass='Federal-gov' AND gender='Male',0.00145095,0.00284591,0.509835,980,57,82
-114,workclass='Self-emp-not-inc' AND occupation='Sales',0.00135709,0.00268212,0.505978,591,90,41
-115,"workclass='State-gov' AND hoursPerWeek IN (32, 40]",0.00135356,0.00264117,0.512487,1251,0,129
-116,workclass='Self-emp-not-inc' AND occupation='Prof-specialty',0.00134631,0.00266164,0.505818,575,65,65
-117,workclass='Local-gov' AND occupation='Exec-managerial',0.00133978,0.00266164,0.503366,331,54,76
-118,workclass='Federal-gov' AND education='Masters',0.00133381,0.00266164,0.501124,110,23,107
-119,workclass='Private' AND race='Black',0.00132682,0.00249785,0.531186,3249,70,52
-120,occupation='Adm-clerical' AND gender='Male',0.00132614,0.00255927,0.518171,1842,69,56
-121,workclass='Self-emp-not-inc' AND occupation='Exec-managerial',0.00132591,0.0026207,0.505938,587,85,43
-122,workclass='Self-emp-inc' AND occupation='Sales',0.00120795,0.00239548,0.504263,420,85,32
-123,education='Masters' AND occupation='Adm-clerical',0.00117979,0.00235453,0.501073,105,20,95
-124,"workclass='State-gov' AND hoursPerWeek IN (40, 50]",0.00116285,0.00231358,0.502617,257,54,59
-125,occupation='Tech-support',0.00105315,0.00204742,0.514377,1446,49,51
-126,"workclass='State-gov' AND hoursPerWeek IN (50, 99]",0.00103724,0.00206789,0.501592,156,69,32
-127,workclass='State-gov' AND gender='Female',0.00102906,0.00202694,0.507691,763,26,73
-128,race='Black' AND gender='Female',0.00101641,0.00194505,0.522561,2308,36,59
-129,"race='Black' AND hoursPerWeek IN (32, 40]",0.00101004,0.0019041,0.530456,3168,0,93
-130,occupation='Sales' AND gender='Female',0.000999176,0.00192457,0.519168,1947,64,30
-131,occupation='NA',0.000971444,0.00184268,0.527192,2809,48,42
-132,workclass='NA',0.000971276,0.00184268,0.527101,2799,48,42
-133,workclass='NA' AND occupation='NA',0.000971276,0.00184268,0.527101,2799,48,42
-134,education='Bachelors' AND occupation='Craft-repair',0.000968783,0.00192457,0.503376,332,94,0
-135,occupation='Prof-specialty' AND race='Black',0.000938598,0.00186315,0.503769,371,26,65
-136,education='Bachelors' AND occupation='Adm-clerical',0.000925151,0.0018222,0.507711,765,89,0
-137,education='Bachelors' AND race='Black',0.000920407,0.0018222,0.505107,504,89,0
-138,workclass='State-gov' AND occupation='Exec-managerial',0.00089583,0.00178125,0.502921,287,31,56
-139,"race='Asian-Pac-Islander' AND hoursPerWeek IN (40, 50]",0.000883944,0.00176078,0.502019,198,53,33
-140,occupation='Tech-support' AND race='White',0.000870633,0.00169936,0.512331,1235,44,39
-141,workclass='Private' AND occupation='Craft-repair',0.000869238,0.00159699,0.544299,4748,60,18
-142,occupation='Adm-clerical' AND gender='Female',0.000866667,0.00161746,0.53582,3769,40,39
-143,occupation='Prof-specialty' AND race='Asian-Pac-Islander',0.000834082,0.00165841,0.502941,289,23,58
-144,workclass='Self-emp-not-inc' AND gender='Female',0.00082938,0.00163793,0.506357,629,41,39
-145,occupation='Tech-support' AND gender='Male',0.000823107,0.00161746,0.508889,884,40,39
-146,occupation='Farming-fishing',0.000822131,0.00159699,0.514802,1490,65,13
-147,occupation='Farming-fishing' AND race='White',0.00082048,0.00159699,0.513768,1383,65,13
-148,"workclass='Federal-gov' AND hoursPerWeek IN (32, 40]",0.000815047,0.00159699,0.510366,1034,0,78
-149,occupation='Exec-managerial' AND race='Black',0.000814501,0.00161746,0.503568,351,39,40
-150,occupation='NA' AND race='White',0.00081327,0.00155604,0.522654,2318,40,36
-151,workclass='NA' AND race='White',0.000813168,0.00155604,0.522589,2311,40,36
-152,"occupation='Adm-clerical' AND hoursPerWeek IN (40, 50]",0.000808103,0.00159699,0.506018,595,57,21
-153,education='Bachelors' AND race='Asian-Pac-Islander',0.000805108,0.00159699,0.504142,408,78,0
-154,"race='Black' AND hoursPerWeek IN (50, 99]",0.00080298,0.00159699,0.50281,276,63,15
-155,occupation='Farming-fishing' AND gender='Male',0.000799623,0.00155604,0.513884,1395,63,13
-156,"occupation='Sales' AND hoursPerWeek IN (32, 40]",0.000790367,0.00151509,0.521663,2212,0,74
-157,occupation='Other-service',0.000782212,0.00143319,0.545783,4923,43,27
-158,"race='Asian-Pac-Islander' AND hoursPerWeek IN (32, 40]",0.000781961,0.00153556,0.509234,919,0,75
-159,"race='Black' AND hoursPerWeek IN (40, 50]",0.00077456,0.00153556,0.504414,435,53,22
-160,"hoursPerWeek IN [1, 32]",0.000773646,0.0013513,0.572521,8286,0,66
-161,workclass='Private' AND occupation='Tech-support',0.000754084,0.00147414,0.511541,1154,36,36
-162,workclass='Federal-gov' AND occupation='Exec-managerial',0.000741093,0.00147414,0.502729,268,29,43
-163,"occupation='Adm-clerical' AND hoursPerWeek IN (32, 40]",0.000724289,0.0013513,0.535996,3789,0,66
-164,"occupation='Craft-repair' AND hoursPerWeek IN (40, 50]",0.000723972,0.00141272,0.512467,1249,59,10
-165,occupation='Exec-managerial' AND race='Asian-Pac-Islander',0.000688585,0.00137177,0.501968,193,34,33
-166,"race='White' AND hoursPerWeek IN [1, 32]",0.000680466,0.00120798,0.56331,7081,0,59
-167,"education='Masters' AND hoursPerWeek IN [1, 32]",0.000679362,0.0013513,0.502749,270,0,66
-168,occupation='Protective-serv',0.000678539,0.00133082,0.509865,983,47,18
-169,"race='Asian-Pac-Islander' AND hoursPerWeek IN (50, 99]",0.00067773,0.0013513,0.501541,151,54,12
-170,workclass='Local-gov' AND race='Black',0.000660984,0.00131035,0.504434,437,16,48
-171,occupation='Protective-serv' AND gender='Male',0.000645694,0.0012694,0.508661,861,45,17
-172,"occupation='Adm-clerical' AND hoursPerWeek IN (50, 99]",0.00061698,0.00122845,0.502242,220,52,8
-173,education='Masters' AND occupation='Tech-support',0.000614992,0.00122845,0.500624,61,9,51
-174,occupation='NA' AND gender='Male',0.000611854,0.0011875,0.515245,1536,32,26
-175,workclass='NA' AND gender='Male',0.000611774,0.0011875,0.515177,1529,32,26
-176,workclass='State-gov' AND education='Bachelors',0.000598945,0.0011875,0.504374,431,58,0
-177,workclass='Private' AND occupation='Other-service',0.000595199,0.00110561,0.538347,4057,33,21
-178,"workclass='Self-emp-not-inc' AND hoursPerWeek IN (32, 40]",0.000577353,0.00112608,0.512711,1274,0,55
-179,"workclass='Federal-gov' AND hoursPerWeek IN (50, 99]",0.000574705,0.00114655,0.501246,122,43,13
-180,education='Bachelors' AND occupation='Farming-fishing',0.0005746,0.00114655,0.501154,113,56,0
-181,occupation='Protective-serv' AND race='White',0.000561624,0.00110561,0.507978,792,39,15
-182,workclass='Self-emp-not-inc' AND occupation='Farming-fishing',0.000560096,0.00110561,0.506597,653,43,11
-183,workclass='Federal-gov' AND education='Bachelors',0.000556323,0.00110561,0.503184,313,54,0
-184,"occupation='Craft-repair' AND hoursPerWeek IN (50, 99]",0.000548977,0.00108513,0.505908,584,47,6
-185,occupation='Other-service' AND race='White',0.00054883,0.00102371,0.536119,3803,30,20
-186,race='Asian-Pac-Islander' AND gender='Female',0.000548249,0.00108513,0.505237,517,24,29
-187,"occupation='Farming-fishing' AND hoursPerWeek IN (50, 99]",0.000547301,0.00108513,0.504364,430,45,8
-188,workclass='Federal-gov' AND occupation='Prof-specialty',0.000535072,0.00106466,0.502577,253,17,35
-189,workclass='NA' AND education='Masters',0.000533058,0.00106466,0.500685,67,10,42
-190,education='Masters' AND occupation='NA',0.000533058,0.00106466,0.500685,67,10,42
-191,workclass='Self-emp-inc' AND occupation='Prof-specialty',0.000524697,0.00104418,0.502496,245,31,20
-192,"workclass='Federal-gov' AND hoursPerWeek IN (40, 50]",0.000513859,0.00102371,0.501958,192,34,16
-193,workclass='Federal-gov' AND gender='Female',0.000464893,0.000921338,0.504585,452,20,25
-194,"occupation='Tech-support' AND hoursPerWeek IN (40, 50]",0.000452552,0.000900864,0.502354,231,32,12
-195,education='Masters' AND occupation='Craft-repair',0.000450745,0.000900864,0.500348,34,12,32
-196,workclass='Self-emp-inc' AND gender='Female',0.000431807,0.000859916,0.502151,211,25,17
-197,occupation='Transport-moving',0.000428319,0.000818967,0.522999,2355,31,9
-198,education='Bachelors' AND occupation='Protective-serv',0.00042098,0.000839441,0.5015,147,41,0
-199,occupation='Transport-moving' AND gender='Male',0.000416664,0.000798493,0.521813,2228,30,9
-200,education='Bachelors' AND occupation='Tech-support',0.000412364,0.000818967,0.503517,346,40,0
-201,education='Bachelors' AND occupation='Other-service',0.000401353,0.000798493,0.502637,259,39,0
-202,occupation='Other-service' AND gender='Female',0.0003986,0.000757545,0.526174,2698,21,16
-203,workclass='NA' AND education='Bachelors',0.000391014,0.000778019,0.502577,253,38,0
-204,education='Bachelors' AND occupation='NA',0.000391014,0.000778019,0.502577,253,38,0
-205,"occupation='Tech-support' AND hoursPerWeek IN (32, 40]",0.00038585,0.000757545,0.509343,930,0,37
-206,"occupation='Prof-specialty' AND hoursPerWeek IN [1, 32]",0.000384809,0.000757545,0.507968,791,0,37
-207,"workclass='Self-emp-inc' AND hoursPerWeek IN (32, 40]",0.000382709,0.000757545,0.505197,513,0,37
-208,"workclass='NA' AND hoursPerWeek IN (40, 50]",0.000380271,0.000757545,0.501978,194,25,12
-209,"occupation='NA' AND hoursPerWeek IN (40, 50]",0.000380271,0.000757545,0.501978,194,25,12
-210,occupation='Transport-moving' AND race='White',0.000372393,0.000716596,0.519669,2000,28,7
-211,"gender='Female' AND hoursPerWeek IN [1, 32]",0.000365515,0.000675648,0.540985,4361,0,33
-212,"gender='Male' AND hoursPerWeek IN [1, 32]",0.000362953,0.000675648,0.537192,3925,0,33
-213,occupation='Sales' AND race='Asian-Pac-Islander',0.000359519,0.000716596,0.501704,167,25,10
-214,workclass='Self-emp-not-inc' AND occupation='Craft-repair',0.000353656,0.000696122,0.508038,798,26,8
-215,occupation='Other-service' AND gender='Male',0.000352543,0.000675648,0.521785,2225,22,11
-216,occupation='NA' AND gender='Female',0.000335908,0.000655174,0.512701,1273,16,16
-217,workclass='NA' AND gender='Female',0.000335889,0.000655174,0.512672,1270,16,16
-218,education='Masters' AND occupation='Other-service',0.000317577,0.0006347,0.500358,35,4,27
-219,"occupation='Protective-serv' AND hoursPerWeek IN (50, 99]",0.000308053,0.000614225,0.501531,150,27,3
-220,"workclass='Private' AND hoursPerWeek IN [1, 32]",0.000303849,0.000552803,0.549652,5385,0,27
-221,workclass='Private' AND occupation='Transport-moving',0.000297263,0.000573277,0.518532,1880,22,6
-222,workclass='Self-emp-not-inc' AND race='Asian-Pac-Islander',0.000276966,0.000552803,0.501022,100,19,8
-223,education='Bachelors' AND occupation='Transport-moving',0.000276927,0.000552803,0.50095,93,27,0
-224,"occupation='Transport-moving' AND hoursPerWeek IN (50, 99]",0.000268648,0.000532329,0.504665,460,23,3
-225,"occupation='Other-service' AND hoursPerWeek IN (50, 99]",0.000267617,0.000532329,0.502729,268,24,2
-226,"workclass='NA' AND hoursPerWeek IN (50, 99]",0.000266887,0.000532329,0.501358,133,23,3
-227,"occupation='NA' AND hoursPerWeek IN (50, 99]",0.000266887,0.000532329,0.501358,133,23,3
-228,workclass='State-gov' AND occupation='Adm-clerical',0.000257877,0.000511855,0.50381,375,10,15
-229,occupation='Machine-op-inspct',0.000249172,0.000470906,0.529134,3022,12,11
-230,education='Masters' AND occupation='Protective-serv',0.000245791,0.00049138,0.500205,20,6,18
-231,"occupation='NA' AND hoursPerWeek IN (32, 40]",0.000241219,0.000470906,0.512243,1226,0,23
-232,"workclass='NA' AND hoursPerWeek IN (32, 40]",0.000241191,0.000470906,0.512185,1220,0,23
-233,race='Amer-Indian-Eskimo',0.000237697,0.000470906,0.504766,470,11,12
-234,"occupation='Protective-serv' AND hoursPerWeek IN (40, 50]",0.00023614,0.000470906,0.50146,143,20,3
-235,workclass='Local-gov' AND occupation='Protective-serv',0.000227272,0.000450432,0.504565,450,17,5
-236,"occupation='Farming-fishing' AND hoursPerWeek IN (40, 50]",0.000226541,0.000450432,0.502941,289,20,2
-237,workclass='State-gov' AND race='Black',0.000226317,0.000450432,0.502445,240,5,17
-238,education='Masters' AND occupation='Farming-fishing',0.000225281,0.000450432,0.500143,14,9,13
-239,occupation='Tech-support' AND gender='Female',0.000217424,0.000429958,0.505688,562,9,12
-240,race='Other',0.000216751,0.000429958,0.504122,406,9,12
-241,"occupation='Other-service' AND hoursPerWeek IN (40, 50]",0.000216565,0.000429958,0.503689,363,19,2
-242,occupation='Machine-op-inspct' AND race='White',0.000214457,0.000409484,0.523725,2433,11,9
-243,workclass='Self-emp-inc' AND race='Asian-Pac-Islander',0.00020501,0.000409484,0.500654,64,11,9
-244,occupation='Adm-clerical' AND race='Black',0.0001974,0.000389009,0.507443,738,11,8
-245,"workclass='Self-emp-not-inc' AND hoursPerWeek IN [1, 32]",0.000197392,0.000389009,0.507423,736,0,19
-246,"occupation='Tech-support' AND hoursPerWeek IN (50, 99]",0.000194862,0.000389009,0.50092,90,17,2
-247,workclass='Private' AND occupation='Machine-op-inspct',0.000194535,0.000368535,0.527859,2882,9,9
-248,occupation='Machine-op-inspct' AND gender='Male',0.000192272,0.000368535,0.52172,2218,10,8
-249,workclass='Local-gov' AND occupation='Adm-clerical',0.000185842,0.000368535,0.504273,421,5,13
-250,occupation='Sales' AND race='Black',0.000175279,0.000348061,0.503588,353,15,2
-251,"occupation='Other-service' AND hoursPerWeek IN (32, 40]",0.000171742,0.000327587,0.524263,2491,0,16
-252,workclass='Federal-gov' AND occupation='Adm-clerical',0.000165411,0.000327587,0.504936,487,7,9
-253,workclass='State-gov' AND occupation='Protective-serv',0.000164378,0.000327587,0.501785,175,10,6
-254,workclass='Self-emp-inc' AND occupation='Craft-repair',0.000164352,0.000327587,0.501704,167,14,2
-255,education='Masters' AND race='Amer-Indian-Eskimo',0.000163837,0.000327587,0.500133,13,4,12
-256,occupation='Handlers-cleaners',0.000159806,0.000307113,0.520348,2072,11,4
-257,workclass='Private' AND occupation='Farming-fishing',0.000155634,0.000307113,0.506766,670,14,1
-258,occupation='Adm-clerical' AND race='Asian-Pac-Islander',0.000154176,0.000307113,0.502019,198,10,5
-259,"occupation='Craft-repair' AND hoursPerWeek IN (32, 40]",0.00015392,0.000286639,0.536981,3901,0,14
-260,workclass='Federal-gov' AND occupation='Protective-serv',0.000153704,0.000307113,0.500481,47,13,2
-261,occupation='Handlers-cleaners' AND gender='Male',0.000148462,0.000286639,0.517943,1818,10,4
-262,workclass='State-gov' AND race='Asian-Pac-Islander',0.000143589,0.000286639,0.50094,92,4,10
-263,occupation='Handlers-cleaners' AND race='White',0.000137607,0.000266164,0.516999,1719,9,4
-264,race='Amer-Indian-Eskimo' AND gender='Male',0.000133854,0.000266164,0.502901,285,7,6
-265,race='Other' AND gender='Male',0.000133763,0.000266164,0.502556,251,6,7
-266,workclass='Federal-gov' AND occupation='Tech-support',0.000133343,0.000266164,0.500981,96,4,9
-267,education='Masters' AND occupation='Transport-moving',0.00013312,0.000266164,0.500143,14,4,9
-268,education='Masters' AND race='Other',0.000133118,0.000266164,0.500133,13,1,12
-269,"occupation='Protective-serv' AND hoursPerWeek IN (32, 40]",0.000124333,0.00024569,0.506058,599,0,12
-270,workclass='Private' AND race='Other',0.000123625,0.00024569,0.503174,312,5,7
-271,workclass='Federal-gov' AND race='Black',0.000123483,0.00024569,0.502597,255,7,5
-272,education='Bachelors' AND occupation='Machine-op-inspct',0.000123094,0.00024569,0.501011,99,12,0
-273,occupation='Prof-specialty' AND race='Amer-Indian-Eskimo',0.000122966,0.00024569,0.500491,48,5,7
-274,occupation='Prof-specialty' AND race='Other',0.000122958,0.00024569,0.50046,45,4,8
-275,workclass='Self-emp-inc' AND race='Black',0.000122941,0.00024569,0.500389,38,7,5
-276,workclass='Private' AND occupation='Handlers-cleaners',0.000116874,0.000225216,0.51894,1923,8,3
-277,occupation='Other-service' AND race='Black',0.000114476,0.000225216,0.508295,824,7,4
-278,workclass='Private' AND occupation='Protective-serv',0.000113293,0.000225216,0.503042,299,6,5
-279,workclass='Self-emp-not-inc' AND race='Black',0.000112921,0.000225216,0.501388,136,8,3
-280,education='Bachelors' AND occupation='Handlers-cleaners',0.00011279,0.000225216,0.500807,79,11,0
-281,education='Masters' AND occupation='Machine-op-inspct',0.000112636,0.000225216,0.500123,12,0,11
-282,"occupation='Transport-moving' AND hoursPerWeek IN (40, 50]",0.000103429,0.000204742,0.505167,510,8,2
-283,"occupation='Exec-managerial' AND hoursPerWeek IN [1, 32]",0.000103186,0.000204742,0.503981,392,0,10
-284,race='Amer-Indian-Eskimo' AND gender='Female',0.000102757,0.000204742,0.501887,185,4,6
-285,occupation='Tech-support' AND race='Asian-Pac-Islander',0.000102501,0.000204742,0.500634,62,2,8
-286,"workclass='Local-gov' AND hoursPerWeek IN [1, 32]",9.28098e-05,0.000184268,0.503668,361,0,9
-287,workclass='Self-emp-not-inc' AND occupation='Transport-moving',9.24777e-05,0.000184268,0.501866,183,8,1
-288,occupation='Protective-serv' AND race='Black',9.2414e-05,0.000184268,0.501521,149,7,2
-289,workclass='Self-emp-inc' AND occupation='Farming-fishing',9.22882e-05,0.000184268,0.500838,82,8,1
-290,workclass='Local-gov' AND race='Amer-Indian-Eskimo',9.22563e-05,0.000184268,0.500665,65,4,5
-291,"occupation='Machine-op-inspct' AND hoursPerWeek IN (32, 40]",8.54113e-05,0.000163793,0.521457,2190,0,8
-292,"race='Amer-Indian-Eskimo' AND hoursPerWeek IN (32, 40]",8.23818e-05,0.000163793,0.502961,291,0,8
-293,"race='Other' AND hoursPerWeek IN (32, 40]",8.23204e-05,0.000163793,0.502587,254,0,8
-294,race='Other' AND gender='Female',8.21558e-05,0.000163793,0.501582,155,3,5
-295,"occupation='Handlers-cleaners' AND hoursPerWeek IN (50, 99]",8.20674e-05,0.000163793,0.501042,102,8,0
-296,workclass='Federal-gov' AND race='Asian-Pac-Islander',8.20039e-05,0.000163793,0.500654,64,3,5
-297,"race='Amer-Indian-Eskimo' AND hoursPerWeek IN (40, 50]",8.19972e-05,0.000163793,0.500613,60,5,3
-298,workclass='Local-gov' AND race='Asian-Pac-Islander',8.19955e-05,0.000163793,0.500603,59,3,5
-299,education='Bachelors' AND race='Other',8.19805e-05,0.000163793,0.500511,50,8,0
-300,"occupation='Other-service' AND hoursPerWeek IN [1, 32]",7.4208e-05,0.000143319,0.517781,1801,0,7
-301,"occupation='Machine-op-inspct' AND hoursPerWeek IN (40, 50]",7.23498e-05,0.000143319,0.504816,475,5,2
-302,occupation='NA' AND race='Black',7.21391e-05,0.000143319,0.503345,329,3,4
-303,workclass='NA' AND race='Black',7.21348e-05,0.000143319,0.503315,326,3,4
-304,workclass='Private' AND race='Amer-Indian-Eskimo',7.20652e-05,0.000143319,0.50283,278,4,3
-305,occupation='Other-service' AND race='Asian-Pac-Islander',7.19286e-05,0.000143319,0.501877,184,6,1
-306,"occupation='Machine-op-inspct' AND hoursPerWeek IN (50, 99]",7.18747e-05,0.000143319,0.5015,147,7,0
-307,"race='Amer-Indian-Eskimo' AND hoursPerWeek IN (50, 99]",7.17271e-05,0.000143319,0.50047,46,6,1
-308,"race='Other' AND hoursPerWeek IN (40, 50]",7.17256e-05,0.000143319,0.50046,45,5,2
-309,education='Bachelors' AND race='Amer-Indian-Eskimo',7.17022e-05,0.000143319,0.500297,29,7,0
-310,occupation='Craft-repair' AND race='Black',6.18856e-05,0.000122845,0.503769,371,3,3
-311,occupation='Craft-repair' AND gender='Female',6.18261e-05,0.000122845,0.503285,323,3,3
-312,"workclass='State-gov' AND hoursPerWeek IN [1, 32]",6.18186e-05,0.000122845,0.503224,317,0,6
-313,occupation='Tech-support' AND race='Black',6.15881e-05,0.000122845,0.501348,132,2,4
-314,workclass='Self-emp-inc' AND occupation='Other-service',6.14753e-05,0.000122845,0.50043,42,4,2
-315,workclass='Federal-gov' AND occupation='Sales',6.14439e-05,0.000122845,0.500174,17,3,3
-316,occupation='Machine-op-inspct' AND gender='Female',5.20144e-05,0.000102371,0.508097,804,2,3
-317,occupation='Exec-managerial' AND race='Amer-Indian-Eskimo',5.12357e-05,0.000102371,0.500491,48,3,2
-318,"occupation='NA' AND hoursPerWeek IN [1, 32]",4.1975e-05,8.18967e-05,0.512535,1256,0,4
-319,"workclass='NA' AND hoursPerWeek IN [1, 32]",4.19718e-05,8.18967e-05,0.512497,1252,0,4
-320,"occupation='Transport-moving' AND hoursPerWeek IN (32, 40]",4.18991e-05,8.18967e-05,0.511609,1161,0,4
-321,"race='Black' AND hoursPerWeek IN [1, 32]",4.16131e-05,8.18967e-05,0.508117,806,0,4
-322,workclass='Self-emp-not-inc' AND occupation='Other-service',4.11785e-05,8.18967e-05,0.50281,276,3,1
-323,occupation='Transport-moving' AND race='Black',4.11718e-05,8.18967e-05,0.502729,268,2,2
-324,"occupation='Handlers-cleaners' AND hoursPerWeek IN (40, 50]",4.11461e-05,8.18967e-05,0.502414,237,3,1
-325,workclass='NA' AND race='Asian-Pac-Islander',4.10287e-05,8.18967e-05,0.500981,96,3,1
-326,occupation='NA' AND race='Asian-Pac-Islander',4.10287e-05,8.18967e-05,0.500981,96,3,1
-327,workclass='State-gov' AND occupation='Craft-repair',4.1027e-05,8.18967e-05,0.50096,94,2,2
-328,workclass='Local-gov' AND occupation='Tech-support',4.09969e-05,8.18967e-05,0.500593,58,2,2
-329,workclass='Self-emp-inc' AND occupation='Adm-clerical',4.09877e-05,8.18967e-05,0.500481,47,3,1
-330,workclass='Self-emp-not-inc' AND occupation='Tech-support',4.09835e-05,8.18967e-05,0.50043,42,3,1
-331,"race='Other' AND hoursPerWeek IN (50, 99]",4.09752e-05,8.18967e-05,0.500327,32,4,0
-332,workclass='State-gov' AND race='Amer-Indian-Eskimo',4.09676e-05,8.18967e-05,0.500235,23,1,3
-333,workclass='Self-emp-inc' AND occupation='Tech-support',4.09559e-05,8.18967e-05,0.500092,9,3,1
-334,education='Masters' AND occupation='Handlers-cleaners',4.09526e-05,8.18967e-05,0.500051,5,0,4
-335,"occupation='Sales' AND hoursPerWeek IN [1, 32]",3.14321e-05,6.14225e-05,0.511736,1174,0,3
-336,workclass='Local-gov' AND occupation='Other-service',3.08988e-05,6.14225e-05,0.503052,300,1,2
-337,occupation='Priv-house-serv',3.08627e-05,6.14225e-05,0.502465,242,2,1
-338,workclass='Private' AND occupation='Priv-house-serv',3.08627e-05,6.14225e-05,0.502465,242,2,1
-339,workclass='Local-gov' AND occupation='Craft-repair',3.08434e-05,6.14225e-05,0.502151,211,3,0
-340,occupation='Priv-house-serv' AND race='White',3.08247e-05,6.14225e-05,0.501846,181,2,1
-341,occupation='Protective-serv' AND gender='Female',3.07878e-05,6.14225e-05,0.501246,122,2,1
-342,occupation='Craft-repair' AND race='Asian-Pac-Islander',3.07853e-05,6.14225e-05,0.501205,118,1,2
-343,workclass='Federal-gov' AND occupation='Craft-repair',3.07696e-05,6.14225e-05,0.50095,93,1,2
-344,workclass='State-gov' AND occupation='Tech-support',3.07659e-05,6.14225e-05,0.500889,87,1,2
-345,occupation='Machine-op-inspct' AND race='Asian-Pac-Islander',3.07646e-05,6.14225e-05,0.500869,85,1,2
-346,workclass='Self-emp-not-inc' AND occupation='Machine-op-inspct',3.07483e-05,6.14225e-05,0.500603,59,2,1
-347,"occupation='Handlers-cleaners' AND hoursPerWeek IN (32, 40]",2.10042e-05,4.09484e-05,0.512944,1298,0,2
-348,"occupation='Farming-fishing' AND hoursPerWeek IN (32, 40]",2.07059e-05,4.09484e-05,0.505658,559,0,2
-349,"occupation='Craft-repair' AND hoursPerWeek IN [1, 32]",2.06314e-05,4.09484e-05,0.50384,378,0,2
-350,occupation='Priv-house-serv' AND gender='Female',2.05693e-05,4.09484e-05,0.502323,228,1,1
-351,occupation='Farming-fishing' AND gender='Female',2.05139e-05,4.09484e-05,0.500971,95,2,0
-352,"race='Other' AND hoursPerWeek IN [1, 32]",2.05056e-05,4.09484e-05,0.500767,75,0,2
-353,workclass='Federal-gov' AND occupation='Other-service',2.04972e-05,4.09484e-05,0.500562,55,1,1
-354,occupation='Adm-clerical' AND race='Amer-Indian-Eskimo',2.04968e-05,4.09484e-05,0.500552,54,0,2
-355,occupation='Sales' AND race='Other',2.04901e-05,4.09484e-05,0.500389,38,1,1
-356,workclass='Federal-gov' AND occupation='Transport-moving',2.04897e-05,4.09484e-05,0.500378,37,1,1
-357,occupation='Sales' AND race='Amer-Indian-Eskimo',2.04893e-05,4.09484e-05,0.500368,36,2,0
-358,workclass='Self-emp-not-inc' AND race='Amer-Indian-Eskimo',2.04884e-05,4.09484e-05,0.500348,34,1,1
-359,workclass='NA' AND race='Other',2.04872e-05,4.09484e-05,0.500317,31,1,1
-360,occupation='NA' AND race='Other',2.04872e-05,4.09484e-05,0.500317,31,1,1
-361,occupation='Protective-serv' AND race='Asian-Pac-Islander',2.0483e-05,4.09484e-05,0.500215,21,1,1
-362,workclass='State-gov' AND occupation='Sales',2.04826e-05,4.09484e-05,0.500205,20,1,1
-363,occupation='Exec-managerial' AND race='Other',2.04826e-05,4.09484e-05,0.500205,20,1,1
-364,"occupation='Priv-house-serv' AND hoursPerWeek IN (50, 99]",2.04813e-05,4.09484e-05,0.500174,17,2,0
-365,workclass='Self-emp-not-inc' AND race='Other',2.04809e-05,4.09484e-05,0.500164,16,1,1
-366,workclass='Local-gov' AND race='Other',2.04809e-05,4.09484e-05,0.500164,16,0,2
-367,occupation='Armed-Forces',2.04805e-05,4.09484e-05,0.500154,15,0,2
-368,workclass='Federal-gov' AND occupation='Armed-Forces',2.04805e-05,4.09484e-05,0.500154,15,0,2
-369,occupation='Armed-Forces' AND gender='Male',2.04805e-05,4.09484e-05,0.500154,15,0,2
-370,occupation='Armed-Forces' AND race='White',2.04796e-05,4.09484e-05,0.500133,13,0,2
-371,education='Bachelors' AND occupation='Priv-house-serv',2.04792e-05,4.09484e-05,0.500123,12,2,0
-372,"occupation='Armed-Forces' AND hoursPerWeek IN (32, 40]",2.0478e-05,4.09484e-05,0.500092,9,0,2
-373,education='Masters' AND occupation='Armed-Forces',2.0475e-05,4.09484e-05,0.50002,2,0,2
-374,"occupation='Handlers-cleaners' AND hoursPerWeek IN [1, 32]",1.03275e-05,2.04742e-05,0.504414,435,0,1
-375,occupation='Handlers-cleaners' AND race='Black',1.02917e-05,2.04742e-05,0.502668,262,1,0
-376,occupation='Handlers-cleaners' AND gender='Female',1.02901e-05,2.04742e-05,0.502587,254,1,0
-377,"race='Asian-Pac-Islander' AND hoursPerWeek IN [1, 32]",1.02894e-05,2.04742e-05,0.502556,251,0,1
-378,"occupation='Farming-fishing' AND hoursPerWeek IN [1, 32]",1.02813e-05,2.04742e-05,0.502161,212,0,1
-379,"occupation='Machine-op-inspct' AND hoursPerWeek IN [1, 32]",1.02809e-05,2.04742e-05,0.502141,210,0,1
-380,workclass='State-gov' AND occupation='Other-service',1.0277e-05,2.04742e-05,0.501948,191,1,0
-381,"workclass='Self-emp-inc' AND hoursPerWeek IN [1, 32]",1.02657e-05,2.04742e-05,0.501399,137,0,1
-382,occupation='Transport-moving' AND gender='Female',1.02636e-05,2.04742e-05,0.501297,127,1,0
-383,workclass='Local-gov' AND occupation='Handlers-cleaners',1.02507e-05,2.04742e-05,0.500665,65,1,0
-384,occupation='Other-service' AND race='Amer-Indian-Eskimo',1.02499e-05,2.04742e-05,0.500624,61,0,1
-385,occupation='Other-service' AND race='Other',1.02478e-05,2.04742e-05,0.500522,51,0,1
-386,occupation='Handlers-cleaners' AND race='Asian-Pac-Islander',1.02453e-05,2.04742e-05,0.500399,39,1,0
-387,workclass='Self-emp-inc' AND occupation='Transport-moving',1.0245e-05,2.04742e-05,0.500389,38,0,1
-388,workclass='Federal-gov' AND occupation='Handlers-cleaners',1.02446e-05,2.04742e-05,0.500368,36,1,0
-389,workclass='NA' AND race='Amer-Indian-Eskimo',1.02444e-05,2.04742e-05,0.500358,35,1,0
-390,occupation='NA' AND race='Amer-Indian-Eskimo',1.02444e-05,2.04742e-05,0.500358,35,1,0
-391,workclass='Self-emp-not-inc' AND occupation='Handlers-cleaners',1.02415e-05,2.04742e-05,0.500215,21,0,1
-392,occupation='Transport-moving' AND race='Other',1.02413e-05,2.04742e-05,0.500205,20,1,0
-393,"occupation='Priv-house-serv' AND hoursPerWeek IN (40, 50]",1.02413e-05,2.04742e-05,0.500205,20,0,1
-394,workclass='State-gov' AND occupation='Machine-op-inspct',1.02411e-05,2.04742e-05,0.500194,19,0,1
-395,workclass='Self-emp-inc' AND occupation='Machine-op-inspct',1.02407e-05,2.04742e-05,0.500174,17,1,0
-396,workclass='Local-gov' AND occupation='Sales',1.02404e-05,2.04742e-05,0.500164,16,1,0
-397,workclass='State-gov' AND race='Other',1.024e-05,2.04742e-05,0.500143,14,0,1
-398,occupation='Priv-house-serv' AND gender='Male',1.024e-05,2.04742e-05,0.500143,14,1,0
-399,workclass='Federal-gov' AND race='Other',1.02394e-05,2.04742e-05,0.500113,11,1,0
-400,occupation='Tech-support' AND race='Other',1.0239e-05,2.04742e-05,0.500092,9,1,0
-401,workclass='Self-emp-not-inc' AND occupation='Protective-serv',1.02386e-05,2.04742e-05,0.500072,7,1,0
-402,workclass='Self-emp-inc' AND occupation='Handlers-cleaners',1.02383e-05,2.04742e-05,0.500061,6,1,0
-403,workclass='Self-emp-inc' AND race='Other',1.02383e-05,2.04742e-05,0.500061,6,1,0
-404,education='Masters' AND occupation='Priv-house-serv',1.02373e-05,2.04742e-05,0.50001,1,0,1
-405,workclass='Without-pay',0,0,0.500215,21,0,0
-406,workclass='Never-worked',0,0,0.500102,10,0,0
-407,education='HS-grad',0,0,0.622118,15784,0,0
-408,education='Some-college',0,0,0.591075,10878,0,0
-409,education='Assoc-voc',0,0,0.520244,2061,0,0
-410,education='11th',0,0,0.517886,1812,0,0
-411,education='Assoc-acdm',0,0,0.515869,1601,0,0
-412,education='10th',0,0,0.513826,1389,0,0
-413,education='7th-8th',0,0,0.509589,955,0,0
-414,education='Prof-school',0,0,0.508394,834,0,0
-415,education='9th',0,0,0.507621,756,0,0
-416,education='12th',0,0,0.506636,657,0,0
-417,education='Doctorate',0,0,0.506008,594,0,0
-418,education='5th-6th',0,0,0.505157,509,0,0
-419,education='1st-4th',0,0,0.502516,247,0,0
-420,education='Preschool',0,0,0.500848,83,0,0
-421,workclass='Private' AND education='HS-grad',0,0,0.596507,11682,0,0
-422,workclass='Private' AND education='Some-college',0,0,0.566827,7535,0,0
-423,workclass='Private' AND education='Assoc-voc',0,0,0.514782,1488,0,0
-424,workclass='Private' AND education='11th',0,0,0.514049,1412,0,0
-425,workclass='Private' AND education='Assoc-acdm',0,0,0.510866,1085,0,0
-426,workclass='Private' AND education='10th',0,0,0.510248,1022,0,0
-427,workclass='Private' AND education='7th-8th',0,0,0.506307,624,0,0
-428,workclass='Private' AND education='Prof-school',0,0,0.503668,361,0,0
-429,workclass='Private' AND education='9th',0,0,0.505748,568,0,0
-430,workclass='Private' AND education='12th',0,0,0.505187,512,0,0
-431,workclass='Private' AND education='Doctorate',0,0,0.502678,263,0,0
-432,workclass='Private' AND education='5th-6th',0,0,0.504152,409,0,0
-433,workclass='Private' AND education='1st-4th',0,0,0.50207,203,0,0
-434,workclass='Private' AND education='Preschool',0,0,0.500644,63,0,0
-435,workclass='Self-emp-not-inc' AND education='HS-grad',0,0,0.512759,1279,0,0
-436,workclass='Self-emp-not-inc' AND education='Some-college',0,0,0.507303,724,0,0
-437,workclass='Self-emp-not-inc' AND education='Assoc-voc',0,0,0.501744,171,0,0
-438,workclass='Self-emp-not-inc' AND education='11th',0,0,0.501083,106,0,0
-439,workclass='Self-emp-not-inc' AND education='Assoc-acdm',0,0,0.501134,111,0,0
-440,workclass='Self-emp-not-inc' AND education='10th',0,0,0.501062,104,0,0
-441,workclass='Self-emp-not-inc' AND education='7th-8th',0,0,0.501409,138,0,0
-442,workclass='Self-emp-not-inc' AND education='Prof-school',0,0,0.501998,196,0,0
-443,workclass='Self-emp-not-inc' AND education='9th',0,0,0.500603,59,0,0
-444,workclass='Self-emp-not-inc' AND education='12th',0,0,0.500307,30,0,0
-445,workclass='Self-emp-not-inc' AND education='Doctorate',0,0,0.500777,76,0,0
-446,workclass='Self-emp-not-inc' AND education='5th-6th',0,0,0.500338,33,0,0
-447,workclass='Self-emp-not-inc' AND education='1st-4th',0,0,0.500164,16,0,0
-448,workclass='Self-emp-not-inc' AND education='Preschool',0,0,0.500051,5,0,0
-449,workclass='Local-gov' AND education='HS-grad',0,0,0.507671,761,0,0
-450,workclass='Local-gov' AND education='Some-college',0,0,0.505958,589,0,0
-451,workclass='Local-gov' AND education='Assoc-voc',0,0,0.501266,124,0,0
-452,workclass='Local-gov' AND education='11th',0,0,0.500624,61,0,0
-453,workclass='Local-gov' AND education='Assoc-acdm',0,0,0.501317,129,0,0
-454,workclass='Local-gov' AND education='10th',0,0,0.500532,52,0,0
-455,workclass='Local-gov' AND education='7th-8th',0,0,0.500409,40,0,0
-456,workclass='Local-gov' AND education='Prof-school',0,0,0.500419,41,0,0
-457,workclass='Local-gov' AND education='9th',0,0,0.500317,31,0,0
-458,workclass='Local-gov' AND education='12th',0,0,0.500256,25,0,0
-459,workclass='Local-gov' AND education='Doctorate',0,0,0.500358,35,0,0
-460,workclass='Local-gov' AND education='5th-6th',0,0,0.500133,13,0,0
-461,workclass='Local-gov' AND education='1st-4th',0,0,0.500051,5,0,0
-462,workclass='Local-gov' AND education='Preschool',0,0,0.500041,4,0,0
-463,workclass='NA' AND education='HS-grad',0,0,0.508157,810,0,0
-464,workclass='NA' AND education='Some-college',0,0,0.508454,840,0,0
-465,workclass='NA' AND education='Assoc-voc',0,0,0.500848,83,0,0
-466,workclass='NA' AND education='11th',0,0,0.501816,178,0,0
-467,workclass='NA' AND education='Assoc-acdm',0,0,0.500736,72,0,0
-468,workclass='NA' AND education='10th',0,0,0.501511,148,0,0
-469,workclass='NA' AND education='7th-8th',0,0,0.501124,110,0,0
-470,workclass='NA' AND education='Prof-school',0,0,0.500246,24,0,0
-471,workclass='NA' AND education='9th',0,0,0.500705,69,0,0
-472,workclass='NA' AND education='12th',0,0,0.500593,58,0,0
-473,workclass='NA' AND education='Doctorate',0,0,0.500184,18,0,0
-474,workclass='NA' AND education='5th-6th',0,0,0.500419,41,0,0
-475,workclass='NA' AND education='1st-4th',0,0,0.500184,18,0,0
-476,workclass='NA' AND education='Preschool',0,0,0.500102,10,0,0
-477,workclass='State-gov' AND education='HS-grad',0,0,0.504213,415,0,0
-478,workclass='State-gov' AND education='Some-college',0,0,0.504966,490,0,0
-479,workclass='State-gov' AND education='Assoc-voc',0,0,0.500767,75,0,0
-480,workclass='State-gov' AND education='11th',0,0,0.500154,15,0,0
-481,workclass='State-gov' AND education='Assoc-acdm',0,0,0.500644,63,0,0
-482,workclass='State-gov' AND education='10th',0,0,0.500194,19,0,0
-483,workclass='State-gov' AND education='7th-8th',0,0,0.500164,16,0,0
-484,workclass='State-gov' AND education='Prof-school',0,0,0.50046,45,0,0
-485,workclass='State-gov' AND education='9th',0,0,0.500102,10,0,0
-486,workclass='State-gov' AND education='12th',0,0,0.500113,11,0,0
-487,workclass='State-gov' AND education='Doctorate',0,0,0.501276,125,0,0
-488,workclass='State-gov' AND education='5th-6th',0,0,0.500041,4,0,0
-489,workclass='State-gov' AND education='1st-4th',0,0,0.50002,2,0,0
-490,workclass='State-gov' AND education='Preschool',0,0,0.50001,1,0,0
-491,workclass='Self-emp-inc' AND education='HS-grad',0,0,0.504323,426,0,0
-492,workclass='Self-emp-inc' AND education='Some-college',0,0,0.503376,332,0,0
-493,workclass='Self-emp-inc' AND education='Assoc-voc',0,0,0.500603,59,0,0
-494,workclass='Self-emp-inc' AND education='11th',0,0,0.500235,23,0,0
-495,workclass='Self-emp-inc' AND education='Assoc-acdm',0,0,0.500593,58,0,0
-496,workclass='Self-emp-inc' AND education='10th',0,0,0.500276,27,0,0
-497,workclass='Self-emp-inc' AND education='7th-8th',0,0,0.500205,20,0,0
-498,workclass='Self-emp-inc' AND education='Prof-school',0,0,0.501317,129,0,0
-499,workclass='Self-emp-inc' AND education='9th',0,0,0.500133,13,0,0
-500,workclass='Self-emp-inc' AND education='12th',0,0,0.500133,13,0,0
-501,workclass='Self-emp-inc' AND education='Doctorate',0,0,0.500562,55,0,0
-502,workclass='Self-emp-inc' AND education='5th-6th',0,0,0.500082,8,0,0
-503,workclass='Self-emp-inc' AND education='1st-4th',0,0,0.50002,2,0,0
+1,race='White',0.100252,0.102084,0.98205,41762,2812,2174
+2,gender='Male',0.0784681,0.0851931,0.921062,32650,2459,1702
+3,race='White' AND gender='Male',0.0703264,0.0779043,0.902729,28735,2283,1522
+4,workclass='Private',0.0623668,0.0646984,0.963962,33906,1871,1289
+5,workclass='Private' AND race='White',0.0568577,0.0588019,0.966937,29024,1728,1144
+6,education='Masters',0.0547789,0.0681176,0.804181,2657,874,2453
+7,education='Masters' AND race='White',0.0480138,0.0611564,0.785099,2348,813,2174
+8,workclass='Private' AND gender='Male',0.0466411,0.0509193,0.915981,22307,1542,945
+9,"hoursPerWeek IN (40, 50]",0.0411633,0.0466197,0.882958,8917,1521,756
+10,education='Bachelors',0.039598,0.0446542,0.886769,8025,2181,0
+11,"race='White' AND hoursPerWeek IN (40, 50]",0.0372184,0.0430163,0.865217,8179,1405,696
+12,occupation='Prof-specialty',0.0364408,0.042791,0.8516,6172,887,1203
+13,education='Masters' AND gender='Male',0.0361645,0.0489742,0.73844,1812,690,1702
+14,education='Bachelors' AND race='White',0.0356183,0.0409279,0.870271,7034,1999,0
+15,"hoursPerWeek IN (50, 99]",0.0342875,0.0405798,0.84494,5435,1534,448
+16,occupation='Exec-managerial',0.0325766,0.0378772,0.860057,6086,1093,757
+17,occupation='Prof-specialty' AND race='White',0.0322932,0.0387781,0.832768,5419,829,1065
+18,"race='White' AND hoursPerWeek IN (50, 99]",0.0307752,0.0374063,0.822727,4930,1407,420
+19,"gender='Male' AND hoursPerWeek IN (40, 50]",0.030739,0.036444,0.843456,7160,1208,572
+20,education='Bachelors' AND gender='Male',0.0297586,0.0362188,0.821633,5548,1769,0
+21,occupation='Exec-managerial' AND race='White',0.0291666,0.0347447,0.839454,5474,1016,681
+22,workclass='Private' AND education='Masters',0.0285795,0.0361369,0.790866,1376,476,1289
+23,"gender='Male' AND hoursPerWeek IN (50, 99]",0.02676,0.0330658,0.809294,4564,1251,364
+24,education='Masters' AND occupation='Prof-specialty',0.0259189,0.0319397,0.811496,1302,357,1203
+25,"workclass='Private' AND hoursPerWeek IN (40, 50]",0.0258153,0.0291962,0.884202,6345,985,441
+26,workclass='Private' AND education='Bachelors',0.0249902,0.0285615,0.874961,5303,1395,0
+27,occupation='Exec-managerial' AND gender='Male',0.0238934,0.0308136,0.775418,4338,919,586
+28,gender='Female',0.0233201,0.0275787,0.845584,16192,596,751
+29,"hoursPerWeek IN (32, 40]",0.023218,0.024221,0.95859,26204,0,1183
+30,workclass='Private' AND occupation='Exec-managerial',0.0219035,0.025388,0.862752,3995,752,488
+31,occupation='Prof-specialty' AND gender='Male',0.0216317,0.0280701,0.77063,3930,627,744
+32,race='White' AND gender='Female',0.020189,0.02418,0.834946,13027,529,652
+33,"workclass='Private' AND hoursPerWeek IN (50, 99]",0.0198697,0.0229106,0.86727,3202,886,233
+34,"race='White' AND hoursPerWeek IN (32, 40]",0.0197515,0.0204537,0.96567,21572,0,999
+35,"education='Masters' AND hoursPerWeek IN (32, 40]",0.0187847,0.024221,0.775555,1183,0,1183
+36,"education='Bachelors' AND hoursPerWeek IN (40, 50]",0.0186384,0.0224192,0.831357,2096,1095,0
+37,"education='Masters' AND hoursPerWeek IN (40, 50]",0.0179716,0.0242005,0.742614,756,426,756
+38,"education='Bachelors' AND hoursPerWeek IN (50, 99]",0.0176813,0.022235,0.795203,1086,1086,0
+39,workclass='Private' AND occupation='Prof-specialty',0.0176729,0.020597,0.858033,3409,473,533
+40,education='Masters' AND occupation='Exec-managerial',0.0174967,0.0228082,0.767123,779,357,757
+41,workclass='Local-gov',0.0146855,0.0168503,0.871531,3136,318,505
+42,education='Masters' AND gender='Female',0.0141047,0.0191434,0.736793,845,184,751
+43,occupation='Sales',0.0139622,0.0151509,0.921543,5504,552,188
+44,"occupation='Exec-managerial' AND hoursPerWeek IN (40, 50]",0.0138462,0.0170345,0.812835,1812,551,281
+45,"gender='Male' AND hoursPerWeek IN (32, 40]",0.013736,0.0150076,0.915268,17001,0,733
+46,"occupation='Prof-specialty' AND hoursPerWeek IN (40, 50]",0.0130318,0.0164408,0.792652,1497,462,341
+47,workclass='Local-gov' AND race='White',0.013016,0.0151509,0.85909,2559,295,445
+48,"education='Masters' AND hoursPerWeek IN (50, 99]",0.0129967,0.0183449,0.708468,448,448,448
+49,occupation='Sales' AND race='White',0.0128154,0.0140043,0.9151,4910,509,175
+50,education='Bachelors' AND occupation='Exec-managerial',0.0127508,0.015069,0.846159,2025,736,0
+51,occupation='Prof-specialty' AND gender='Female',0.0116816,0.0147209,0.793539,2242,260,459
+52,"occupation='Exec-managerial' AND hoursPerWeek IN (50, 99]",0.0116213,0.0148233,0.783987,1134,542,182
+53,"workclass='Private' AND hoursPerWeek IN (32, 40]",0.0112856,0.0120388,0.937436,18974,0,588
+54,occupation='Sales' AND gender='Male',0.0112766,0.0132263,0.852586,3557,488,158
+55,workclass='Private' AND gender='Female',0.011272,0.0137791,0.81805,11599,329,344
+56,"occupation='Prof-specialty' AND hoursPerWeek IN (32, 40]",0.0109115,0.013083,0.834018,3005,0,639
+57,workclass='Local-gov' AND occupation='Prof-specialty',0.0102839,0.013124,0.7836,1061,234,407
+58,workclass='Local-gov' AND education='Masters',0.00966427,0.0135539,0.713025,526,157,505
+59,"occupation='Prof-specialty' AND hoursPerWeek IN (50, 99]",0.00945118,0.0125097,0.755507,879,425,186
+60,education='Bachelors' AND occupation='Prof-specialty',0.0094112,0.0108513,0.867286,2233,530,0
+61,workclass='Private' AND occupation='Sales',0.00897872,0.00988903,0.907948,4439,372,111
+62,workclass='Self-emp-not-inc',0.00866809,0.0102166,0.848431,3862,326,173
+63,"gender='Female' AND hoursPerWeek IN (40, 50]",0.00828751,0.0101757,0.814444,1757,313,184
+64,education='Bachelors' AND occupation='Sales',0.00793708,0.00954097,0.831894,1268,466,0
+65,workclass='Self-emp-not-inc' AND race='White',0.00778187,0.0093567,0.831689,3576,297,160
+66,"gender='Female' AND hoursPerWeek IN (32, 40]",0.00774673,0.00921338,0.840813,9203,0,450
+67,workclass='Local-gov' AND gender='Male',0.00750162,0.00915196,0.819674,1878,179,268
+68,workclass='Self-emp-not-inc' AND gender='Male',0.00696419,0.00857868,0.811802,3233,285,134
+69,education='Bachelors' AND gender='Female',0.00689991,0.00843536,0.817975,2477,412,0
+70,workclass='Self-emp-inc',0.00635188,0.0082511,0.769822,1695,292,111
+71,workclass='State-gov',0.00617725,0.00714549,0.864497,1981,123,226
+72,workclass='Local-gov' AND gender='Female',0.00588533,0.00769829,0.764498,1258,139,237
+73,"gender='Female' AND hoursPerWeek IN (50, 99]",0.00584263,0.00751402,0.777563,871,283,84
+74,occupation='Exec-managerial' AND gender='Female',0.00583292,0.00706359,0.825773,1748,174,171
+75,workclass='Self-emp-inc' AND race='White',0.00570962,0.00757545,0.753701,1585,273,97
+76,"occupation='Sales' AND hoursPerWeek IN (40, 50]",0.00561275,0.00667458,0.840913,1298,260,66
+77,"occupation='Sales' AND hoursPerWeek IN (50, 99]",0.0054433,0.0068998,0.788906,820,292,45
+78,workclass='Self-emp-inc' AND gender='Male',0.00542324,0.00739118,0.733745,1484,267,94
+79,workclass='State-gov' AND race='White',0.00534565,0.00630605,0.847701,1612,113,195
+80,"occupation='Exec-managerial' AND hoursPerWeek IN (32, 40]",0.00511957,0.00581467,0.880458,2748,0,284
+81,"workclass='Local-gov' AND hoursPerWeek IN (32, 40]",0.00477163,0.00558945,0.853685,1927,0,273
+82,"workclass='Local-gov' AND hoursPerWeek IN (40, 50]",0.00457137,0.00630605,0.724918,531,162,146
+83,race='Black',0.00446262,0.00511855,0.871853,4685,116,134
+84,workclass='State-gov' AND gender='Male',0.00417114,0.00511855,0.814907,1218,97,153
+85,race='Asian-Pac-Islander',0.0040162,0.00466811,0.860347,1519,107,121
+86,workclass='State-gov' AND education='Masters',0.00393402,0.00595799,0.660293,259,65,226
+87,workclass='Self-emp-not-inc' AND education='Bachelors',0.00389757,0.0050776,0.767601,607,248,0
+88,"workclass='Self-emp-not-inc' AND hoursPerWeek IN (50, 99]",0.00364376,0.00458622,0.794503,963,177,47
+89,education='Masters' AND occupation='Sales',0.00362908,0.00560993,0.646903,206,86,188
+90,occupation='Adm-clerical',0.00356829,0.00417673,0.854327,5611,109,95
+91,"workclass='Self-emp-inc' AND hoursPerWeek IN (50, 99]",0.00335775,0.00456574,0.735423,539,180,43
+92,workclass='Self-emp-not-inc' AND education='Masters',0.00333435,0.00513902,0.648831,207,78,173
+93,"workclass='Self-emp-not-inc' AND hoursPerWeek IN (40, 50]",0.00333099,0.00411531,0.809413,889,149,52
+94,workclass='Self-emp-inc' AND education='Bachelors',0.00327999,0.00464764,0.705733,418,227,0
+95,workclass='State-gov' AND occupation='Prof-specialty',0.0032391,0.00429958,0.753352,629,67,143
+96,"workclass='Local-gov' AND hoursPerWeek IN (50, 99]",0.00323652,0.00477048,0.678448,317,156,77
+97,workclass='Federal-gov',0.00314528,0.00376725,0.834902,1432,77,107
+98,workclass='Self-emp-inc' AND occupation='Exec-managerial',0.00298698,0.00395152,0.755907,617,142,51
+99,race='Asian-Pac-Islander' AND gender='Male',0.00295062,0.00358298,0.823509,1002,83,92
+100,occupation='Adm-clerical' AND race='White',0.00294008,0.00343966,0.854759,4578,88,80
+101,race='Black' AND gender='Male',0.00281691,0.0031735,0.887637,2377,80,75
+102,workclass='Federal-gov' AND race='White',0.00270981,0.00333729,0.811979,1069,66,97
+103,workclass='Private' AND race='Asian-Pac-Islander',0.00249533,0.0030097,0.829096,1043,64,83
+104,workclass='Local-gov' AND education='Bachelors',0.00248924,0.00329634,0.755151,700,161,0
+105,occupation='Craft-repair',0.00246229,0.00282544,0.871471,6112,106,32
+106,workclass='Private' AND occupation='Adm-clerical',0.00242826,0.00288686,0.841144,4208,84,57
+107,occupation='Craft-repair' AND gender='Male',0.00237606,0.00270259,0.879178,5789,103,29
+108,workclass='Federal-gov' AND gender='Male',0.00227046,0.00284591,0.797796,980,57,82
+109,occupation='Craft-repair' AND race='White',0.00226369,0.00264117,0.857078,5504,102,27
+110,occupation='Adm-clerical' AND gender='Male',0.00224931,0.00255927,0.878888,1842,69,56
+111,"workclass='State-gov' AND hoursPerWeek IN (32, 40]",0.00220663,0.00264117,0.835476,1251,0,129
+112,workclass='Self-emp-inc' AND education='Masters',0.00213782,0.00360346,0.593268,112,65,111
+113,workclass='Private' AND race='Black',0.00212669,0.00249785,0.851407,3249,70,52
+114,"workclass='Self-emp-inc' AND hoursPerWeek IN (40, 50]",0.00212241,0.00290733,0.730021,506,112,30
+115,workclass='Self-emp-not-inc' AND occupation='Sales',0.00205154,0.00268212,0.764896,591,90,41
+116,education='Masters' AND race='Black',0.00201592,0.00329634,0.611562,143,27,134
+117,workclass='Self-emp-not-inc' AND occupation='Exec-managerial',0.00201346,0.0026207,0.768294,587,85,43
+118,workclass='Self-emp-not-inc' AND occupation='Prof-specialty',0.00196047,0.00266164,0.736564,575,65,65
+119,education='Masters' AND race='Asian-Pac-Islander',0.00187766,0.00307113,0.61139,140,29,121
+120,workclass='Local-gov' AND occupation='Exec-managerial',0.00185193,0.00266164,0.695783,331,54,76
+121,occupation='Tech-support',0.00176039,0.00204742,0.85981,1446,49,51
+122,workclass='Self-emp-inc' AND occupation='Sales',0.00173616,0.00239548,0.724766,420,85,32
+123,"race='Black' AND hoursPerWeek IN (32, 40]",0.00164015,0.0019041,0.861377,3168,0,93
+124,race='Black' AND gender='Female',0.00158289,0.00194505,0.813806,2308,36,59
+125,workclass='Federal-gov' AND education='Masters',0.00157444,0.00266164,0.591529,110,23,107
+126,occupation='Sales' AND gender='Female',0.00155338,0.00192457,0.807129,1947,64,30
+127,workclass='State-gov' AND gender='Female',0.00155196,0.00202694,0.765665,763,26,73
+128,"workclass='State-gov' AND hoursPerWeek IN (40, 50]",0.00152374,0.00231358,0.658604,257,54,59
+129,workclass='NA' AND occupation='NA',0.00151181,0.00184268,0.820444,2799,48,42
+130,education='Bachelors' AND occupation='Adm-clerical',0.00145325,0.0018222,0.797525,765,89,0
+131,occupation='Tech-support' AND race='White',0.00143758,0.00169936,0.845955,1235,44,39
+132,workclass='Private' AND occupation='Craft-repair',0.00138774,0.00159699,0.868975,4748,60,18
+133,education='Masters' AND occupation='Adm-clerical',0.00138557,0.00235453,0.58847,105,20,95
+134,"occupation='Sales' AND hoursPerWeek IN (32, 40]",0.00137238,0.00151509,0.905808,2212,0,74
+135,workclass='NA',0.00137082,0.00184268,0.743928,2799,48,42
+136,occupation='NA',0.00136997,0.00184268,0.743465,2809,48,42
+137,education='Bachelors' AND race='Black',0.00135853,0.0018222,0.745543,504,89,0
+138,education='Bachelors' AND occupation='Craft-repair',0.0013517,0.00192457,0.702335,332,94,0
+139,occupation='Adm-clerical' AND gender='Female',0.00134987,0.00161746,0.834564,3769,40,39
+140,occupation='Tech-support' AND gender='Male',0.00130957,0.00161746,0.809646,884,40,39
+141,occupation='Farming-fishing',0.0013051,0.00159699,0.817224,1490,65,13
+142,occupation='Prof-specialty' AND race='Black',0.00130339,0.00186315,0.69956,371,26,65
+143,"workclass='Federal-gov' AND hoursPerWeek IN (32, 40]",0.00129503,0.00159699,0.81092,1034,0,78
+144,occupation='Farming-fishing' AND race='White',0.0012831,0.00159699,0.80345,1383,65,13
+145,"workclass='State-gov' AND hoursPerWeek IN (50, 99]",0.00127414,0.00206789,0.616153,156,69,32
+146,"race='Asian-Pac-Islander' AND hoursPerWeek IN (32, 40]",0.00125396,0.00153556,0.816615,919,0,75
+147,occupation='Farming-fishing' AND gender='Male',0.00125342,0.00155604,0.805521,1395,63,13
+148,workclass='Private' AND occupation='Tech-support',0.00123993,0.00147414,0.841119,1154,36,36
+149,"occupation='Adm-clerical' AND hoursPerWeek IN (40, 50]",0.00123071,0.00159699,0.770644,595,57,21
+150,workclass='Self-emp-not-inc' AND gender='Female',0.00122232,0.00163793,0.746256,629,41,39
+151,workclass='State-gov' AND occupation='Exec-managerial',0.00121499,0.00178125,0.682097,287,31,56
+152,"occupation='Craft-repair' AND hoursPerWeek IN (40, 50]",0.0011871,0.00141272,0.840297,1249,59,10
+153,occupation='Other-service',0.00118593,0.00143319,0.827477,4923,43,27
+154,education='Bachelors' AND race='Asian-Pac-Islander',0.0011613,0.00159699,0.727182,408,78,0
+155,"occupation='Adm-clerical' AND hoursPerWeek IN (32, 40]",0.00114471,0.0013513,0.847123,3789,0,66
+156,occupation='Exec-managerial' AND race='Black',0.00114247,0.00161746,0.706335,351,39,40
+157,"race='Asian-Pac-Islander' AND hoursPerWeek IN (40, 50]",0.00113434,0.00176078,0.644227,198,53,33
+158,"race='Black' AND hoursPerWeek IN (40, 50]",0.00112932,0.00153556,0.735441,435,53,22
+159,workclass='NA' AND race='White',0.00112445,0.00155604,0.722638,2311,40,36
+160,occupation='NA' AND race='White',0.00112404,0.00155604,0.722371,2318,40,36
+161,occupation='Prof-specialty' AND race='Asian-Pac-Islander',0.00110774,0.00165841,0.667951,289,23,58
+162,"hoursPerWeek IN [1, 32]",0.00109437,0.0013513,0.80987,8286,0,66
+163,"race='Black' AND hoursPerWeek IN (50, 99]",0.00108628,0.00159699,0.680206,276,63,15
+164,occupation='Protective-serv',0.00106078,0.00133082,0.797087,983,47,18
+165,workclass='Federal-gov' AND occupation='Exec-managerial',0.000997764,0.00147414,0.676844,268,29,43
+166,occupation='Protective-serv' AND gender='Male',0.000988148,0.0012694,0.778437,861,45,17
+167,"race='White' AND hoursPerWeek IN [1, 32]",0.000954637,0.00120798,0.790277,7081,0,59
+168,workclass='Local-gov' AND race='Black',0.000952986,0.00131035,0.727278,437,16,48
+169,"workclass='Self-emp-not-inc' AND hoursPerWeek IN (32, 40]",0.000941551,0.00112608,0.836131,1274,0,55
+170,"education='Masters' AND hoursPerWeek IN [1, 32]",0.000904332,0.0013513,0.669233,270,0,66
+171,workclass='Private' AND occupation='Other-service',0.000892399,0.00110561,0.807159,4057,33,21
+172,occupation='Exec-managerial' AND race='Asian-Pac-Islander',0.000879306,0.00137177,0.641001,193,34,33
+173,workclass='NA' AND gender='Male',0.0008658,0.0011875,0.729094,1529,32,26
+174,occupation='NA' AND gender='Male',0.000865511,0.0011875,0.728849,1536,32,26
+175,workclass='State-gov' AND education='Bachelors',0.000857344,0.0011875,0.721973,431,58,0
+176,occupation='Protective-serv' AND race='White',0.000853846,0.00110561,0.772288,792,39,15
+177,workclass='Self-emp-not-inc' AND occupation='Farming-fishing',0.000838317,0.00110561,0.758242,653,43,11
+178,occupation='Other-service' AND race='White',0.000837913,0.00102371,0.818507,3803,30,20
+179,"race='Asian-Pac-Islander' AND hoursPerWeek IN (50, 99]",0.000834781,0.0013513,0.617764,151,54,12
+180,"occupation='Craft-repair' AND hoursPerWeek IN (50, 99]",0.00083206,0.00108513,0.766783,584,47,6
+181,race='Asian-Pac-Islander' AND gender='Female',0.000806126,0.00108513,0.742883,517,24,29
+182,"occupation='Adm-clerical' AND hoursPerWeek IN (50, 99]",0.000803956,0.00122845,0.654447,220,52,8
+183,workclass='Federal-gov' AND education='Bachelors',0.000767713,0.00110561,0.694382,313,54,0
+184,"occupation='Farming-fishing' AND hoursPerWeek IN (50, 99]",0.000764432,0.00108513,0.704461,430,45,8
+185,workclass='Federal-gov' AND occupation='Prof-specialty',0.000708302,0.00106466,0.665286,253,17,35
+186,occupation='Transport-moving',0.000703343,0.000818967,0.858817,2355,31,9
+187,"workclass='Federal-gov' AND hoursPerWeek IN (50, 99]",0.000685581,0.00114655,0.597949,122,43,13
+188,occupation='Transport-moving' AND gender='Male',0.000684761,0.000798493,0.857567,2228,30,9
+189,education='Masters' AND occupation='Tech-support',0.000682421,0.00122845,0.555513,61,9,51
+190,education='Bachelors' AND occupation='Farming-fishing',0.000679692,0.00114655,0.592813,113,56,0
+191,workclass='Self-emp-inc' AND occupation='Prof-specialty',0.000668832,0.00104418,0.640532,245,31,20
+192,"workclass='Federal-gov' AND hoursPerWeek IN (40, 50]",0.000655168,0.00102371,0.639994,192,34,16
+193,workclass='Federal-gov' AND gender='Female',0.000655081,0.000921338,0.71101,452,20,25
+194,"occupation='Tech-support' AND hoursPerWeek IN (32, 40]",0.000618769,0.000757545,0.816808,930,0,37
+195,occupation='Other-service' AND gender='Female',0.000609719,0.000757545,0.804862,2698,21,16
+196,occupation='Transport-moving' AND race='White',0.000604845,0.000716596,0.844053,2000,28,7
+197,"occupation='Tech-support' AND hoursPerWeek IN (40, 50]",0.000595062,0.000900864,0.660546,231,32,12
+198,workclass='NA' AND education='Masters',0.000588143,0.00106466,0.552425,67,10,42
+199,education='Masters' AND occupation='NA',0.000588116,0.00106466,0.552399,67,10,42
+200,"occupation='Prof-specialty' AND hoursPerWeek IN [1, 32]",0.000586779,0.000757545,0.77458,791,0,37
+201,education='Bachelors' AND occupation='Tech-support',0.00057928,0.000818967,0.70733,346,40,0
+202,occupation='Other-service' AND gender='Male',0.000570661,0.000675648,0.844612,2225,22,11
+203,workclass='Self-emp-not-inc' AND occupation='Craft-repair',0.000562707,0.000696122,0.808345,798,26,8
+204,"workclass='Self-emp-inc' AND hoursPerWeek IN (32, 40]",0.000562022,0.000757545,0.741899,513,0,37
+205,workclass='Self-emp-inc' AND gender='Female',0.000553384,0.000859916,0.643533,211,25,17
+206,"gender='Male' AND hoursPerWeek IN [1, 32]",0.000546912,0.000675648,0.809463,3925,0,33
+207,education='Bachelors' AND occupation='Other-service',0.00053656,0.000798493,0.671966,259,39,0
+208,"gender='Female' AND hoursPerWeek IN [1, 32]",0.000526168,0.000675648,0.778761,4361,0,33
+209,education='Bachelors' AND occupation='Protective-serv',0.000511239,0.000839441,0.609022,147,41,0
+210,workclass='NA' AND education='Bachelors',0.00049399,0.000778019,0.634933,253,38,0
+211,education='Bachelors' AND occupation='NA',0.00049397,0.000778019,0.634907,253,38,0
+212,workclass='Private' AND occupation='Transport-moving',0.000487243,0.000573277,0.849926,1880,22,6
+213,education='Masters' AND occupation='Craft-repair',0.000479747,0.000900864,0.532541,34,12,32
+214,"workclass='NA' AND hoursPerWeek IN (40, 50]",0.00046491,0.000757545,0.613706,194,25,12
+215,"occupation='NA' AND hoursPerWeek IN (40, 50]",0.000464891,0.000757545,0.613681,194,25,12
+216,workclass='NA' AND gender='Female',0.000458499,0.000655174,0.699813,1270,16,16
+217,occupation='NA' AND gender='Female',0.000458331,0.000655174,0.699557,1273,16,16
+218,occupation='Sales' AND race='Asian-Pac-Islander',0.000449523,0.000716596,0.627303,167,25,10
+219,"workclass='Private' AND hoursPerWeek IN [1, 32]",0.000423565,0.000552803,0.766214,5385,0,27
+220,occupation='Machine-op-inspct',0.000414739,0.000470906,0.880725,3022,12,11
+221,"occupation='Transport-moving' AND hoursPerWeek IN (50, 99]",0.000395239,0.000532329,0.742471,460,23,3
+222,"occupation='Protective-serv' AND hoursPerWeek IN (50, 99]",0.000374459,0.000614225,0.609644,150,27,3
+223,workclass='State-gov' AND occupation='Adm-clerical',0.000366982,0.000511855,0.716965,375,10,15
+224,"occupation='Other-service' AND hoursPerWeek IN (50, 99]",0.000360397,0.000532329,0.677019,268,24,2
+225,occupation='Machine-op-inspct' AND race='White',0.000358732,0.000409484,0.87606,2433,11,9
+226,race='Amer-Indian-Eskimo',0.000350422,0.000470906,0.744144,470,11,12
+227,"workclass='NA' AND hoursPerWeek IN (32, 40]",0.000349035,0.000470906,0.741199,1220,0,23
+228,"occupation='NA' AND hoursPerWeek IN (32, 40]",0.000348924,0.000470906,0.740963,1226,0,23
+229,education='Masters' AND occupation='Other-service',0.00033857,0.0006347,0.533434,35,4,27
+230,workclass='Local-gov' AND occupation='Protective-serv',0.000333214,0.000450432,0.739765,450,17,5
+231,workclass='Private' AND occupation='Machine-op-inspct',0.000326792,0.000368535,0.886731,2882,9,9
+232,workclass='Self-emp-not-inc' AND race='Asian-Pac-Islander',0.000323375,0.000552803,0.584973,100,19,8
+233,occupation='Tech-support' AND gender='Female',0.000323078,0.000429958,0.751419,562,9,12
+234,education='Bachelors' AND occupation='Transport-moving',0.000320613,0.000552803,0.579977,93,27,0
+235,occupation='Machine-op-inspct' AND gender='Male',0.000316686,0.000368535,0.85931,2218,10,8
+236,"workclass='NA' AND hoursPerWeek IN (50, 99]",0.000312716,0.000532329,0.587449,133,23,3
+237,"occupation='NA' AND hoursPerWeek IN (50, 99]",0.000312702,0.000532329,0.587423,133,23,3
+238,race='Other',0.000309722,0.000429958,0.720355,406,9,12
+239,"occupation='Other-service' AND hoursPerWeek IN (40, 50]",0.000306634,0.000429958,0.713173,363,19,2
+240,"occupation='Farming-fishing' AND hoursPerWeek IN (40, 50]",0.000302554,0.000450432,0.671697,289,20,2
+241,"workclass='Self-emp-not-inc' AND hoursPerWeek IN [1, 32]",0.000300117,0.000389009,0.77149,736,0,19
+242,workclass='State-gov' AND race='Black',0.000298776,0.000450432,0.663309,240,5,17
+243,occupation='Adm-clerical' AND race='Black',0.000296107,0.000389009,0.761182,738,11,8
+244,"occupation='Protective-serv' AND hoursPerWeek IN (40, 50]",0.000284632,0.000470906,0.604436,143,20,3
+245,"occupation='Other-service' AND hoursPerWeek IN (32, 40]",0.000280005,0.000327587,0.854749,2491,0,16
+246,workclass='Local-gov' AND occupation='Adm-clerical',0.000266336,0.000368535,0.722689,421,5,13
+247,occupation='Handlers-cleaners',0.000259705,0.000307113,0.845635,2072,11,4
+248,education='Masters' AND occupation='Protective-serv',0.000255355,0.00049138,0.519669,20,6,18
+249,"occupation='Craft-repair' AND hoursPerWeek IN (32, 40]",0.000249628,0.000286639,0.87088,3901,0,14
+250,occupation='Sales' AND race='Black',0.000246987,0.000348061,0.709608,353,15,2
+251,workclass='Federal-gov' AND occupation='Adm-clerical',0.000244534,0.000327587,0.746471,487,7,9
+252,occupation='Handlers-cleaners' AND gender='Male',0.000241061,0.000286639,0.840993,1818,10,4
+253,workclass='Private' AND occupation='Farming-fishing',0.000237966,0.000307113,0.774849,670,14,1
+254,education='Masters' AND occupation='Farming-fishing',0.000231492,0.000450432,0.513933,14,9,13
+255,workclass='Self-emp-inc' AND race='Asian-Pac-Islander',0.000228462,0.000409484,0.557927,64,11,9
+256,"occupation='Tech-support' AND hoursPerWeek IN (50, 99]",0.000224769,0.000389009,0.577798,90,17,2
+257,occupation='Handlers-cleaners' AND race='White',0.000222397,0.000266164,0.835564,1719,9,4
+258,workclass='State-gov' AND occupation='Protective-serv',0.000207,0.000327587,0.631892,175,10,6
+259,workclass='Self-emp-inc' AND occupation='Craft-repair',0.000205528,0.000327587,0.627399,167,14,2
+260,occupation='Adm-clerical' AND race='Asian-Pac-Islander',0.000197811,0.000307113,0.644098,198,10,5
+261,workclass='Private' AND occupation='Handlers-cleaners',0.000189305,0.000225216,0.84055,1923,8,3
+262,"occupation='Protective-serv' AND hoursPerWeek IN (32, 40]",0.000182668,0.00024569,0.743491,599,0,12
+263,race='Amer-Indian-Eskimo' AND gender='Male',0.000182089,0.000266164,0.684123,285,7,6
+264,race='Other' AND gender='Male',0.000177356,0.000266164,0.666339,251,6,7
+265,occupation='Other-service' AND race='Black',0.000176173,0.000225216,0.78224,824,7,4
+266,workclass='Private' AND race='Other',0.00016906,0.00024569,0.688103,312,5,7
+267,education='Masters' AND race='Amer-Indian-Eskimo',0.00016804,0.000327587,0.512963,13,4,12
+268,workclass='Federal-gov' AND occupation='Protective-serv',0.000167036,0.000307113,0.543891,47,13,2
+269,workclass='State-gov' AND race='Asian-Pac-Islander',0.000165608,0.000286639,0.577758,92,4,10
+270,workclass='Federal-gov' AND race='Black',0.000163604,0.00024569,0.665894,255,7,5
+271,workclass='Private' AND occupation='Protective-serv',0.000155353,0.000225216,0.689797,299,6,5
+272,workclass='Federal-gov' AND occupation='Tech-support',0.000154943,0.000266164,0.582133,96,4,9
+273,"occupation='Transport-moving' AND hoursPerWeek IN (40, 50]",0.000154663,0.000204742,0.755404,510,8,2
+274,"occupation='Exec-managerial' AND hoursPerWeek IN [1, 32]",0.000145783,0.000204742,0.712032,392,0,10
+275,education='Bachelors' AND occupation='Machine-op-inspct',0.000143549,0.00024569,0.584267,99,12,0
+276,"occupation='Machine-op-inspct' AND hoursPerWeek IN (32, 40]",0.000142599,0.000163793,0.870601,2190,0,8
+277,workclass='Self-emp-not-inc' AND race='Black',0.000137134,0.000225216,0.608901,136,8,3
+278,education='Masters' AND occupation='Transport-moving',0.000136791,0.000266164,0.513933,14,4,9
+279,education='Masters' AND race='Other',0.000136533,0.000266164,0.512963,13,1,12
+280,occupation='Prof-specialty' AND race='Amer-Indian-Eskimo',0.000133838,0.00024569,0.544741,48,5,7
+281,occupation='Prof-specialty' AND race='Other',0.000133203,0.00024569,0.542159,45,4,8
+282,workclass='Self-emp-inc' AND race='Black',0.000131713,0.00024569,0.536093,38,7,5
+283,"workclass='Local-gov' AND hoursPerWeek IN [1, 32]",0.000130534,0.000184268,0.708394,361,0,9
+284,race='Amer-Indian-Eskimo' AND gender='Female',0.000130494,0.000204742,0.637359,185,4,6
+285,education='Bachelors' AND occupation='Handlers-cleaners',0.000128286,0.000225216,0.569613,79,11,0
+286,workclass='Self-emp-not-inc' AND occupation='Transport-moving',0.000117246,0.000184268,0.636278,183,8,1
+287,education='Masters' AND occupation='Machine-op-inspct',0.000115308,0.000225216,0.51199,12,0,11
+288,occupation='Tech-support' AND race='Asian-Pac-Islander',0.000113902,0.000204742,0.556321,62,2,8
+289,occupation='Protective-serv' AND race='Black',0.000112945,0.000184268,0.612941,149,7,2
+290,"race='Amer-Indian-Eskimo' AND hoursPerWeek IN (32, 40]",0.000112391,0.000163793,0.686176,291,0,8
+291,"occupation='Other-service' AND hoursPerWeek IN [1, 32]",0.000111578,0.000143319,0.778529,1801,0,7
+292,"race='Other' AND hoursPerWeek IN (32, 40]",0.00010938,0.000163793,0.66779,254,0,8
+293,"occupation='Machine-op-inspct' AND hoursPerWeek IN (40, 50]",0.000106952,0.000143319,0.746247,475,5,2
+294,workclass='Self-emp-inc' AND occupation='Farming-fishing',0.000105378,0.000184268,0.571877,82,8,1
+295,workclass='Local-gov' AND race='Amer-Indian-Eskimo',0.000102955,0.000184268,0.558726,65,4,5
+296,race='Other' AND gender='Female',0.0001016,0.000163793,0.620292,155,3,5
+297,workclass='Private' AND race='Amer-Indian-Eskimo',9.76524e-05,0.000143319,0.681363,278,4,3
+298,"occupation='Handlers-cleaners' AND hoursPerWeek IN (50, 99]",9.59494e-05,0.000163793,0.585795,102,8,0
+299,occupation='NA' AND race='Black',9.3762e-05,0.000143319,0.654218,329,3,4
+300,workclass='NA' AND race='Black',9.36557e-05,0.000143319,0.653476,326,3,4
+301,workclass='Federal-gov' AND race='Asian-Pac-Islander',9.13848e-05,0.000163793,0.557927,64,3,5
+302,occupation='Other-service' AND race='Asian-Pac-Islander',9.08936e-05,0.000143319,0.634204,184,6,1
+303,"race='Amer-Indian-Eskimo' AND hoursPerWeek IN (40, 50]",9.08256e-05,0.000163793,0.554513,60,5,3
+304,workclass='Local-gov' AND race='Asian-Pac-Islander',9.07234e-05,0.000163793,0.553889,59,3,5
+305,education='Bachelors' AND race='Other',8.9502e-05,0.000163793,0.546432,50,8,0
+306,"occupation='Machine-op-inspct' AND hoursPerWeek IN (50, 99]",8.82376e-05,0.000143319,0.615672,147,7,0
+307,occupation='Craft-repair' AND race='Black',8.78653e-05,0.000122845,0.715253,371,3,3
+308,occupation='Craft-repair' AND gender='Female',8.50803e-05,0.000122845,0.692582,323,3,3
+309,"workclass='State-gov' AND hoursPerWeek IN [1, 32]",8.50489e-05,0.000122845,0.692327,317,0,6
+310,occupation='Machine-op-inspct' AND gender='Female',7.89166e-05,0.000102371,0.770889,804,2,3
+311,"race='Amer-Indian-Eskimo' AND hoursPerWeek IN (50, 99]",7.78277e-05,0.000143319,0.543037,46,6,1
+312,"race='Other' AND hoursPerWeek IN (40, 50]",7.76948e-05,0.000143319,0.54211,45,5,2
+313,education='Bachelors' AND race='Amer-Indian-Eskimo',7.5676e-05,0.000143319,0.528024,29,7,0
+314,occupation='Tech-support' AND race='Black',7.44908e-05,0.000122845,0.60638,132,2,4
+315,"occupation='Transport-moving' AND hoursPerWeek IN (32, 40]",6.84996e-05,8.18967e-05,0.836414,1161,0,4
+316,workclass='Self-emp-inc' AND occupation='Other-service',6.62861e-05,0.000122845,0.539591,42,4,2
+317,workclass='Federal-gov' AND occupation='Sales',6.34698e-05,0.000122845,0.516665,17,3,3
+318,"race='Black' AND hoursPerWeek IN [1, 32]",6.11862e-05,8.18967e-05,0.747114,806,0,4
+319,"workclass='NA' AND hoursPerWeek IN [1, 32]",5.91485e-05,8.18967e-05,0.722233,1252,0,4
+320,"occupation='NA' AND hoursPerWeek IN [1, 32]",5.91255e-05,8.18967e-05,0.721952,1256,0,4
+321,occupation='Exec-managerial' AND race='Amer-Indian-Eskimo',5.57656e-05,0.000102371,0.544741,48,3,2
+322,workclass='Self-emp-not-inc' AND occupation='Other-service',5.56292e-05,8.18967e-05,0.67926,276,3,1
+323,occupation='Transport-moving' AND race='Black',5.54085e-05,8.18967e-05,0.676565,268,2,2
+324,"occupation='Handlers-cleaners' AND hoursPerWeek IN (40, 50]",5.43156e-05,8.18967e-05,0.663221,237,3,1
+325,workclass='State-gov' AND occupation='Craft-repair',4.75572e-05,8.18967e-05,0.580698,94,2,2
+326,workclass='NA' AND race='Asian-Pac-Islander',4.65819e-05,8.18967e-05,0.568789,96,3,1
+327,occupation='NA' AND race='Asian-Pac-Islander',4.65798e-05,8.18967e-05,0.568763,96,3,1
+328,"occupation='Sales' AND hoursPerWeek IN [1, 32]",4.65212e-05,6.14225e-05,0.757397,1174,0,3
+329,workclass='Local-gov' AND occupation='Tech-support',4.52948e-05,8.18967e-05,0.553073,58,2,2
+330,workclass='Self-emp-inc' AND occupation='Adm-clerical',4.45429e-05,8.18967e-05,0.543891,47,3,1
+331,workclass='Self-emp-not-inc' AND occupation='Tech-support',4.41908e-05,8.18967e-05,0.539591,42,3,1
+332,"race='Other' AND hoursPerWeek IN (50, 99]",4.3464e-05,8.18967e-05,0.530717,32,4,0
+333,workclass='State-gov' AND race='Amer-Indian-Eskimo',4.27899e-05,8.18967e-05,0.522486,23,1,3
+334,workclass='Local-gov' AND occupation='Other-service',4.22442e-05,6.14225e-05,0.687764,300,1,2
+335,workclass='Self-emp-inc' AND occupation='Tech-support',4.16893e-05,8.18967e-05,0.509047,9,3,1
+336,education='Masters' AND occupation='Handlers-cleaners',4.13633e-05,8.18967e-05,0.505067,5,0,4
+337,occupation='Priv-house-serv',4.03665e-05,6.14225e-05,0.657194,242,2,1
+338,workclass='Private' AND occupation='Priv-house-serv',4.03015e-05,6.14225e-05,0.656136,242,2,1
+339,workclass='Local-gov' AND occupation='Craft-repair',3.99762e-05,6.14225e-05,0.650839,211,3,0
+340,occupation='Priv-house-serv' AND race='White',3.87418e-05,6.14225e-05,0.630742,181,2,1
+341,occupation='Craft-repair' AND race='Asian-Pac-Islander',3.66749e-05,6.14225e-05,0.597092,118,1,2
+342,occupation='Protective-serv' AND gender='Female',3.66631e-05,6.14225e-05,0.596899,122,2,1
+343,workclass='Federal-gov' AND occupation='Craft-repair',3.56236e-05,6.14225e-05,0.579977,93,1,2
+344,workclass='State-gov' AND occupation='Tech-support',3.53546e-05,6.14225e-05,0.575597,87,1,2
+345,occupation='Machine-op-inspct' AND race='Asian-Pac-Islander',3.52363e-05,6.14225e-05,0.57367,85,1,2
+346,"occupation='Handlers-cleaners' AND hoursPerWeek IN (32, 40]",3.45274e-05,4.09484e-05,0.843193,1298,0,2
+347,workclass='Self-emp-not-inc' AND occupation='Machine-op-inspct',3.40213e-05,6.14225e-05,0.553889,59,2,1
+348,"occupation='Farming-fishing' AND hoursPerWeek IN (32, 40]",3.07131e-05,4.09484e-05,0.750044,559,0,2
+349,"occupation='Craft-repair' AND hoursPerWeek IN [1, 32]",2.90079e-05,4.09484e-05,0.708403,378,0,2
+350,occupation='Priv-house-serv' AND gender='Female',2.66097e-05,4.09484e-05,0.649835,228,1,1
+351,occupation='Farming-fishing' AND gender='Female',2.37839e-05,4.09484e-05,0.580827,95,2,0
+352,"race='Other' AND hoursPerWeek IN [1, 32]",2.31992e-05,4.09484e-05,0.566548,75,0,2
+353,workclass='Federal-gov' AND occupation='Other-service',2.25464e-05,4.09484e-05,0.550605,55,1,1
+354,occupation='Adm-clerical' AND race='Amer-Indian-Eskimo',2.25125e-05,4.09484e-05,0.549777,54,0,2
+355,occupation='Sales' AND race='Other',2.19521e-05,4.09484e-05,0.536093,38,1,1
+356,workclass='Federal-gov' AND occupation='Transport-moving',2.1916e-05,4.09484e-05,0.53521,37,1,1
+357,occupation='Sales' AND race='Amer-Indian-Eskimo',2.18797e-05,4.09484e-05,0.534324,36,2,0
+358,workclass='Self-emp-not-inc' AND race='Amer-Indian-Eskimo',2.18067e-05,4.09484e-05,0.532541,34,1,1
+359,workclass='NA' AND race='Other',2.1685e-05,4.09484e-05,0.52957,31,1,1
+360,occupation='NA' AND race='Other',2.1684e-05,4.09484e-05,0.529544,31,1,1
+361,occupation='Protective-serv' AND race='Asian-Pac-Islander',2.13182e-05,4.09484e-05,0.520612,21,1,1
+362,workclass='State-gov' AND occupation='Sales',2.12796e-05,4.09484e-05,0.519669,20,1,1
+363,occupation='Exec-managerial' AND race='Other',2.12796e-05,4.09484e-05,0.519669,20,1,1
+364,"occupation='Priv-house-serv' AND hoursPerWeek IN (50, 99]",2.11628e-05,4.09484e-05,0.516818,17,2,0
+365,workclass='Self-emp-not-inc' AND race='Other',2.11236e-05,4.09484e-05,0.51586,16,1,1
+366,workclass='Local-gov' AND race='Other',2.11236e-05,4.09484e-05,0.51586,16,0,2
+367,workclass='Federal-gov' AND occupation='Armed-Forces',2.10842e-05,4.09484e-05,0.514898,15,0,2
+368,occupation='Armed-Forces',2.10821e-05,4.09484e-05,0.514845,15,0,2
+369,occupation='Armed-Forces' AND gender='Male',2.10818e-05,4.09484e-05,0.514838,15,0,2
+370,occupation='Armed-Forces' AND race='White',2.1005e-05,4.09484e-05,0.512963,13,0,2
+371,education='Bachelors' AND occupation='Priv-house-serv',2.09652e-05,4.09484e-05,0.51199,12,2,0
+372,"occupation='Armed-Forces' AND hoursPerWeek IN (32, 40]",2.08446e-05,4.09484e-05,0.509047,9,0,2
+373,education='Masters' AND occupation='Armed-Forces',2.05577e-05,4.09484e-05,0.502039,2,0,2
+374,"occupation='Handlers-cleaners' AND hoursPerWeek IN [1, 32]",1.42227e-05,2.04742e-05,0.694666,435,0,1
+375,occupation='Handlers-cleaners' AND race='Black',1.38112e-05,2.04742e-05,0.674569,262,1,0
+376,occupation='Handlers-cleaners' AND gender='Female',1.37379e-05,2.04742e-05,0.670989,254,1,0
+377,"race='Asian-Pac-Islander' AND hoursPerWeek IN [1, 32]",1.3643e-05,2.04742e-05,0.666349,251,0,1
+378,"occupation='Machine-op-inspct' AND hoursPerWeek IN [1, 32]",1.33052e-05,2.04742e-05,0.649855,210,0,1
+379,"occupation='Farming-fishing' AND hoursPerWeek IN [1, 32]",1.31252e-05,2.04742e-05,0.64106,212,0,1
+380,workclass='State-gov' AND occupation='Other-service',1.3115e-05,2.04742e-05,0.640561,191,1,0
+381,"workclass='Self-emp-inc' AND hoursPerWeek IN [1, 32]",1.24796e-05,2.04742e-05,0.609526,137,0,1
+382,occupation='Transport-moving' AND gender='Female',1.23496e-05,2.04742e-05,0.603182,127,1,0
+383,workclass='Local-gov' AND occupation='Handlers-cleaners',1.14392e-05,2.04742e-05,0.558712,65,1,0
+384,occupation='Other-service' AND race='Amer-Indian-Eskimo',1.13737e-05,2.04742e-05,0.555513,61,0,1
+385,occupation='Other-service' AND race='Other',1.11938e-05,2.04742e-05,0.546727,51,0,1
+386,occupation='Handlers-cleaners' AND race='Asian-Pac-Islander',1.09936e-05,2.04742e-05,0.536948,39,1,0
+387,workclass='Self-emp-inc' AND occupation='Transport-moving',1.09761e-05,2.04742e-05,0.536093,38,0,1
+388,workclass='Federal-gov' AND occupation='Handlers-cleaners',1.09398e-05,2.04742e-05,0.534324,36,1,0
+389,workclass='NA' AND race='Amer-Indian-Eskimo',1.08977e-05,2.04742e-05,0.532264,35,1,0
+390,occupation='NA' AND race='Amer-Indian-Eskimo',1.08972e-05,2.04742e-05,0.532239,35,1,0
+391,workclass='Self-emp-not-inc' AND occupation='Handlers-cleaners',1.06591e-05,2.04742e-05,0.520612,21,0,1
+392,occupation='Transport-moving' AND race='Other',1.06398e-05,2.04742e-05,0.519669,20,1,0
+393,"occupation='Priv-house-serv' AND hoursPerWeek IN (40, 50]",1.06391e-05,2.04742e-05,0.519635,20,0,1
+394,workclass='State-gov' AND occupation='Machine-op-inspct',1.06204e-05,2.04742e-05,0.518722,19,0,1
+395,workclass='Self-emp-inc' AND occupation='Machine-op-inspct',1.05814e-05,2.04742e-05,0.516818,17,1,0
+396,workclass='Local-gov' AND occupation='Sales',1.05618e-05,2.04742e-05,0.51586,16,1,0
+397,workclass='State-gov' AND race='Other',1.05223e-05,2.04742e-05,0.513933,14,0,1
+398,occupation='Priv-house-serv' AND gender='Male',1.05223e-05,2.04742e-05,0.513933,14,1,0
+399,workclass='Federal-gov' AND race='Other',1.04626e-05,2.04742e-05,0.511013,11,1,0
+400,occupation='Tech-support' AND race='Other',1.04223e-05,2.04742e-05,0.509047,9,1,0
+401,workclass='Self-emp-not-inc' AND occupation='Protective-serv',1.03817e-05,2.04742e-05,0.507065,7,1,0
+402,workclass='Self-emp-inc' AND occupation='Handlers-cleaners',1.03613e-05,2.04742e-05,0.506068,6,1,0
+403,workclass='Self-emp-inc' AND race='Other',1.03613e-05,2.04742e-05,0.506068,6,1,0
+404,education='Masters' AND occupation='Priv-house-serv',1.0258e-05,2.04742e-05,0.501022,1,0,1
+405,workclass='Without-pay',0,0,0.520612,21,0,0
+406,workclass='Never-worked',0,0,0.510032,10,0,0
+407,education='HS-grad',0,0,0.944838,15784,0,0
+408,education='Some-college',0,0,0.928156,10878,0,0
+409,education='Assoc-voc',0,0,0.8943,2061,0,0
+410,education='11th',0,0,0.819709,1812,0,0
+411,education='Assoc-acdm',0,0,0.876069,1601,0,0
+412,education='10th',0,0,0.838351,1389,0,0
+413,education='7th-8th',0,0,0.793526,955,0,0
+414,education='Prof-school',0,0,0.720495,834,0,0
+415,education='9th',0,0,0.795513,756,0,0
+416,education='12th',0,0,0.768168,657,0,0
+417,education='Doctorate',0,0,0.708276,594,0,0
+418,education='5th-6th',0,0,0.738924,509,0,0
+419,education='1st-4th',0,0,0.662066,247,0,0
+420,education='Preschool',0,0,0.572626,83,0,0
+421,workclass='Private' AND education='HS-grad',0,0,0.924833,11682,0,0
+422,workclass='Private' AND education='Some-college',0,0,0.910873,7535,0,0
+423,workclass='Private' AND education='Assoc-voc',0,0,0.867257,1488,0,0
+424,workclass='Private' AND education='11th',0,0,0.797286,1412,0,0
+425,workclass='Private' AND education='Assoc-acdm',0,0,0.84013,1085,0,0
+426,workclass='Private' AND education='10th',0,0,0.816091,1022,0,0
+427,workclass='Private' AND education='7th-8th',0,0,0.759641,624,0,0
+428,workclass='Private' AND education='Prof-school',0,0,0.678971,361,0,0
+429,workclass='Private' AND education='9th',0,0,0.758568,568,0,0
+430,workclass='Private' AND education='12th',0,0,0.741447,512,0,0
+431,workclass='Private' AND education='Doctorate',0,0,0.656059,263,0,0
+432,workclass='Private' AND education='5th-6th',0,0,0.708264,409,0,0
+433,workclass='Private' AND education='1st-4th',0,0,0.640681,203,0,0
+434,workclass='Private' AND education='Preschool',0,0,0.557085,63,0,0
+435,workclass='Self-emp-not-inc' AND education='HS-grad',0,0,0.808147,1279,0,0
+436,workclass='Self-emp-not-inc' AND education='Some-college',0,0,0.783038,724,0,0
+437,workclass='Self-emp-not-inc' AND education='Assoc-voc',0,0,0.622857,171,0,0
+438,workclass='Self-emp-not-inc' AND education='11th',0,0,0.58835,106,0,0
+439,workclass='Self-emp-not-inc' AND education='Assoc-acdm',0,0,0.59259,111,0,0
+440,workclass='Self-emp-not-inc' AND education='10th',0,0,0.587776,104,0,0
+441,workclass='Self-emp-not-inc' AND education='7th-8th',0,0,0.602788,138,0,0
+442,workclass='Self-emp-not-inc' AND education='Prof-school',0,0,0.626656,196,0,0
+443,workclass='Self-emp-not-inc' AND education='9th',0,0,0.553889,59,0,0
+444,workclass='Self-emp-not-inc' AND education='12th',0,0,0.528934,30,0,0
+445,workclass='Self-emp-not-inc' AND education='Doctorate',0,0,0.567199,76,0,0
+446,workclass='Self-emp-not-inc' AND education='5th-6th',0,0,0.531644,33,0,0
+447,workclass='Self-emp-not-inc' AND education='1st-4th',0,0,0.51586,16,0,0
+448,workclass='Self-emp-not-inc' AND education='Preschool',0,0,0.505067,5,0,0
+449,workclass='Local-gov' AND education='HS-grad',0,0,0.785935,761,0,0
+450,workclass='Local-gov' AND education='Some-college',0,0,0.754407,589,0,0
+451,workclass='Local-gov' AND education='Assoc-voc',0,0,0.595771,124,0,0
+452,workclass='Local-gov' AND education='11th',0,0,0.555513,61,0,0
+453,workclass='Local-gov' AND education='Assoc-acdm',0,0,0.600909,129,0,0
+454,workclass='Local-gov' AND education='10th',0,0,0.548111,52,0,0
+455,workclass='Local-gov' AND education='7th-8th',0,0,0.537849,40,0,0
+456,workclass='Local-gov' AND education='Prof-school',0,0,0.538722,41,0,0
+457,workclass='Local-gov' AND education='9th',0,0,0.529841,31,0,0
+458,workclass='Local-gov' AND education='12th',0,0,0.524347,25,0,0
+459,workclass='Local-gov' AND education='Doctorate',0,0,0.533434,35,0,0
+460,workclass='Local-gov' AND education='5th-6th',0,0,0.512963,13,0,0
+461,workclass='Local-gov' AND education='1st-4th',0,0,0.505067,5,0,0
+462,workclass='Local-gov' AND education='Preschool',0,0,0.504062,4,0,0
+463,workclass='NA' AND education='HS-grad',0,0,0.712926,810,0,0
+464,workclass='NA' AND education='Some-college',0,0,0.663696,840,0,0
+465,workclass='NA' AND education='Assoc-voc',0,0,0.561659,83,0,0
+466,workclass='NA' AND education='11th',0,0,0.607351,178,0,0
+467,workclass='NA' AND education='Assoc-acdm',0,0,0.555239,72,0,0
+468,workclass='NA' AND education='10th',0,0,0.594396,148,0,0
+469,workclass='NA' AND education='7th-8th',0,0,0.576037,110,0,0
+470,workclass='NA' AND education='Prof-school',0,0,0.523418,24,0,0
+471,workclass='NA' AND education='9th',0,0,0.553608,69,0,0
+472,workclass='NA' AND education='12th',0,0,0.546994,58,0,0
+473,workclass='NA' AND education='Doctorate',0,0,0.517772,18,0,0
+474,workclass='NA' AND education='5th-6th',0,0,0.53623,41,0,0
+475,workclass='NA' AND education='1st-4th',0,0,0.517772,18,0,0
+476,workclass='NA' AND education='Preschool',0,0,0.510032,10,0,0
+477,workclass='State-gov' AND education='HS-grad',0,0,0.722397,415,0,0
+478,workclass='State-gov' AND education='Some-college',0,0,0.743129,490,0,0
+479,workclass='State-gov' AND education='Assoc-voc',0,0,0.56584,75,0,0
+480,workclass='State-gov' AND education='11th',0,0,0.514898,15,0,0
+481,workclass='State-gov' AND education='Assoc-acdm',0,0,0.557125,63,0,0
+482,workclass='State-gov' AND education='10th',0,0,0.518722,19,0,0
+483,workclass='State-gov' AND education='7th-8th',0,0,0.51586,16,0,0
+484,workclass='State-gov' AND education='Prof-school',0,0,0.542181,45,0,0
+485,workclass='State-gov' AND education='9th',0,0,0.510032,10,0,0
+486,workclass='State-gov' AND education='12th',0,0,0.511013,11,0,0
+487,workclass='State-gov' AND education='Doctorate',0,0,0.596083,125,0,0
+488,workclass='State-gov' AND education='5th-6th',0,0,0.504062,4,0,0
+489,workclass='State-gov' AND education='1st-4th',0,0,0.502039,2,0,0
+490,workclass='State-gov' AND education='Preschool',0,0,0.501022,1,0,0
+491,workclass='Self-emp-inc' AND education='HS-grad',0,0,0.725654,426,0,0
+492,workclass='Self-emp-inc' AND education='Some-college',0,0,0.693038,332,0,0
+493,workclass='Self-emp-inc' AND education='Assoc-voc',0,0,0.553889,59,0,0
+494,workclass='Self-emp-inc' AND education='11th',0,0,0.522486,23,0,0
+495,workclass='Self-emp-inc' AND education='Assoc-acdm',0,0,0.553073,58,0,0
+496,workclass='Self-emp-inc' AND education='10th',0,0,0.526192,27,0,0
+497,workclass='Self-emp-inc' AND education='7th-8th',0,0,0.519669,20,0,0
+498,workclass='Self-emp-inc' AND education='Prof-school',0,0,0.596778,129,0,0
+499,workclass='Self-emp-inc' AND education='9th',0,0,0.512963,13,0,0
+500,workclass='Self-emp-inc' AND education='12th',0,0,0.512963,13,0,0
+501,workclass='Self-emp-inc' AND education='Doctorate',0,0,0.550605,55,0,0
+502,workclass='Self-emp-inc' AND education='5th-6th',0,0,0.508058,8,0,0
+503,workclass='Self-emp-inc' AND education='1st-4th',0,0,0.502039,2,0,0
 504,workclass='Self-emp-inc' AND education='Preschool',0,0,0.5,0,0,0
-505,workclass='Federal-gov' AND education='HS-grad',0,0,0.504011,395,0,0
-506,workclass='Federal-gov' AND education='Some-college',0,0,0.503689,363,0,0
-507,workclass='Federal-gov' AND education='Assoc-voc',0,0,0.500624,61,0,0
-508,workclass='Federal-gov' AND education='11th',0,0,0.500143,14,0,0
-509,workclass='Federal-gov' AND education='Assoc-acdm',0,0,0.500828,81,0,0
-510,workclass='Federal-gov' AND education='10th',0,0,0.500154,15,0,0
-511,workclass='Federal-gov' AND education='7th-8th',0,0,0.500041,4,0,0
-512,workclass='Federal-gov' AND education='Prof-school',0,0,0.500389,38,0,0
-513,workclass='Federal-gov' AND education='9th',0,0,0.500061,6,0,0
-514,workclass='Federal-gov' AND education='12th',0,0,0.500082,8,0,0
-515,workclass='Federal-gov' AND education='Doctorate',0,0,0.500225,22,0,0
-516,workclass='Federal-gov' AND education='5th-6th',0,0,0.50001,1,0,0
-517,workclass='Federal-gov' AND education='1st-4th',0,0,0.50001,1,0,0
+505,workclass='Federal-gov' AND education='HS-grad',0,0,0.708837,395,0,0
+506,workclass='Federal-gov' AND education='Some-college',0,0,0.702865,363,0,0
+507,workclass='Federal-gov' AND education='Assoc-voc',0,0,0.555324,61,0,0
+508,workclass='Federal-gov' AND education='11th',0,0,0.513933,14,0,0
+509,workclass='Federal-gov' AND education='Assoc-acdm',0,0,0.571125,81,0,0
+510,workclass='Federal-gov' AND education='10th',0,0,0.514898,15,0,0
+511,workclass='Federal-gov' AND education='7th-8th',0,0,0.504062,4,0,0
+512,workclass='Federal-gov' AND education='Prof-school',0,0,0.535894,38,0,0
+513,workclass='Federal-gov' AND education='9th',0,0,0.506068,6,0,0
+514,workclass='Federal-gov' AND education='12th',0,0,0.507844,8,0,0
+515,workclass='Federal-gov' AND education='Doctorate',0,0,0.521551,22,0,0
+516,workclass='Federal-gov' AND education='5th-6th',0,0,0.501022,1,0,0
+517,workclass='Federal-gov' AND education='1st-4th',0,0,0.501022,1,0,0
 518,workclass='Federal-gov' AND education='Preschool',0,0,0.5,0,0,0
-519,workclass='Without-pay' AND education='HS-grad',0,0,0.500143,14,0,0
-520,workclass='Without-pay' AND education='Some-college',0,0,0.500031,3,0,0
+519,workclass='Without-pay' AND education='HS-grad',0,0,0.513933,14,0,0
+520,workclass='Without-pay' AND education='Some-college',0,0,0.503052,3,0,0
 521,workclass='Without-pay' AND education='Bachelors',0,0,0.5,0,0,0
 522,workclass='Without-pay' AND education='Masters',0,0,0.5,0,0,0
 523,workclass='Without-pay' AND education='Assoc-voc',0,0,0.5,0,0,0
 524,workclass='Without-pay' AND education='11th',0,0,0.5,0,0,0
-525,workclass='Without-pay' AND education='Assoc-acdm',0,0,0.50002,2,0,0
+525,workclass='Without-pay' AND education='Assoc-acdm',0,0,0.502039,2,0,0
 526,workclass='Without-pay' AND education='10th',0,0,0.5,0,0,0
-527,workclass='Without-pay' AND education='7th-8th',0,0,0.50002,2,0,0
+527,workclass='Without-pay' AND education='7th-8th',0,0,0.502039,2,0,0
 528,workclass='Without-pay' AND education='Prof-school',0,0,0.5,0,0,0
 529,workclass='Without-pay' AND education='9th',0,0,0.5,0,0,0
 530,workclass='Without-pay' AND education='12th',0,0,0.5,0,0,0
@@ -533,15 +533,15 @@ rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
 532,workclass='Without-pay' AND education='5th-6th',0,0,0.5,0,0,0
 533,workclass='Without-pay' AND education='1st-4th',0,0,0.5,0,0,0
 534,workclass='Without-pay' AND education='Preschool',0,0,0.5,0,0,0
-535,workclass='Never-worked' AND education='HS-grad',0,0,0.50002,2,0,0
-536,workclass='Never-worked' AND education='Some-college',0,0,0.50002,2,0,0
+535,workclass='Never-worked' AND education='HS-grad',0,0,0.502039,2,0,0
+536,workclass='Never-worked' AND education='Some-college',0,0,0.502039,2,0,0
 537,workclass='Never-worked' AND education='Bachelors',0,0,0.5,0,0,0
 538,workclass='Never-worked' AND education='Masters',0,0,0.5,0,0,0
 539,workclass='Never-worked' AND education='Assoc-voc',0,0,0.5,0,0,0
-540,workclass='Never-worked' AND education='11th',0,0,0.500031,3,0,0
+540,workclass='Never-worked' AND education='11th',0,0,0.503052,3,0,0
 541,workclass='Never-worked' AND education='Assoc-acdm',0,0,0.5,0,0,0
-542,workclass='Never-worked' AND education='10th',0,0,0.50002,2,0,0
-543,workclass='Never-worked' AND education='7th-8th',0,0,0.50001,1,0,0
+542,workclass='Never-worked' AND education='10th',0,0,0.502039,2,0,0
+543,workclass='Never-worked' AND education='7th-8th',0,0,0.501022,1,0,0
 544,workclass='Never-worked' AND education='Prof-school',0,0,0.5,0,0,0
 545,workclass='Never-worked' AND education='9th',0,0,0.5,0,0,0
 546,workclass='Never-worked' AND education='12th',0,0,0.5,0,0,0
@@ -551,14 +551,14 @@ rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
 550,workclass='Never-worked' AND education='Preschool',0,0,0.5,0,0,0
 551,workclass='Private' AND occupation='NA',0,0,0.5,0,0,0
 552,workclass='Private' AND occupation='Armed-Forces',0,0,0.5,0,0,0
-553,workclass='Self-emp-not-inc' AND occupation='Adm-clerical',0,0,0.500716,70,0,0
+553,workclass='Self-emp-not-inc' AND occupation='Adm-clerical',0,0,0.562677,70,0,0
 554,workclass='Self-emp-not-inc' AND occupation='NA',0,0,0.5,0,0,0
 555,workclass='Self-emp-not-inc' AND occupation='Priv-house-serv',0,0,0.5,0,0,0
 556,workclass='Self-emp-not-inc' AND occupation='Armed-Forces',0,0,0.5,0,0,0
-557,workclass='Local-gov' AND occupation='Machine-op-inspct',0,0,0.500246,24,0,0
+557,workclass='Local-gov' AND occupation='Machine-op-inspct',0,0,0.523387,24,0,0
 558,workclass='Local-gov' AND occupation='NA',0,0,0.5,0,0,0
-559,workclass='Local-gov' AND occupation='Transport-moving',0,0,0.501592,156,0,0
-560,workclass='Local-gov' AND occupation='Farming-fishing',0,0,0.50044,43,0,0
+559,workclass='Local-gov' AND occupation='Transport-moving',0,0,0.621039,156,0,0
+560,workclass='Local-gov' AND occupation='Farming-fishing',0,0,0.540458,43,0,0
 561,workclass='Local-gov' AND occupation='Priv-house-serv',0,0,0.5,0,0,0
 562,workclass='Local-gov' AND occupation='Armed-Forces',0,0,0.5,0,0,0
 563,workclass='NA' AND occupation='Prof-specialty',0,0,0.5,0,0,0
@@ -576,30 +576,30 @@ rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
 575,workclass='NA' AND occupation='Priv-house-serv',0,0,0.5,0,0,0
 576,workclass='NA' AND occupation='Armed-Forces',0,0,0.5,0,0,0
 577,workclass='State-gov' AND occupation='NA',0,0,0.5,0,0,0
-578,workclass='State-gov' AND occupation='Transport-moving',0,0,0.500613,60,0,0
-579,workclass='State-gov' AND occupation='Handlers-cleaners',0,0,0.500194,19,0,0
-580,workclass='State-gov' AND occupation='Farming-fishing',0,0,0.500256,25,0,0
+578,workclass='State-gov' AND occupation='Transport-moving',0,0,0.554703,60,0,0
+579,workclass='State-gov' AND occupation='Handlers-cleaners',0,0,0.518722,19,0,0
+580,workclass='State-gov' AND occupation='Farming-fishing',0,0,0.524347,25,0,0
 581,workclass='State-gov' AND occupation='Priv-house-serv',0,0,0.5,0,0,0
 582,workclass='State-gov' AND occupation='Armed-Forces',0,0,0.5,0,0,0
 583,workclass='Self-emp-inc' AND occupation='NA',0,0,0.5,0,0,0
-584,workclass='Self-emp-inc' AND occupation='Protective-serv',0,0,0.500051,5,0,0
+584,workclass='Self-emp-inc' AND occupation='Protective-serv',0,0,0.505067,5,0,0
 585,workclass='Self-emp-inc' AND occupation='Priv-house-serv',0,0,0.5,0,0,0
 586,workclass='Self-emp-inc' AND occupation='Armed-Forces',0,0,0.5,0,0,0
-587,workclass='Federal-gov' AND occupation='Machine-op-inspct',0,0,0.500194,19,0,0
+587,workclass='Federal-gov' AND occupation='Machine-op-inspct',0,0,0.518722,19,0,0
 588,workclass='Federal-gov' AND occupation='NA',0,0,0.5,0,0,0
-589,workclass='Federal-gov' AND occupation='Farming-fishing',0,0,0.500092,9,0,0
+589,workclass='Federal-gov' AND occupation='Farming-fishing',0,0,0.509047,9,0,0
 590,workclass='Federal-gov' AND occupation='Priv-house-serv',0,0,0.5,0,0,0
 591,workclass='Without-pay' AND occupation='Prof-specialty',0,0,0.5,0,0,0
-592,workclass='Without-pay' AND occupation='Craft-repair',0,0,0.50001,1,0,0
-593,workclass='Without-pay' AND occupation='Exec-managerial',0,0,0.50001,1,0,0
-594,workclass='Without-pay' AND occupation='Adm-clerical',0,0,0.500031,3,0,0
-595,workclass='Without-pay' AND occupation='Sales',0,0,0.50001,1,0,0
-596,workclass='Without-pay' AND occupation='Other-service',0,0,0.50002,2,0,0
-597,workclass='Without-pay' AND occupation='Machine-op-inspct',0,0,0.50002,2,0,0
+592,workclass='Without-pay' AND occupation='Craft-repair',0,0,0.501022,1,0,0
+593,workclass='Without-pay' AND occupation='Exec-managerial',0,0,0.501022,1,0,0
+594,workclass='Without-pay' AND occupation='Adm-clerical',0,0,0.503052,3,0,0
+595,workclass='Without-pay' AND occupation='Sales',0,0,0.501022,1,0,0
+596,workclass='Without-pay' AND occupation='Other-service',0,0,0.502039,2,0,0
+597,workclass='Without-pay' AND occupation='Machine-op-inspct',0,0,0.502039,2,0,0
 598,workclass='Without-pay' AND occupation='NA',0,0,0.5,0,0,0
-599,workclass='Without-pay' AND occupation='Transport-moving',0,0,0.50001,1,0,0
-600,workclass='Without-pay' AND occupation='Handlers-cleaners',0,0,0.50002,2,0,0
-601,workclass='Without-pay' AND occupation='Farming-fishing',0,0,0.500082,8,0,0
+599,workclass='Without-pay' AND occupation='Transport-moving',0,0,0.501022,1,0,0
+600,workclass='Without-pay' AND occupation='Handlers-cleaners',0,0,0.502039,2,0,0
+601,workclass='Without-pay' AND occupation='Farming-fishing',0,0,0.508058,8,0,0
 602,workclass='Without-pay' AND occupation='Tech-support',0,0,0.5,0,0,0
 603,workclass='Without-pay' AND occupation='Protective-serv',0,0,0.5,0,0,0
 604,workclass='Without-pay' AND occupation='Priv-house-serv',0,0,0.5,0,0,0
@@ -611,7 +611,7 @@ rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
 610,workclass='Never-worked' AND occupation='Sales',0,0,0.5,0,0,0
 611,workclass='Never-worked' AND occupation='Other-service',0,0,0.5,0,0,0
 612,workclass='Never-worked' AND occupation='Machine-op-inspct',0,0,0.5,0,0,0
-613,workclass='Never-worked' AND occupation='NA',0,0,0.500102,10,0,0
+613,workclass='Never-worked' AND occupation='NA',0,0,0.510032,10,0,0
 614,workclass='Never-worked' AND occupation='Transport-moving',0,0,0.5,0,0,0
 615,workclass='Never-worked' AND occupation='Handlers-cleaners',0,0,0.5,0,0,0
 616,workclass='Never-worked' AND occupation='Farming-fishing',0,0,0.5,0,0,0
@@ -619,431 +619,431 @@ rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
 618,workclass='Never-worked' AND occupation='Protective-serv',0,0,0.5,0,0,0
 619,workclass='Never-worked' AND occupation='Priv-house-serv',0,0,0.5,0,0,0
 620,workclass='Never-worked' AND occupation='Armed-Forces',0,0,0.5,0,0,0
-621,workclass='Self-emp-inc' AND race='Amer-Indian-Eskimo',0,0,0.50002,2,0,0
-622,workclass='Federal-gov' AND race='Amer-Indian-Eskimo',0,0,0.500338,33,0,0
-623,workclass='Without-pay' AND race='White',0,0,0.500194,19,0,0
-624,workclass='Without-pay' AND race='Black',0,0,0.50001,1,0,0
-625,workclass='Without-pay' AND race='Asian-Pac-Islander',0,0,0.50001,1,0,0
+621,workclass='Self-emp-inc' AND race='Amer-Indian-Eskimo',0,0,0.502039,2,0,0
+622,workclass='Federal-gov' AND race='Amer-Indian-Eskimo',0,0,0.531443,33,0,0
+623,workclass='Without-pay' AND race='White',0,0,0.518722,19,0,0
+624,workclass='Without-pay' AND race='Black',0,0,0.501022,1,0,0
+625,workclass='Without-pay' AND race='Asian-Pac-Islander',0,0,0.501022,1,0,0
 626,workclass='Without-pay' AND race='Amer-Indian-Eskimo',0,0,0.5,0,0,0
 627,workclass='Without-pay' AND race='Other',0,0,0.5,0,0,0
-628,workclass='Never-worked' AND race='White',0,0,0.500072,7,0,0
-629,workclass='Never-worked' AND race='Black',0,0,0.500031,3,0,0
+628,workclass='Never-worked' AND race='White',0,0,0.507065,7,0,0
+629,workclass='Never-worked' AND race='Black',0,0,0.503052,3,0,0
 630,workclass='Never-worked' AND race='Asian-Pac-Islander',0,0,0.5,0,0,0
 631,workclass='Never-worked' AND race='Amer-Indian-Eskimo',0,0,0.5,0,0,0
 632,workclass='Never-worked' AND race='Other',0,0,0.5,0,0,0
-633,workclass='Without-pay' AND gender='Male',0,0,0.500143,14,0,0
-634,workclass='Without-pay' AND gender='Female',0,0,0.500072,7,0,0
-635,workclass='Never-worked' AND gender='Male',0,0,0.500072,7,0,0
-636,workclass='Never-worked' AND gender='Female',0,0,0.500031,3,0,0
-637,"workclass='Federal-gov' AND hoursPerWeek IN [1, 32]",0,0,0.500858,84,0,0
-638,"workclass='Without-pay' AND hoursPerWeek IN [1, 32]",0,0,0.500102,10,0,0
-639,"workclass='Without-pay' AND hoursPerWeek IN (32, 40]",0,0,0.500051,5,0,0
-640,"workclass='Without-pay' AND hoursPerWeek IN (40, 50]",0,0,0.500031,3,0,0
-641,"workclass='Without-pay' AND hoursPerWeek IN (50, 99]",0,0,0.500031,3,0,0
-642,"workclass='Never-worked' AND hoursPerWeek IN [1, 32]",0,0,0.500041,4,0,0
-643,"workclass='Never-worked' AND hoursPerWeek IN (32, 40]",0,0,0.500061,6,0,0
+633,workclass='Without-pay' AND gender='Male',0,0,0.513933,14,0,0
+634,workclass='Without-pay' AND gender='Female',0,0,0.507065,7,0,0
+635,workclass='Never-worked' AND gender='Male',0,0,0.507065,7,0,0
+636,workclass='Never-worked' AND gender='Female',0,0,0.503052,3,0,0
+637,"workclass='Federal-gov' AND hoursPerWeek IN [1, 32]",0,0,0.573193,84,0,0
+638,"workclass='Without-pay' AND hoursPerWeek IN [1, 32]",0,0,0.510032,10,0,0
+639,"workclass='Without-pay' AND hoursPerWeek IN (32, 40]",0,0,0.505067,5,0,0
+640,"workclass='Without-pay' AND hoursPerWeek IN (40, 50]",0,0,0.503052,3,0,0
+641,"workclass='Without-pay' AND hoursPerWeek IN (50, 99]",0,0,0.503052,3,0,0
+642,"workclass='Never-worked' AND hoursPerWeek IN [1, 32]",0,0,0.504062,4,0,0
+643,"workclass='Never-worked' AND hoursPerWeek IN (32, 40]",0,0,0.506068,6,0,0
 644,"workclass='Never-worked' AND hoursPerWeek IN (40, 50]",0,0,0.5,0,0,0
 645,"workclass='Never-worked' AND hoursPerWeek IN (50, 99]",0,0,0.5,0,0,0
-646,education='HS-grad' AND occupation='Prof-specialty',0,0,0.503497,344,0,0
-647,education='HS-grad' AND occupation='Craft-repair',0,0,0.528124,2911,0,0
-648,education='HS-grad' AND occupation='Exec-managerial',0,0,0.511912,1192,0,0
-649,education='HS-grad' AND occupation='Adm-clerical',0,0,0.520112,2047,0,0
-650,education='HS-grad' AND occupation='Sales',0,0,0.515668,1580,0,0
-651,education='HS-grad' AND occupation='Other-service',0,0,0.519063,1936,0,0
-652,education='HS-grad' AND occupation='Machine-op-inspct',0,0,0.515197,1531,0,0
-653,education='HS-grad' AND occupation='NA',0,0,0.508177,812,0,0
-654,education='HS-grad' AND occupation='Transport-moving',0,0,0.512214,1223,0,0
-655,education='HS-grad' AND occupation='Handlers-cleaners',0,0,0.509471,943,0,0
-656,education='HS-grad' AND occupation='Farming-fishing',0,0,0.505798,573,0,0
-657,education='HS-grad' AND occupation='Tech-support',0,0,0.502749,270,0,0
-658,education='HS-grad' AND occupation='Protective-serv',0,0,0.503315,326,0,0
-659,education='HS-grad' AND occupation='Priv-house-serv',0,0,0.50093,91,0,0
-660,education='HS-grad' AND occupation='Armed-Forces',0,0,0.500051,5,0,0
-661,education='Some-college' AND occupation='Prof-specialty',0,0,0.506457,639,0,0
-662,education='Some-college' AND occupation='Craft-repair',0,0,0.512555,1258,0,0
-663,education='Some-college' AND occupation='Exec-managerial',0,0,0.512847,1288,0,0
-664,education='Some-college' AND occupation='Adm-clerical',0,0,0.518323,1858,0,0
-665,education='Some-college' AND occupation='Sales',0,0,0.514927,1503,0,0
-666,education='Some-college' AND occupation='Other-service',0,0,0.511707,1171,0,0
-667,education='Some-college' AND occupation='Machine-op-inspct',0,0,0.504986,492,0,0
-668,education='Some-college' AND occupation='NA',0,0,0.508474,842,0,0
-669,education='Some-college' AND occupation='Transport-moving',0,0,0.504162,410,0,0
-670,education='Some-college' AND occupation='Handlers-cleaners',0,0,0.504062,400,0,0
-671,education='Some-college' AND occupation='Farming-fishing',0,0,0.502577,253,0,0
-672,education='Some-college' AND occupation='Tech-support',0,0,0.504323,426,0,0
-673,education='Some-college' AND occupation='Protective-serv',0,0,0.503133,308,0,0
-674,education='Some-college' AND occupation='Priv-house-serv',0,0,0.500266,26,0,0
-675,education='Some-college' AND occupation='Armed-Forces',0,0,0.500041,4,0,0
-676,education='Bachelors' AND occupation='Armed-Forces',0,0,0.50001,1,0,0
-677,education='Assoc-voc' AND occupation='Prof-specialty',0,0,0.502496,245,0,0
-678,education='Assoc-voc' AND occupation='Craft-repair',0,0,0.50381,375,0,0
-679,education='Assoc-voc' AND occupation='Exec-managerial',0,0,0.502384,234,0,0
-680,education='Assoc-voc' AND occupation='Adm-clerical',0,0,0.502739,269,0,0
-681,education='Assoc-voc' AND occupation='Sales',0,0,0.501663,163,0,0
-682,education='Assoc-voc' AND occupation='Other-service',0,0,0.501633,160,0,0
-683,education='Assoc-voc' AND occupation='Machine-op-inspct',0,0,0.500971,95,0,0
-684,education='Assoc-voc' AND occupation='NA',0,0,0.500848,83,0,0
-685,education='Assoc-voc' AND occupation='Transport-moving',0,0,0.500562,55,0,0
-686,education='Assoc-voc' AND occupation='Handlers-cleaners',0,0,0.50044,43,0,0
-687,education='Assoc-voc' AND occupation='Farming-fishing',0,0,0.500869,85,0,0
-688,education='Assoc-voc' AND occupation='Tech-support',0,0,0.501846,181,0,0
-689,education='Assoc-voc' AND occupation='Protective-serv',0,0,0.500685,67,0,0
-690,education='Assoc-voc' AND occupation='Priv-house-serv',0,0,0.500051,5,0,0
-691,education='Assoc-voc' AND occupation='Armed-Forces',0,0,0.50001,1,0,0
-692,education='11th' AND occupation='Prof-specialty',0,0,0.500348,34,0,0
-693,education='11th' AND occupation='Craft-repair',0,0,0.502749,270,0,0
-694,education='11th' AND occupation='Exec-managerial',0,0,0.500522,51,0,0
-695,education='11th' AND occupation='Adm-clerical',0,0,0.501022,100,0,0
-696,education='11th' AND occupation='Sales',0,0,0.502364,232,0,0
-697,education='11th' AND occupation='Other-service',0,0,0.503739,368,0,0
-698,education='11th' AND occupation='Machine-op-inspct',0,0,0.501561,153,0,0
-699,education='11th' AND occupation='NA',0,0,0.501846,181,0,0
-700,education='11th' AND occupation='Transport-moving',0,0,0.501368,134,0,0
-701,education='11th' AND occupation='Handlers-cleaners',0,0,0.501805,177,0,0
-702,education='11th' AND occupation='Farming-fishing',0,0,0.500685,67,0,0
-703,education='11th' AND occupation='Tech-support',0,0,0.500092,9,0,0
-704,education='11th' AND occupation='Protective-serv',0,0,0.500184,18,0,0
-705,education='11th' AND occupation='Priv-house-serv',0,0,0.500184,18,0,0
+646,education='HS-grad' AND occupation='Prof-specialty',0,0,0.706626,344,0,0
+647,education='HS-grad' AND occupation='Craft-repair',0,0,0.878161,2911,0,0
+648,education='HS-grad' AND occupation='Exec-managerial',0,0,0.843939,1192,0,0
+649,education='HS-grad' AND occupation='Adm-clerical',0,0,0.833868,2047,0,0
+650,education='HS-grad' AND occupation='Sales',0,0,0.879286,1580,0,0
+651,education='HS-grad' AND occupation='Other-service',0,0,0.846415,1936,0,0
+652,education='HS-grad' AND occupation='Machine-op-inspct',0,0,0.870446,1531,0,0
+653,education='HS-grad' AND occupation='NA',0,0,0.713177,812,0,0
+654,education='HS-grad' AND occupation='Transport-moving',0,0,0.846721,1223,0,0
+655,education='HS-grad' AND occupation='Handlers-cleaners',0,0,0.821518,943,0,0
+656,education='HS-grad' AND occupation='Farming-fishing',0,0,0.738301,573,0,0
+657,education='HS-grad' AND occupation='Tech-support',0,0,0.678002,270,0,0
+658,education='HS-grad' AND occupation='Protective-serv',0,0,0.682977,326,0,0
+659,education='HS-grad' AND occupation='Priv-house-serv',0,0,0.578527,91,0,0
+660,education='HS-grad' AND occupation='Armed-Forces',0,0,0.505067,5,0,0
+661,education='Some-college' AND occupation='Prof-specialty',0,0,0.78035,639,0,0
+662,education='Some-college' AND occupation='Craft-repair',0,0,0.850468,1258,0,0
+663,education='Some-college' AND occupation='Exec-managerial',0,0,0.849846,1288,0,0
+664,education='Some-college' AND occupation='Adm-clerical',0,0,0.82272,1858,0,0
+665,education='Some-college' AND occupation='Sales',0,0,0.85765,1503,0,0
+666,education='Some-college' AND occupation='Other-service',0,0,0.777851,1171,0,0
+667,education='Some-college' AND occupation='Machine-op-inspct',0,0,0.750913,492,0,0
+668,education='Some-college' AND occupation='NA',0,0,0.663522,842,0,0
+669,education='Some-college' AND occupation='Transport-moving',0,0,0.728178,410,0,0
+670,education='Some-college' AND occupation='Handlers-cleaners',0,0,0.720327,400,0,0
+671,education='Some-college' AND occupation='Farming-fishing',0,0,0.660915,253,0,0
+672,education='Some-college' AND occupation='Tech-support',0,0,0.732225,426,0,0
+673,education='Some-college' AND occupation='Protective-serv',0,0,0.673439,308,0,0
+674,education='Some-college' AND occupation='Priv-house-serv',0,0,0.525271,26,0,0
+675,education='Some-college' AND occupation='Armed-Forces',0,0,0.504062,4,0,0
+676,education='Bachelors' AND occupation='Armed-Forces',0,0,0.501022,1,0,0
+677,education='Assoc-voc' AND occupation='Prof-specialty',0,0,0.667026,245,0,0
+678,education='Assoc-voc' AND occupation='Craft-repair',0,0,0.71716,375,0,0
+679,education='Assoc-voc' AND occupation='Exec-managerial',0,0,0.661956,234,0,0
+680,education='Assoc-voc' AND occupation='Adm-clerical',0,0,0.677506,269,0,0
+681,education='Assoc-voc' AND occupation='Sales',0,0,0.625111,163,0,0
+682,education='Assoc-voc' AND occupation='Other-service',0,0,0.623377,160,0,0
+683,education='Assoc-voc' AND occupation='Machine-op-inspct',0,0,0.581416,95,0,0
+684,education='Assoc-voc' AND occupation='NA',0,0,0.561633,83,0,0
+685,education='Assoc-voc' AND occupation='Transport-moving',0,0,0.550605,55,0,0
+686,education='Assoc-voc' AND occupation='Handlers-cleaners',0,0,0.540458,43,0,0
+687,education='Assoc-voc' AND occupation='Farming-fishing',0,0,0.57167,85,0,0
+688,education='Assoc-voc' AND occupation='Tech-support',0,0,0.635192,181,0,0
+689,education='Assoc-voc' AND occupation='Protective-serv',0,0,0.559789,67,0,0
+690,education='Assoc-voc' AND occupation='Priv-house-serv',0,0,0.505067,5,0,0
+691,education='Assoc-voc' AND occupation='Armed-Forces',0,0,0.501022,1,0,0
+692,education='11th' AND occupation='Prof-specialty',0,0,0.532541,34,0,0
+693,education='11th' AND occupation='Craft-repair',0,0,0.678002,270,0,0
+694,education='11th' AND occupation='Exec-managerial',0,0,0.547273,51,0,0
+695,education='11th' AND occupation='Adm-clerical',0,0,0.584973,100,0,0
+696,education='11th' AND occupation='Sales',0,0,0.645993,232,0,0
+697,education='11th' AND occupation='Other-service',0,0,0.695446,368,0,0
+698,education='11th' AND occupation='Machine-op-inspct',0,0,0.619267,153,0,0
+699,education='11th' AND occupation='NA',0,0,0.608583,181,0,0
+700,education='11th' AND occupation='Transport-moving',0,0,0.607644,134,0,0
+701,education='11th' AND occupation='Handlers-cleaners',0,0,0.632999,177,0,0
+702,education='11th' AND occupation='Farming-fishing',0,0,0.560315,67,0,0
+703,education='11th' AND occupation='Tech-support',0,0,0.509047,9,0,0
+704,education='11th' AND occupation='Protective-serv',0,0,0.517772,18,0,0
+705,education='11th' AND occupation='Priv-house-serv',0,0,0.517772,18,0,0
 706,education='11th' AND occupation='Armed-Forces',0,0,0.5,0,0,0
-707,education='Assoc-acdm' AND occupation='Prof-specialty',0,0,0.50211,207,0,0
-708,education='Assoc-acdm' AND occupation='Craft-repair',0,0,0.501704,167,0,0
-709,education='Assoc-acdm' AND occupation='Exec-managerial',0,0,0.502445,240,0,0
-710,education='Assoc-acdm' AND occupation='Adm-clerical',0,0,0.50286,281,0,0
-711,education='Assoc-acdm' AND occupation='Sales',0,0,0.50213,209,0,0
-712,education='Assoc-acdm' AND occupation='Other-service',0,0,0.501124,110,0,0
-713,education='Assoc-acdm' AND occupation='Machine-op-inspct',0,0,0.500522,51,0,0
-714,education='Assoc-acdm' AND occupation='NA',0,0,0.500736,72,0,0
-715,education='Assoc-acdm' AND occupation='Transport-moving',0,0,0.500368,36,0,0
-716,education='Assoc-acdm' AND occupation='Handlers-cleaners',0,0,0.500348,34,0,0
-717,education='Assoc-acdm' AND occupation='Farming-fishing',0,0,0.500256,25,0,0
-718,education='Assoc-acdm' AND occupation='Tech-support',0,0,0.501185,116,0,0
-719,education='Assoc-acdm' AND occupation='Protective-serv',0,0,0.500511,50,0,0
-720,education='Assoc-acdm' AND occupation='Priv-house-serv',0,0,0.500031,3,0,0
+707,education='Assoc-acdm' AND occupation='Prof-specialty',0,0,0.648831,207,0,0
+708,education='Assoc-acdm' AND occupation='Craft-repair',0,0,0.627399,167,0,0
+709,education='Assoc-acdm' AND occupation='Exec-managerial',0,0,0.66474,240,0,0
+710,education='Assoc-acdm' AND occupation='Adm-clerical',0,0,0.681166,281,0,0
+711,education='Assoc-acdm' AND occupation='Sales',0,0,0.649712,209,0,0
+712,education='Assoc-acdm' AND occupation='Other-service',0,0,0.591909,110,0,0
+713,education='Assoc-acdm' AND occupation='Machine-op-inspct',0,0,0.547273,51,0,0
+714,education='Assoc-acdm' AND occupation='NA',0,0,0.555213,72,0,0
+715,education='Assoc-acdm' AND occupation='Transport-moving',0,0,0.534324,36,0,0
+716,education='Assoc-acdm' AND occupation='Handlers-cleaners',0,0,0.532541,34,0,0
+717,education='Assoc-acdm' AND occupation='Farming-fishing',0,0,0.524157,25,0,0
+718,education='Assoc-acdm' AND occupation='Tech-support',0,0,0.59596,116,0,0
+719,education='Assoc-acdm' AND occupation='Protective-serv',0,0,0.546432,50,0,0
+720,education='Assoc-acdm' AND occupation='Priv-house-serv',0,0,0.503052,3,0,0
 721,education='Assoc-acdm' AND occupation='Armed-Forces',0,0,0.5,0,0,0
-722,education='10th' AND occupation='Prof-specialty',0,0,0.500143,14,0,0
-723,education='10th' AND occupation='Craft-repair',0,0,0.502435,239,0,0
-724,education='10th' AND occupation='Exec-managerial',0,0,0.50043,42,0,0
-725,education='10th' AND occupation='Adm-clerical',0,0,0.500603,59,0,0
-726,education='10th' AND occupation='Sales',0,0,0.501225,120,0,0
-727,education='10th' AND occupation='Other-service',0,0,0.50285,280,0,0
-728,education='10th' AND occupation='Machine-op-inspct',0,0,0.501551,152,0,0
-729,education='10th' AND occupation='NA',0,0,0.501531,150,0,0
-730,education='10th' AND occupation='Transport-moving',0,0,0.501317,129,0,0
-731,education='10th' AND occupation='Handlers-cleaners',0,0,0.501103,108,0,0
-732,education='10th' AND occupation='Farming-fishing',0,0,0.500726,71,0,0
-733,education='10th' AND occupation='Tech-support',0,0,0.500051,5,0,0
-734,education='10th' AND occupation='Protective-serv',0,0,0.500123,12,0,0
-735,education='10th' AND occupation='Priv-house-serv',0,0,0.500082,8,0,0
+722,education='10th' AND occupation='Prof-specialty',0,0,0.513933,14,0,0
+723,education='10th' AND occupation='Craft-repair',0,0,0.664279,239,0,0
+724,education='10th' AND occupation='Exec-managerial',0,0,0.539591,42,0,0
+725,education='10th' AND occupation='Adm-clerical',0,0,0.553889,59,0,0
+726,education='10th' AND occupation='Sales',0,0,0.598616,120,0,0
+727,education='10th' AND occupation='Other-service',0,0,0.680556,280,0,0
+728,education='10th' AND occupation='Machine-op-inspct',0,0,0.618672,152,0,0
+729,education='10th' AND occupation='NA',0,0,0.595297,150,0,0
+730,education='10th' AND occupation='Transport-moving',0,0,0.604467,129,0,0
+731,education='10th' AND occupation='Handlers-cleaners',0,0,0.59054,108,0,0
+732,education='10th' AND occupation='Farming-fishing',0,0,0.563459,71,0,0
+733,education='10th' AND occupation='Tech-support',0,0,0.505067,5,0,0
+734,education='10th' AND occupation='Protective-serv',0,0,0.51199,12,0,0
+735,education='10th' AND occupation='Priv-house-serv',0,0,0.508058,8,0,0
 736,education='10th' AND occupation='Armed-Forces',0,0,0.5,0,0,0
-737,education='7th-8th' AND occupation='Prof-specialty',0,0,0.500133,13,0,0
-738,education='7th-8th' AND occupation='Craft-repair',0,0,0.501755,172,0,0
-739,education='7th-8th' AND occupation='Exec-managerial',0,0,0.500286,28,0,0
-740,education='7th-8th' AND occupation='Adm-clerical',0,0,0.500205,20,0,0
-741,education='7th-8th' AND occupation='Sales',0,0,0.500409,40,0,0
-742,education='7th-8th' AND occupation='Other-service',0,0,0.501521,149,0,0
-743,education='7th-8th' AND occupation='Machine-op-inspct',0,0,0.501317,129,0,0
-744,education='7th-8th' AND occupation='NA',0,0,0.501134,111,0,0
-745,education='7th-8th' AND occupation='Transport-moving',0,0,0.500889,87,0,0
-746,education='7th-8th' AND occupation='Handlers-cleaners',0,0,0.500675,66,0,0
-747,education='7th-8th' AND occupation='Farming-fishing',0,0,0.501083,106,0,0
-748,education='7th-8th' AND occupation='Tech-support',0,0,0.500061,6,0,0
-749,education='7th-8th' AND occupation='Protective-serv',0,0,0.500113,11,0,0
-750,education='7th-8th' AND occupation='Priv-house-serv',0,0,0.500174,17,0,0
+737,education='7th-8th' AND occupation='Prof-specialty',0,0,0.512963,13,0,0
+738,education='7th-8th' AND occupation='Craft-repair',0,0,0.63022,172,0,0
+739,education='7th-8th' AND occupation='Exec-managerial',0,0,0.52711,28,0,0
+740,education='7th-8th' AND occupation='Adm-clerical',0,0,0.519669,20,0,0
+741,education='7th-8th' AND occupation='Sales',0,0,0.537849,40,0,0
+742,education='7th-8th' AND occupation='Other-service',0,0,0.61331,149,0,0
+743,education='7th-8th' AND occupation='Machine-op-inspct',0,0,0.603886,129,0,0
+744,education='7th-8th' AND occupation='NA',0,0,0.576554,111,0,0
+745,education='7th-8th' AND occupation='Transport-moving',0,0,0.575597,87,0,0
+746,education='7th-8th' AND occupation='Handlers-cleaners',0,0,0.559522,66,0,0
+747,education='7th-8th' AND occupation='Farming-fishing',0,0,0.586903,106,0,0
+748,education='7th-8th' AND occupation='Tech-support',0,0,0.506068,6,0,0
+749,education='7th-8th' AND occupation='Protective-serv',0,0,0.511013,11,0,0
+750,education='7th-8th' AND occupation='Priv-house-serv',0,0,0.516818,17,0,0
 751,education='7th-8th' AND occupation='Armed-Forces',0,0,0.5,0,0,0
-752,education='Prof-school' AND occupation='Prof-specialty',0,0,0.506736,667,0,0
-753,education='Prof-school' AND occupation='Craft-repair',0,0,0.500092,9,0,0
-754,education='Prof-school' AND occupation='Exec-managerial',0,0,0.500705,69,0,0
-755,education='Prof-school' AND occupation='Adm-clerical',0,0,0.500123,12,0,0
-756,education='Prof-school' AND occupation='Sales',0,0,0.500235,23,0,0
-757,education='Prof-school' AND occupation='Other-service',0,0,0.500072,7,0,0
-758,education='Prof-school' AND occupation='Machine-op-inspct',0,0,0.50001,1,0,0
-759,education='Prof-school' AND occupation='NA',0,0,0.500246,24,0,0
-760,education='Prof-school' AND occupation='Transport-moving',0,0,0.500031,3,0,0
+752,education='Prof-school' AND occupation='Prof-specialty',0,0,0.734256,667,0,0
+753,education='Prof-school' AND occupation='Craft-repair',0,0,0.509047,9,0,0
+754,education='Prof-school' AND occupation='Exec-managerial',0,0,0.561892,69,0,0
+755,education='Prof-school' AND occupation='Adm-clerical',0,0,0.51199,12,0,0
+756,education='Prof-school' AND occupation='Sales',0,0,0.522486,23,0,0
+757,education='Prof-school' AND occupation='Other-service',0,0,0.507065,7,0,0
+758,education='Prof-school' AND occupation='Machine-op-inspct',0,0,0.501022,1,0,0
+759,education='Prof-school' AND occupation='NA',0,0,0.523418,24,0,0
+760,education='Prof-school' AND occupation='Transport-moving',0,0,0.503052,3,0,0
 761,education='Prof-school' AND occupation='Handlers-cleaners',0,0,0.5,0,0,0
-762,education='Prof-school' AND occupation='Farming-fishing',0,0,0.500072,7,0,0
-763,education='Prof-school' AND occupation='Tech-support',0,0,0.500102,10,0,0
-764,education='Prof-school' AND occupation='Protective-serv',0,0,0.50001,1,0,0
+762,education='Prof-school' AND occupation='Farming-fishing',0,0,0.507065,7,0,0
+763,education='Prof-school' AND occupation='Tech-support',0,0,0.510032,10,0,0
+764,education='Prof-school' AND occupation='Protective-serv',0,0,0.501022,1,0,0
 765,education='Prof-school' AND occupation='Priv-house-serv',0,0,0.5,0,0,0
-766,education='Prof-school' AND occupation='Armed-Forces',0,0,0.50001,1,0,0
-767,education='9th' AND occupation='Prof-specialty',0,0,0.500041,4,0,0
-768,education='9th' AND occupation='Craft-repair',0,0,0.50147,144,0,0
-769,education='9th' AND occupation='Exec-managerial',0,0,0.500235,23,0,0
-770,education='9th' AND occupation='Adm-clerical',0,0,0.500205,20,0,0
-771,education='9th' AND occupation='Sales',0,0,0.500481,47,0,0
-772,education='9th' AND occupation='Other-service',0,0,0.501449,142,0,0
-773,education='9th' AND occupation='Machine-op-inspct',0,0,0.501042,102,0,0
-774,education='9th' AND occupation='NA',0,0,0.500705,69,0,0
-775,education='9th' AND occupation='Transport-moving',0,0,0.500624,61,0,0
-776,education='9th' AND occupation='Handlers-cleaners',0,0,0.500736,72,0,0
-777,education='9th' AND occupation='Farming-fishing',0,0,0.50045,44,0,0
-778,education='9th' AND occupation='Tech-support',0,0,0.500031,3,0,0
-779,education='9th' AND occupation='Protective-serv',0,0,0.500092,9,0,0
-780,education='9th' AND occupation='Priv-house-serv',0,0,0.500164,16,0,0
+766,education='Prof-school' AND occupation='Armed-Forces',0,0,0.501022,1,0,0
+767,education='9th' AND occupation='Prof-specialty',0,0,0.504062,4,0,0
+768,education='9th' AND occupation='Craft-repair',0,0,0.613504,144,0,0
+769,education='9th' AND occupation='Exec-managerial',0,0,0.522486,23,0,0
+770,education='9th' AND occupation='Adm-clerical',0,0,0.519669,20,0,0
+771,education='9th' AND occupation='Sales',0,0,0.543891,47,0,0
+772,education='9th' AND occupation='Other-service',0,0,0.612623,142,0,0
+773,education='9th' AND occupation='Machine-op-inspct',0,0,0.586379,102,0,0
+774,education='9th' AND occupation='NA',0,0,0.553583,69,0,0
+775,education='9th' AND occupation='Transport-moving',0,0,0.555513,61,0,0
+776,education='9th' AND occupation='Handlers-cleaners',0,0,0.564238,72,0,0
+777,education='9th' AND occupation='Farming-fishing',0,0,0.541321,44,0,0
+778,education='9th' AND occupation='Tech-support',0,0,0.503052,3,0,0
+779,education='9th' AND occupation='Protective-serv',0,0,0.509047,9,0,0
+780,education='9th' AND occupation='Priv-house-serv',0,0,0.51586,16,0,0
 781,education='9th' AND occupation='Armed-Forces',0,0,0.5,0,0,0
-782,education='12th' AND occupation='Prof-specialty',0,0,0.500133,13,0,0
-783,education='12th' AND occupation='Craft-repair',0,0,0.50094,92,0,0
-784,education='12th' AND occupation='Exec-managerial',0,0,0.500184,18,0,0
-785,education='12th' AND occupation='Adm-clerical',0,0,0.500532,52,0,0
-786,education='12th' AND occupation='Sales',0,0,0.500716,70,0,0
-787,education='12th' AND occupation='Other-service',0,0,0.501317,129,0,0
-788,education='12th' AND occupation='Machine-op-inspct',0,0,0.500624,61,0,0
-789,education='12th' AND occupation='NA',0,0,0.500593,58,0,0
-790,education='12th' AND occupation='Transport-moving',0,0,0.500573,56,0,0
-791,education='12th' AND occupation='Handlers-cleaners',0,0,0.500562,55,0,0
-792,education='12th' AND occupation='Farming-fishing',0,0,0.500297,29,0,0
-793,education='12th' AND occupation='Tech-support',0,0,0.500041,4,0,0
-794,education='12th' AND occupation='Protective-serv',0,0,0.500113,11,0,0
-795,education='12th' AND occupation='Priv-house-serv',0,0,0.500082,8,0,0
-796,education='12th' AND occupation='Armed-Forces',0,0,0.50001,1,0,0
-797,education='Doctorate' AND occupation='Prof-specialty',0,0,0.504565,450,0,0
-798,education='Doctorate' AND occupation='Craft-repair',0,0,0.500041,4,0,0
-799,education='Doctorate' AND occupation='Exec-managerial',0,0,0.500858,84,0,0
-800,education='Doctorate' AND occupation='Adm-clerical',0,0,0.500061,6,0,0
-801,education='Doctorate' AND occupation='Sales',0,0,0.500164,16,0,0
-802,education='Doctorate' AND occupation='Other-service',0,0,0.50002,2,0,0
-803,education='Doctorate' AND occupation='Machine-op-inspct',0,0,0.50001,1,0,0
-804,education='Doctorate' AND occupation='NA',0,0,0.500184,18,0,0
-805,education='Doctorate' AND occupation='Transport-moving',0,0,0.50002,2,0,0
+782,education='12th' AND occupation='Prof-specialty',0,0,0.512963,13,0,0
+783,education='12th' AND occupation='Craft-repair',0,0,0.579253,92,0,0
+784,education='12th' AND occupation='Exec-managerial',0,0,0.517772,18,0,0
+785,education='12th' AND occupation='Adm-clerical',0,0,0.548111,52,0,0
+786,education='12th' AND occupation='Sales',0,0,0.562677,70,0,0
+787,education='12th' AND occupation='Other-service',0,0,0.604467,129,0,0
+788,education='12th' AND occupation='Machine-op-inspct',0,0,0.555513,61,0,0
+789,education='12th' AND occupation='NA',0,0,0.546968,58,0,0
+790,education='12th' AND occupation='Transport-moving',0,0,0.551431,56,0,0
+791,education='12th' AND occupation='Handlers-cleaners',0,0,0.550605,55,0,0
+792,education='12th' AND occupation='Farming-fishing',0,0,0.528024,29,0,0
+793,education='12th' AND occupation='Tech-support',0,0,0.504062,4,0,0
+794,education='12th' AND occupation='Protective-serv',0,0,0.511013,11,0,0
+795,education='12th' AND occupation='Priv-house-serv',0,0,0.508058,8,0,0
+796,education='12th' AND occupation='Armed-Forces',0,0,0.501022,1,0,0
+797,education='Doctorate' AND occupation='Prof-specialty',0,0,0.712296,450,0,0
+798,education='Doctorate' AND occupation='Craft-repair',0,0,0.504062,4,0,0
+799,education='Doctorate' AND occupation='Exec-managerial',0,0,0.573249,84,0,0
+800,education='Doctorate' AND occupation='Adm-clerical',0,0,0.506068,6,0,0
+801,education='Doctorate' AND occupation='Sales',0,0,0.51586,16,0,0
+802,education='Doctorate' AND occupation='Other-service',0,0,0.502039,2,0,0
+803,education='Doctorate' AND occupation='Machine-op-inspct',0,0,0.501022,1,0,0
+804,education='Doctorate' AND occupation='NA',0,0,0.517772,18,0,0
+805,education='Doctorate' AND occupation='Transport-moving',0,0,0.502039,2,0,0
 806,education='Doctorate' AND occupation='Handlers-cleaners',0,0,0.5,0,0,0
-807,education='Doctorate' AND occupation='Farming-fishing',0,0,0.50001,1,0,0
-808,education='Doctorate' AND occupation='Tech-support',0,0,0.500082,8,0,0
-809,education='Doctorate' AND occupation='Protective-serv',0,0,0.50001,1,0,0
-810,education='Doctorate' AND occupation='Priv-house-serv',0,0,0.50001,1,0,0
+807,education='Doctorate' AND occupation='Farming-fishing',0,0,0.501022,1,0,0
+808,education='Doctorate' AND occupation='Tech-support',0,0,0.508058,8,0,0
+809,education='Doctorate' AND occupation='Protective-serv',0,0,0.501022,1,0,0
+810,education='Doctorate' AND occupation='Priv-house-serv',0,0,0.501022,1,0,0
 811,education='Doctorate' AND occupation='Armed-Forces',0,0,0.5,0,0,0
-812,education='5th-6th' AND occupation='Prof-specialty',0,0,0.50002,2,0,0
-813,education='5th-6th' AND occupation='Craft-repair',0,0,0.500726,71,0,0
-814,education='5th-6th' AND occupation='Exec-managerial',0,0,0.500061,6,0,0
-815,education='5th-6th' AND occupation='Adm-clerical',0,0,0.500082,8,0,0
-816,education='5th-6th' AND occupation='Sales',0,0,0.500174,17,0,0
-817,education='5th-6th' AND occupation='Other-service',0,0,0.501001,98,0,0
-818,education='5th-6th' AND occupation='Machine-op-inspct',0,0,0.500971,95,0,0
-819,education='5th-6th' AND occupation='NA',0,0,0.500419,41,0,0
-820,education='5th-6th' AND occupation='Transport-moving',0,0,0.500389,38,0,0
-821,education='5th-6th' AND occupation='Handlers-cleaners',0,0,0.500603,59,0,0
-822,education='5th-6th' AND occupation='Farming-fishing',0,0,0.500532,52,0,0
-823,education='5th-6th' AND occupation='Tech-support',0,0,0.50001,1,0,0
-824,education='5th-6th' AND occupation='Protective-serv',0,0,0.50001,1,0,0
-825,education='5th-6th' AND occupation='Priv-house-serv',0,0,0.500205,20,0,0
+812,education='5th-6th' AND occupation='Prof-specialty',0,0,0.502039,2,0,0
+813,education='5th-6th' AND occupation='Craft-repair',0,0,0.562487,71,0,0
+814,education='5th-6th' AND occupation='Exec-managerial',0,0,0.506068,6,0,0
+815,education='5th-6th' AND occupation='Adm-clerical',0,0,0.508058,8,0,0
+816,education='5th-6th' AND occupation='Sales',0,0,0.516818,17,0,0
+817,education='5th-6th' AND occupation='Other-service',0,0,0.583558,98,0,0
+818,education='5th-6th' AND occupation='Machine-op-inspct',0,0,0.581384,95,0,0
+819,education='5th-6th' AND occupation='NA',0,0,0.536205,41,0,0
+820,education='5th-6th' AND occupation='Transport-moving',0,0,0.536093,38,0,0
+821,education='5th-6th' AND occupation='Handlers-cleaners',0,0,0.553889,59,0,0
+822,education='5th-6th' AND occupation='Farming-fishing',0,0,0.548111,52,0,0
+823,education='5th-6th' AND occupation='Tech-support',0,0,0.501022,1,0,0
+824,education='5th-6th' AND occupation='Protective-serv',0,0,0.501022,1,0,0
+825,education='5th-6th' AND occupation='Priv-house-serv',0,0,0.519669,20,0,0
 826,education='5th-6th' AND occupation='Armed-Forces',0,0,0.5,0,0,0
-827,education='1st-4th' AND occupation='Prof-specialty',0,0,0.500041,4,0,0
-828,education='1st-4th' AND occupation='Craft-repair',0,0,0.500286,28,0,0
-829,education='1st-4th' AND occupation='Exec-managerial',0,0,0.500061,6,0,0
-830,education='1st-4th' AND occupation='Adm-clerical',0,0,0.500061,6,0,0
-831,education='1st-4th' AND occupation='Sales',0,0,0.500082,8,0,0
-832,education='1st-4th' AND occupation='Other-service',0,0,0.500562,55,0,0
-833,education='1st-4th' AND occupation='Machine-op-inspct',0,0,0.500368,36,0,0
-834,education='1st-4th' AND occupation='NA',0,0,0.500184,18,0,0
-835,education='1st-4th' AND occupation='Transport-moving',0,0,0.500123,12,0,0
-836,education='1st-4th' AND occupation='Handlers-cleaners',0,0,0.500266,26,0,0
-837,education='1st-4th' AND occupation='Farming-fishing',0,0,0.500338,33,0,0
+827,education='1st-4th' AND occupation='Prof-specialty',0,0,0.504062,4,0,0
+828,education='1st-4th' AND occupation='Craft-repair',0,0,0.52711,28,0,0
+829,education='1st-4th' AND occupation='Exec-managerial',0,0,0.506068,6,0,0
+830,education='1st-4th' AND occupation='Adm-clerical',0,0,0.506068,6,0,0
+831,education='1st-4th' AND occupation='Sales',0,0,0.508058,8,0,0
+832,education='1st-4th' AND occupation='Other-service',0,0,0.550494,55,0,0
+833,education='1st-4th' AND occupation='Machine-op-inspct',0,0,0.534324,36,0,0
+834,education='1st-4th' AND occupation='NA',0,0,0.517772,18,0,0
+835,education='1st-4th' AND occupation='Transport-moving',0,0,0.51199,12,0,0
+836,education='1st-4th' AND occupation='Handlers-cleaners',0,0,0.525271,26,0,0
+837,education='1st-4th' AND occupation='Farming-fishing',0,0,0.531644,33,0,0
 838,education='1st-4th' AND occupation='Tech-support',0,0,0.5,0,0,0
-839,education='1st-4th' AND occupation='Protective-serv',0,0,0.50001,1,0,0
-840,education='1st-4th' AND occupation='Priv-house-serv',0,0,0.500143,14,0,0
+839,education='1st-4th' AND occupation='Protective-serv',0,0,0.501022,1,0,0
+840,education='1st-4th' AND occupation='Priv-house-serv',0,0,0.513933,14,0,0
 841,education='1st-4th' AND occupation='Armed-Forces',0,0,0.5,0,0,0
-842,education='Preschool' AND occupation='Prof-specialty',0,0,0.50001,1,0,0
-843,education='Preschool' AND occupation='Craft-repair',0,0,0.500061,6,0,0
-844,education='Preschool' AND occupation='Exec-managerial',0,0,0.50001,1,0,0
-845,education='Preschool' AND occupation='Adm-clerical',0,0,0.500031,3,0,0
-846,education='Preschool' AND occupation='Sales',0,0,0.50002,2,0,0
-847,education='Preschool' AND occupation='Other-service',0,0,0.500225,22,0,0
-848,education='Preschool' AND occupation='Machine-op-inspct',0,0,0.500123,12,0,0
-849,education='Preschool' AND occupation='NA',0,0,0.500102,10,0,0
-850,education='Preschool' AND occupation='Transport-moving',0,0,0.50002,2,0,0
-851,education='Preschool' AND occupation='Handlers-cleaners',0,0,0.500051,5,0,0
-852,education='Preschool' AND occupation='Farming-fishing',0,0,0.500174,17,0,0
+842,education='Preschool' AND occupation='Prof-specialty',0,0,0.501022,1,0,0
+843,education='Preschool' AND occupation='Craft-repair',0,0,0.506068,6,0,0
+844,education='Preschool' AND occupation='Exec-managerial',0,0,0.501022,1,0,0
+845,education='Preschool' AND occupation='Adm-clerical',0,0,0.503052,3,0,0
+846,education='Preschool' AND occupation='Sales',0,0,0.502039,2,0,0
+847,education='Preschool' AND occupation='Other-service',0,0,0.521551,22,0,0
+848,education='Preschool' AND occupation='Machine-op-inspct',0,0,0.51199,12,0,0
+849,education='Preschool' AND occupation='NA',0,0,0.510032,10,0,0
+850,education='Preschool' AND occupation='Transport-moving',0,0,0.502039,2,0,0
+851,education='Preschool' AND occupation='Handlers-cleaners',0,0,0.505067,5,0,0
+852,education='Preschool' AND occupation='Farming-fishing',0,0,0.516818,17,0,0
 853,education='Preschool' AND occupation='Tech-support',0,0,0.5,0,0,0
 854,education='Preschool' AND occupation='Protective-serv',0,0,0.5,0,0,0
-855,education='Preschool' AND occupation='Priv-house-serv',0,0,0.50002,2,0,0
+855,education='Preschool' AND occupation='Priv-house-serv',0,0,0.502039,2,0,0
 856,education='Preschool' AND occupation='Armed-Forces',0,0,0.5,0,0,0
-857,education='HS-grad' AND race='White',0,0,0.607562,13387,0,0
-858,education='HS-grad' AND race='Black',0,0,0.517581,1780,0,0
-859,education='HS-grad' AND race='Asian-Pac-Islander',0,0,0.503416,336,0,0
-860,education='HS-grad' AND race='Amer-Indian-Eskimo',0,0,0.501795,176,0,0
-861,education='HS-grad' AND race='Other',0,0,0.501073,105,0,0
-862,education='Some-college' AND race='White',0,0,0.579897,9289,0,0
-863,education='Some-college' AND race='Black',0,0,0.510797,1078,0,0
-864,education='Some-college' AND race='Asian-Pac-Islander',0,0,0.503073,302,0,0
-865,education='Some-college' AND race='Amer-Indian-Eskimo',0,0,0.501266,124,0,0
-866,education='Some-college' AND race='Other',0,0,0.500869,85,0,0
-867,education='Assoc-voc' AND race='White',0,0,0.5178,1803,0,0
-868,education='Assoc-voc' AND race='Black',0,0,0.501683,165,0,0
-869,education='Assoc-voc' AND race='Asian-Pac-Islander',0,0,0.500542,53,0,0
-870,education='Assoc-voc' AND race='Amer-Indian-Eskimo',0,0,0.500317,31,0,0
-871,education='Assoc-voc' AND race='Other',0,0,0.500092,9,0,0
-872,education='11th' AND race='White',0,0,0.514754,1485,0,0
-873,education='11th' AND race='Black',0,0,0.502567,252,0,0
-874,education='11th' AND race='Asian-Pac-Islander',0,0,0.500276,27,0,0
-875,education='11th' AND race='Amer-Indian-Eskimo',0,0,0.500266,26,0,0
-876,education='11th' AND race='Other',0,0,0.500225,22,0,0
-877,education='Assoc-acdm' AND race='White',0,0,0.513623,1368,0,0
-878,education='Assoc-acdm' AND race='Black',0,0,0.501643,161,0,0
-879,education='Assoc-acdm' AND race='Asian-Pac-Islander',0,0,0.500501,49,0,0
-880,education='Assoc-acdm' AND race='Amer-Indian-Eskimo',0,0,0.500133,13,0,0
-881,education='Assoc-acdm' AND race='Other',0,0,0.500102,10,0,0
-882,education='10th' AND race='White',0,0,0.51158,1158,0,0
-883,education='10th' AND race='Black',0,0,0.501856,182,0,0
-884,education='10th' AND race='Asian-Pac-Islander',0,0,0.500164,16,0,0
-885,education='10th' AND race='Amer-Indian-Eskimo',0,0,0.500225,22,0,0
-886,education='10th' AND race='Other',0,0,0.500113,11,0,0
-887,education='7th-8th' AND race='White',0,0,0.508236,818,0,0
-888,education='7th-8th' AND race='Black',0,0,0.50092,90,0,0
-889,education='7th-8th' AND race='Asian-Pac-Islander',0,0,0.500143,14,0,0
-890,education='7th-8th' AND race='Amer-Indian-Eskimo',0,0,0.500102,10,0,0
-891,education='7th-8th' AND race='Other',0,0,0.500235,23,0,0
-892,education='Prof-school' AND race='White',0,0,0.507542,748,0,0
-893,education='Prof-school' AND race='Black',0,0,0.500215,21,0,0
-894,education='Prof-school' AND race='Asian-Pac-Islander',0,0,0.500593,58,0,0
-895,education='Prof-school' AND race='Amer-Indian-Eskimo',0,0,0.50002,2,0,0
-896,education='Prof-school' AND race='Other',0,0,0.500051,5,0,0
-897,education='9th' AND race='White',0,0,0.506178,611,0,0
-898,education='9th' AND race='Black',0,0,0.501134,111,0,0
-899,education='9th' AND race='Asian-Pac-Islander',0,0,0.500102,10,0,0
-900,education='9th' AND race='Amer-Indian-Eskimo',0,0,0.500092,9,0,0
-901,education='9th' AND race='Other',0,0,0.500154,15,0,0
-902,education='12th' AND race='White',0,0,0.505217,515,0,0
-903,education='12th' AND race='Black',0,0,0.501073,105,0,0
-904,education='12th' AND race='Asian-Pac-Islander',0,0,0.500154,15,0,0
-905,education='12th' AND race='Amer-Indian-Eskimo',0,0,0.500051,5,0,0
-906,education='12th' AND race='Other',0,0,0.500174,17,0,0
-907,education='Doctorate' AND race='White',0,0,0.505327,526,0,0
-908,education='Doctorate' AND race='Black',0,0,0.500164,16,0,0
-909,education='Doctorate' AND race='Asian-Pac-Islander',0,0,0.50047,46,0,0
-910,education='Doctorate' AND race='Amer-Indian-Eskimo',0,0,0.500031,3,0,0
-911,education='Doctorate' AND race='Other',0,0,0.500031,3,0,0
-912,education='5th-6th' AND race='White',0,0,0.504213,415,0,0
-913,education='5th-6th' AND race='Black',0,0,0.500419,41,0,0
-914,education='5th-6th' AND race='Asian-Pac-Islander',0,0,0.500286,28,0,0
-915,education='5th-6th' AND race='Amer-Indian-Eskimo',0,0,0.50002,2,0,0
-916,education='5th-6th' AND race='Other',0,0,0.500235,23,0,0
-917,education='1st-4th' AND race='White',0,0,0.501998,196,0,0
-918,education='1st-4th' AND race='Black',0,0,0.500246,24,0,0
-919,education='1st-4th' AND race='Asian-Pac-Islander',0,0,0.500102,10,0,0
-920,education='1st-4th' AND race='Amer-Indian-Eskimo',0,0,0.500041,4,0,0
-921,education='1st-4th' AND race='Other',0,0,0.500133,13,0,0
-922,education='Preschool' AND race='White',0,0,0.500624,61,0,0
-923,education='Preschool' AND race='Black',0,0,0.500123,12,0,0
-924,education='Preschool' AND race='Asian-Pac-Islander',0,0,0.500072,7,0,0
-925,education='Preschool' AND race='Amer-Indian-Eskimo',0,0,0.50001,1,0,0
-926,education='Preschool' AND race='Other',0,0,0.50002,2,0,0
-927,education='HS-grad' AND gender='Male',0,0,0.589763,10687,0,0
-928,education='HS-grad' AND gender='Female',0,0,0.547248,5097,0,0
-929,education='Some-college' AND gender='Male',0,0,0.560315,6700,0,0
-930,education='Some-college' AND gender='Female',0,0,0.5394,4178,0,0
-931,education='Assoc-voc' AND gender='Male',0,0,0.513225,1327,0,0
-932,education='Assoc-voc' AND gender='Female',0,0,0.507403,734,0,0
-933,education='11th' AND gender='Male',0,0,0.511619,1162,0,0
-934,education='11th' AND gender='Female',0,0,0.506567,650,0,0
-935,education='Assoc-acdm' AND gender='Male',0,0,0.509776,974,0,0
-936,education='Assoc-acdm' AND gender='Female',0,0,0.506337,627,0,0
-937,education='10th' AND gender='Male',0,0,0.509362,932,0,0
-938,education='10th' AND gender='Female',0,0,0.504635,457,0,0
-939,education='7th-8th' AND gender='Male',0,0,0.507224,716,0,0
-940,education='7th-8th' AND gender='Female',0,0,0.502435,239,0,0
-941,education='Prof-school' AND gender='Male',0,0,0.507085,702,0,0
-942,education='Prof-school' AND gender='Female',0,0,0.501348,132,0,0
-943,education='9th' AND gender='Male',0,0,0.505428,536,0,0
-944,education='9th' AND gender='Female',0,0,0.502242,220,0,0
-945,education='12th' AND gender='Male',0,0,0.504524,446,0,0
-946,education='12th' AND gender='Female',0,0,0.502151,211,0,0
-947,education='Doctorate' AND gender='Male',0,0,0.504876,481,0,0
-948,education='Doctorate' AND gender='Female',0,0,0.501154,113,0,0
-949,education='5th-6th' AND gender='Male',0,0,0.50388,382,0,0
-950,education='5th-6th' AND gender='Female',0,0,0.501297,127,0,0
-951,education='1st-4th' AND gender='Male',0,0,0.501897,186,0,0
-952,education='1st-4th' AND gender='Female',0,0,0.500624,61,0,0
-953,education='Preschool' AND gender='Male',0,0,0.500603,59,0,0
-954,education='Preschool' AND gender='Female',0,0,0.500246,24,0,0
-955,"education='HS-grad' AND hoursPerWeek IN [1, 32]",0,0,0.522066,2255,0,0
-956,"education='HS-grad' AND hoursPerWeek IN (32, 40]",0,0,0.580928,9432,0,0
-957,"education='HS-grad' AND hoursPerWeek IN (40, 50]",0,0,0.524772,2546,0,0
-958,"education='HS-grad' AND hoursPerWeek IN (50, 99]",0,0,0.515389,1551,0,0
-959,"education='Some-college' AND hoursPerWeek IN [1, 32]",0,0,0.523892,2451,0,0
-960,"education='Some-college' AND hoursPerWeek IN (32, 40]",0,0,0.551703,5633,0,0
-961,"education='Some-college' AND hoursPerWeek IN (40, 50]",0,0,0.517076,1727,0,0
-962,"education='Some-college' AND hoursPerWeek IN (50, 99]",0,0,0.510689,1067,0,0
-963,"education='Bachelors' AND hoursPerWeek IN [1, 32]",0,0,0.508997,895,0,0
-964,"education='Bachelors' AND hoursPerWeek IN (32, 40]",0,0,0.537393,3948,0,0
-965,"education='Assoc-voc' AND hoursPerWeek IN [1, 32]",0,0,0.502201,216,0,0
-966,"education='Assoc-voc' AND hoursPerWeek IN (32, 40]",0,0,0.51235,1237,0,0
-967,"education='Assoc-voc' AND hoursPerWeek IN (40, 50]",0,0,0.50391,385,0,0
-968,"education='Assoc-voc' AND hoursPerWeek IN (50, 99]",0,0,0.502272,223,0,0
-969,"education='11th' AND hoursPerWeek IN [1, 32]",0,0,0.506935,687,0,0
-970,"education='11th' AND hoursPerWeek IN (32, 40]",0,0,0.508632,858,0,0
-971,"education='11th' AND hoursPerWeek IN (40, 50]",0,0,0.501531,150,0,0
-972,"education='11th' AND hoursPerWeek IN (50, 99]",0,0,0.501195,117,0,0
-973,"education='Assoc-acdm' AND hoursPerWeek IN [1, 32]",0,0,0.502556,251,0,0
-974,"education='Assoc-acdm' AND hoursPerWeek IN (32, 40]",0,0,0.508384,833,0,0
-975,"education='Assoc-acdm' AND hoursPerWeek IN (40, 50]",0,0,0.503426,337,0,0
-976,"education='Assoc-acdm' AND hoursPerWeek IN (50, 99]",0,0,0.501836,180,0,0
-977,"education='10th' AND hoursPerWeek IN [1, 32]",0,0,0.5039,384,0,0
-978,"education='10th' AND hoursPerWeek IN (32, 40]",0,0,0.507671,761,0,0
-979,"education='10th' AND hoursPerWeek IN (40, 50]",0,0,0.501429,140,0,0
-980,"education='10th' AND hoursPerWeek IN (50, 99]",0,0,0.501062,104,0,0
-981,"education='7th-8th' AND hoursPerWeek IN [1, 32]",0,0,0.50212,208,0,0
-982,"education='7th-8th' AND hoursPerWeek IN (32, 40]",0,0,0.505367,530,0,0
-983,"education='7th-8th' AND hoursPerWeek IN (40, 50]",0,0,0.501276,125,0,0
-984,"education='7th-8th' AND hoursPerWeek IN (50, 99]",0,0,0.50094,92,0,0
-985,"education='Prof-school' AND hoursPerWeek IN [1, 32]",0,0,0.500848,83,0,0
-986,"education='Prof-school' AND hoursPerWeek IN (32, 40]",0,0,0.502607,256,0,0
-987,"education='Prof-school' AND hoursPerWeek IN (40, 50]",0,0,0.502445,240,0,0
-988,"education='Prof-school' AND hoursPerWeek IN (50, 99]",0,0,0.502597,255,0,0
-989,"education='9th' AND hoursPerWeek IN [1, 32]",0,0,0.501511,148,0,0
-990,"education='9th' AND hoursPerWeek IN (32, 40]",0,0,0.504605,454,0,0
-991,"education='9th' AND hoursPerWeek IN (40, 50]",0,0,0.501134,111,0,0
-992,"education='9th' AND hoursPerWeek IN (50, 99]",0,0,0.50044,43,0,0
-993,"education='12th' AND hoursPerWeek IN [1, 32]",0,0,0.502181,214,0,0
-994,"education='12th' AND hoursPerWeek IN (32, 40]",0,0,0.503457,340,0,0
-995,"education='12th' AND hoursPerWeek IN (40, 50]",0,0,0.500665,65,0,0
-996,"education='12th' AND hoursPerWeek IN (50, 99]",0,0,0.500389,38,0,0
-997,"education='Doctorate' AND hoursPerWeek IN [1, 32]",0,0,0.500654,64,0,0
-998,"education='Doctorate' AND hoursPerWeek IN (32, 40]",0,0,0.50207,203,0,0
-999,"education='Doctorate' AND hoursPerWeek IN (40, 50]",0,0,0.501653,162,0,0
-1000,"education='Doctorate' AND hoursPerWeek IN (50, 99]",0,0,0.501683,165,0,0
-1001,"education='5th-6th' AND hoursPerWeek IN [1, 32]",0,0,0.500869,85,0,0
-1002,"education='5th-6th' AND hoursPerWeek IN (32, 40]",0,0,0.503436,338,0,0
-1003,"education='5th-6th' AND hoursPerWeek IN (40, 50]",0,0,0.500491,48,0,0
-1004,"education='5th-6th' AND hoursPerWeek IN (50, 99]",0,0,0.500389,38,0,0
-1005,"education='1st-4th' AND hoursPerWeek IN [1, 32]",0,0,0.500522,51,0,0
-1006,"education='1st-4th' AND hoursPerWeek IN (32, 40]",0,0,0.501511,148,0,0
-1007,"education='1st-4th' AND hoursPerWeek IN (40, 50]",0,0,0.500246,24,0,0
-1008,"education='1st-4th' AND hoursPerWeek IN (50, 99]",0,0,0.500246,24,0,0
-1009,"education='Preschool' AND hoursPerWeek IN [1, 32]",0,0,0.500246,24,0,0
-1010,"education='Preschool' AND hoursPerWeek IN (32, 40]",0,0,0.500511,50,0,0
-1011,"education='Preschool' AND hoursPerWeek IN (40, 50]",0,0,0.500051,5,0,0
-1012,"education='Preschool' AND hoursPerWeek IN (50, 99]",0,0,0.500041,4,0,0
-1013,occupation='Craft-repair' AND race='Amer-Indian-Eskimo',0,0,0.500624,61,0,0
-1014,occupation='Craft-repair' AND race='Other',0,0,0.500593,58,0,0
-1015,occupation='Adm-clerical' AND race='Other',0,0,0.50044,43,0,0
-1016,occupation='Machine-op-inspct' AND race='Black',0,0,0.504353,429,0,0
-1017,occupation='Machine-op-inspct' AND race='Amer-Indian-Eskimo',0,0,0.500286,28,0,0
-1018,occupation='Machine-op-inspct' AND race='Other',0,0,0.500481,47,0,0
-1019,occupation='Transport-moving' AND race='Asian-Pac-Islander',0,0,0.500399,39,0,0
-1020,occupation='Transport-moving' AND race='Amer-Indian-Eskimo',0,0,0.500286,28,0,0
-1021,occupation='Handlers-cleaners' AND race='Amer-Indian-Eskimo',0,0,0.500348,34,0,0
-1022,occupation='Handlers-cleaners' AND race='Other',0,0,0.500184,18,0,0
-1023,occupation='Farming-fishing' AND race='Black',0,0,0.500573,56,0,0
-1024,occupation='Farming-fishing' AND race='Asian-Pac-Islander',0,0,0.500235,23,0,0
-1025,occupation='Farming-fishing' AND race='Amer-Indian-Eskimo',0,0,0.500143,14,0,0
-1026,occupation='Farming-fishing' AND race='Other',0,0,0.500143,14,0,0
-1027,occupation='Tech-support' AND race='Amer-Indian-Eskimo',0,0,0.500082,8,0,0
-1028,occupation='Protective-serv' AND race='Amer-Indian-Eskimo',0,0,0.500133,13,0,0
-1029,occupation='Protective-serv' AND race='Other',0,0,0.500082,8,0,0
-1030,occupation='Priv-house-serv' AND race='Black',0,0,0.500522,51,0,0
-1031,occupation='Priv-house-serv' AND race='Asian-Pac-Islander',0,0,0.500051,5,0,0
-1032,occupation='Priv-house-serv' AND race='Amer-Indian-Eskimo',0,0,0.50001,1,0,0
-1033,occupation='Priv-house-serv' AND race='Other',0,0,0.500041,4,0,0
-1034,occupation='Armed-Forces' AND race='Black',0,0,0.50001,1,0,0
+857,education='HS-grad' AND race='White',0,0,0.943085,13387,0,0
+858,education='HS-grad' AND race='Black',0,0,0.842306,1780,0,0
+859,education='HS-grad' AND race='Asian-Pac-Islander',0,0,0.700804,336,0,0
+860,education='HS-grad' AND race='Amer-Indian-Eskimo',0,0,0.632297,176,0,0
+861,education='HS-grad' AND race='Other',0,0,0.58847,105,0,0
+862,education='Some-college' AND race='White',0,0,0.926536,9289,0,0
+863,education='Some-college' AND race='Black',0,0,0.81595,1078,0,0
+864,education='Some-college' AND race='Asian-Pac-Islander',0,0,0.689673,302,0,0
+865,education='Some-college' AND race='Amer-Indian-Eskimo',0,0,0.601238,124,0,0
+866,education='Some-college' AND race='Other',0,0,0.574117,85,0,0
+867,education='Assoc-voc' AND race='White',0,0,0.88448,1803,0,0
+868,education='Assoc-voc' AND race='Black',0,0,0.626259,165,0,0
+869,education='Assoc-voc' AND race='Asian-Pac-Islander',0,0,0.548945,53,0,0
+870,education='Assoc-voc' AND race='Amer-Indian-Eskimo',0,0,0.529841,31,0,0
+871,education='Assoc-voc' AND race='Other',0,0,0.509047,9,0,0
+872,education='11th' AND race='White',0,0,0.803317,1485,0,0
+873,education='11th' AND race='Black',0,0,0.667637,252,0,0
+874,education='11th' AND race='Asian-Pac-Islander',0,0,0.526192,27,0,0
+875,education='11th' AND race='Amer-Indian-Eskimo',0,0,0.525271,26,0,0
+876,education='11th' AND race='Other',0,0,0.521551,22,0,0
+877,education='Assoc-acdm' AND race='White',0,0,0.864291,1368,0,0
+878,education='Assoc-acdm' AND race='Black',0,0,0.623957,161,0,0
+879,education='Assoc-acdm' AND race='Asian-Pac-Islander',0,0,0.545588,49,0,0
+880,education='Assoc-acdm' AND race='Amer-Indian-Eskimo',0,0,0.512963,13,0,0
+881,education='Assoc-acdm' AND race='Other',0,0,0.510032,10,0,0
+882,education='10th' AND race='White',0,0,0.824719,1158,0,0
+883,education='10th' AND race='Black',0,0,0.63555,182,0,0
+884,education='10th' AND race='Asian-Pac-Islander',0,0,0.51586,16,0,0
+885,education='10th' AND race='Amer-Indian-Eskimo',0,0,0.521551,22,0,0
+886,education='10th' AND race='Other',0,0,0.511013,11,0,0
+887,education='7th-8th' AND race='White',0,0,0.77635,818,0,0
+888,education='7th-8th' AND race='Black',0,0,0.577116,90,0,0
+889,education='7th-8th' AND race='Asian-Pac-Islander',0,0,0.513933,14,0,0
+890,education='7th-8th' AND race='Amer-Indian-Eskimo',0,0,0.510032,10,0,0
+891,education='7th-8th' AND race='Other',0,0,0.522486,23,0,0
+892,education='Prof-school' AND race='White',0,0,0.703461,748,0,0
+893,education='Prof-school' AND race='Black',0,0,0.520612,21,0,0
+894,education='Prof-school' AND race='Asian-Pac-Islander',0,0,0.553073,58,0,0
+895,education='Prof-school' AND race='Amer-Indian-Eskimo',0,0,0.502039,2,0,0
+896,education='Prof-school' AND race='Other',0,0,0.505067,5,0,0
+897,education='9th' AND race='White',0,0,0.774124,611,0,0
+898,education='9th' AND race='Black',0,0,0.592166,111,0,0
+899,education='9th' AND race='Asian-Pac-Islander',0,0,0.510032,10,0,0
+900,education='9th' AND race='Amer-Indian-Eskimo',0,0,0.509047,9,0,0
+901,education='9th' AND race='Other',0,0,0.514898,15,0,0
+902,education='12th' AND race='White',0,0,0.742057,515,0,0
+903,education='12th' AND race='Black',0,0,0.588458,105,0,0
+904,education='12th' AND race='Asian-Pac-Islander',0,0,0.514898,15,0,0
+905,education='12th' AND race='Amer-Indian-Eskimo',0,0,0.505067,5,0,0
+906,education='12th' AND race='Other',0,0,0.516818,17,0,0
+907,education='Doctorate' AND race='White',0,0,0.693943,526,0,0
+908,education='Doctorate' AND race='Black',0,0,0.51586,16,0,0
+909,education='Doctorate' AND race='Asian-Pac-Islander',0,0,0.543037,46,0,0
+910,education='Doctorate' AND race='Amer-Indian-Eskimo',0,0,0.503052,3,0,0
+911,education='Doctorate' AND race='Other',0,0,0.503052,3,0,0
+912,education='5th-6th' AND race='White',0,0,0.715671,415,0,0
+913,education='5th-6th' AND race='Black',0,0,0.538633,41,0,0
+914,education='5th-6th' AND race='Asian-Pac-Islander',0,0,0.52711,28,0,0
+915,education='5th-6th' AND race='Amer-Indian-Eskimo',0,0,0.502039,2,0,0
+916,education='5th-6th' AND race='Other',0,0,0.522486,23,0,0
+917,education='1st-4th' AND race='White',0,0,0.639547,196,0,0
+918,education='1st-4th' AND race='Black',0,0,0.523062,24,0,0
+919,education='1st-4th' AND race='Asian-Pac-Islander',0,0,0.510032,10,0,0
+920,education='1st-4th' AND race='Amer-Indian-Eskimo',0,0,0.504062,4,0,0
+921,education='1st-4th' AND race='Other',0,0,0.512963,13,0,0
+922,education='Preschool' AND race='White',0,0,0.555513,61,0,0
+923,education='Preschool' AND race='Black',0,0,0.51199,12,0,0
+924,education='Preschool' AND race='Asian-Pac-Islander',0,0,0.507065,7,0,0
+925,education='Preschool' AND race='Amer-Indian-Eskimo',0,0,0.501022,1,0,0
+926,education='Preschool' AND race='Other',0,0,0.502039,2,0,0
+927,education='HS-grad' AND gender='Male',0,0,0.899007,10687,0,0
+928,education='HS-grad' AND gender='Female',0,0,0.82005,5097,0,0
+929,education='Some-college' AND gender='Male',0,0,0.921621,6700,0,0
+930,education='Some-college' AND gender='Female',0,0,0.793481,4178,0,0
+931,education='Assoc-voc' AND gender='Male',0,0,0.835669,1327,0,0
+932,education='Assoc-voc' AND gender='Female',0,0,0.764355,734,0,0
+933,education='11th' AND gender='Male',0,0,0.811295,1162,0,0
+934,education='11th' AND gender='Female',0,0,0.715079,650,0,0
+935,education='Assoc-acdm' AND gender='Male',0,0,0.827645,974,0,0
+936,education='Assoc-acdm' AND gender='Female',0,0,0.757164,627,0,0
+937,education='10th' AND gender='Male',0,0,0.8115,932,0,0
+938,education='10th' AND gender='Female',0,0,0.715108,457,0,0
+939,education='7th-8th' AND gender='Male',0,0,0.765288,716,0,0
+940,education='7th-8th' AND gender='Female',0,0,0.647324,239,0,0
+941,education='Prof-school' AND gender='Male',0,0,0.685286,702,0,0
+942,education='Prof-school' AND gender='Female',0,0,0.599022,132,0,0
+943,education='9th' AND gender='Male',0,0,0.754802,536,0,0
+944,education='9th' AND gender='Female',0,0,0.651211,220,0,0
+945,education='12th' AND gender='Male',0,0,0.734889,446,0,0
+946,education='12th' AND gender='Female',0,0,0.650386,211,0,0
+947,education='Doctorate' AND gender='Male',0,0,0.684576,481,0,0
+948,education='Doctorate' AND gender='Female',0,0,0.590795,113,0,0
+949,education='5th-6th' AND gender='Male',0,0,0.708606,382,0,0
+950,education='5th-6th' AND gender='Female',0,0,0.598781,127,0,0
+951,education='1st-4th' AND gender='Male',0,0,0.633977,186,0,0
+952,education='1st-4th' AND gender='Female',0,0,0.552737,61,0,0
+953,education='Preschool' AND gender='Male',0,0,0.553821,59,0,0
+954,education='Preschool' AND gender='Female',0,0,0.523418,24,0,0
+955,"education='HS-grad' AND hoursPerWeek IN [1, 32]",0,0,0.81751,2255,0,0
+956,"education='HS-grad' AND hoursPerWeek IN (32, 40]",0,0,0.924191,9432,0,0
+957,"education='HS-grad' AND hoursPerWeek IN (40, 50]",0,0,0.882499,2546,0,0
+958,"education='HS-grad' AND hoursPerWeek IN (50, 99]",0,0,0.838022,1551,0,0
+959,"education='Some-college' AND hoursPerWeek IN [1, 32]",0,0,0.748764,2451,0,0
+960,"education='Some-college' AND hoursPerWeek IN (32, 40]",0,0,0.922904,5633,0,0
+961,"education='Some-college' AND hoursPerWeek IN (40, 50]",0,0,0.879155,1727,0,0
+962,"education='Some-college' AND hoursPerWeek IN (50, 99]",0,0,0.82281,1067,0,0
+963,"education='Bachelors' AND hoursPerWeek IN [1, 32]",0,0,0.802519,895,0,0
+964,"education='Bachelors' AND hoursPerWeek IN (32, 40]",0,0,0.883983,3948,0,0
+965,"education='Assoc-voc' AND hoursPerWeek IN [1, 32]",0,0,0.653235,216,0,0
+966,"education='Assoc-voc' AND hoursPerWeek IN (32, 40]",0,0,0.848966,1237,0,0
+967,"education='Assoc-voc' AND hoursPerWeek IN (40, 50]",0,0,0.72035,385,0,0
+968,"education='Assoc-voc' AND hoursPerWeek IN (50, 99]",0,0,0.652449,223,0,0
+969,"education='11th' AND hoursPerWeek IN [1, 32]",0,0,0.692942,687,0,0
+970,"education='11th' AND hoursPerWeek IN (32, 40]",0,0,0.805919,858,0,0
+971,"education='11th' AND hoursPerWeek IN (40, 50]",0,0,0.617478,150,0,0
+972,"education='11th' AND hoursPerWeek IN (50, 99]",0,0,0.596627,117,0,0
+973,"education='Assoc-acdm' AND hoursPerWeek IN [1, 32]",0,0,0.669653,251,0,0
+974,"education='Assoc-acdm' AND hoursPerWeek IN (32, 40]",0,0,0.805234,833,0,0
+975,"education='Assoc-acdm' AND hoursPerWeek IN (40, 50]",0,0,0.703889,337,0,0
+976,"education='Assoc-acdm' AND hoursPerWeek IN (50, 99]",0,0,0.634357,180,0,0
+977,"education='10th' AND hoursPerWeek IN [1, 32]",0,0,0.685638,384,0,0
+978,"education='10th' AND hoursPerWeek IN (32, 40]",0,0,0.796827,761,0,0
+979,"education='10th' AND hoursPerWeek IN (40, 50]",0,0,0.61139,140,0,0
+980,"education='10th' AND hoursPerWeek IN (50, 99]",0,0,0.587776,104,0,0
+981,"education='7th-8th' AND hoursPerWeek IN [1, 32]",0,0,0.634983,208,0,0
+982,"education='7th-8th' AND hoursPerWeek IN (32, 40]",0,0,0.747248,530,0,0
+983,"education='7th-8th' AND hoursPerWeek IN (40, 50]",0,0,0.601068,125,0,0
+984,"education='7th-8th' AND hoursPerWeek IN (50, 99]",0,0,0.578759,92,0,0
+985,"education='Prof-school' AND hoursPerWeek IN [1, 32]",0,0,0.572626,83,0,0
+986,"education='Prof-school' AND hoursPerWeek IN (32, 40]",0,0,0.652141,256,0,0
+987,"education='Prof-school' AND hoursPerWeek IN (40, 50]",0,0,0.63863,240,0,0
+988,"education='Prof-school' AND hoursPerWeek IN (50, 99]",0,0,0.641608,255,0,0
+989,"education='9th' AND hoursPerWeek IN [1, 32]",0,0,0.614734,148,0,0
+990,"education='9th' AND hoursPerWeek IN (32, 40]",0,0,0.737647,454,0,0
+991,"education='9th' AND hoursPerWeek IN (40, 50]",0,0,0.59259,111,0,0
+992,"education='9th' AND hoursPerWeek IN (50, 99]",0,0,0.540458,43,0,0
+993,"education='12th' AND hoursPerWeek IN [1, 32]",0,0,0.632145,214,0,0
+994,"education='12th' AND hoursPerWeek IN (32, 40]",0,0,0.704477,340,0,0
+995,"education='12th' AND hoursPerWeek IN (40, 50]",0,0,0.558726,65,0,0
+996,"education='12th' AND hoursPerWeek IN (50, 99]",0,0,0.536093,38,0,0
+997,"education='Doctorate' AND hoursPerWeek IN [1, 32]",0,0,0.557927,64,0,0
+998,"education='Doctorate' AND hoursPerWeek IN (32, 40]",0,0,0.63097,203,0,0
+999,"education='Doctorate' AND hoursPerWeek IN (40, 50]",0,0,0.611576,162,0,0
+1000,"education='Doctorate' AND hoursPerWeek IN (50, 99]",0,0,0.616358,165,0,0
+1001,"education='5th-6th' AND hoursPerWeek IN [1, 32]",0,0,0.573241,85,0,0
+1002,"education='5th-6th' AND hoursPerWeek IN (32, 40]",0,0,0.692165,338,0,0
+1003,"education='5th-6th' AND hoursPerWeek IN (40, 50]",0,0,0.544741,48,0,0
+1004,"education='5th-6th' AND hoursPerWeek IN (50, 99]",0,0,0.536093,38,0,0
+1005,"education='1st-4th' AND hoursPerWeek IN [1, 32]",0,0,0.54627,51,0,0
+1006,"education='1st-4th' AND hoursPerWeek IN (32, 40]",0,0,0.613649,148,0,0
+1007,"education='1st-4th' AND hoursPerWeek IN (40, 50]",0,0,0.523418,24,0,0
+1008,"education='1st-4th' AND hoursPerWeek IN (50, 99]",0,0,0.523418,24,0,0
+1009,"education='Preschool' AND hoursPerWeek IN [1, 32]",0,0,0.523418,24,0,0
+1010,"education='Preschool' AND hoursPerWeek IN (32, 40]",0,0,0.546432,50,0,0
+1011,"education='Preschool' AND hoursPerWeek IN (40, 50]",0,0,0.505067,5,0,0
+1012,"education='Preschool' AND hoursPerWeek IN (50, 99]",0,0,0.504062,4,0,0
+1013,occupation='Craft-repair' AND race='Amer-Indian-Eskimo',0,0,0.555513,61,0,0
+1014,occupation='Craft-repair' AND race='Other',0,0,0.552262,58,0,0
+1015,occupation='Adm-clerical' AND race='Other',0,0,0.540458,43,0,0
+1016,occupation='Machine-op-inspct' AND race='Black',0,0,0.729774,429,0,0
+1017,occupation='Machine-op-inspct' AND race='Amer-Indian-Eskimo',0,0,0.52711,28,0,0
+1018,occupation='Machine-op-inspct' AND race='Other',0,0,0.543891,47,0,0
+1019,occupation='Transport-moving' AND race='Asian-Pac-Islander',0,0,0.536972,39,0,0
+1020,occupation='Transport-moving' AND race='Amer-Indian-Eskimo',0,0,0.52711,28,0,0
+1021,occupation='Handlers-cleaners' AND race='Amer-Indian-Eskimo',0,0,0.532514,34,0,0
+1022,occupation='Handlers-cleaners' AND race='Other',0,0,0.517772,18,0,0
+1023,occupation='Farming-fishing' AND race='Black',0,0,0.551052,56,0,0
+1024,occupation='Farming-fishing' AND race='Asian-Pac-Islander',0,0,0.522486,23,0,0
+1025,occupation='Farming-fishing' AND race='Amer-Indian-Eskimo',0,0,0.513933,14,0,0
+1026,occupation='Farming-fishing' AND race='Other',0,0,0.513818,14,0,0
+1027,occupation='Tech-support' AND race='Amer-Indian-Eskimo',0,0,0.508058,8,0,0
+1028,occupation='Protective-serv' AND race='Amer-Indian-Eskimo',0,0,0.512963,13,0,0
+1029,occupation='Protective-serv' AND race='Other',0,0,0.508058,8,0,0
+1030,occupation='Priv-house-serv' AND race='Black',0,0,0.546978,51,0,0
+1031,occupation='Priv-house-serv' AND race='Asian-Pac-Islander',0,0,0.505026,5,0,0
+1032,occupation='Priv-house-serv' AND race='Amer-Indian-Eskimo',0,0,0.501022,1,0,0
+1033,occupation='Priv-house-serv' AND race='Other',0,0,0.504062,4,0,0
+1034,occupation='Armed-Forces' AND race='Black',0,0,0.501022,1,0,0
 1035,occupation='Armed-Forces' AND race='Asian-Pac-Islander',0,0,0.5,0,0,0
-1036,occupation='Armed-Forces' AND race='Amer-Indian-Eskimo',0,0,0.50001,1,0,0
+1036,occupation='Armed-Forces' AND race='Amer-Indian-Eskimo',0,0,0.501022,1,0,0
 1037,occupation='Armed-Forces' AND race='Other',0,0,0.5,0,0,0
 1038,occupation='Armed-Forces' AND gender='Female',0,0,0.5,0,0,0
-1039,"occupation='Adm-clerical' AND hoursPerWeek IN [1, 32]",0,0,0.510101,1007,0,0
-1040,"occupation='Transport-moving' AND hoursPerWeek IN [1, 32]",0,0,0.502283,224,0,0
-1041,"occupation='Tech-support' AND hoursPerWeek IN [1, 32]",0,0,0.501988,195,0,0
-1042,"occupation='Protective-serv' AND hoursPerWeek IN [1, 32]",0,0,0.50093,91,0,0
-1043,"occupation='Priv-house-serv' AND hoursPerWeek IN [1, 32]",0,0,0.501215,119,0,0
-1044,"occupation='Priv-house-serv' AND hoursPerWeek IN (32, 40]",0,0,0.500879,86,0,0
-1045,"occupation='Armed-Forces' AND hoursPerWeek IN [1, 32]",0,0,0.50001,1,0,0
-1046,"occupation='Armed-Forces' AND hoursPerWeek IN (40, 50]",0,0,0.500041,4,0,0
-1047,"occupation='Armed-Forces' AND hoursPerWeek IN (50, 99]",0,0,0.50001,1,0,0
-1048,"race='Amer-Indian-Eskimo' AND hoursPerWeek IN [1, 32]",0,0,0.500746,73,0,0
+1039,"occupation='Adm-clerical' AND hoursPerWeek IN [1, 32]",0,0,0.752591,1007,0,0
+1040,"occupation='Transport-moving' AND hoursPerWeek IN [1, 32]",0,0,0.657089,224,0,0
+1041,"occupation='Tech-support' AND hoursPerWeek IN [1, 32]",0,0,0.642665,195,0,0
+1042,"occupation='Protective-serv' AND hoursPerWeek IN [1, 32]",0,0,0.578527,91,0,0
+1043,"occupation='Priv-house-serv' AND hoursPerWeek IN [1, 32]",0,0,0.595327,119,0,0
+1044,"occupation='Priv-house-serv' AND hoursPerWeek IN (32, 40]",0,0,0.573088,86,0,0
+1045,"occupation='Armed-Forces' AND hoursPerWeek IN [1, 32]",0,0,0.501022,1,0,0
+1046,"occupation='Armed-Forces' AND hoursPerWeek IN (40, 50]",0,0,0.504062,4,0,0
+1047,"occupation='Armed-Forces' AND hoursPerWeek IN (50, 99]",0,0,0.501022,1,0,0
+1048,"race='Amer-Indian-Eskimo' AND hoursPerWeek IN [1, 32]",0,0,0.565003,73,0,0
