@@ -36,9 +36,9 @@ Dataset & $N$ & $|\Attrs|$ & $|\mathcal{P}|$ & Setting & Pairs & Pairs from \\
 \midrule
 Adult~\cite{adult-uci}            & 48{,}842    & 10 & 1{,}048 & refinement & 7  & Sec.~\ref{sec:introduction}, ours \\
 ACSIncome~\cite{DingHMS21}       & 1{,}664{,}500 & 10 & 914   & refinement & 10 & Erica~\cite{LMSJ23} \\
-Tax~\cite{BohannonFGJK07}        & 200{,}000   & 9  & 1{,}792 & refinement & 5  & ours \\
+Tax~\cite{BohannonFGJK07}        & 200{,}000   & 9  & 1{,}792 & refinement & 5  & draft, ours \\
 Tax-dirty~\cite{MahdaviAFMOST19} & 200{,}000   & 9  & 1{,}977 & CQA        & 3  & rules of~\cite{NiMZWLY24} \\
-Hospital~\cite{rekatsinas2017}   & 1{,}000     & 10 & 502     & CQA        & 3  & ours \\
+Hospital~\cite{rekatsinas2017}   & 1{,}000     & 10 & 502     & CQA        & 3  & draft, rule \\
 IPUMS-CPS~\cite{TaoGMR22}        & 1{,}146{,}552 & 8 & 1{,}070 & contrast  & 17 & DPXPlain~\cite{TaoGMR22} \\
 \bottomrule
 \end{tabular}
@@ -50,7 +50,7 @@ We use the same extract, the four queries $Q_1$--$Q_4$ and the constraint sets $
 Ten of the twelve (query, constraint set) combinations pass this check.\footnote{For $Q_1C_3$ and $Q_4C_9$ the order of the flags in the stored vectors is ambiguous, and no reading of it gives refinements that satisfy the constraints, so we leave them out.}
 When Erica returned several minimal refinements we keep the one whose effect is least visible from the query and the constraints: the largest change in the distribution of attributes that neither mentions.
 \emph{Adult} contributes the running example of Section~\ref{sec:introduction} (A2) and the occupation-broadening pair of the earlier draft (A1), and five pairs of our own whose $Q'$ we obtained with an Erica-style search for a minimal refinement under a gender, race or age representation constraint.
-\emph{Tax} is the synthetic tax generator of the data-cleaning literature~\cite{BohannonFGJK07}; we use the clean $200{,}000$-tuple file distributed with Raha~\cite{MahdaviAFMOST19} and five refinement pairs of our own under constraints on \texttt{HasChild} and on the share of non-zero tax rates.
+\emph{Tax} is the synthetic tax generator of the data-cleaning literature~\cite{BohannonFGJK07}; we use the clean $200{,}000$-tuple file distributed with Raha~\cite{MahdaviAFMOST19}, the marital-status refinement of the earlier draft (T1), and four refinement pairs of our own under constraints on \texttt{HasChild} and on the share of non-zero tax rates.
 
 \paragraph{Consistent query answering.}
 For CQA we need a database that actually violates its constraints.
@@ -60,7 +60,7 @@ With the remaining seven rules $3.9\%$ of the tuples are in conflict, very uneve
 \emph{Hospital} is the dirty hospital file of HoloClean~\cite{rekatsinas2017} with the dependencies $\texttt{HospitalName}\to\texttt{ZipCode}$ and $\texttt{HospitalName}\to\texttt{PhoneNumber}$, which are among the constraints HoloClean distributes, and $\texttt{ZipCode}\to\texttt{City}$.
 In both datasets $Q_\Sigma(D)$ is computed with the conflict hypergraph~\cite{chomicki2004}: for a selection query it is $Q(D)$ without the tuples that take part in a conflict.
 We pick each CQA pair by one rule: a selection whose consistent answer drops between $10\%$ and $90\%$ of $Q(D)$, and drops it unevenly across the other attributes, since a uniform loss leaves nothing to explain.
-On Tax-dirty the selections are US Census divisions (C1--C3); on Hospital they are single-predicate selections on \texttt{HospitalType}, \texttt{EmergencyService} and \texttt{HospitalOwner} (H1--H3).
+On Tax-dirty the selections are US Census divisions (C1--C3); on Hospital, H1 is the pair of the earlier draft ($\texttt{HospitalType}=$ acute care) and H2 and H3 are the selections on \texttt{EmergencyService} and \texttt{HospitalOwner} that the rule picks.
 
 \paragraph{Contrasts.}
 Explaining how two subpopulations differ is the classical problem of contrast-set and emerging-pattern mining~\cite{BayPazzani01,DongLi99}, and it is the question DPXPlain answers privately for an aggregate~\cite{TaoGMR22}.
@@ -68,7 +68,7 @@ We use the IPUMS-CPS extract as prepared by DPXPlain ($1{,}146{,}552$ tuples) an
 The attribute that defines the two groups is removed from the views and from the explanation attributes of its pair: a view on it contains only one of the two outputs, and a histogram over it says only that the groups are different groups.
 
 \paragraph{Where each pair comes from.}
-Of the $45$ pairs, $27$ come from earlier work (ten from Erica, seventeen from DPXPlain), three from the earlier draft of this paper, and the rest from our own search (A3, R1--R4, T2, T3, R5, R6) or our selection rule (C1--C3, H2, H3).
+Of the $45$ pairs, $27$ come from earlier work (ten from Erica, seventeen from DPXPlain), four from the earlier draft of this paper (A1, A2, T1, H1), nine from our own refinement search (A3, R1--R4, T2, T3, R5, R6) and five from our CQA selection rule (C1--C3, H2, H3).
 The repository lists the source of every pair.
 
 \subsubsection{Case-study pairs}
@@ -99,7 +99,7 @@ Every experiment fixes the parameters it does not study to one default, chosen t
 When an experiment varies $k$, $\epsilon$ or $\tau$, the two derived constants follow their rules, because that is what the algorithm does; only the $\gamma$ experiment overrides Eq.~\eqref{eq:gamma-rule}, by a multiplier.
 Accuracy figures average $40$ private runs per point: the run-to-run standard deviation of the set score is often comparable to its mean, and fewer runs do not separate neighbouring configurations.
 Every timed run is end to end, from the raw data to the released histograms, and is stopped after $60$\,s; a stopped run is reported as a timeout.
-The running-time experiments use two to three pairs per dataset ($17$ in total), since running time hardly depends on the pair.
+The running-time sweeps use two to four pairs per dataset ($17$ in total) and the per-method comparison $19$, since running time hardly depends on the pair.
 All experiments ran single-threaded in Python with NumPy on a 4-core cloud machine with 16\,GB of memory.
 
 \subsection{Compared Methods}
@@ -236,7 +236,7 @@ IPUMS-CPS  & 0.91 & 0.91 & 0.87 & 0.34 & 0.23\\
 Figure~\ref{fig:quality} and Table~\ref{tab:quality} summarise the $45$ pairs.
 At the default budget the released set reaches $0.95$ and $0.96$ of the optimum on Adult and Tax, $0.91$ on IPUMS-CPS and $0.80$ on ACSIncome; the two CQA datasets are the hard cases, at $0.63$--$0.64$.
 \Btwo{} and \Bthree{} return sets of exactly the same score on every pair and at every $\epsilon$, so non-private greedy is optimal on the $\tau$-filtered candidates, as Proposition~\ref{prop:greedy-exact} predicts; we report them as one line.
-Four findings deserve comment.
+Several findings deserve comment.
 
 \paragraph{A good set is not the same set.}
 The ApproxRatio and the overlap measures tell different stories.
