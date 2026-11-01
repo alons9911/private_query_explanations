@@ -272,6 +272,7 @@ def _xscale(ax, x, logx: bool):
     if (np.asarray(x) <= 0).any():
         pos = np.asarray(x)[np.asarray(x) > 0]
         ax.set_xscale("symlog", linthresh=float(pos.min()) if len(pos) else 1e-3)
+        ax.set_xlim(left=0)
     else:
         ax.set_xscale("log")
 

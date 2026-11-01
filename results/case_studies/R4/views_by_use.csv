@@ -395,11 +395,11 @@ rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
 394,"workclass='Federal-gov' AND hoursPerWeek IN [1, 32]",5.12733e-05,0.000102371,0.500858,84,0,5
 395,education='Assoc-voc' AND race='Amer-Indian-Eskimo',5.12179e-05,0.000102371,0.500317,31,0,5
 396,education='11th' AND race='Asian-Pac-Islander',5.12137e-05,0.000102371,0.500276,27,1,4
-397,education='Preschool' AND gender='Female',5.12106e-05,0.000102371,0.500246,24,0,5
-398,education='1st-4th' AND race='Black',5.12106e-05,0.000102371,0.500246,24,0,5
+397,education='1st-4th' AND race='Black',5.12106e-05,0.000102371,0.500246,24,0,5
+398,education='Preschool' AND gender='Female',5.12106e-05,0.000102371,0.500246,24,0,5
 399,"education='1st-4th' AND hoursPerWeek IN (40, 50]",5.12106e-05,0.000102371,0.500246,24,0,5
-400,education='10th' AND race='Amer-Indian-Eskimo',5.12085e-05,0.000102371,0.500225,22,0,5
-401,education='11th' AND race='Other',5.12085e-05,0.000102371,0.500225,22,0,5
+400,education='11th' AND race='Other',5.12085e-05,0.000102371,0.500225,22,0,5
+401,education='10th' AND race='Amer-Indian-Eskimo',5.12085e-05,0.000102371,0.500225,22,0,5
 402,workclass='Local-gov' AND education='5th-6th',5.11991e-05,0.000102371,0.500133,13,0,5
 403,education='1st-4th' AND race='Other',5.11991e-05,0.000102371,0.500133,13,0,5
 404,workclass='Self-emp-not-inc' AND education='10th',4.10354e-05,8.18967e-05,0.501062,104,0,4
@@ -429,8 +429,8 @@ rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
 428,workclass='State-gov' AND education='9th',3.07176e-05,6.14225e-05,0.500102,10,0,3
 429,education='Doctorate' AND race='Amer-Indian-Eskimo',3.07132e-05,6.14225e-05,0.500031,3,1,2
 430,workclass='Self-emp-not-inc' AND education='5th-6th',2.0488e-05,4.09484e-05,0.500338,33,0,2
-431,"education='1st-4th' AND hoursPerWeek IN (50, 99]",2.04842e-05,4.09484e-05,0.500246,24,0,2
-432,"education='Preschool' AND hoursPerWeek IN [1, 32]",2.04842e-05,4.09484e-05,0.500246,24,0,2
+431,"education='Preschool' AND hoursPerWeek IN [1, 32]",2.04842e-05,4.09484e-05,0.500246,24,0,2
+432,"education='1st-4th' AND hoursPerWeek IN (50, 99]",2.04842e-05,4.09484e-05,0.500246,24,0,2
 433,education='9th' AND race='Other',2.04805e-05,4.09484e-05,0.500154,15,0,2
 434,workclass='Federal-gov' AND education='12th',2.04775e-05,4.09484e-05,0.500082,8,0,2
 435,education='Preschool' AND race='Asian-Pac-Islander',2.04771e-05,4.09484e-05,0.500072,7,0,2
@@ -438,8 +438,8 @@ rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
 437,workclass='Local-gov' AND education='1st-4th',2.04763e-05,4.09484e-05,0.500051,5,0,2
 438,education='1st-4th' AND occupation='Prof-specialty',2.04759e-05,4.09484e-05,0.500041,4,0,2
 439,education='Doctorate' AND occupation='Other-service',2.0475e-05,4.09484e-05,0.50002,2,0,2
-440,education='Preschool' AND race='Other',2.0475e-05,4.09484e-05,0.50002,2,0,2
-441,education='Prof-school' AND race='Amer-Indian-Eskimo',2.0475e-05,4.09484e-05,0.50002,2,1,1
+440,education='Prof-school' AND race='Amer-Indian-Eskimo',2.0475e-05,4.09484e-05,0.50002,2,1,1
+441,education='Preschool' AND race='Other',2.0475e-05,4.09484e-05,0.50002,2,0,2
 442,workclass='Self-emp-inc' AND education='10th',1.02427e-05,2.04742e-05,0.500276,27,0,1
 443,workclass='Without-pay',1.02415e-05,2.04742e-05,0.500215,21,0,1
 444,workclass='Self-emp-inc' AND education='7th-8th',1.02413e-05,2.04742e-05,0.500205,20,0,1
@@ -462,8 +462,8 @@ rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
 461,workclass='Federal-gov' AND education='7th-8th',1.02379e-05,2.04742e-05,0.500041,4,0,1
 462,"education='Preschool' AND hoursPerWeek IN (50, 99]",1.02379e-05,2.04742e-05,0.500041,4,0,1
 463,"workclass='Without-pay' AND hoursPerWeek IN (50, 99]",1.02377e-05,2.04742e-05,0.500031,3,0,1
-464,workclass='Self-emp-inc' AND race='Amer-Indian-Eskimo',1.02375e-05,2.04742e-05,0.50002,2,0,1
-465,workclass='Without-pay' AND occupation='Other-service',1.02375e-05,2.04742e-05,0.50002,2,0,1
+464,workclass='Without-pay' AND occupation='Other-service',1.02375e-05,2.04742e-05,0.50002,2,0,1
+465,workclass='Self-emp-inc' AND race='Amer-Indian-Eskimo',1.02375e-05,2.04742e-05,0.50002,2,0,1
 466,education='Preschool' AND occupation='Prof-specialty',1.02373e-05,2.04742e-05,0.50001,1,0,1
 467,workclass='NA',0,0,0.527101,2799,0,0
 468,workclass='Never-worked',0,0,0.500102,10,0,0

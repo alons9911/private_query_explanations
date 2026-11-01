@@ -42,7 +42,7 @@
         "view": "MarriedExemp IN [0, 174]",
         "use": 0.290676503187947,
         "coverage": 0.414445,
-        "representativeness": 0.7013632766421286
+        "representativeness": 0.7013632766421287
       },
       {
         "rank": 2,
@@ -56,7 +56,7 @@
         "view": "MaritalStatus='S'",
         "use": 0.27650174230976615,
         "coverage": 0.414445,
-        "representativeness": 0.6671614865899363
+        "representativeness": 0.6671614865899362
       },
       {
         "rank": 4,
@@ -150,7 +150,7 @@
         "exact_rank": 1,
         "use": 0.290676503187947,
         "coverage": 0.414445,
-        "representativeness": 0.7013632766421286
+        "representativeness": 0.7013632766421287
       },
       {
         "noisy_rank": 2,
@@ -166,7 +166,7 @@
         "exact_rank": 2,
         "use": 0.27650174230976615,
         "coverage": 0.414445,
-        "representativeness": 0.6671614865899363
+        "representativeness": 0.6671614865899362
       },
       {
         "noisy_rank": 4,
@@ -280,7 +280,7 @@
         "rank": 2,
         "use": 0.27650174230976615,
         "coverage": 0.414445,
-        "representativeness": 0.6671614865899363
+        "representativeness": 0.6671614865899362
       },
       {
         "view": "HasChild='N'",
@@ -292,9 +292,9 @@
       {
         "view": "HasChild='Y'",
         "rank": 21,
-        "use": 0.0916437061915498,
+        "use": 0.09164370619154981,
         "coverage": 0.137505,
-        "representativeness": 0.6664754459223287
+        "representativeness": 0.6664754459223288
       },
       {
         "view": "Salary IN (50000, 70000]",
@@ -320,16 +320,16 @@
       {
         "view": "Salary IN (35000, 50000]",
         "rank": 117,
-        "use": 0.021635056975971,
+        "use": 0.021635056975971005,
         "coverage": 0.038265,
-        "representativeness": 0.5654006788441396
+        "representativeness": 0.5654006788441397
       },
       {
         "view": "MaritalStatus='M'",
         "rank": 975,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.6661703732882885
+        "representativeness": 0.6661703732882887
       },
       {
         "view": "Salary IN [5000, 20000]",
@@ -343,7 +343,7 @@
         "rank": 977,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5647158682830219
+        "representativeness": 0.5647158682830218
       }
     ]
   },
@@ -2014,10 +2014,10 @@
     }
   ],
   "timings": {
-    "view_stage_ms": 0.2127919997292338,
-    "explanation_stage_ms": 0.6359459998748207,
-    "mechanism_ms": 0.8487379996040545,
-    "cache_build_s": 0.5406615269998838
+    "view_stage_ms": 0.32913400013967475,
+    "explanation_stage_ms": 1.021394999952463,
+    "mechanism_ms": 1.3505290000921377,
+    "cache_build_s": 4.652583220999986
   },
   "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
 }

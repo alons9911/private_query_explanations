@@ -66,21 +66,21 @@
         "view": "MarriedExemp IN [0, 174]",
         "use": 0.31532942236191785,
         "coverage": 0.449595,
-        "representativeness": 0.7013632766421286
+        "representativeness": 0.7013632766421287
       },
       {
         "rank": 2,
         "view": "SingleExemp IN [0, 87]",
-        "use": 0.3120506813339398,
+        "use": 0.31205068133393987,
         "coverage": 0.44531,
-        "representativeness": 0.7007493236934715
+        "representativeness": 0.7007493236934716
       },
       {
         "rank": 3,
         "view": "ChildExemp IN [0, 103]",
-        "use": 0.31177585197656654,
+        "use": 0.3117758519765665,
         "coverage": 0.44479,
-        "representativeness": 0.7009506777952889
+        "representativeness": 0.7009506777952887
       },
       {
         "rank": 4,
@@ -92,16 +92,16 @@
       {
         "rank": 5,
         "view": "HasChild='Y'",
-        "use": 0.2245538505079632,
+        "use": 0.22455385050796325,
         "coverage": 0.33704,
-        "representativeness": 0.6662528201636696
+        "representativeness": 0.6662528201636697
       },
       {
         "rank": 6,
         "view": "MaritalStatus='S'",
-        "use": 0.22445524693084998,
+        "use": 0.22445524693085003,
         "coverage": 0.336545,
-        "representativeness": 0.6669397760503053
+        "representativeness": 0.6669397760503054
       },
       {
         "rank": 7,
@@ -174,23 +174,23 @@
         "exact_rank": 1,
         "use": 0.31532942236191785,
         "coverage": 0.449595,
-        "representativeness": 0.7013632766421286
+        "representativeness": 0.7013632766421287
       },
       {
         "noisy_rank": 2,
         "view": "SingleExemp IN [0, 87]",
         "exact_rank": 2,
-        "use": 0.3120506813339398,
+        "use": 0.31205068133393987,
         "coverage": 0.44531,
-        "representativeness": 0.7007493236934715
+        "representativeness": 0.7007493236934716
       },
       {
         "noisy_rank": 3,
         "view": "ChildExemp IN [0, 103]",
         "exact_rank": 3,
-        "use": 0.31177585197656654,
+        "use": 0.3117758519765665,
         "coverage": 0.44479,
-        "representativeness": 0.7009506777952889
+        "representativeness": 0.7009506777952887
       },
       {
         "noisy_rank": 4,
@@ -204,17 +204,17 @@
         "noisy_rank": 5,
         "view": "HasChild='Y'",
         "exact_rank": 5,
-        "use": 0.2245538505079632,
+        "use": 0.22455385050796325,
         "coverage": 0.33704,
-        "representativeness": 0.6662528201636696
+        "representativeness": 0.6662528201636697
       },
       {
         "noisy_rank": 6,
         "view": "MaritalStatus='S'",
         "exact_rank": 6,
-        "use": 0.22445524693084998,
+        "use": 0.22445524693085003,
         "coverage": 0.336545,
-        "representativeness": 0.6669397760503053
+        "representativeness": 0.6669397760503054
       },
       {
         "noisy_rank": 7,
@@ -329,21 +329,21 @@
         "rank": 1133,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5837651769622348
+        "representativeness": 0.583765176962235
       },
       {
         "view": "Salary IN (20000, 35000]",
         "rank": 1134,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5647158682830219
+        "representativeness": 0.5647158682830218
       },
       {
         "view": "Salary IN (35000, 50000]",
         "rank": 1135,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5654006788441396
+        "representativeness": 0.5654006788441397
       }
     ]
   },
@@ -1868,10 +1868,10 @@
     }
   ],
   "timings": {
-    "view_stage_ms": 0.3019310001945996,
-    "explanation_stage_ms": 0.8891980000953481,
-    "mechanism_ms": 1.1911290002899477,
-    "cache_build_s": 0.6941580049997356
+    "view_stage_ms": 0.34917200014206173,
+    "explanation_stage_ms": 0.9836130000167032,
+    "mechanism_ms": 1.3327850001587649,
+    "cache_build_s": 4.838646341999947
   },
   "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
 }

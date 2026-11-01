@@ -1,0 +1,852 @@
+{
+  "pair": {
+    "pair": "S3",
+    "dataset": "stackoverflow",
+    "synthetic_data": true,
+    "N": 65437,
+    "kind": "contrast",
+    "Q1": "JobSat > 5 AND UsingAI = 'Yes'",
+    "Q2": "JobSat > 5 AND UsingAI = 'No'",
+    "|Q1|": 33359,
+    "|Q2|": 8816,
+    "|Q1 & Q2|": 0
+  },
+  "parameters": {
+    "k": 5,
+    "lambda": 0.5,
+    "epsilon": 1.0,
+    "eps_P": 0.333333333,
+    "eps_S": 0.333333333,
+    "eps_H": 0.333333334,
+    "tau": 15,
+    "gamma": 150.31905897320672,
+    "gamma_R": 65437.0,
+    "|P|": 1180,
+    "|Attrs|": 10,
+    "Delta_Use": 2.674327979583416e-05,
+    "laplace_scale_per_bin": 29.999999940000002,
+    "sigma_of_released_difference": 59.999999880000004
+  },
+  "view_stage": {
+    "exact_top_tau": [
+      {
+        "rank": 1,
+        "view": "UsingAI='Yes'",
+        "use": 0.35674123494020277,
+        "coverage": 0.5097880404052753,
+        "representativeness": 0.6997834524650635
+      },
+      {
+        "rank": 2,
+        "view": "UsesPython='No'",
+        "use": 0.28194774645923015,
+        "coverage": 0.4065589803933554,
+        "representativeness": 0.6934977704500318
+      },
+      {
+        "rank": 3,
+        "view": "UsingAI='Yes' AND UsesPython='No'",
+        "use": 0.20864357314702373,
+        "coverage": 0.3221113437351957,
+        "representativeness": 0.6477374274609446
+      },
+      {
+        "rank": 4,
+        "view": "Country='Other'",
+        "use": 0.19167365333195532,
+        "coverage": 0.29223527973470664,
+        "representativeness": 0.6558881374827779
+      },
+      {
+        "rank": 5,
+        "view": "WorkRemote='Hybrid'",
+        "use": 0.18649756847508378,
+        "coverage": 0.2837385576967159,
+        "representativeness": 0.6572866584964754
+      },
+      {
+        "rank": 6,
+        "view": "WorkRemote='Fully remote'",
+        "use": 0.18314775894189256,
+        "coverage": 0.28470131576936597,
+        "representativeness": 0.6432979013355138
+      },
+      {
+        "rank": 7,
+        "view": "EdLevel='Bachelor'",
+        "use": 0.17533706175737174,
+        "coverage": 0.2706725552821798,
+        "representativeness": 0.6477829330520062
+      },
+      {
+        "rank": 8,
+        "view": "Age='25-34'",
+        "use": 0.16251562220446905,
+        "coverage": 0.2536638293320293,
+        "representativeness": 0.6406732194827303
+      },
+      {
+        "rank": 9,
+        "view": "UsesPython='Yes'",
+        "use": 0.15102642515735756,
+        "coverage": 0.23795406268624783,
+        "representativeness": 0.6346873150743053
+      },
+      {
+        "rank": 10,
+        "view": "UsingAI='Yes' AND Country='Other'",
+        "use": 0.1420326923385712,
+        "coverage": 0.2306340449592738,
+        "representativeness": 0.6158357599098252
+      },
+      {
+        "rank": 11,
+        "view": "WorkRemote='Hybrid' AND UsingAI='Yes'",
+        "use": 0.13778254420178285,
+        "coverage": 0.22375720158320217,
+        "representativeness": 0.6157680880297817
+      },
+      {
+        "rank": 12,
+        "view": "WorkRemote='Fully remote' AND UsingAI='Yes'",
+        "use": 0.1370750466183338,
+        "coverage": 0.22604948270855937,
+        "representativeness": 0.606393984962406
+      },
+      {
+        "rank": 13,
+        "view": "EdLevel='Bachelor' AND UsingAI='Yes'",
+        "use": 0.13056469219977698,
+        "coverage": 0.2142671577242233,
+        "representativeness": 0.6093546653931108
+      },
+      {
+        "rank": 14,
+        "view": "Age='25-34' AND UsingAI='Yes'",
+        "use": 0.12866842984692242,
+        "coverage": 0.21116493726790653,
+        "representativeness": 0.6093266785275049
+      },
+      {
+        "rank": 15,
+        "view": "UsesPython='No' AND Country='Other'",
+        "use": 0.11320402585681494,
+        "coverage": 0.18515518743218667,
+        "representativeness": 0.6114007791344007
+      }
+    ],
+    "retained": [
+      {
+        "noisy_rank": 1,
+        "view": "UsingAI='Yes'",
+        "exact_rank": 1,
+        "use": 0.35674123494020277,
+        "coverage": 0.5097880404052753,
+        "representativeness": 0.6997834524650635
+      },
+      {
+        "noisy_rank": 2,
+        "view": "UsesPython='No'",
+        "exact_rank": 2,
+        "use": 0.28194774645923015,
+        "coverage": 0.4065589803933554,
+        "representativeness": 0.6934977704500318
+      },
+      {
+        "noisy_rank": 3,
+        "view": "UsingAI='Yes' AND UsesPython='No'",
+        "exact_rank": 3,
+        "use": 0.20864357314702373,
+        "coverage": 0.3221113437351957,
+        "representativeness": 0.6477374274609446
+      },
+      {
+        "noisy_rank": 4,
+        "view": "Country='Other'",
+        "exact_rank": 4,
+        "use": 0.19167365333195532,
+        "coverage": 0.29223527973470664,
+        "representativeness": 0.6558881374827779
+      },
+      {
+        "noisy_rank": 5,
+        "view": "WorkRemote='Hybrid'",
+        "exact_rank": 5,
+        "use": 0.18649756847508378,
+        "coverage": 0.2837385576967159,
+        "representativeness": 0.6572866584964754
+      },
+      {
+        "noisy_rank": 6,
+        "view": "WorkRemote='Fully remote'",
+        "exact_rank": 6,
+        "use": 0.18314775894189256,
+        "coverage": 0.28470131576936597,
+        "representativeness": 0.6432979013355138
+      },
+      {
+        "noisy_rank": 7,
+        "view": "EdLevel='Bachelor'",
+        "exact_rank": 7,
+        "use": 0.17533706175737174,
+        "coverage": 0.2706725552821798,
+        "representativeness": 0.6477829330520062
+      },
+      {
+        "noisy_rank": 8,
+        "view": "Age='25-34'",
+        "exact_rank": 8,
+        "use": 0.16251562220446905,
+        "coverage": 0.2536638293320293,
+        "representativeness": 0.6406732194827303
+      },
+      {
+        "noisy_rank": 9,
+        "view": "UsesPython='Yes'",
+        "exact_rank": 9,
+        "use": 0.15102642515735756,
+        "coverage": 0.23795406268624783,
+        "representativeness": 0.6346873150743053
+      },
+      {
+        "noisy_rank": 10,
+        "view": "UsingAI='Yes' AND Country='Other'",
+        "exact_rank": 10,
+        "use": 0.1420326923385712,
+        "coverage": 0.2306340449592738,
+        "representativeness": 0.6158357599098252
+      },
+      {
+        "noisy_rank": 11,
+        "view": "WorkRemote='Hybrid' AND UsingAI='Yes'",
+        "exact_rank": 11,
+        "use": 0.13778254420178285,
+        "coverage": 0.22375720158320217,
+        "representativeness": 0.6157680880297817
+      },
+      {
+        "noisy_rank": 12,
+        "view": "WorkRemote='Fully remote' AND UsingAI='Yes'",
+        "exact_rank": 12,
+        "use": 0.1370750466183338,
+        "coverage": 0.22604948270855937,
+        "representativeness": 0.606393984962406
+      },
+      {
+        "noisy_rank": 13,
+        "view": "EdLevel='Bachelor' AND UsingAI='Yes'",
+        "exact_rank": 13,
+        "use": 0.13056469219977698,
+        "coverage": 0.2142671577242233,
+        "representativeness": 0.6093546653931108
+      },
+      {
+        "noisy_rank": 14,
+        "view": "Age='25-34' AND UsingAI='Yes'",
+        "exact_rank": 14,
+        "use": 0.12866842984692242,
+        "coverage": 0.21116493726790653,
+        "representativeness": 0.6093266785275049
+      },
+      {
+        "noisy_rank": 15,
+        "view": "UsesPython='No' AND Country='Other'",
+        "exact_rank": 15,
+        "use": 0.11320402585681494,
+        "coverage": 0.18515518743218667,
+        "representativeness": 0.6114007791344007
+      }
+    ],
+    "overlap_with_exact_top_tau": 1.0,
+    "retained_atom_counts": {
+      "UsingAI='Yes'": 7,
+      "UsesPython='No'": 3,
+      "Country='Other'": 3,
+      "WorkRemote='Hybrid'": 2,
+      "WorkRemote='Fully remote'": 2,
+      "EdLevel='Bachelor'": 2,
+      "Age='25-34'": 2,
+      "UsesPython='Yes'": 1
+    },
+    "query_attribute_views": [
+      {
+        "view": "UsingAI='Yes'",
+        "rank": 1,
+        "use": 0.35674123494020277,
+        "coverage": 0.5097880404052753,
+        "representativeness": 0.6997834524650635
+      },
+      {
+        "view": "JobSat IN (6, 7]",
+        "rank": 23,
+        "use": 0.09377712100298373,
+        "coverage": 0.16166694683435975,
+        "representativeness": 0.5800636607498106
+      },
+      {
+        "view": "JobSat IN (5, 6]",
+        "rank": 27,
+        "use": 0.08462188511211033,
+        "coverage": 0.14745480385714504,
+        "representativeness": 0.5738835419298542
+      },
+      {
+        "view": "JobSat IN (7, 8]",
+        "rank": 28,
+        "use": 0.08279070474919561,
+        "coverage": 0.1446429390100402,
+        "representativeness": 0.5723798570177616
+      },
+      {
+        "view": "UsingAI='No'",
+        "rank": 29,
+        "use": 0.07781380376917138,
+        "coverage": 0.134725002674328,
+        "representativeness": 0.5775750768197898
+      },
+      {
+        "view": "JobSat IN (8, 9]",
+        "rank": 61,
+        "use": 0.055176672980863296,
+        "coverage": 0.09992817519140547,
+        "representativeness": 0.5521633200563927
+      },
+      {
+        "view": "JobSat IN (9, 10]",
+        "rank": 73,
+        "use": 0.04973820780051132,
+        "coverage": 0.0908201781866528,
+        "representativeness": 0.5476559151677705
+      },
+      {
+        "view": "UsingAI='Plan'",
+        "rank": 1084,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.5655548326273718
+      },
+      {
+        "view": "JobSat IN [0, 5]",
+        "rank": 1085,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.5983488828873067
+      }
+    ]
+  },
+  "explanations": [
+    {
+      "round": 1,
+      "view": "WorkRemote='Fully remote' AND UsingAI='Yes'",
+      "attr": "Country",
+      "bins": [
+        "Other",
+        "USA",
+        "Germany",
+        "India",
+        "UK",
+        "Ukraine",
+        "Canada",
+        "France",
+        "Brazil",
+        "Poland"
+      ],
+      "noisy_h1": [
+        6541.336,
+        2625.941,
+        1118.543,
+        874.501,
+        705.047,
+        771.438,
+        509.111,
+        508.687,
+        565.376,
+        467.509
+      ],
+      "noisy_h2": [
+        21.915,
+        50.455,
+        21.744,
+        11.629,
+        -5.541,
+        -13.067,
+        -30.335,
+        9.269,
+        1.528,
+        15.294
+      ],
+      "exact_n": [
+        7869,
+        3094,
+        1307,
+        1101,
+        862,
+        901,
+        639,
+        611,
+        681,
+        623
+      ],
+      "exact_h1": [
+        6603,
+        2588,
+        1062,
+        912,
+        729,
+        762,
+        532,
+        510,
+        552,
+        542
+      ],
+      "exact_h2": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hd_gamma": 7.232356071517625,
+      "utility": 7.232356071517625,
+      "n_candidates": 128,
+      "bins_clearing_2sigma": [
+        "Other",
+        "USA",
+        "Germany",
+        "India",
+        "UK",
+        "Ukraine",
+        "Canada",
+        "France",
+        "Brazil",
+        "Poland"
+      ],
+      "exact_share_q1": [
+        0.4464,
+        0.175,
+        0.0718,
+        0.0617,
+        0.0493,
+        0.0515,
+        0.036,
+        0.0345,
+        0.0373,
+        0.0366
+      ],
+      "exact_share_q2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "noisy_total_q1": 14687.489,
+      "noisy_total_q2": 82.89099999999999,
+      "exact_total_q1": 14792,
+      "exact_total_q2": 0,
+      "exact_abs_diff_total": 14792
+    },
+    {
+      "round": 2,
+      "view": "WorkRemote='Fully remote' AND UsingAI='Yes'",
+      "attr": "DevType",
+      "bins": [
+        "Dev, full-stack",
+        "Other",
+        "Dev, back-end",
+        "Dev, front-end",
+        "Dev, desktop or enterprise applications",
+        "Dev, mobile",
+        "Data scientist or machine learning specialist",
+        "Engineering manager"
+      ],
+      "noisy_h1": [
+        4456.694,
+        3942.919,
+        3035.619,
+        809.078,
+        795.725,
+        704.787,
+        589.778,
+        617.745
+      ],
+      "noisy_h2": [
+        21.307,
+        6.049,
+        -32.956,
+        -38.638,
+        -15.155,
+        16.19,
+        2.128,
+        54.145
+      ],
+      "exact_n": [
+        5255,
+        4693,
+        3551,
+        1042,
+        903,
+        781,
+        721,
+        742
+      ],
+      "exact_h1": [
+        4449,
+        3911,
+        2971,
+        861,
+        747,
+        645,
+        591,
+        617
+      ],
+      "exact_h2": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hd_gamma": 5.926882796395505,
+      "utility": 5.926882796395505,
+      "n_candidates": 127,
+      "bins_clearing_2sigma": [
+        "Dev, full-stack",
+        "Other",
+        "Dev, back-end",
+        "Dev, front-end",
+        "Dev, desktop or enterprise applications",
+        "Dev, mobile",
+        "Data scientist or machine learning specialist",
+        "Engineering manager"
+      ],
+      "exact_share_q1": [
+        0.3008,
+        0.2644,
+        0.2009,
+        0.0582,
+        0.0505,
+        0.0436,
+        0.04,
+        0.0417
+      ],
+      "exact_share_q2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "noisy_total_q1": 14952.345000000001,
+      "noisy_total_q2": 13.070000000000007,
+      "exact_total_q1": 14792,
+      "exact_total_q2": 0,
+      "exact_abs_diff_total": 14792
+    },
+    {
+      "round": 3,
+      "view": "UsingAI='Yes' AND UsesPython='No'",
+      "attr": "EdLevel",
+      "bins": [
+        "Bachelor",
+        "Master",
+        "Some college",
+        "Secondary",
+        "Doctoral/Prof",
+        "Other",
+        "Associate",
+        "Primary"
+      ],
+      "noisy_h1": [
+        8823.109,
+        4737.271,
+        2573.895,
+        2550.954,
+        763.503,
+        658.61,
+        724.056,
+        243.524
+      ],
+      "noisy_h2": [
+        8.821,
+        140.722,
+        -16.767,
+        41.835,
+        -0.248,
+        13.727,
+        -73.48,
+        -41.074
+      ],
+      "exact_n": [
+        11568,
+        6351,
+        3345,
+        3228,
+        1009,
+        841,
+        820,
+        282
+      ],
+      "exact_h1": [
+        8852,
+        4834,
+        2549,
+        2537,
+        803,
+        645,
+        644,
+        214
+      ],
+      "exact_h2": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hd_gamma": 5.481166298029136,
+      "utility": 5.481166298029136,
+      "n_candidates": 126,
+      "bins_clearing_2sigma": [
+        "Bachelor",
+        "Master",
+        "Some college",
+        "Secondary",
+        "Doctoral/Prof",
+        "Other",
+        "Associate",
+        "Primary"
+      ],
+      "exact_share_q1": [
+        0.42,
+        0.2293,
+        0.1209,
+        0.1204,
+        0.0381,
+        0.0306,
+        0.0306,
+        0.0102
+      ],
+      "exact_share_q2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "noisy_total_q1": 21074.922,
+      "noisy_total_q2": 73.53600000000002,
+      "exact_total_q1": 21078,
+      "exact_total_q2": 0,
+      "exact_abs_diff_total": 21078
+    },
+    {
+      "round": 4,
+      "view": "UsingAI='Yes'",
+      "attr": "OrgSize",
+      "bins": [
+        "10-99",
+        "100-999",
+        "10k+",
+        "1k-10k",
+        "2-9",
+        "1",
+        "Unknown"
+      ],
+      "noisy_h1": [
+        8537.706,
+        8189.52,
+        5460.735,
+        4589.336,
+        3121.94,
+        2036.272,
+        1376.646
+      ],
+      "noisy_h2": [
+        16.779,
+        29.381,
+        28.479,
+        -6.364,
+        -7.694,
+        7.61,
+        12.74
+      ],
+      "exact_n": [
+        11119,
+        10575,
+        7312,
+        6104,
+        4022,
+        2631,
+        1783
+      ],
+      "exact_h1": [
+        8565,
+        8150,
+        5476,
+        4591,
+        3155,
+        2034,
+        1388
+      ],
+      "exact_h2": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hd_gamma": 5.193203413318655,
+      "utility": 5.193203413318655,
+      "n_candidates": 125,
+      "bins_clearing_2sigma": [
+        "10-99",
+        "100-999",
+        "10k+",
+        "1k-10k",
+        "2-9",
+        "1",
+        "Unknown"
+      ],
+      "exact_share_q1": [
+        0.2568,
+        0.2443,
+        0.1642,
+        0.1376,
+        0.0946,
+        0.061,
+        0.0416
+      ],
+      "exact_share_q2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "noisy_total_q1": 33312.155,
+      "noisy_total_q2": 80.93099999999998,
+      "exact_total_q1": 33359,
+      "exact_total_q2": 0,
+      "exact_abs_diff_total": 33359
+    },
+    {
+      "round": 5,
+      "view": "WorkRemote='Fully remote' AND UsingAI='Yes'",
+      "attr": "YearsCodePro",
+      "bins": [
+        "[0, 2]",
+        "(2, 4]",
+        "(4, 6]",
+        "(6, 9]",
+        "(9, 16]",
+        "(16, 51]"
+      ],
+      "noisy_h1": [
+        2987.416,
+        2337.809,
+        1987.598,
+        2141.067,
+        2864.899,
+        2607.149
+      ],
+      "noisy_h2": [
+        71.924,
+        -1.33,
+        -73.514,
+        60.24,
+        43.661,
+        40.094
+      ],
+      "exact_n": [
+        3728,
+        2860,
+        2403,
+        2546,
+        3249,
+        2902
+      ],
+      "exact_h1": [
+        2974,
+        2340,
+        1987,
+        2122,
+        2788,
+        2581
+      ],
+      "exact_h2": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hd_gamma": 4.7751057642245405,
+      "utility": 4.7751057642245405,
+      "n_candidates": 124,
+      "bins_clearing_2sigma": [
+        "[0, 2]",
+        "(2, 4]",
+        "(4, 6]",
+        "(6, 9]",
+        "(9, 16]",
+        "(16, 51]"
+      ],
+      "exact_share_q1": [
+        0.2011,
+        0.1582,
+        0.1343,
+        0.1435,
+        0.1885,
+        0.1745
+      ],
+      "exact_share_q2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "noisy_total_q1": 14925.937999999998,
+      "noisy_total_q2": 141.07500000000002,
+      "exact_total_q1": 14792,
+      "exact_total_q2": 0,
+      "exact_abs_diff_total": 14792
+    }
+  ],
+  "timings": {
+    "view_stage_ms": 0.22419200013246154,
+    "explanation_stage_ms": 24.424661000011838,
+    "mechanism_ms": 24.6488530001443,
+    "cache_build_s": 1.3194461119999232
+  },
+  "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
+}

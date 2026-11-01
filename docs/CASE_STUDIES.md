@@ -43,20 +43,20 @@ On A2, the running example of the paper, the high-income rate barely moves altho
 
 ## 2. Overview
 
-| pair | data | what changes | constraint (or CQA drop) | AVG(y): Q → Q' | hidden drift | ApproxRatio vs B2 at ε = 1 |
-|---|---|---|---|---|---|---|
-| R1 | Adult | graduate degrees, ≥50 h → + Some-college, ≥35 h | women 17.6% → 30.6% | income 0.73 → 0.36 | 0.48 occupation | 0.97 |
-| R2 | Adult | married professionals → + service workers, never-married | non-White 10.2% → 15.7% | income 0.71 → 0.32 | 0.39 income | 1.02* |
-| R3 | Adult | married, 40+ → married / divorced / widowed, 61+ | women 8.9% → 30.2% | income 0.50 → 0.25 | 0.29 hours | 0.93 |
-| R4 | Adult | professionals ≥50 h → + service workers, ≥30 h | under-30 14.7% → 25.3% | income 0.58 → 0.31 | 0.37 education | 0.98 |
-| R5 | Tax | low income, rate ≤ 2 → rate ≤ 3.2 | taxed 23.7% → 50.0% | rate 0.34 → 1.17 | 0.32 State | 0.98 |
-| R6 | Tax | single, no children → single (sanity check) | parents 0% → 49.8% | rate 4.64 → 4.62 | 0.01 | 0.98 |
-| C1 | Tax (dirty) | South: AL, AR, GA, MS, TN | Q_Σ drops 37.0% | rate 4.40 → 3.70 | 0.34 State | 0.68 |
-| C2 | Tax (dirty) | Northeast: NJ, NY, PA, CT, MA | Q_Σ drops 21.2% | rate 3.89 → 4.37 | 0.20 State | 0.84 |
-| C3 | Tax (dirty) | Salary ≥ 70,000 | Q_Σ drops 9.2% | rate 4.66 → 4.74 | 0.07 State | 0.80 |
-| C4 | Hospital | acute care hospitals (paper's H1) | Q_Σ drops 90.4% | score 89.5 → 92.6 | 0.77 City | 0.81 |
+| pair | data | what changes | constraint (or CQA drop) | AVG(y): Q → Q' | hidden drift | ApproxRatio vs B2 at ε = 1 | precision@k vs B2 at ε = 1 |
+|---|---|---|---|---|---|---|---|
+| R1 | Adult | graduate degrees, ≥50 h → + Some-college, ≥35 h | women 17.6% → 30.6% | income 0.73 → 0.36 | 0.48 occupation | 0.96 | 0.76 |
+| R2 | Adult | married professionals → + service workers, never-married | non-White 10.2% → 15.7% | income 0.71 → 0.32 | 0.39 income | 0.94 | 0.17 |
+| R3 | Adult | married, 40+ → married / divorced / widowed, 61+ | women 8.9% → 30.2% | income 0.50 → 0.25 | 0.29 hours | 0.93 | 0.41 |
+| R4 | Adult | professionals ≥50 h → + service workers, ≥30 h | under-30 14.7% → 25.3% | income 0.58 → 0.31 | 0.37 education | 0.98 | 0.13 |
+| R5 | Tax | low income, rate ≤ 2 → rate ≤ 3.2 | taxed 23.7% → 50.0% | rate 0.34 → 1.17 | 0.32 State | 0.97 | 0.61 |
+| R6 | Tax | single, no children → single (sanity check) | parents 0% → 49.8% | rate 4.64 → 4.62 | 0.01 | 0.98 | 0.59 |
+| C1 | Tax (dirty) | South: AL, AR, GA, MS, TN | Q_Σ drops 37.0% | rate 4.40 → 3.70 | 0.34 State | 0.69 | 0.19 |
+| C2 | Tax (dirty) | Northeast: NJ, NY, PA, CT, MA | Q_Σ drops 21.2% | rate 3.89 → 4.37 | 0.20 State | 0.85 | 0.15 |
+| C3 | Tax (dirty) | Salary ≥ 70,000 | Q_Σ drops 9.2% | rate 4.66 → 4.74 | 0.07 State | 0.79 | 0.24 |
+| C4 | Hospital | acute care hospitals (paper's H1) | Q_Σ drops 90.4% | score 89.5 → 92.6 | 0.77 City | 0.82 | 0.17 |
 
-\* B2 is the exhaustive optimum over the candidates of the *exact* top-τ views by Use. The private view stage can keep a view outside that set whose unsmoothed `HD` is higher, so the ratio can exceed 1.
+Both accuracy columns are means over 40 private runs (E2). ApproxRatio compares the *score* of the released set with B2's (the exhaustive optimum over the candidates of the exact top-τ views by Use; it can exceed 1 when the private view stage keeps a view outside that set). precision@k is the share of the k released explanations that B2 also returns. It is much lower than ApproxRatio on pairs with many near-tied candidates, e.g. the State views of C1–C3, where the released set scores close to the optimum without being the same set.
 
 ## 3. Refinement pairs
 

@@ -50,6 +50,8 @@ def points(raw: pd.DataFrame) -> pd.DataFrame:
 def plot(cfg: dict, base=None) -> None:
     od = out_dir(EXP, base)
     pts = points(read_raw(EXP, "runtime", base))
+    order = {d: i for i, d in enumerate(cfg.get("datasets", []))}
+    pts = pts.sort_values("dataset", key=lambda c: c.map(lambda d: order.get(d, len(order))), kind="stable")
     write_csv(pts, od / "points.csv")
     syn = {r.dataset: bool(r.synthetic) for r in pts.itertuples()}
     for ds in dict.fromkeys(pts.dataset):

@@ -59,16 +59,16 @@
       {
         "rank": 2,
         "view": "EmergencyService='yes'",
-        "use": 0.6453770491803279,
+        "use": 0.6453770491803278,
         "coverage": 0.888,
-        "representativeness": 0.726775956284153
+        "representativeness": 0.7267759562841529
       },
       {
         "rank": 3,
         "view": "State='al' AND EmergencyService='yes'",
-        "use": 0.6088345444382335,
+        "use": 0.6088345444382336,
         "coverage": 0.845,
-        "representativeness": 0.7205142537730574
+        "representativeness": 0.7205142537730576
       },
       {
         "rank": 4,
@@ -94,16 +94,16 @@
       {
         "rank": 7,
         "view": "State='al' AND Condition='heart attack'",
-        "use": 0.16828571428571426,
+        "use": 0.16828571428571432,
         "coverage": 0.279,
-        "representativeness": 0.603174603174603
+        "representativeness": 0.6031746031746033
       },
       {
         "rank": 8,
         "view": "HospitalOwner='voluntary non-profit - private'",
-        "use": 0.16449443561208266,
+        "use": 0.16449443561208268,
         "coverage": 0.273,
-        "representativeness": 0.602543720190779
+        "representativeness": 0.6025437201907791
       },
       {
         "rank": 9,
@@ -122,30 +122,30 @@
       {
         "rank": 11,
         "view": "Score IN (99, 100]",
-        "use": 0.1548165728077233,
+        "use": 0.15481657280772326,
         "coverage": 0.259,
-        "representativeness": 0.597747385358005
+        "representativeness": 0.5977473853580049
       },
       {
         "rank": 12,
         "view": "State='al' AND Score IN (99, 100]",
-        "use": 0.14862124898621246,
+        "use": 0.14862124898621248,
         "coverage": 0.25,
-        "representativeness": 0.5944849959448498
+        "representativeness": 0.5944849959448499
       },
       {
         "rank": 13,
         "view": "Condition='pneumonia'",
-        "use": 0.14819028340080972,
+        "use": 0.1481902834008097,
         "coverage": 0.249,
-        "representativeness": 0.5951417004048584
+        "representativeness": 0.5951417004048583
       },
       {
         "rank": 14,
         "view": "EmergencyService='yes' AND Condition='heart attack'",
-        "use": 0.14112940212940214,
+        "use": 0.14112940212940212,
         "coverage": 0.239,
-        "representativeness": 0.5904995904995906
+        "representativeness": 0.5904995904995904
       },
       {
         "rank": 15,
@@ -184,9 +184,9 @@
         "noisy_rank": 4,
         "view": "Score IN (99, 100] AND Sample IN (58, 107]",
         "exact_rank": 167,
-        "use": 0.016466019417475733,
+        "use": 0.01646601941747573,
         "coverage": 0.032,
-        "representativeness": 0.5145631067961166
+        "representativeness": 0.5145631067961165
       },
       {
         "noisy_rank": 5,
@@ -208,14 +208,14 @@
         "noisy_rank": 7,
         "view": "EmergencyService='yes'",
         "exact_rank": 2,
-        "use": 0.6453770491803279,
+        "use": 0.6453770491803278,
         "coverage": 0.888,
-        "representativeness": 0.726775956284153
+        "representativeness": 0.7267759562841529
       },
       {
         "noisy_rank": 8,
         "view": "Score IN (91, 96] AND Sample IN (107, 210]",
-        "exact_rank": 154,
+        "exact_rank": 156,
         "use": 0.017543078412391094,
         "coverage": 0.034,
         "representativeness": 0.5159728944820909
@@ -224,9 +224,9 @@
         "noisy_rank": 9,
         "view": "State='al' AND EmergencyService='yes'",
         "exact_rank": 3,
-        "use": 0.6088345444382335,
+        "use": 0.6088345444382336,
         "coverage": 0.845,
-        "representativeness": 0.7205142537730574
+        "representativeness": 0.7205142537730576
       },
       {
         "noisy_rank": 10,
@@ -248,9 +248,9 @@
         "noisy_rank": 12,
         "view": "Score IN [0, 82] AND Sample IN (107, 210]",
         "exact_rank": 262,
-        "use": 0.007096646942800786,
+        "use": 0.007096646942800788,
         "coverage": 0.014,
-        "representativeness": 0.506903353057199
+        "representativeness": 0.5069033530571991
       },
       {
         "noisy_rank": 13,
@@ -1406,10 +1406,10 @@
     }
   ],
   "timings": {
-    "view_stage_ms": 0.18778799994834117,
-    "explanation_stage_ms": 0.8778360001997498,
-    "mechanism_ms": 1.065624000148091,
-    "cache_build_s": 0.021179625000058877
+    "view_stage_ms": 0.24062500006039045,
+    "explanation_stage_ms": 1.2586049999754323,
+    "mechanism_ms": 1.4992300000358227,
+    "cache_build_s": 0.11358175300006224
   },
   "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
 }

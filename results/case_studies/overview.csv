@@ -1,11 +1,11 @@
 pair,dataset,kind,role,|Q1|,|Q2|,AVG_Q1,AVG_Q2,hidden_drift,drift_attr,ratio_B2_eps1,top_attr_share,constraint,agg_unexplained
-R1,adult,refinement,surprising,1554,12064,0.733591,0.358007,0.478001,occupation,0.974297,1.675,>= 30% with gender = 'Female': 17.6% -> 30.6%,-0.345941
-R2,adult,refinement,surprising,3182,8561,0.70836,0.315033,0.393326,income,1.02151,1.175,">= 15% with race IN ('Black', 'Asian-Pac-Islander', 'Amer-Indian-Eskimo', 'Other'): 10.2% -> 15.7%",-0.388555
-R3,adult,refinement,surprising,12932,3296,0.499923,0.246056,0.294018,hoursPerWeek,0.931368,1.8,>= 30% with gender = 'Female': 8.9% -> 30.2%,-0.253073
-R4,adult,refinement,surprising,1681,9186,0.581797,0.311561,0.37007,education,0.975679,1.05,>= 25% with age < 30: 14.7% -> 25.3%,-0.227053
-R5,tax,refinement,surprising,16774,25621,16294.9,15311.5,0.317944,State,0.979073,3.1,>= 50% with Rate > 0: 23.7% -> 50.0%,
-R6,tax,refinement,sanity,27694,55195,4.63733,4.62446,0.011439,State,0.984345,3.225,>= 30% with HasChild = 'Y': 0.0% -> 49.8%,
-C1,tax_dirty,cqa,surprising,19515,12290,4.40131,3.70231,0.340148,State,0.674518,2.9,Q_Sigma drops 37.0%,
-C2,tax_dirty,cqa,surprising,19466,15342,3.88711,4.36491,0.204459,State,0.841857,2.575,Q_Sigma drops 21.2%,
-C3,tax_dirty,cqa,surprising,70104,63650,4.66231,4.73875,0.0710818,State,0.797439,2.85,Q_Sigma drops 9.2%,
-C4,hospital,cqa,small-data,968,93,89.5051,92.6071,0.766207,City,0.814462,1.025,Q_Sigma drops 90.4%,
+R1,adult,refinement,surprising,1554,12064,0.733591,0.358007,0.478001,occupation,0.963526,1.675,>= 30% with gender = 'Female': 17.6% -> 30.6%,-0.345941
+R2,adult,refinement,surprising,3182,8561,0.70836,0.315033,0.393326,income,0.939529,1.175,">= 15% with race IN ('Black', 'Asian-Pac-Islander', 'Amer-Indian-Eskimo', 'Other'): 10.2% -> 15.7%",-0.388555
+R3,adult,refinement,surprising,12932,3296,0.499923,0.246056,0.294018,hoursPerWeek,0.93143,1.8,>= 30% with gender = 'Female': 8.9% -> 30.2%,-0.253073
+R4,adult,refinement,surprising,1681,9186,0.581797,0.311561,0.37007,education,0.978537,1.05,>= 25% with age < 30: 14.7% -> 25.3%,-0.227053
+R5,tax,refinement,surprising,16774,25621,16294.9,15311.5,0.317944,State,0.96804,3.1,>= 50% with Rate > 0: 23.7% -> 50.0%,
+R6,tax,refinement,sanity,27694,55195,4.63733,4.62446,0.011439,State,0.983234,3.225,>= 30% with HasChild = 'Y': 0.0% -> 49.8%,
+C1,tax_dirty,cqa,surprising,19515,12290,4.40131,3.70231,0.340148,State,0.686865,2.9,Q_Sigma drops 37.0%,
+C2,tax_dirty,cqa,surprising,19466,15342,3.88711,4.36491,0.204459,State,0.850092,2.575,Q_Sigma drops 21.2%,
+C3,tax_dirty,cqa,surprising,70104,63650,4.66231,4.73875,0.0710818,State,0.789872,2.85,Q_Sigma drops 9.2%,
+C4,hospital,cqa,small-data,968,93,89.5051,92.6071,0.766207,City,0.82189,1.025,Q_Sigma drops 90.4%,

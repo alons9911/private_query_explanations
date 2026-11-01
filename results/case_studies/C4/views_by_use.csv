@@ -151,10 +151,10 @@ rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
 150,HospitalOwner='voluntary non-profit - private' AND Sample='NA',0.0175749,0.034,0.516908,35,34,0
 151,EmergencyService='no' AND Condition='pneumonia',0.0175749,0.034,0.516908,35,34,0
 152,Condition='surgical infection prevention' AND Sample='NA',0.0175749,0.034,0.516908,35,34,0
-153,"Score IN (91, 96] AND Sample IN (58, 107]",0.0175431,0.034,0.515973,33,32,2
-154,"Score IN (91, 96] AND Sample IN (107, 210]",0.0175431,0.034,0.515973,33,31,3
-155,"Condition='pneumonia' AND Score IN [0, 82]",0.0175431,0.034,0.515973,33,33,1
-156,"Score IN (82, 91] AND Sample IN (58, 107]",0.0175431,0.034,0.515973,33,33,1
+153,"Condition='pneumonia' AND Score IN [0, 82]",0.0175431,0.034,0.515973,33,33,1
+154,"Score IN (82, 91] AND Sample IN (58, 107]",0.0175431,0.034,0.515973,33,33,1
+155,"Score IN (91, 96] AND Sample IN (58, 107]",0.0175431,0.034,0.515973,33,32,2
+156,"Score IN (91, 96] AND Sample IN (107, 210]",0.0175431,0.034,0.515973,33,31,3
 157,"Score IN (99, 100] AND Sample IN (210, 1421]",0.0174951,0.034,0.514563,30,30,4
 158,HospitalOwner='proprietary' AND Condition='heart failure',0.0170426,0.033,0.516441,34,33,0
 159,"EmergencyService='no' AND Sample IN [0, 3]",0.0170426,0.033,0.516441,34,33,0
@@ -223,11 +223,11 @@ rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
 222,"HospitalOwner='voluntary non-profit - other' AND Score IN (91, 96]",0.0101961,0.02,0.509804,20,19,1
 223,"Condition='heart failure' AND Score IN (96, 99]",0.0101961,0.02,0.509804,20,19,1
 224,HospitalOwner='government - federal' AND Score='NA',0.0101768,0.02,0.508841,18,18,2
-225,HospitalOwner='voluntary non-profit - church' AND Condition='heart attack',0.00967713,0.019,0.509323,19,19,0
-226,HospitalOwner='voluntary non-profit - other' AND Condition='heart failure',0.00967713,0.019,0.509323,19,19,0
-227,"HospitalOwner='voluntary non-profit - private' AND Score IN (96, 99]",0.00967713,0.019,0.509323,19,17,2
-228,"HospitalOwner='voluntary non-profit - private' AND Sample IN (107, 210]",0.00967713,0.019,0.509323,19,19,0
-229,"Score IN [0, 82] AND Sample IN (58, 107]",0.00967713,0.019,0.509323,19,19,0
+225,"HospitalOwner='voluntary non-profit - private' AND Score IN (96, 99]",0.00967713,0.019,0.509323,19,17,2
+226,"HospitalOwner='voluntary non-profit - private' AND Sample IN (107, 210]",0.00967713,0.019,0.509323,19,19,0
+227,"Score IN [0, 82] AND Sample IN (58, 107]",0.00967713,0.019,0.509323,19,19,0
+228,HospitalOwner='voluntary non-profit - church' AND Condition='heart attack',0.00967713,0.019,0.509323,19,19,0
+229,HospitalOwner='voluntary non-profit - other' AND Condition='heart failure',0.00967713,0.019,0.509323,19,19,0
 230,"HospitalOwner='government - federal' AND Sample IN [0, 3]",0.00967713,0.019,0.509323,19,19,0
 231,EmergencyService='no' AND Sample='NA',0.00966798,0.019,0.508841,18,17,2
 232,Condition='heart attack' AND Sample='NA',0.0096588,0.019,0.508358,17,17,2
@@ -238,8 +238,8 @@ rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
 237,"Condition='heart attack' AND Sample IN (58, 107]",0.00915044,0.018,0.508358,17,16,2
 238,"Condition='heart attack' AND Score IN (82, 91]",0.00914173,0.018,0.507874,16,16,2
 239,"HospitalOwner='voluntary non-profit - church' AND Score IN (96, 99]",0.00865029,0.017,0.508841,18,17,0
-240,"Condition='surgical infection prevention' AND Sample IN (19, 58]",0.00865029,0.017,0.508841,18,17,0
-241,"Condition='heart failure' AND Sample IN (107, 210]",0.00865029,0.017,0.508841,18,17,0
+240,"Condition='heart failure' AND Sample IN (107, 210]",0.00865029,0.017,0.508841,18,17,0
+241,"Condition='surgical infection prevention' AND Sample IN (19, 58]",0.00865029,0.017,0.508841,18,17,0
 242,State='ak' AND HospitalOwner='proprietary',0.00864208,0.017,0.508358,17,17,0
 243,HospitalOwner='voluntary non-profit - other' AND EmergencyService='no',0.00864208,0.017,0.508358,17,17,0
 244,"HospitalOwner='government - federal' AND Sample IN (3, 19]",0.00864208,0.017,0.508358,17,16,1
@@ -293,10 +293,10 @@ rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
 292,Condition='heart failure' AND Score='NA',0.00403175,0.008,0.503968,8,8,0
 293,State='Other' AND Condition='surgical infection prevention',0.00402781,0.008,0.503476,7,7,1
 294,EmergencyService='Other' AND Condition='surgical infection prevention',0.00402781,0.008,0.503476,7,7,1
-295,"State='Other' AND Score IN (91, 96]",0.00402386,0.008,0.502982,6,6,2
-296,HospitalOwner='government - hospital district or authority' AND Condition='Other',0.00402386,0.008,0.502982,6,6,2
-297,"EmergencyService='Other' AND Score IN (82, 91]",0.00402386,0.008,0.502982,6,6,2
-298,"EmergencyService='Other' AND Sample IN (107, 210]",0.00402386,0.008,0.502982,6,6,2
+295,"EmergencyService='Other' AND Sample IN (107, 210]",0.00402386,0.008,0.502982,6,6,2
+296,"State='Other' AND Score IN (91, 96]",0.00402386,0.008,0.502982,6,6,2
+297,HospitalOwner='government - hospital district or authority' AND Condition='Other',0.00402386,0.008,0.502982,6,6,2
+298,"EmergencyService='Other' AND Score IN (82, 91]",0.00402386,0.008,0.502982,6,6,2
 299,"State='Other' AND Sample IN [0, 3]",0.00352778,0.007,0.503968,8,7,0
 300,"EmergencyService='no' AND Score IN (96, 99]",0.00352778,0.007,0.503968,8,7,0
 301,HospitalOwner='government - federal' AND Condition='heart failure',0.00352433,0.007,0.503476,7,7,0
@@ -311,30 +311,30 @@ rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
 310,"EmergencyService='no' AND Sample IN (107, 210]",0.00352433,0.007,0.503476,7,7,0
 311,Condition='Other' AND Score='NA',0.00352433,0.007,0.503476,7,6,1
 312,"Score='NA' AND Sample IN (58, 107]",0.00352433,0.007,0.503476,7,7,0
-313,"HospitalOwner='Other' AND Sample IN (210, 1421]",0.00352087,0.007,0.502982,6,6,1
-314,State='Other' AND HospitalOwner='government - hospital district or authority',0.00352087,0.007,0.502982,6,6,1
-315,State='Other' AND Condition='pneumonia',0.00352087,0.007,0.502982,6,6,1
-316,"State='Other' AND Sample IN (58, 107]",0.00352087,0.007,0.502982,6,6,1
-317,HospitalOwner='proprietary' AND EmergencyService='Other',0.00352087,0.007,0.502982,6,6,1
-318,"HospitalOwner='government - federal' AND Score IN (91, 96]",0.00352087,0.007,0.502982,6,6,1
-319,EmergencyService='Other' AND Condition='heart attack',0.00352087,0.007,0.502982,6,6,1
-320,"EmergencyService='Other' AND Sample IN (210, 1421]",0.00352087,0.007,0.502982,6,6,1
-321,"Condition='children s asthma care' AND Score IN (99, 100]",0.00352087,0.007,0.502982,6,5,2
+313,State='Other' AND Condition='pneumonia',0.00352087,0.007,0.502982,6,6,1
+314,"HospitalOwner='Other' AND Sample IN (210, 1421]",0.00352087,0.007,0.502982,6,6,1
+315,"EmergencyService='Other' AND Sample IN (210, 1421]",0.00352087,0.007,0.502982,6,6,1
+316,"Condition='children s asthma care' AND Score IN (99, 100]",0.00352087,0.007,0.502982,6,5,2
+317,"State='Other' AND Sample IN (58, 107]",0.00352087,0.007,0.502982,6,6,1
+318,State='Other' AND HospitalOwner='government - hospital district or authority',0.00352087,0.007,0.502982,6,6,1
+319,HospitalOwner='proprietary' AND EmergencyService='Other',0.00352087,0.007,0.502982,6,6,1
+320,"HospitalOwner='government - federal' AND Score IN (91, 96]",0.00352087,0.007,0.502982,6,6,1
+321,EmergencyService='Other' AND Condition='heart attack',0.00352087,0.007,0.502982,6,6,1
 322,HospitalOwner='government - hospital district or authority' AND EmergencyService='Other',0.00351741,0.007,0.502488,5,5,2
 323,"Condition='Other' AND Sample IN (107, 210]",0.00351741,0.007,0.502488,5,5,2
 324,State='Other' AND Condition='heart attack',0.00302085,0.006,0.503476,7,6,0
 325,HospitalOwner='Other' AND Condition='heart attack',0.00302085,0.006,0.503476,7,6,0
 326,"Condition='Other' AND Sample IN (3, 19]",0.00302085,0.006,0.503476,7,6,0
-327,"State='ak' AND Score IN (91, 96]",0.00301789,0.006,0.502982,6,6,0
-328,"State='ak' AND Sample IN (210, 1421]",0.00301789,0.006,0.502982,6,6,0
-329,HospitalOwner='proprietary' AND Condition='children s asthma care',0.00301789,0.006,0.502982,6,5,1
-330,"HospitalOwner='government - state' AND Score IN (82, 91]",0.00301789,0.006,0.502982,6,6,0
-331,"HospitalOwner='government - state' AND Score IN (99, 100]",0.00301789,0.006,0.502982,6,6,0
-332,"Condition='children s asthma care' AND Sample IN (3, 19]",0.00301789,0.006,0.502982,6,5,1
-333,Condition='pneumonia' AND Sample='NA',0.00301789,0.006,0.502982,6,6,0
-334,State='ak' AND Condition='pneumonia',0.00301789,0.006,0.502982,6,6,0
-335,HospitalOwner='government - local' AND Condition='pneumonia',0.00301789,0.006,0.502982,6,6,0
-336,"HospitalOwner='government - federal' AND Score IN (82, 91]",0.00301789,0.006,0.502982,6,6,0
+327,"HospitalOwner='government - state' AND Score IN (82, 91]",0.00301789,0.006,0.502982,6,6,0
+328,Condition='pneumonia' AND Sample='NA',0.00301789,0.006,0.502982,6,6,0
+329,"State='ak' AND Score IN (91, 96]",0.00301789,0.006,0.502982,6,6,0
+330,"State='ak' AND Sample IN (210, 1421]",0.00301789,0.006,0.502982,6,6,0
+331,HospitalOwner='government - local' AND Condition='pneumonia',0.00301789,0.006,0.502982,6,6,0
+332,HospitalOwner='proprietary' AND Condition='children s asthma care',0.00301789,0.006,0.502982,6,5,1
+333,"HospitalOwner='government - federal' AND Score IN (82, 91]",0.00301789,0.006,0.502982,6,6,0
+334,"HospitalOwner='government - state' AND Score IN (99, 100]",0.00301789,0.006,0.502982,6,6,0
+335,"Condition='children s asthma care' AND Sample IN (3, 19]",0.00301789,0.006,0.502982,6,5,1
+336,State='ak' AND Condition='pneumonia',0.00301789,0.006,0.502982,6,6,0
 337,"HospitalOwner='government - state' AND Sample IN (58, 107]",0.00301789,0.006,0.502982,6,6,0
 338,HospitalOwner='voluntary non-profit - other' AND EmergencyService='Other',0.00301493,0.006,0.502488,5,5,1
 339,"HospitalOwner='Other' AND Sample IN (3, 19]",0.00301493,0.006,0.502488,5,5,1
@@ -391,11 +391,11 @@ rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
 390,HospitalOwner='government - federal' AND EmergencyService='no',0.00200399,0.004,0.500998,2,2,2
 391,"Condition='Other' AND Score IN [0, 82]",0.00150598,0.003,0.501992,4,3,0
 392,"Score='NA' AND Sample IN (3, 19]",0.00150598,0.003,0.501992,4,3,0
-393,"EmergencyService='Other' AND Score IN [0, 82]",0.00150449,0.003,0.501496,3,3,0
-394,State='Other' AND HospitalOwner='Other',0.00150449,0.003,0.501496,3,3,0
-395,"State='Other' AND Score IN [0, 82]",0.00150449,0.003,0.501496,3,3,0
-396,"State='Other' AND Sample IN (3, 19]",0.00150449,0.003,0.501496,3,3,0
-397,HospitalOwner='voluntary non-profit - other' AND Condition='Other',0.00150449,0.003,0.501496,3,3,0
+393,State='Other' AND HospitalOwner='Other',0.00150449,0.003,0.501496,3,3,0
+394,"State='Other' AND Score IN [0, 82]",0.00150449,0.003,0.501496,3,3,0
+395,"State='Other' AND Sample IN (3, 19]",0.00150449,0.003,0.501496,3,3,0
+396,HospitalOwner='voluntary non-profit - other' AND Condition='Other',0.00150449,0.003,0.501496,3,3,0
+397,"EmergencyService='Other' AND Score IN [0, 82]",0.00150449,0.003,0.501496,3,3,0
 398,EmergencyService='Other' AND Score='NA',0.00150449,0.003,0.501496,3,3,0
 399,"EmergencyService='Other' AND Sample IN (3, 19]",0.00150449,0.003,0.501496,3,3,0
 400,"Condition='Other' AND Score IN (91, 96]",0.00150449,0.003,0.501496,3,3,0
@@ -407,22 +407,22 @@ rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
 406,"Condition='children s asthma care' AND Score IN [0, 82]",0.00150299,0.003,0.500998,2,2,1
 407,State='Other' AND EmergencyService='no',0.00100299,0.002,0.501496,3,2,0
 408,EmergencyService='no' AND Condition='Other',0.00100299,0.002,0.501496,3,2,0
-409,State='Other' AND HospitalOwner='voluntary non-profit - church',0.001002,0.002,0.500998,2,2,0
-410,HospitalOwner='government - state' AND EmergencyService='Other',0.001002,0.002,0.500998,2,2,0
-411,HospitalOwner='Other' AND EmergencyService='Other',0.001002,0.002,0.500998,2,2,0
-412,HospitalOwner='government - state' AND Condition='Other',0.001002,0.002,0.500998,2,2,0
-413,"HospitalOwner='government - local' AND Score IN (99, 100]",0.001002,0.002,0.500998,2,2,0
-414,"HospitalOwner='Other' AND Score IN (96, 99]",0.001002,0.002,0.500998,2,2,0
-415,"HospitalOwner='government - federal' AND Sample IN (58, 107]",0.001002,0.002,0.500998,2,2,0
-416,"HospitalOwner='Other' AND Sample IN (19, 58]",0.001002,0.002,0.500998,2,2,0
-417,"EmergencyService='Other' AND Sample IN (58, 107]",0.001002,0.002,0.500998,2,2,0
-418,"Condition='Other' AND Score IN (82, 91]",0.001002,0.002,0.500998,2,2,0
-419,State='Other' AND HospitalOwner='government - federal',0.001002,0.002,0.500998,2,2,0
-420,"State='ak' AND Sample IN (58, 107]",0.001002,0.002,0.500998,2,2,0
-421,"State='Other' AND Sample IN (19, 58]",0.001002,0.002,0.500998,2,2,0
-422,HospitalOwner='voluntary non-profit - church' AND EmergencyService='Other',0.001002,0.002,0.500998,2,2,0
-423,HospitalOwner='Other' AND EmergencyService='no',0.001002,0.002,0.500998,2,2,0
-424,HospitalOwner='government - federal' AND Condition='Other',0.001002,0.002,0.500998,2,2,0
+409,State='Other' AND HospitalOwner='government - federal',0.001002,0.002,0.500998,2,2,0
+410,State='Other' AND HospitalOwner='voluntary non-profit - church',0.001002,0.002,0.500998,2,2,0
+411,"State='ak' AND Sample IN (58, 107]",0.001002,0.002,0.500998,2,2,0
+412,"State='Other' AND Sample IN (19, 58]",0.001002,0.002,0.500998,2,2,0
+413,HospitalOwner='government - state' AND EmergencyService='Other',0.001002,0.002,0.500998,2,2,0
+414,HospitalOwner='voluntary non-profit - church' AND EmergencyService='Other',0.001002,0.002,0.500998,2,2,0
+415,HospitalOwner='Other' AND EmergencyService='no',0.001002,0.002,0.500998,2,2,0
+416,HospitalOwner='Other' AND EmergencyService='Other',0.001002,0.002,0.500998,2,2,0
+417,HospitalOwner='government - federal' AND Condition='Other',0.001002,0.002,0.500998,2,2,0
+418,HospitalOwner='government - state' AND Condition='Other',0.001002,0.002,0.500998,2,2,0
+419,"HospitalOwner='government - local' AND Score IN (99, 100]",0.001002,0.002,0.500998,2,2,0
+420,"HospitalOwner='Other' AND Score IN (96, 99]",0.001002,0.002,0.500998,2,2,0
+421,"HospitalOwner='government - federal' AND Sample IN (58, 107]",0.001002,0.002,0.500998,2,2,0
+422,"HospitalOwner='Other' AND Sample IN (19, 58]",0.001002,0.002,0.500998,2,2,0
+423,"EmergencyService='Other' AND Sample IN (58, 107]",0.001002,0.002,0.500998,2,2,0
+424,"Condition='Other' AND Score IN (82, 91]",0.001002,0.002,0.500998,2,2,0
 425,"Condition='children s asthma care' AND Score IN (96, 99]",0.001001,0.002,0.5005,1,1,1
 426,State='ak' AND HospitalOwner='Other',0.0005005,0.001,0.5005,1,1,0
 427,State='Other' AND HospitalOwner='government - state',0.0005005,0.001,0.5005,1,1,0
