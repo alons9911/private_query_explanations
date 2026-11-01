@@ -65,7 +65,7 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
     seed = int(d["seed"])
     timeout_s = float(d["timeout_s"])
     repeats = 1 if quick else int(e["repeats"])
-    by_ds = pairs_by_dataset(pairs or cfg.get("runtime_pairs", cfg["pairs"]), cfg.get("datasets"))
+    by_ds = pairs_by_dataset(pairs or e.get("pairs") or cfg.get("runtime_pairs", cfg["pairs"]), cfg.get("datasets"))
     rows = []
     for ds_name, pids in by_ds.items():
         sweeps = {k: list(v) for k, v in e["sweeps"].items()}
@@ -88,6 +88,7 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
                     params = make_params(d, n_views, len(ds.explain_attrs), **over)
                     key = (sweep, val)
                     reps = int(e.get("repeats_large", repeats)) if pair.dataset.N >= 500_000 and not quick else repeats
+                    reps = int(e.get("repeats_by_dataset", {}).get(ds_name, reps)) if not quick else reps
                     for r in range(reps):
                         methods = METHODS if r == 0 else tuple(m for m in METHODS if m != "B2")
                         outs = time_methods(ds, q1, q2, params, methods=methods, views=views, seed=seed, repeat=r,

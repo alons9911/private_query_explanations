@@ -62,6 +62,9 @@ e3:
 e4:
   repeats: 2               # B2 is timed once per point (it is deterministic and slow)
   repeats_large: 1         # datasets with N >= 500k (builds of 15-25 s: repeat noise is negligible)
+  # reduced to finish the run in time: 2 pairs on the two largest datasets, one repeat on Tax
+  pairs: [A1, A2, R1, R3, T1, T2, R5, C1, C2, C3, H1, H2, H3, ACS_Q1C1, ACS_Q4C7, I1, I6]
+  repeats_by_dataset: {tax: 1, tax_dirty: 1}
   sweeps:
     k: [1, 2, 3, 5, 7, 10]
     data_fraction: [0.1, 0.25, 0.5, 0.75, 1.0]
