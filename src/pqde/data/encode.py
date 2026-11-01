@@ -143,6 +143,7 @@ def encode(
     n_bins: int = 6,
     top_values: dict[str, int] | None = None,
     declared_domains: dict[str, list[str]] | None = None,
+    value_labels: dict[str, dict] | None = None,
     meta: dict | None = None,
 ) -> EncodedDataset:
     """Build an :class:`EncodedDataset`.
@@ -171,6 +172,10 @@ def encode(
             keep = list(col.value_counts().index[: top_values[a]])
             col = col.where(col.isin(keep) | col.isna(), OTHER)
         codes[a], domains[a] = categorical_codes(col)
+    for a, mapping in (value_labels or {}).items():  # display names only; data keep their codes
+        if a in domains:
+            m = {str(k): str(v) for k, v in mapping.items()}
+            domains[a] = [m.get(lab, lab) for lab in domains[a]]
     used = set(explain_attrs) | set(ref_attrs) | set(view_attrs)
     missing = used - set(codes)
     if missing:

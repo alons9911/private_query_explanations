@@ -63,6 +63,28 @@ stackoverflow:
   ref_attrs: [YearsCodePro, WorkRemote, OrgSize, Country, Age, EdLevel, DevType, UsesPython, UsingAI, JobSat]
   view_attrs: [WorkRemote, OrgSize, Age, EdLevel, UsingAI, UsesPython, JobSat, YearsCodePro, Country]
 
+acsincome:
+  # ACSIncome (folktables) as distributed with Erica (Li et al., PVLDB 17(2), 2023): 1,664,500 rows,
+  # with Erica's preprocessing (SEX M/F, age/income buckets, occupation groups).
+  loader: acsincome
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [AGEP, WKHP, SCHL]
+  categorical: [COW, MAR, SEX, RAC1P, RELP, OCCP_bucket, PINCP_bucket]
+  top_values: {RAC1P: 5, RELP: 8}
+  explain_attrs: [AGEP, COW, SCHL, MAR, OCCP_bucket, RELP, WKHP, SEX, RAC1P, PINCP_bucket]
+  ref_attrs: [AGEP, COW, SCHL, MAR, OCCP_bucket, RELP, WKHP, SEX, RAC1P, PINCP_bucket]
+  view_attrs: [COW, MAR, SEX, RAC1P, RELP, AGEP, WKHP, SCHL]
+  value_labels:          # ACS codes -> short display names (queries keep the codes)
+    COW: {"1": private, "2": non-profit, "3": local-gov, "4": state-gov, "5": federal-gov,
+          "6": self-emp-not-inc, "7": self-emp-inc, "8": unpaid-family}
+    MAR: {"1": married, "2": widowed, "3": divorced, "4": separated, "5": never-married}
+    RAC1P: {"1": White, "2": Black, "6": Asian, "8": other-race, "9": two-or-more}
+    RELP: {"0": reference-person, "1": spouse, "2": biological-child, "3": adopted-child, "4": stepchild,
+           "5": sibling, "6": parent, "7": grandchild, "8": parent-in-law, "9": child-in-law,
+           "10": other-relative, "11": roomer-boarder, "12": housemate-roommate, "13": unmarried-partner,
+           "14": foster-child, "15": other-nonrelative, "16": inst-group-quarters, "17": noninst-group-quarters}
+
 ipums:
   # IPUMS-CPS as prepared by DPXPlain (Tao et al., PVLDB 16(1), 2022): 1,146,552 rows.
   loader: ipums

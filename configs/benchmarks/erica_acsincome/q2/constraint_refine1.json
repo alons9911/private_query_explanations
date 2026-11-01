@@ -1,0 +1,25 @@
+{
+  "all_sensitive_attributes": ["SEX", "MAR", "RAC1P"],
+  "number_fairness_constraints": 1,
+  "fairness_constraints": [
+    {
+      "sensitive_attributes":
+      {
+        "SEX": "F",
+        "MAR": 1
+      },
+      "symbol": ">=",
+      "number": 125492
+    },
+    {
+      "sensitive_attributes":
+      {
+        "SEX": "M",
+        "RAC1P": 6
+      },
+      "symbol": "<=",
+      "number": 9628
+    }
+  ]
+}
+

@@ -51,6 +51,8 @@ URLS = {
     # ground truth in (tid, attribute, correct_val) form; used only to read the declared value domains
     "hospital_clean": ["https://raw.githubusercontent.com/HoloClean/holoclean/master/testdata/hospital_clean.csv"],
     "stackoverflow": ["https://survey.stackoverflow.co/datasets/stack-overflow-developer-survey-2024.zip"],
+    # ACSIncome as distributed with Erica (Li et al., PVLDB 17(2), 2023)
+    "acsincome": ["https://raw.githubusercontent.com/JinyangLi01/query_refinement/master/InputData/ACSIncome/ACSIncome_state_number.arff"],
     # IPUMS-CPS extract and codebook distributed with DPXPlain (Tao et al., PVLDB 16(1), 2022)
     "ipums": ["https://raw.githubusercontent.com/yuchaotao/Private-Explanation-System/main/data/ipums/cps_00005.csv.gz",
               "https://raw.githubusercontent.com/yuchaotao/Private-Explanation-System/main/data/ipums/cps_00005.xml"],
@@ -130,6 +132,15 @@ def fetch(name: str, raw_dir: Path | None = None, force: bool = False) -> dict:
                     out["errors"].append(f"{target.name}: {e}")
             if target.exists():
                 out["files"][target.name] = sha256(target)
+    elif name == "acsincome":
+        target = raw_dir / "acsincome" / "ACSIncome_state_number.arff"
+        if not target.exists() or force:
+            try:
+                _download(URLS["acsincome"][0], target, timeout=600)
+            except Exception as e:  # noqa: BLE001
+                out["errors"].append(str(e))
+        if target.exists():
+            out["files"][target.name] = sha256(target)
     elif name == "ipums":
         d = raw_dir / "ipums"
         for url in URLS["ipums"]:
@@ -259,6 +270,58 @@ def load_hospital(raw_dir: Path | None = None) -> tuple[pd.DataFrame, dict]:
         meta["declared_domains"] = {a: sorted(g["correct_val"].dropna().unique().tolist())
                                     for a, g in gt.groupby("attribute")}
     return df, meta
+
+
+# --------------------------------------------------------------------------- ACSIncome (Erica)
+
+ACS_COLUMNS = ["AGEP", "COW", "SCHL", "MAR", "OCCP", "POBP", "RELP", "WKHP", "SEX", "RAC1P", "ST", "PINCP"]
+_OCC_RANGES = [(0, 0, "N/A"), (10, 450, "MBSA"), (500, 750, "BOS"), (800, 999, "FS"), (1000, 1299, "CMO"),
+               (1300, 1599, "AEO"), (1600, 1999, "LPSSO"), (2000, 2099, "CSSO"), (2100, 2199, "LO"),
+               (2200, 2599, "ETLO"), (2600, 2920, "ASESMO"), (3000, 3590, "HPTO"), (3600, 3699, "HSO"),
+               (3700, 3999, "PSO"), (4000, 4199, "FPASO"), (4200, 4299, "BGCMO"), (4300, 4699, "PCSO"),
+               (4700, 4965, "SRO"), (5000, 5940, "OASO"), (6000, 6130, "FFFO"), (6200, 6799, "CEO"),
+               (6800, 6999, "EW"), (7000, 7699, "IMRW"), (7700, 8990, "PO"), (9000, 9760, "TMMO"),
+               (9800, 9920, "MSO")]
+
+
+def _occ_group(code: float) -> str:
+    """Erica's ``categorize_occupation`` (Experiment/ACSIncome/fairlearn.ipynb)."""
+    for lo, hi, lab in _OCC_RANGES:
+        if lo <= code <= hi:
+            return lab
+    return "Other"
+
+
+def load_acsincome(raw_dir: Path | None = None) -> tuple[pd.DataFrame, dict]:
+    """ACSIncome (folktables; 1,664,500 rows) with Erica's preprocessing.
+
+    SEX as M/F; age_bucket = cut(AGEP, [0, 30, 60, inf]); PINCP_bucket =
+    cut(PINCP, [0, 20k, 40k, 60k, inf]) with labels <20K, 20K-40K, 40K-60K, >60K;
+    OCCP_bucket = Erica's occupation groups.  Coded attributes (COW, MAR, RELP,
+    RAC1P) keep their ACS codes, which Erica's queries and constraints use.
+    """
+    raw_dir = Path(raw_dir or DEFAULT_RAW_DIR)
+    path = raw_dir / "acsincome" / "ACSIncome_state_number.arff"
+    cached = raw_dir / "acsincome" / "acs_income.csv"
+    meta = {"source": "ACSIncome as distributed with Erica (github.com/JinyangLi01/query_refinement)",
+            "synthetic": False}
+    if cached.exists():
+        return pd.read_csv(cached, dtype={"COW": str, "PINCP_bucket": str, "age_bucket": str}), meta
+    if not path.exists():
+        fetch("acsincome", raw_dir)
+    with open(path) as f:
+        skip = next(i for i, line in enumerate(f) if line.strip().lower() == "@data") + 1
+    df = pd.read_csv(path, skiprows=skip, header=None, names=ACS_COLUMNS)
+    df["SEX"] = df["SEX"].map({1.0: "M", 2.0: "F"})
+    df["age_bucket"] = pd.cut(df["AGEP"], bins=[0, 30, 60, float("inf")], labels=["0-30", "30-60", "60+"]).astype(str)
+    df["PINCP_bucket"] = pd.cut(df["PINCP"], bins=[0, 20000, 40000, 60000, float("inf")],
+                                labels=["<20K", "20K-40K", "40K-60K", ">60K"]).astype(str)
+    df["OCCP_bucket"] = df["OCCP"].map(_occ_group)
+    for c in ("COW", "MAR", "RELP", "RAC1P"):
+        df[c] = df[c].astype(int)
+    df["COW"] = df["COW"].astype(str)
+    df.to_csv(cached, index=False)
+    return pd.read_csv(cached, dtype={"COW": str, "PINCP_bucket": str, "age_bucket": str}), meta
 
 
 # --------------------------------------------------------------------------- IPUMS-CPS (DPXPlain)
@@ -451,4 +514,5 @@ LOADERS = {
     "hospital": load_hospital,
     "stackoverflow": load_stackoverflow,
     "ipums": load_ipums,
+    "acsincome": load_acsincome,
 }

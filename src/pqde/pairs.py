@@ -154,3 +154,18 @@ TABLE2_PAIRS = ["A1", "A2", "A3", "T1", "T2", "T3", "S1", "S2", "S3", "H1", "H2"
 IPUMS_PAIRS = [f"I{i}" for i in range(1, 18)]
 CASE_STUDY_PAIRS = ["R1", "R2", "R3", "R4", "R5", "R6", "C1", "C2", "C3", "C4"]
 ALL_PAIRS = TABLE2_PAIRS + CASE_STUDY_PAIRS + IPUMS_PAIRS
+
+
+def provenance_markdown(pair_ids: list[str] | None = None) -> str:
+    """Markdown table: every pair with its data, kind, queries, constraints and source."""
+    spec = pairs_config()
+    ids = pair_ids or list(spec)
+    lines = ["| pair | dataset | kind | Q1 | Q2 | constraints | source |", "|---|---|---|---|---|---|---|"]
+    for pid in ids:
+        sp = spec[pid]
+        q1 = sp.get("q1"); q1 = f"auto rule on {q1['auto']}" if isinstance(q1, dict) else q1
+        q2 = sp.get("q2", "Q_Sigma(Q1)" if sp["kind"] == "cqa" else "")
+        cons = "; ".join(", ".join(f"{k}={v}" for k, v in c.items()) for c in sp.get("constraints", []))
+        cell = lambda x: str(x).replace("|", "\\|")  # noqa: E731
+        lines.append(f"| {pid} | {sp['dataset']} | {sp['kind']} | `{cell(q1)}` | `{cell(q2)}` | {cell(cons)} | {cell(sp.get('source', ''))} |")
+    return "\n".join(lines) + "\n"

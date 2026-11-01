@@ -44,6 +44,7 @@ def _load_cached(name: str, raw_dir: str | None, config_path: str | None) -> Enc
         view_attrs=cfg["view_attrs"],
         n_bins=cfg.get("n_bins", 6),
         top_values=cfg.get("top_values"),
+        value_labels=cfg.get("value_labels"),
         declared_domains=meta.pop("declared_domains", None) if cfg.get("declared_domains", True) else None,
         meta={**meta, "max_view_atoms": cfg.get("max_view_atoms", 2), "fds": cfg.get("fds", [])},
     )

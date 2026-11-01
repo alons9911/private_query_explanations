@@ -12,6 +12,7 @@
 #              {where: <predicate>, ...}.
 
 A1:
+  source: "paper (Table 2): query and refined query as reported in the draft"
   dataset: adult
   kind: refinement
   q1: "occupation = 'Craft-repair' AND hoursPerWeek >= 40"
@@ -20,6 +21,7 @@ A1:
   paper: {share_q1: 0.047, share_q2: 0.269}
 
 A2:
+  source: "paper (Table 2): the running example of the draft"
   dataset: adult
   kind: refinement
   q1: "education IN ('Bachelors', 'Masters') AND hoursPerWeek >= 50"
@@ -28,6 +30,7 @@ A2:
   paper: {share_q1: 0.195, share_q2: 0.306, size_q1: 3055, size_q2: 2453}
 
 A3:  # TBD in the paper: chosen here, Q' produced by the refinement search
+  source: "ours: query chosen for this stack, Q' from our ERICA-style search (TBD in the draft)"
   dataset: adult
   kind: refinement
   q1: "maritalStatus = 'Married-civ-spouse' AND hoursPerWeek >= 45"
@@ -35,6 +38,7 @@ A3:  # TBD in the paper: chosen here, Q' produced by the refinement search
   constraints: [{attr: gender, value: Female, min_share: 0.25}]
 
 T1:
+  source: "paper (Table 2)"
   dataset: tax
   kind: refinement
   q1: "MaritalStatus = 'M' AND Rate <= 5"
@@ -43,6 +47,7 @@ T1:
   paper: {share_q1: 0.035, share_q2: 0.501}
 
 T2:  # TBD in the paper (sanity check: the refinement must bring in parents)
+  source: "ours: query chosen for this stack, Q' from our ERICA-style search (TBD in the draft)"
   dataset: tax
   kind: refinement
   q1: "MaritalStatus = 'S' AND HasChild = 'N' AND Salary >= 50000"
@@ -50,6 +55,7 @@ T2:  # TBD in the paper (sanity check: the refinement must bring in parents)
   constraints: [{attr: HasChild, value: "Y", min_share: 0.30}]
 
 T3:  # TBD in the paper (high earners in low-tax places; constraint on taxed share)
+  source: "ours: query chosen for this stack, Q' from our ERICA-style search (TBD in the draft)"
   dataset: tax
   kind: refinement
   q1: "Salary >= 60000 AND Rate <= 2"
@@ -57,34 +63,40 @@ T3:  # TBD in the paper (high earners in low-tax places; constraint on taxed sha
   constraints: [{where: "Rate > 0", min_share: 0.40}]
 
 S1:
+  source: "paper (Table 2), on the synthetic StackOverflow stand-in (not used: replaced by IPUMS)"
   dataset: stackoverflow
   kind: contrast
   q1: "YearsCodePro >= 10"
   q2: "YearsCodePro < 4"
 
 S2:
+  source: "paper (Table 2), on the synthetic StackOverflow stand-in (not used: replaced by IPUMS)"
   dataset: stackoverflow
   kind: contrast
   q1: "WorkRemote = 'Fully remote'"
   q2: "WorkRemote = 'On-site'"
 
 S3:
+  source: "paper (Table 2), on the synthetic StackOverflow stand-in (not used: replaced by IPUMS)"
   dataset: stackoverflow
   kind: contrast
   q1: "JobSat > 5 AND UsingAI = 'Yes'"
   q2: "JobSat > 5 AND UsingAI = 'No'"
 
 H1:
+  source: "paper (Table 2); constraints: our 3 FDs"
   dataset: hospital
   kind: cqa
   q1: "HospitalType = 'acute care hospitals'"
 
 H2:
+  source: "paper's selection rule (Section 5.1) applied by this stack; constraints: our 3 FDs"
   dataset: hospital
   kind: cqa
   q1: {auto: EmergencyService}
 
 H3:
+  source: "paper's selection rule (Section 5.1) applied by this stack; constraints: our 3 FDs"
   dataset: hospital
   kind: cqa
   q1: {auto: HospitalOwner}
@@ -97,6 +109,7 @@ H3:
 # `aggregate` is the attribute whose AVG the analyst is assumed to compute.
 
 R1:  # graduate degrees + long hours; >= 30% women
+  source: "ours: pair search of this stack (docs/CASE_STUDIES.md)"
   dataset: adult
   kind: refinement
   role: surprising
@@ -106,6 +119,7 @@ R1:  # graduate degrees + long hours; >= 30% women
   constraints: [{attr: gender, value: Female, min_share: 0.30}]
 
 R2:  # married professionals; >= 15% non-White
+  source: "ours: pair search of this stack (docs/CASE_STUDIES.md)"
   dataset: adult
   kind: refinement
   role: surprising
@@ -115,6 +129,7 @@ R2:  # married professionals; >= 15% non-White
   constraints: [{attr: race, values: [Black, Asian-Pac-Islander, Amer-Indian-Eskimo, Other], min_share: 0.15}]
 
 R3:  # married, 40+; >= 30% women -> the refinement moves to widows and divorcees over 60
+  source: "ours: pair search of this stack (docs/CASE_STUDIES.md)"
   dataset: adult
   kind: refinement
   role: surprising
@@ -124,6 +139,7 @@ R3:  # married, 40+; >= 30% women -> the refinement moves to widows and divorcee
   constraints: [{attr: gender, value: Female, min_share: 0.30}]
 
 R4:  # long-hours professionals; >= 25% under 30
+  source: "ours: pair search of this stack (docs/CASE_STUDIES.md)"
   dataset: adult
   kind: refinement
   role: surprising
@@ -133,6 +149,7 @@ R4:  # long-hours professionals; >= 25% under 30
   constraints: [{where: "age < 30", min_share: 0.25}]
 
 R5:  # low-income, low-tax filers; at least half must pay some tax
+  source: "ours: pair search of this stack (docs/CASE_STUDIES.md)"
   dataset: tax
   kind: refinement
   role: surprising
@@ -142,6 +159,7 @@ R5:  # low-income, low-tax filers; at least half must pay some tax
   constraints: [{where: "Rate > 0", min_share: 0.50}]
 
 R6:  # sanity check: dropping HasChild brings in parents and nothing else
+  source: "ours: pair search of this stack (docs/CASE_STUDIES.md)"
   dataset: tax
   kind: refinement
   role: sanity
@@ -151,6 +169,7 @@ R6:  # sanity check: dropping HasChild brings in parents and nothing else
   constraints: [{attr: HasChild, value: "Y", min_share: 0.30}]
 
 C1:  # Southern states under repair semantics
+  source: "ours: pair search of this stack; data = raha dirty tax; FDs chosen by us (see docs)"
   dataset: tax_dirty
   kind: cqa
   role: surprising
@@ -158,6 +177,7 @@ C1:  # Southern states under repair semantics
   q1: "State IN ('AL', 'AR', 'GA', 'MS', 'TN')"
 
 C2:  # Northeast under repair semantics
+  source: "ours: pair search of this stack; data = raha dirty tax; FDs chosen by us (see docs)"
   dataset: tax_dirty
   kind: cqa
   role: surprising
@@ -165,6 +185,7 @@ C2:  # Northeast under repair semantics
   q1: "State IN ('NJ', 'NY', 'PA', 'CT', 'MA')"
 
 C3:  # a query that never mentions geography
+  source: "ours: pair search of this stack; data = raha dirty tax; FDs chosen by us (see docs)"
   dataset: tax_dirty
   kind: cqa
   role: surprising
@@ -172,6 +193,7 @@ C3:  # a query that never mentions geography
   q1: "Salary >= 70000"
 
 C4:  # the paper's H1 on the hospital benchmark
+  source: "paper (Table 2, = H1); duplicate of H1 kept for the case-study set"
   dataset: hospital
   kind: cqa
   role: small-data
@@ -189,7 +211,7 @@ I1:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), default question
+  source: "DPXPlain (Tao et al., PVLDB 2022), default question"
   q1: "SEX = 'Male'"
   q2: "SEX = 'Female'"
 
@@ -197,7 +219,7 @@ I2:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  source: "DPXPlain (Tao et al., PVLDB 2022), control question"
   q1: "RELATE = 'Spouse'"
   q2: "RELATE = 'Head/householder'"
 
@@ -205,7 +227,7 @@ I3:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  source: "DPXPlain (Tao et al., PVLDB 2022), control question"
   q1: "RELATE = 'Spouse'"
   q2: "RELATE = 'Unmarried partner'"
 
@@ -213,7 +235,7 @@ I4:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  source: "DPXPlain (Tao et al., PVLDB 2022), control question"
   q1: "RELATE = 'Head/householder'"
   q2: "RELATE = 'Child'"
 
@@ -221,7 +243,7 @@ I5:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  source: "DPXPlain (Tao et al., PVLDB 2022), control question"
   q1: "RELATE = 'Head/householder'"
   q2: "RELATE = 'Parent'"
 
@@ -229,7 +251,7 @@ I6:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  source: "DPXPlain (Tao et al., PVLDB 2022), control question"
   q1: "MARST = 'Married, spouse present'"
   q2: "MARST = 'Never married/single'"
 
@@ -237,7 +259,7 @@ I7:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  source: "DPXPlain (Tao et al., PVLDB 2022), control question"
   q1: "MARST = 'Divorced'"
   q2: "MARST = 'Never married/single'"
 
@@ -245,7 +267,7 @@ I8:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  source: "DPXPlain (Tao et al., PVLDB 2022), control question"
   q1: "RACE = 'White'"
   q2: "RACE = 'Black'"
 
@@ -253,7 +275,7 @@ I9:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  source: "DPXPlain (Tao et al., PVLDB 2022), control question"
   q1: "RACE = 'Asian only'"
   q2: "RACE = 'White'"
 
@@ -261,7 +283,7 @@ I10:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  source: "DPXPlain (Tao et al., PVLDB 2022), control question"
   q1: "CITIZEN = 'Born in U.S'"
   q2: "CITIZEN = 'Not a citizen'"
 
@@ -269,7 +291,7 @@ I11:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  source: "DPXPlain (Tao et al., PVLDB 2022), control question"
   q1: "CITIZEN = 'Naturalized citizen'"
   q2: "CITIZEN = 'Born in U.S'"
 
@@ -277,7 +299,7 @@ I12:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  source: "DPXPlain (Tao et al., PVLDB 2022), control question"
   q1: "CLASSWKR = 'Wage/salary, private'"
   q2: "CLASSWKR = 'Self-employed, not incorporated'"
 
@@ -285,7 +307,7 @@ I13:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  source: "DPXPlain (Tao et al., PVLDB 2022), control question"
   q1: "CLASSWKR = 'Federal government employee'"
   q2: "CLASSWKR = 'State government employee'"
 
@@ -293,7 +315,7 @@ I14:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  source: "DPXPlain (Tao et al., PVLDB 2022), control question"
   q1: "AGE = '(40, 50]'"
   q2: "AGE = '(30, 40]'"
 
@@ -301,7 +323,7 @@ I15:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  source: "DPXPlain (Tao et al., PVLDB 2022), control question"
   q1: "AGE = '(60, 70]'"
   q2: "AGE = '(20, 30]'"
 
@@ -309,7 +331,7 @@ I16:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  source: "DPXPlain (Tao et al., PVLDB 2022), control question"
   q1: "EDUC = 'Bachelor''s degree'"
   q2: "EDUC = 'High school diploma or equivalent'"
 
@@ -317,6 +339,123 @@ I17:
   dataset: ipums
   kind: contrast
   aggregate: INCTOT
-  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  source: "DPXPlain (Tao et al., PVLDB 2022), control question"
   q1: "EDUC = 'Master''s degree'"
   q2: "EDUC = 'Bachelor''s degree'"
+
+# --- Erica ACSIncome pairs: generated by `pqde run erica` ---
+# Erica's ACSIncome benchmark (Li et al., PVLDB 17(2), 2023): queries and constraints of its
+# Figures 2-3; Q' = one of the minimal refinements Erica returned (stored by the authors),
+# chosen by `pqde run erica` (results/erica_selection/candidates.csv).
+
+ACS_Q1C1:
+  dataset: acsincome
+  kind: refinement
+  aggregate: PINCP
+  source: "Erica (Li et al., PVLDB 2023), Q1^A with C1^A; Q' chosen by story score"
+  q1: "WKHP >= 40 AND SCHL >= 19 AND COW IN ('3', '4', '5')"
+  q2: "WKHP >= 40 AND SCHL >= 19 AND COW IN ('3', '4', '5', '1')"
+  constraints:
+    - {where: "SEX = 'F' AND MAR = 1", min_count: 48884}
+    - {where: "RAC1P = 2", min_count: 15719}
+
+ACS_Q1C2:
+  dataset: acsincome
+  kind: refinement
+  aggregate: PINCP
+  source: "Erica (Li et al., PVLDB 2023), Q1^A with C2^A; Q' chosen by story score"
+  q1: "WKHP >= 40 AND SCHL >= 19 AND COW IN ('3', '4', '5')"
+  q2: "WKHP >= 41 AND SCHL >= 19 AND COW IN ('3', '4', '5')"
+  constraints:
+    - {where: "SEX = 'M' AND RELP = 1", max_count: 15249}
+    - {where: "age_bucket = '30-60' AND MAR = 3", max_count: 11498}
+
+ACS_Q2C1:
+  dataset: acsincome
+  kind: refinement
+  aggregate: PINCP
+  source: "Erica (Li et al., PVLDB 2023), Q2^A with C1^A; Q' chosen by story score"
+  q1: "WKHP <= 40 AND SCHL <= 19 AND PINCP_bucket IN ('<20K', '20K-40K')"
+  q2: "WKHP <= 40 AND SCHL <= 19 AND PINCP_bucket IN ('<20K', '20K-40K', '40K-60K')"
+  constraints:
+    - {where: "SEX = 'F' AND MAR = 1", min_count: 125492}
+    - {where: "RAC1P = 2", min_count: 69207}
+
+ACS_Q2C2:
+  dataset: acsincome
+  kind: refinement
+  aggregate: PINCP
+  source: "Erica (Li et al., PVLDB 2023), Q2^A with C2^A; Q' chosen by story score"
+  q1: "WKHP <= 40 AND SCHL <= 19 AND PINCP_bucket IN ('<20K', '20K-40K')"
+  q2: "WKHP <= 39 AND SCHL <= 19 AND PINCP_bucket IN ('<20K', '20K-40K')"
+  constraints:
+    - {where: "SEX = 'M' AND RELP = 1", max_count: 33674}
+    - {where: "age_bucket = '30-60' AND MAR = 3", max_count: 36921}
+
+ACS_Q2C3:
+  dataset: acsincome
+  kind: refinement
+  aggregate: PINCP
+  source: "Erica (Li et al., PVLDB 2023), Q2^A with C3^A; Q' chosen by story score"
+  q1: "WKHP <= 40 AND SCHL <= 19 AND PINCP_bucket IN ('<20K', '20K-40K')"
+  q2: "WKHP <= 38 AND SCHL <= 22 AND PINCP_bucket IN ('<20K', '20K-40K', '>60K')"
+  constraints:
+    - {where: "SEX = 'F' AND MAR = 1", min_count: 125492}
+    - {where: "SEX = 'M' AND RAC1P = 6", max_count: 9628}
+
+ACS_Q3C4:
+  dataset: acsincome
+  kind: refinement
+  aggregate: PINCP
+  source: "Erica (Li et al., PVLDB 2023), Q3^A with C4^A; Q' chosen by story score"
+  q1: "WKHP >= 60 AND SCHL <= 16 AND PINCP_bucket = '<20K'"
+  q2: "WKHP >= 60 AND SCHL <= 16 AND PINCP_bucket IN ('<20K', '>60K')"
+  constraints:
+    - {where: "SEX = 'F'", min_count: 1307}
+    - {where: "RAC1P = 2", min_count: 521}
+
+ACS_Q3C5:
+  dataset: acsincome
+  kind: refinement
+  aggregate: PINCP
+  source: "Erica (Li et al., PVLDB 2023), Q3^A with C5^A; Q' chosen by story score"
+  q1: "WKHP >= 60 AND SCHL <= 16 AND PINCP_bucket = '<20K'"
+  q2: "WKHP >= 60 AND SCHL <= 15 AND PINCP_bucket = '<20K'"
+  constraints:
+    - {where: "RAC1P = 1", max_count: 2829}
+    - {where: "age_bucket = '30-60'", max_count: 2280}
+
+ACS_Q3C6:
+  dataset: acsincome
+  kind: refinement
+  aggregate: PINCP
+  source: "Erica (Li et al., PVLDB 2023), Q3^A with C6^A; Q' chosen by story score"
+  q1: "WKHP >= 60 AND SCHL <= 16 AND PINCP_bucket = '<20K'"
+  q2: "WKHP >= 66 AND SCHL <= 21 AND PINCP_bucket = '<20K'"
+  constraints:
+    - {where: "RAC1P = 2", min_count: 521}
+    - {where: "age_bucket = '30-60'", max_count: 2280}
+
+ACS_Q4C7:
+  dataset: acsincome
+  kind: refinement
+  aggregate: PINCP
+  source: "Erica (Li et al., PVLDB 2023), Q4^A with C7^A; Q' chosen by story score"
+  q1: "WKHP >= 60 AND SCHL >= 22 AND PINCP_bucket = '>60K' AND COW IN ('6', '7')"
+  q2: "WKHP >= 60 AND SCHL >= 21 AND PINCP_bucket = '>60K' AND COW IN ('6', '7')"
+  constraints:
+    - {where: "SEX = 'F'", min_count: 552}
+    - {where: "RAC1P = 2", min_count: 97}
+    - {where: "MAR = 3", min_count: 239}
+
+ACS_Q4C8:
+  dataset: acsincome
+  kind: refinement
+  aggregate: PINCP
+  source: "Erica (Li et al., PVLDB 2023), Q4^A with C8^A; Q' chosen by story score"
+  q1: "WKHP >= 60 AND SCHL >= 22 AND PINCP_bucket = '>60K' AND COW IN ('6', '7')"
+  q2: "WKHP >= 60 AND SCHL >= 23 AND PINCP_bucket = '>60K' AND COW IN ('6', '7')"
+  constraints:
+    - {where: "RAC1P = 1", max_count: 1862}
+    - {where: "SEX = 'M'", max_count: 1727}
+

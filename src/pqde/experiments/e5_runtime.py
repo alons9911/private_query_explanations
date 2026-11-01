@@ -86,7 +86,7 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
     seed = int(d["seed"])
     timeout_s = float(d["timeout_s"])
     repeats = 1 if quick else int(e["repeats"])
-    pairs = pairs or cfg["pairs"]
+    pairs = pairs or cfg.get("runtime_pairs", cfg["pairs"])
     by_ds = pairs_by_dataset(pairs, cfg.get("datasets"))
     dp_rows, g_rows, r_rows, id_rows = [], [], [], []
     for ds_name, pids in by_ds.items():
