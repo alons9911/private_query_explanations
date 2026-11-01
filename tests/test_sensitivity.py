@@ -50,8 +50,8 @@ def neighbour(rng, codes, q1, q2):
 
 
 @pytest.mark.parametrize("seed", range(6))
-def test_use_sensitivity_at_gamma_R_N(seed):
-    """GS_N(Use) <= 7 / (4N) with gamma_R = N on both sides (the setting of earlier drafts)."""
+def test_use_sensitivity_prop_3_10(seed):
+    """GS_N(Use) <= 7 / (4N) with gamma_R = N on both sides (Proposition 3.10)."""
     rng = np.random.default_rng(seed)
     worst = 0.0
     for _ in range(150):
@@ -59,32 +59,12 @@ def test_use_sensitivity_at_gamma_R_N(seed):
         codes, q1, q2 = random_instance(rng, n)
         ds = make_ds(codes)
         views = enumerate_views(ds, 2)
-        c = build_cache(ds, q1, q2, views, gamma_R=float(n))
+        c = build_cache(ds, q1, q2, views)
         codes2, q1b, q2b = neighbour(rng, codes, q1, q2)
-        c2 = build_cache(make_ds(codes2), q1b, q2b, views, gamma_R=float(len(q1b)))
+        c2 = build_cache(make_ds(codes2), q1b, q2b, views)
         ratio = np.max(np.abs(c2.use - c.use)) * n
         worst = max(worst, ratio)
         assert ratio <= 7 / 4 + 1e-12
-    assert worst > 0.5  # the check is not vacuous
-
-
-@pytest.mark.parametrize("alpha", [0.01, 0.05, 0.2, 1.0])
-@pytest.mark.parametrize("seed", range(3))
-def test_use_sensitivity_prop_3_11(alpha, seed):
-    """GS(Use) <= 4 / N with gamma_R = alpha N on each side (Proposition 3.11, Eq. (4))."""
-    rng = np.random.default_rng(100 + seed)
-    worst = 0.0
-    for _ in range(150):
-        n = int(rng.integers(3, 40))
-        codes, q1, q2 = random_instance(rng, n)
-        ds = make_ds(codes)
-        views = enumerate_views(ds, 2)
-        c = build_cache(ds, q1, q2, views, gamma_R=alpha * n)
-        codes2, q1b, q2b = neighbour(rng, codes, q1, q2)
-        c2 = build_cache(make_ds(codes2), q1b, q2b, views, gamma_R=alpha * len(q1b))
-        ratio = np.max(np.abs(c2.use - c.use)) * n
-        worst = max(worst, ratio)
-        assert ratio <= 4 + 1e-12
     assert worst > 0.5  # the check is not vacuous
 
 

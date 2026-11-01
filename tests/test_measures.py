@@ -23,20 +23,10 @@ def test_hd_one_sided_view():
 def test_rep_collapses_at_gamma_R_equals_N(toy):
     """Eq. (10): at gamma_R = N every summand is non-negative and Rep_N = (2m+N) / (2(m+N))."""
     q = np.ones(toy.N, dtype=bool)
-    c = build_cache(toy, q, q, gamma_R=float(toy.N))
+    c = build_cache(toy, q, q)
     m, N = c.m, toy.N
     assert np.allclose(c.rep, (2 * m + N) / (2 * (m + N)))
-    assert (c.rep <= 0.75 + 1e-12).all()
-
-
-def test_rep_ceiling_eq_5(toy):
-    """Eq. (5): Rep_{gamma_R} <= 1 - gamma_R / (2(m + gamma_R)) <= (2 + alpha) / (2(1 + alpha)) at gamma_R = alpha N."""
-    q = np.ones(toy.N, dtype=bool)
-    for alpha in (0.01, 0.1, 0.5):
-        c = build_cache(toy, q, q, gamma_R=alpha * toy.N)
-        g = c.gamma_R
-        assert (c.rep <= 1 - g / (2 * (c.m + g)) + 1e-12).all()
-        assert (c.rep <= (2 + alpha) / (2 * (1 + alpha)) + 1e-12).all()
+    assert (c.rep <= 0.75 + 1e-12).all()  # Eq. (4)
 
 
 def test_rep_formula_direct():

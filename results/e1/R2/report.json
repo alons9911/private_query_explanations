@@ -28,10 +28,10 @@
     "eps_H": 0.333333334,
     "tau": 15,
     "gamma": 150.31905897320672,
-    "gamma_R": 488.42,
+    "gamma_R": 48842.0,
     "|P|": 1048,
     "|Attrs|": 10,
-    "Delta_Use": 8.189672822570739e-05,
+    "Delta_Use": 3.582981859874698e-05,
     "laplace_scale_per_bin": 29.999999940000002,
     "sigma_of_released_difference": 59.999999880000004
   },
@@ -40,107 +40,107 @@
       {
         "rank": 1,
         "view": "race='White'",
-        "use": 0.2025345166836772,
+        "use": 0.15064838234681618,
         "coverage": 0.2062364358543876,
-        "representativeness": 0.9820501205067171
+        "representativeness": 0.7304644386561299
       },
       {
         "rank": 2,
         "view": "gender='Male'",
-        "use": 0.15544634561844875,
+        "use": 0.11819316607599863,
         "coverage": 0.1687686826911265,
-        "representativeness": 0.9210615567992568
+        "representativeness": 0.70032641240858
       },
       {
         "rank": 3,
         "view": "workclass='Private'",
-        "use": 0.14810140255714646,
+        "use": 0.1082957765324393,
         "coverage": 0.15363826215142706,
-        "representativeness": 0.9639617142452221
+        "representativeness": 0.7048750422970949
       },
       {
         "rank": 4,
-        "view": "occupation='Prof-specialty'",
-        "use": 0.14320030663500682,
-        "coverage": 0.16815445722943367,
-        "representativeness": 0.8515998266975531
+        "view": "race='White' AND gender='Male'",
+        "use": 0.10078414045498021,
+        "coverage": 0.14708652389337046,
+        "representativeness": 0.685203088544285
       },
       {
         "rank": 5,
-        "view": "race='White' AND gender='Male'",
-        "use": 0.1327792234244422,
-        "coverage": 0.14708652389337046,
-        "representativeness": 0.9027286790780353
+        "view": "occupation='Prof-specialty'",
+        "use": 0.09350982131857463,
+        "coverage": 0.16815445722943367,
+        "representativeness": 0.5560948122296143
       },
       {
         "rank": 6,
         "view": "workclass='Private' AND race='White'",
-        "use": 0.12711808070798378,
+        "use": 0.0902336336770453,
         "coverage": 0.13146472298431677,
-        "representativeness": 0.9669368163742944
+        "representativeness": 0.6863714586597488
       },
       {
         "rank": 7,
         "view": "occupation='Prof-specialty' AND race='White'",
-        "use": 0.1245861759206086,
+        "use": 0.0822728787317506,
         "coverage": 0.14960484828631096,
-        "representativeness": 0.8327683049561195
+        "representativeness": 0.5499345754777833
       },
       {
         "rank": 8,
         "view": "hoursPerWeek IN (32, 40]",
-        "use": 0.10823926593027049,
+        "use": 0.07617098377442434,
         "coverage": 0.11291511404119406,
-        "representativeness": 0.95858970563305
+        "representativeness": 0.6745862537643579
       },
       {
         "rank": 9,
         "view": "occupation='Prof-specialty' AND gender='Male'",
-        "use": 0.09905440665083663,
+        "use": 0.06905461372990362,
         "coverage": 0.12853691495024774,
-        "representativeness": 0.7706300302070982
+        "representativeness": 0.537235655271735
       },
       {
         "rank": 10,
         "view": "workclass='Private' AND gender='Male'",
-        "use": 0.0960015444580246,
+        "use": 0.06883353648793886,
         "coverage": 0.10480733794684903,
-        "representativeness": 0.9159811358505249
+        "representativeness": 0.6567625686938678
       },
       {
         "rank": 11,
         "view": "race='White' AND hoursPerWeek IN (32, 40]",
-        "use": 0.08946512439034769,
+        "use": 0.0605142794803393,
         "coverage": 0.09264567380533148,
-        "representativeness": 0.9656697470659363
+        "representativeness": 0.6531797653875651
       },
       {
         "rank": 12,
         "view": "workclass='Private' AND occupation='Prof-specialty'",
-        "use": 0.08009029855970728,
+        "use": 0.04971583668346648,
         "coverage": 0.09334179599524998,
-        "representativeness": 0.8580325427184083
+        "representativeness": 0.5326213852366461
       },
       {
         "rank": 13,
         "view": "gender='Male' AND hoursPerWeek IN (32, 40]",
-        "use": 0.0717905365019233,
+        "use": 0.04934466065307427,
         "coverage": 0.07843659145817125,
-        "representativeness": 0.9152684374385115
+        "representativeness": 0.6291025621554303
       },
       {
         "rank": 14,
         "view": "workclass='Private' AND hoursPerWeek IN (32, 40]",
-        "use": 0.0680592008536398,
+        "use": 0.04645717683409265,
         "coverage": 0.0726014495720896,
-        "representativeness": 0.9374358398458755
+        "representativeness": 0.6398932405332074
       },
       {
         "rank": 15,
-        "view": "occupation='Prof-specialty' AND hoursPerWeek IN (32, 40]",
-        "use": 0.06495649771217392,
-        "coverage": 0.07788378854264773,
-        "representativeness": 0.834018207481072
+        "view": "gender='Female'",
+        "use": 0.04475063575209617,
+        "coverage": 0.07165963719749396,
+        "representativeness": 0.6244887289725374
       }
     ],
     "retained": [
@@ -148,238 +148,238 @@
         "noisy_rank": 1,
         "view": "race='White'",
         "exact_rank": 1,
-        "use": 0.2025345166836772,
+        "use": 0.15064838234681618,
         "coverage": 0.2062364358543876,
-        "representativeness": 0.9820501205067171
+        "representativeness": 0.7304644386561299
       },
       {
         "noisy_rank": 2,
-        "view": "workclass='Private'",
-        "exact_rank": 3,
-        "use": 0.14810140255714646,
-        "coverage": 0.15363826215142706,
-        "representativeness": 0.9639617142452221
+        "view": "gender='Male'",
+        "exact_rank": 2,
+        "use": 0.11819316607599863,
+        "coverage": 0.1687686826911265,
+        "representativeness": 0.70032641240858
       },
       {
         "noisy_rank": 3,
-        "view": "gender='Male'",
-        "exact_rank": 2,
-        "use": 0.15544634561844875,
-        "coverage": 0.1687686826911265,
-        "representativeness": 0.9210615567992568
+        "view": "workclass='Private'",
+        "exact_rank": 3,
+        "use": 0.1082957765324393,
+        "coverage": 0.15363826215142706,
+        "representativeness": 0.7048750422970949
       },
       {
         "noisy_rank": 4,
         "view": "race='White' AND gender='Male'",
-        "exact_rank": 5,
-        "use": 0.1327792234244422,
+        "exact_rank": 4,
+        "use": 0.10078414045498021,
         "coverage": 0.14708652389337046,
-        "representativeness": 0.9027286790780353
+        "representativeness": 0.685203088544285
       },
       {
         "noisy_rank": 5,
         "view": "occupation='Prof-specialty'",
-        "exact_rank": 4,
-        "use": 0.14320030663500682,
+        "exact_rank": 5,
+        "use": 0.09350982131857463,
         "coverage": 0.16815445722943367,
-        "representativeness": 0.8515998266975531
+        "representativeness": 0.5560948122296143
       },
       {
         "noisy_rank": 6,
         "view": "workclass='Private' AND race='White'",
         "exact_rank": 6,
-        "use": 0.12711808070798378,
+        "use": 0.0902336336770453,
         "coverage": 0.13146472298431677,
-        "representativeness": 0.9669368163742944
+        "representativeness": 0.6863714586597488
       },
       {
         "noisy_rank": 7,
         "view": "occupation='Prof-specialty' AND race='White'",
         "exact_rank": 7,
-        "use": 0.1245861759206086,
+        "use": 0.0822728787317506,
         "coverage": 0.14960484828631096,
-        "representativeness": 0.8327683049561195
+        "representativeness": 0.5499345754777833
       },
       {
         "noisy_rank": 8,
         "view": "occupation='Prof-specialty' AND gender='Male'",
         "exact_rank": 9,
-        "use": 0.09905440665083663,
+        "use": 0.06905461372990362,
         "coverage": 0.12853691495024774,
-        "representativeness": 0.7706300302070982
+        "representativeness": 0.537235655271735
       },
       {
         "noisy_rank": 9,
-        "view": "workclass='Private' AND gender='Male'",
-        "exact_rank": 10,
-        "use": 0.0960015444580246,
-        "coverage": 0.10480733794684903,
-        "representativeness": 0.9159811358505249
+        "view": "hoursPerWeek IN (32, 40]",
+        "exact_rank": 8,
+        "use": 0.07617098377442434,
+        "coverage": 0.11291511404119406,
+        "representativeness": 0.6745862537643579
       },
       {
         "noisy_rank": 10,
-        "view": "hoursPerWeek IN (32, 40]",
-        "exact_rank": 8,
-        "use": 0.10823926593027049,
-        "coverage": 0.11291511404119406,
-        "representativeness": 0.95858970563305
+        "view": "workclass='Private' AND gender='Male'",
+        "exact_rank": 10,
+        "use": 0.06883353648793886,
+        "coverage": 0.10480733794684903,
+        "representativeness": 0.6567625686938678
       },
       {
         "noisy_rank": 11,
         "view": "race='White' AND hoursPerWeek IN (32, 40]",
         "exact_rank": 11,
-        "use": 0.08946512439034769,
+        "use": 0.0605142794803393,
         "coverage": 0.09264567380533148,
-        "representativeness": 0.9656697470659363
+        "representativeness": 0.6531797653875651
       },
       {
         "noisy_rank": 12,
         "view": "workclass='Private' AND occupation='Other-service'",
-        "exact_rank": 22,
-        "use": 0.04866881987036028,
+        "exact_rank": 20,
+        "use": 0.032460401202208174,
         "coverage": 0.06029646615617706,
-        "representativeness": 0.8071587436699955
+        "representativeness": 0.538346660617403
       },
       {
         "noisy_rank": 13,
-        "view": "occupation='Prof-specialty' AND hoursPerWeek IN (32, 40]",
-        "exact_rank": 15,
-        "use": 0.06495649771217392,
-        "coverage": 0.07788378854264773,
-        "representativeness": 0.834018207481072
+        "view": "gender='Male' AND hoursPerWeek IN (32, 40]",
+        "exact_rank": 13,
+        "use": 0.04934466065307427,
+        "coverage": 0.07843659145817125,
+        "representativeness": 0.6291025621554303
       },
       {
         "noisy_rank": 14,
-        "view": "education='Bachelors' AND occupation='Prof-specialty'",
-        "exact_rank": 19,
-        "use": 0.05195692268429407,
-        "coverage": 0.05990745669710495,
-        "representativeness": 0.8672864038777481
+        "view": "occupation='Prof-specialty' AND hoursPerWeek IN (32, 40]",
+        "exact_rank": 16,
+        "use": 0.041198927316347264,
+        "coverage": 0.07788378854264773,
+        "representativeness": 0.5289794973672537
       },
       {
         "noisy_rank": 15,
-        "view": "gender='Male' AND hoursPerWeek IN (32, 40]",
-        "exact_rank": 13,
-        "use": 0.0717905365019233,
-        "coverage": 0.07843659145817125,
-        "representativeness": 0.9152684374385115
+        "view": "gender='Female'",
+        "exact_rank": 15,
+        "use": 0.04475063575209617,
+        "coverage": 0.07165963719749396,
+        "representativeness": 0.6244887289725374
       }
     ],
     "overlap_with_exact_top_tau": 0.8666666666666667,
     "retained_atom_counts": {
       "race='White'": 5,
       "gender='Male'": 5,
-      "occupation='Prof-specialty'": 5,
       "workclass='Private'": 4,
+      "occupation='Prof-specialty'": 4,
       "hoursPerWeek IN (32, 40]": 4,
       "occupation='Other-service'": 1,
-      "education='Bachelors'": 1
+      "gender='Female'": 1
     },
     "query_attribute_views": [
       {
         "view": "occupation='Prof-specialty'",
-        "rank": 4,
-        "use": 0.14320030663500682,
+        "rank": 5,
+        "use": 0.09350982131857463,
         "coverage": 0.16815445722943367,
-        "representativeness": 0.8515998266975531
+        "representativeness": 0.5560948122296143
       },
       {
         "view": "occupation='Other-service'",
         "rank": 17,
-        "use": 0.0598049405418097,
+        "use": 0.03944581467257837,
         "coverage": 0.07227386265918677,
-        "representativeness": 0.8274767438932208
+        "representativeness": 0.5457825723054031
       },
       {
         "view": "occupation='Craft-repair'",
         "rank": 470,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.8714711534183528
+        "representativeness": 0.5556101466681225
       },
       {
         "view": "occupation='Exec-managerial'",
         "rank": 471,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.8600572827620311
+        "representativeness": 0.5553997960967085
       },
       {
         "view": "occupation='Adm-clerical'",
         "rank": 472,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.8543266123367972
+        "representativeness": 0.5515214956017116
       },
       {
         "view": "occupation='Sales'",
         "rank": 473,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.9215428437797871
+        "representativeness": 0.5506385014536488
       },
       {
         "view": "occupation='Machine-op-inspct'",
         "rank": 474,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.880725098181495
+        "representativeness": 0.5291338886318062
       },
       {
         "view": "occupation='NA'",
         "rank": 475,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7434650776641056
+        "representativeness": 0.527192116319142
       },
       {
         "view": "occupation='Transport-moving'",
         "rank": 476,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.8588171295103412
+        "representativeness": 0.5229993944957712
       },
       {
         "view": "occupation='Handlers-cleaners'",
         "rank": 477,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.8456346799261881
+        "representativeness": 0.520348037867777
       },
       {
         "view": "occupation='Farming-fishing'",
         "rank": 478,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.8172241481228277
+        "representativeness": 0.5148017166017642
       },
       {
         "view": "occupation='Tech-support'",
         "rank": 479,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.859810486396277
+        "representativeness": 0.5143771874005727
       },
       {
         "view": "occupation='Protective-serv'",
         "rank": 480,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7970870691684088
+        "representativeness": 0.5098645258404415
       },
       {
         "view": "occupation='Priv-house-serv'",
         "rank": 481,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.6571938501089739
+        "representativeness": 0.5024651617635074
       },
       {
         "view": "occupation='Armed-Forces'",
         "rank": 482,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5148450786466287
+        "representativeness": 0.5001535092207872
       }
     ]
   },
@@ -498,7 +498,7 @@
       ],
       "hd_gamma": 4.86272073321631,
       "utility": 4.86272073321631,
-      "n_candidates": 125,
+      "n_candidates": 126,
       "bins_clearing_2sigma": [
         "HS-grad",
         "Some-college",
@@ -602,7 +602,7 @@
       ],
       "hd_gamma": 3.1054959616561746,
       "utility": 3.1054959616561746,
-      "n_candidates": 124,
+      "n_candidates": 125,
       "bins_clearing_2sigma": [
         "[17, 24]",
         "(24, 31]",
@@ -687,7 +687,7 @@
       ],
       "hd_gamma": 3.4077120902729847,
       "utility": 3.4077120902729847,
-      "n_candidates": 123,
+      "n_candidates": 124,
       "bins_clearing_2sigma": [
         "Husband",
         "Not-in-family",
@@ -760,7 +760,7 @@
       ],
       "hd_gamma": 2.207338774640115,
       "utility": 2.207338774640115,
-      "n_candidates": 122,
+      "n_candidates": 123,
       "bins_clearing_2sigma": [
         "[1, 32]",
         "(32, 40]",
@@ -833,7 +833,7 @@
       ],
       "hd_gamma": 1.9448102919819772,
       "utility": 1.9448102919819772,
-      "n_candidates": 121,
+      "n_candidates": 122,
       "bins_clearing_2sigma": [
         "White",
         "Black"
@@ -860,10 +860,10 @@
     }
   ],
   "timings": {
-    "view_stage_ms": 0.1633690008020494,
-    "explanation_stage_ms": 17.99161499911861,
-    "mechanism_ms": 18.15498399992066,
-    "cache_build_s": 0.7136895940002432
+    "view_stage_ms": 0.14967900006013224,
+    "explanation_stage_ms": 16.189099999792234,
+    "mechanism_ms": 16.338778999852366,
+    "cache_build_s": 0.6250084029998106
   },
   "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
 }

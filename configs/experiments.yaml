@@ -4,7 +4,7 @@
 # derived constants set by the algorithm's own rules:
 #   tau   = min(3k, |P|)                       (Eq. (11))
 #   gamma = 2 ln(tau |Attrs|) k / eps_S        (Eq. (12))
-#   gamma_R = N / 100 (Eq. (4)),  Delta_Use = 4 / |D| (Proposition 3.11)
+#   gamma_R = N,  Delta_Use = 7 / (4 |D|)
 # When an experiment varies k, eps or tau, the derived constants follow their
 # rules (that is how the algorithm behaves); `gamma_mult` scales the Eq. (12)
 # value when gamma itself is the studied parameter.

@@ -26,8 +26,7 @@ def test_constraint_shares_table2(pid, s1, s2):
 
 
 def test_a2_running_example_view():
-    """Section 4 (running example): |Q| = 3,055, |Q'| = 2,453; view education='Masters' has coverage 0.068,
-    Rep 0.80 at gamma_R = N/100 against the Eq. (5) ceiling 0.92, and Rep 0.53 at gamma_R = N."""
+    """Section 5.2.1: |Q| = 3,055, |Q'| = 2,453; view education='Masters' has coverage 0.068 and Rep 0.53."""
     from pqde.pairs import pair_cache, resolve_pair
 
     p = resolve_pair("A2")
@@ -35,11 +34,7 @@ def test_a2_running_example_view():
     c = pair_cache("A2")
     i = next(i for i, v in enumerate(c.views) if c.view_label(i) == "education='Masters'")
     assert c.cov[i] == pytest.approx(0.068, abs=5e-4)
-    assert c.rep[i] == pytest.approx(0.80, abs=5e-3)
-    assert 1 - c.gamma_R / (2 * (c.m[i] + c.gamma_R)) == pytest.approx(0.92, abs=5e-3)
-    from pqde.stats import build_cache
-    cN = build_cache(p.dataset, p.q1, p.q2, gamma_R=float(p.dataset.N))
-    assert cN.rep[i] == pytest.approx(0.53, abs=5e-3)
+    assert c.rep[i] == pytest.approx(0.53, abs=5e-3)
 
 
 @pytest.mark.skipif(not (DEFAULT_RAW_DIR / "hospital" / "hospital_clean.csv").exists(), reason="hospital not downloaded")

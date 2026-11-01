@@ -31,10 +31,10 @@
     "eps_H": 0.333333334,
     "tau": 15,
     "gamma": 150.31905897320672,
-    "gamma_R": 16645.0,
+    "gamma_R": 1664500.0,
     "|P|": 914,
     "|Attrs|": 10,
-    "Delta_Use": 2.4031240612796634e-06,
+    "Delta_Use": 1.0513667768098528e-06,
     "laplace_scale_per_bin": 29.999999940000002,
     "sigma_of_released_difference": 59.999999880000004
   },
@@ -43,107 +43,107 @@
       {
         "rank": 1,
         "view": "SCHL IN [1, 16]",
-        "use": 0.003181479697214262,
+        "use": 0.002177405170916124,
         "coverage": 0.003556623610693902,
-        "representativeness": 0.8945224587860032
+        "representativeness": 0.6122113018564
       },
       {
         "rank": 2,
         "view": "WKHP IN (50, 99]",
-        "use": 0.00312171422744441,
+        "use": 0.0019192652892074463,
         "coverage": 0.003556623610693902,
-        "representativeness": 0.8777184681725034
+        "representativeness": 0.5396312624807085
       },
       {
         "rank": 3,
         "view": "WKHP IN (50, 99] AND SCHL IN [1, 16]",
-        "use": 0.002891819787654923,
+        "use": 0.001816802153993121,
         "coverage": 0.003556623610693902,
-        "representativeness": 0.8130800737418276
+        "representativeness": 0.5108221596826942
       },
       {
         "rank": 4,
-        "view": "SEX='M'",
-        "use": 0.0023854319229565575,
-        "coverage": 0.002523280264343647,
-        "representativeness": 0.9453693894669498
+        "view": "RAC1P='White'",
+        "use": 0.0016969424369865165,
+        "coverage": 0.0023598678281766296,
+        "representativeness": 0.7190836777912568
       },
       {
         "rank": 5,
-        "view": "RAC1P='White'",
-        "use": 0.002313686878264892,
-        "coverage": 0.0023598678281766296,
-        "representativeness": 0.9804307049062915
+        "view": "SEX='M'",
+        "use": 0.0016936457183611522,
+        "coverage": 0.002523280264343647,
+        "representativeness": 0.671207928145747
       },
       {
         "rank": 6,
-        "view": "SEX='M' AND SCHL IN [1, 16]",
-        "use": 0.0022172122214851125,
-        "coverage": 0.002523280264343647,
-        "representativeness": 0.8787023196814212
+        "view": "COW='private'",
+        "use": 0.0014710393212418946,
+        "coverage": 0.0021063382397116252,
+        "representativeness": 0.6983870365679217
       },
       {
         "rank": 7,
-        "view": "SEX='M' AND WKHP IN (50, 99]",
-        "use": 0.0021925830125734047,
+        "view": "SEX='M' AND SCHL IN [1, 16]",
+        "use": 0.001443353884467715,
         "coverage": 0.002523280264343647,
-        "representativeness": 0.8689415296258172
+        "representativeness": 0.5720148906420266
       },
       {
         "rank": 8,
         "view": "RAC1P='White' AND SCHL IN [1, 16]",
-        "use": 0.002115459953136404,
+        "use": 0.0013894886045689434,
         "coverage": 0.0023598678281766296,
-        "representativeness": 0.8964315407320633
+        "representativeness": 0.5887993335807042
       },
       {
         "rank": 9,
-        "view": "RAC1P='White' AND WKHP IN (50, 99]",
-        "use": 0.0020270679243599996,
-        "coverage": 0.0023598678281766296,
-        "representativeness": 0.8589751935074388
+        "view": "SEX='M' AND WKHP IN (50, 99]",
+        "use": 0.001335867517976706,
+        "coverage": 0.002523280264343647,
+        "representativeness": 0.5294170199219588
       },
       {
         "rank": 10,
-        "view": "COW='private'",
-        "use": 0.002016873588209783,
-        "coverage": 0.0021063382397116252,
-        "representativeness": 0.9575259804835095
+        "view": "RAC1P='White' AND WKHP IN (50, 99]",
+        "use": 0.0012576147757943543,
+        "coverage": 0.0023598678281766296,
+        "representativeness": 0.5329174629098021
       },
       {
         "rank": 11,
         "view": "COW='private' AND SCHL IN [1, 16]",
-        "use": 0.0018447646540718638,
+        "use": 0.0012414971622765278,
         "coverage": 0.0021063382397116252,
-        "representativeness": 0.8758159631211115
+        "representativeness": 0.5894101616113179
       },
       {
         "rank": 12,
-        "view": "COW='private' AND WKHP IN (50, 99]",
-        "use": 0.001824408709079006,
-        "coverage": 0.0021063382397116252,
-        "representativeness": 0.8661518243759285
+        "view": "SEX='M' AND RAC1P='White'",
+        "use": 0.001129560346705523,
+        "coverage": 0.001749474316611595,
+        "representativeness": 0.6456570044956536
       },
       {
         "rank": 13,
-        "view": "SEX='M' AND RAC1P='White'",
-        "use": 0.0016261406153840665,
-        "coverage": 0.001749474316611595,
-        "representativeness": 0.9295024224954598
+        "view": "COW='private' AND WKHP IN (50, 99]",
+        "use": 0.001105558967774264,
+        "coverage": 0.0021063382397116252,
+        "representativeness": 0.524872476286441
       },
       {
         "rank": 14,
         "view": "MAR='married'",
-        "use": 0.0014372804652529449,
+        "use": 0.0010637339038946656,
         "coverage": 0.00157224391709222,
-        "representativeness": 0.9141587063100981
+        "representativeness": 0.6765705323013644
       },
       {
         "rank": 15,
         "view": "COW='private' AND SEX='M'",
-        "use": 0.0013800621918212729,
+        "use": 0.000945236420691069,
         "coverage": 0.0014971462901772303,
-        "representativeness": 0.9217951518003646
+        "representativeness": 0.6313587569182522
       }
     ],
     "retained": [
@@ -151,197 +151,195 @@
         "noisy_rank": 1,
         "view": "SCHL IN [1, 16]",
         "exact_rank": 1,
-        "use": 0.003181479697214262,
+        "use": 0.002177405170916124,
         "coverage": 0.003556623610693902,
-        "representativeness": 0.8945224587860032
+        "representativeness": 0.6122113018564
       },
       {
         "noisy_rank": 2,
         "view": "SEX='M'",
-        "exact_rank": 4,
-        "use": 0.0023854319229565575,
+        "exact_rank": 5,
+        "use": 0.0016936457183611522,
         "coverage": 0.002523280264343647,
-        "representativeness": 0.9453693894669498
+        "representativeness": 0.671207928145747
       },
       {
         "noisy_rank": 3,
         "view": "WKHP IN (50, 99]",
         "exact_rank": 2,
-        "use": 0.00312171422744441,
+        "use": 0.0019192652892074463,
         "coverage": 0.003556623610693902,
-        "representativeness": 0.8777184681725034
+        "representativeness": 0.5396312624807085
       },
       {
         "noisy_rank": 4,
-        "view": "WKHP IN (50, 99] AND SCHL IN [1, 16]",
-        "exact_rank": 3,
-        "use": 0.002891819787654923,
-        "coverage": 0.003556623610693902,
-        "representativeness": 0.8130800737418276
+        "view": "RAC1P='White'",
+        "exact_rank": 4,
+        "use": 0.0016969424369865165,
+        "coverage": 0.0023598678281766296,
+        "representativeness": 0.7190836777912568
       },
       {
         "noisy_rank": 5,
-        "view": "RAC1P='White'",
-        "exact_rank": 5,
-        "use": 0.002313686878264892,
-        "coverage": 0.0023598678281766296,
-        "representativeness": 0.9804307049062915
+        "view": "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+        "exact_rank": 3,
+        "use": 0.001816802153993121,
+        "coverage": 0.003556623610693902,
+        "representativeness": 0.5108221596826942
       },
       {
         "noisy_rank": 6,
-        "view": "RAC1P='White' AND WKHP IN (50, 99]",
-        "exact_rank": 9,
-        "use": 0.0020270679243599996,
-        "coverage": 0.0023598678281766296,
-        "representativeness": 0.8589751935074388
+        "view": "COW='private'",
+        "exact_rank": 6,
+        "use": 0.0014710393212418946,
+        "coverage": 0.0021063382397116252,
+        "representativeness": 0.6983870365679217
       },
       {
         "noisy_rank": 7,
-        "view": "COW='private' AND WKHP IN (50, 99]",
-        "exact_rank": 12,
-        "use": 0.001824408709079006,
-        "coverage": 0.0021063382397116252,
-        "representativeness": 0.8661518243759285
+        "view": "RAC1P='White' AND WKHP IN (50, 99]",
+        "exact_rank": 10,
+        "use": 0.0012576147757943543,
+        "coverage": 0.0023598678281766296,
+        "representativeness": 0.5329174629098021
       },
       {
         "noisy_rank": 8,
         "view": "COW='private' AND SCHL IN [1, 16]",
         "exact_rank": 11,
-        "use": 0.0018447646540718638,
+        "use": 0.0012414971622765278,
         "coverage": 0.0021063382397116252,
-        "representativeness": 0.8758159631211115
+        "representativeness": 0.5894101616113179
       },
       {
         "noisy_rank": 9,
         "view": "RAC1P='White' AND SCHL IN [1, 16]",
         "exact_rank": 8,
-        "use": 0.002115459953136404,
+        "use": 0.0013894886045689434,
         "coverage": 0.0023598678281766296,
-        "representativeness": 0.8964315407320633
+        "representativeness": 0.5887993335807042
       },
       {
         "noisy_rank": 10,
-        "view": "RAC1P='other-race' AND AGEP IN [17, 26]",
-        "exact_rank": 241,
-        "use": 5.503018122956729e-05,
-        "coverage": 7.870231300690899e-05,
-        "representativeness": 0.6992193637909523
+        "view": "SEX='M' AND SCHL IN [1, 16]",
+        "exact_rank": 7,
+        "use": 0.001443353884467715,
+        "coverage": 0.002523280264343647,
+        "representativeness": 0.5720148906420266
       },
       {
         "noisy_rank": 11,
-        "view": "COW='private' AND RAC1P='White'",
-        "exact_rank": 18,
-        "use": 0.0012548227861154317,
-        "coverage": 0.0013048963652748573,
-        "representativeness": 0.9616263938716096
+        "view": "COW='private' AND WKHP IN (50, 99]",
+        "exact_rank": 13,
+        "use": 0.001105558967774264,
+        "coverage": 0.0021063382397116252,
+        "representativeness": 0.524872476286441
       },
       {
         "noisy_rank": 12,
-        "view": "COW='non-profit' AND RAC1P='White'",
-        "exact_rank": 212,
-        "use": 8.228957853752309e-05,
-        "coverage": 9.43226194052268e-05,
-        "representativeness": 0.8724267737306189
+        "view": "SEX='M' AND WKHP IN (50, 99]",
+        "exact_rank": 9,
+        "use": 0.001335867517976706,
+        "coverage": 0.002523280264343647,
+        "representativeness": 0.5294170199219588
       },
       {
         "noisy_rank": 13,
-        "view": "COW='private'",
-        "exact_rank": 10,
-        "use": 0.002016873588209783,
-        "coverage": 0.0021063382397116252,
-        "representativeness": 0.9575259804835095
+        "view": "COW='private' AND RAC1P='White'",
+        "exact_rank": 18,
+        "use": 0.0008718082757157499,
+        "coverage": 0.0013048963652748573,
+        "representativeness": 0.668105375197452
       },
       {
         "noisy_rank": 14,
-        "view": "SEX='M' AND SCHL IN [1, 16]",
-        "exact_rank": 6,
-        "use": 0.0022172122214851125,
-        "coverage": 0.002523280264343647,
-        "representativeness": 0.8787023196814212
+        "view": "SEX='M' AND RAC1P='White'",
+        "exact_rank": 12,
+        "use": 0.001129560346705523,
+        "coverage": 0.001749474316611595,
+        "representativeness": 0.6456570044956536
       },
       {
         "noisy_rank": 15,
-        "view": "SEX='M' AND WKHP IN (50, 99]",
-        "exact_rank": 7,
-        "use": 0.0021925830125734047,
-        "coverage": 0.002523280264343647,
-        "representativeness": 0.8689415296258172
+        "view": "MAR='married'",
+        "exact_rank": 14,
+        "use": 0.0010637339038946656,
+        "coverage": 0.00157224391709222,
+        "representativeness": 0.6765705323013644
       }
     ],
-    "overlap_with_exact_top_tau": 0.8,
+    "overlap_with_exact_top_tau": 0.9333333333333333,
     "retained_atom_counts": {
       "SCHL IN [1, 16]": 5,
       "WKHP IN (50, 99]": 5,
       "RAC1P='White'": 5,
+      "SEX='M'": 4,
       "COW='private'": 4,
-      "SEX='M'": 3,
-      "RAC1P='other-race'": 1,
-      "AGEP IN [17, 26]": 1,
-      "COW='non-profit'": 1
+      "MAR='married'": 1
     },
     "query_attribute_views": [
       {
         "view": "SCHL IN [1, 16]",
         "rank": 1,
-        "use": 0.003181479697214262,
+        "use": 0.002177405170916124,
         "coverage": 0.003556623610693902,
-        "representativeness": 0.8945224587860032
+        "representativeness": 0.6122113018564
       },
       {
         "view": "WKHP IN (50, 99]",
         "rank": 2,
-        "use": 0.00312171422744441,
+        "use": 0.0019192652892074463,
         "coverage": 0.003556623610693902,
-        "representativeness": 0.8777184681725034
+        "representativeness": 0.5396312624807085
       },
       {
         "view": "WKHP IN [1, 25]",
         "rank": 615,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.8184656567518483
+        "representativeness": 0.5723260938380013
       },
       {
         "view": "WKHP IN (25, 40]",
         "rank": 616,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.9675913238964999
+        "representativeness": 0.6807339379152664
       },
       {
         "view": "WKHP IN (40, 50]",
         "rank": 617,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.8938082782107379
+        "representativeness": 0.5758064137968295
       },
       {
         "view": "SCHL IN (16, 18]",
         "rank": 618,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.9272869996793445
+        "representativeness": 0.5480903048333838
       },
       {
         "view": "SCHL IN (18, 19]",
         "rank": 619,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.9196463587283902
+        "representativeness": 0.5665402962577935
       },
       {
         "view": "SCHL IN (19, 21]",
         "rank": 620,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.9311206453977403
+        "representativeness": 0.6191356151789273
       },
       {
         "view": "SCHL IN (21, 24]",
         "rank": 621,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.8186885640393352
+        "representativeness": 0.5605976610965919
       }
     ]
   },
@@ -514,7 +512,7 @@
       ],
       "hd_gamma": 1.7729114470596474,
       "utility": 1.7729114470596474,
-      "n_candidates": 125,
+      "n_candidates": 126,
       "bins_clearing_2sigma": [
         "MBSA",
         "SRO",
@@ -589,7 +587,7 @@
     },
     {
       "round": 2,
-      "view": "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+      "view": "RAC1P='White' AND WKHP IN (50, 99]",
       "attr": "RELP",
       "bins": [
         "reference-person",
@@ -603,63 +601,63 @@
         "other-nonrelative"
       ],
       "noisy_h1": [
-        1496.921,
-        766.157,
-        577.226,
-        460.18,
-        177.885,
-        444.912,
-        47.418,
-        84.557,
-        60.625
+        1010.921,
+        533.157,
+        426.226,
+        233.18,
+        115.885,
+        310.912,
+        14.418,
+        50.557,
+        31.625
       ],
       "noisy_h2": [
-        505.367,
-        291.26,
-        219.769,
-        372.73,
-        88.247,
-        112.886,
-        23.971,
-        0.96,
-        42.934
+        278.367,
+        175.26,
+        162.769,
+        249.73,
+        66.247,
+        89.886,
+        16.971,
+        -13.04,
+        28.934
       ],
       "exact_n": [
-        18920,
-        9756,
-        2138,
-        2054,
-        1408,
-        1193,
-        576,
-        403,
-        376
+        68171,
+        33533,
+        4261,
+        2756,
+        3612,
+        2159,
+        1522,
+        570,
+        721
       ],
       "exact_h1": [
-        1570,
-        817,
-        557,
-        541,
-        208,
-        462,
-        81,
-        67,
-        64
+        1084,
+        584,
+        406,
+        314,
+        146,
+        328,
+        48,
+        33,
+        35
       ],
       "exact_h2": [
-        539,
-        309,
-        207,
-        274,
-        77,
-        81,
-        18,
-        24,
-        24
+        312,
+        193,
+        150,
+        151,
+        55,
+        58,
+        11,
+        10,
+        10
       ],
-      "hd_gamma": 0.9875619099296564,
-      "utility": 0.9875619099296564,
-      "n_candidates": 124,
+      "hd_gamma": 0.36087706626938937,
+      "utility": 0.36087706626938937,
+      "n_candidates": 125,
       "bins_clearing_2sigma": [
         "reference-person",
         "spouse",
@@ -667,32 +665,32 @@
         "noninst-group-quarters"
       ],
       "exact_share_q1": [
-        0.3595,
-        0.1871,
-        0.1275,
-        0.1239,
-        0.0476,
-        0.1058,
-        0.0185,
-        0.0153,
-        0.0147
+        0.364,
+        0.1961,
+        0.1363,
+        0.1054,
+        0.049,
+        0.1101,
+        0.0161,
+        0.0111,
+        0.0118
       ],
       "exact_share_q2": [
-        0.3471,
-        0.199,
-        0.1333,
-        0.1764,
-        0.0496,
-        0.0522,
+        0.3284,
+        0.2032,
+        0.1579,
+        0.1589,
+        0.0579,
+        0.0611,
         0.0116,
-        0.0155,
-        0.0155
+        0.0105,
+        0.0105
       ],
-      "noisy_total_q1": 4115.880999999999,
-      "noisy_total_q2": 1658.124,
-      "exact_total_q1": 4367,
-      "exact_total_q2": 1553,
-      "exact_abs_diff_total": 2814
+      "noisy_total_q1": 2726.881,
+      "noisy_total_q2": 1055.124,
+      "exact_total_q1": 2978,
+      "exact_total_q2": 950,
+      "exact_abs_diff_total": 2028
     },
     {
       "round": 3,
@@ -862,7 +860,7 @@
       ],
       "hd_gamma": 0.2368149152965514,
       "utility": 0.1184074576482757,
-      "n_candidates": 123,
+      "n_candidates": 124,
       "bins_clearing_2sigma": [
         "MBSA",
         "SRO",
@@ -939,243 +937,7 @@
     },
     {
       "round": 4,
-      "view": "RAC1P='White'",
-      "attr": "OCCP_bucket",
-      "bins": [
-        "OASO",
-        "MBSA",
-        "SRO",
-        "TMMO",
-        "ETLO",
-        "HPTO",
-        "PO",
-        "FPASO",
-        "CEO",
-        "BGCMO",
-        "BOS",
-        "CMO",
-        "IMRW",
-        "HSO",
-        "PCSO",
-        "FS",
-        "ASESMO",
-        "PSO",
-        "AEO",
-        "CSSO",
-        "LO",
-        "LPSSO",
-        "FFFO",
-        "MSO",
-        "EW"
-      ],
-      "noisy_h1": [
-        15.212,
-        376.745,
-        191.163,
-        413.721,
-        -25.924,
-        25.756,
-        174.934,
-        157.508,
-        263.6,
-        188.238,
-        -21.361,
-        30.357,
-        86.677,
-        12.114,
-        151.717,
-        -65.838,
-        -0.069,
-        42.525,
-        15.729,
-        27.669,
-        -43.367,
-        13.288,
-        253.878,
-        131.724,
-        39.034
-      ],
-      "noisy_h2": [
-        -7.056,
-        71.231,
-        68.163,
-        205.468,
-        5.038,
-        -7.09,
-        134.98,
-        104.187,
-        103.696,
-        103.539,
-        7.829,
-        -31.668,
-        82.095,
-        -8.063,
-        33.968,
-        -11.629,
-        49.837,
-        -20.765,
-        -23.314,
-        39.381,
-        -18.959,
-        3.353,
-        140.844,
-        -61.865,
-        -12.258
-      ],
-      "exact_n": [
-        150543,
-        143621,
-        132165,
-        90761,
-        90069,
-        78871,
-        69864,
-        63311,
-        64016,
-        44112,
-        43845,
-        36507,
-        41415,
-        31900,
-        36050,
-        30328,
-        30125,
-        26726,
-        25410,
-        22464,
-        16413,
-        12738,
-        10482,
-        4322,
-        2068
-      ],
-      "exact_h1": [
-        114,
-        383,
-        229,
-        430,
-        19,
-        19,
-        193,
-        184,
-        301,
-        187,
-        13,
-        7,
-        129,
-        82,
-        142,
-        8,
-        25,
-        43,
-        8,
-        32,
-        5,
-        3,
-        284,
-        116,
-        22
-      ],
-      "exact_h2": [
-        20,
-        82,
-        49,
-        142,
-        8,
-        3,
-        72,
-        80,
-        142,
-        75,
-        1,
-        0,
-        43,
-        29,
-        37,
-        0,
-        2,
-        13,
-        1,
-        3,
-        4,
-        1,
-        138,
-        1,
-        4
-      ],
-      "hd_gamma": 0.0745022243909518,
-      "utility": 0.01862555609773795,
-      "n_candidates": 122,
-      "bins_clearing_2sigma": [
-        "MBSA",
-        "SRO",
-        "TMMO",
-        "CEO",
-        "MSO"
-      ],
-      "exact_share_q1": [
-        0.0383,
-        0.1286,
-        0.0769,
-        0.1444,
-        0.0064,
-        0.0064,
-        0.0648,
-        0.0618,
-        0.1011,
-        0.0628,
-        0.0044,
-        0.0024,
-        0.0433,
-        0.0275,
-        0.0477,
-        0.0027,
-        0.0084,
-        0.0144,
-        0.0027,
-        0.0107,
-        0.0017,
-        0.001,
-        0.0954,
-        0.039,
-        0.0074
-      ],
-      "exact_share_q2": [
-        0.0211,
-        0.0863,
-        0.0516,
-        0.1495,
-        0.0084,
-        0.0032,
-        0.0758,
-        0.0842,
-        0.1495,
-        0.0789,
-        0.0011,
-        0.0,
-        0.0453,
-        0.0305,
-        0.0389,
-        0.0,
-        0.0021,
-        0.0137,
-        0.0011,
-        0.0032,
-        0.0042,
-        0.0011,
-        0.1453,
-        0.0011,
-        0.0042
-      ],
-      "noisy_total_q1": 2455.03,
-      "noisy_total_q2": 950.9419999999998,
-      "exact_total_q1": 2978,
-      "exact_total_q2": 950,
-      "exact_abs_diff_total": 2028
-    },
-    {
-      "round": 5,
-      "view": "WKHP IN (50, 99]",
+      "view": "COW='private' AND WKHP IN (50, 99]",
       "attr": "MAR",
       "bins": [
         "married",
@@ -1185,74 +947,174 @@
         "separated"
       ],
       "noisy_h1": [
-        1909.332,
-        1868.884,
-        383.327,
-        72.863,
-        106.364
+        822.212,
+        1173.745,
+        210.163,
+        20.721,
+        31.076
       ],
       "noisy_h2": [
-        658.182,
-        583.471,
-        151.636,
-        12.915,
-        37.733
+        441.756,
+        427.934,
+        73.508,
+        -13.4,
+        40.238
       ],
       "exact_n": [
-        91909,
-        31386,
-        15873,
-        1905,
-        2217
+        54457,
+        20287,
+        9884,
+        1057,
+        1450
       ],
       "exact_h1": [
-        1888,
-        1879,
-        425,
-        75,
-        100
+        921,
+        1180,
+        248,
+        37,
+        76
       ],
       "exact_h2": [
-        729,
-        593,
-        150,
-        29,
-        52
+        435,
+        446,
+        100,
+        24,
+        39
       ],
-      "hd_gamma": 0.11318762941731256,
-      "utility": 0.11318762941731256,
-      "n_candidates": 121,
+      "hd_gamma": 0.09345202702325373,
+      "utility": 0.09345202702325373,
+      "n_candidates": 123,
       "bins_clearing_2sigma": [
         "married",
         "never-married",
         "divorced"
       ],
       "exact_share_q1": [
-        0.4323,
-        0.4303,
-        0.0973,
-        0.0172,
-        0.0229
+        0.3741,
+        0.4793,
+        0.1007,
+        0.015,
+        0.0309
       ],
       "exact_share_q2": [
-        0.4694,
-        0.3818,
-        0.0966,
-        0.0187,
-        0.0335
+        0.4167,
+        0.4272,
+        0.0958,
+        0.023,
+        0.0374
       ],
-      "noisy_total_q1": 4340.77,
-      "noisy_total_q2": 1443.937,
+      "noisy_total_q1": 2257.917,
+      "noisy_total_q2": 970.0360000000001,
+      "exact_total_q1": 2462,
+      "exact_total_q2": 1044,
+      "exact_abs_diff_total": 1418
+    },
+    {
+      "round": 5,
+      "view": "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+      "attr": "COW",
+      "bins": [
+        "private",
+        "non-profit",
+        "local-gov",
+        "self-emp-not-inc",
+        "state-gov",
+        "self-emp-inc",
+        "federal-gov",
+        "unpaid-family"
+      ],
+      "noisy_h1": [
+        2495.453,
+        186.4,
+        94.153,
+        956.063,
+        67.403,
+        327.445,
+        287.372,
+        103.755
+      ],
+      "noisy_h2": [
+        1100.884,
+        65.595,
+        26.391,
+        280.937,
+        22.747,
+        48.988,
+        1.568,
+        6.171
+      ],
+      "exact_n": [
+        25156,
+        848,
+        901,
+        4847,
+        496,
+        2912,
+        1474,
+        190
+      ],
+      "exact_h1": [
+        2462,
+        155,
+        84,
+        971,
+        43,
+        293,
+        288,
+        71
+      ],
+      "exact_h2": [
+        1044,
+        61,
+        22,
+        282,
+        12,
+        93,
+        9,
+        30
+      ],
+      "hd_gamma": 0.7525525423823829,
+      "utility": 0.7525525423823829,
+      "n_candidates": 122,
+      "bins_clearing_2sigma": [
+        "private",
+        "non-profit",
+        "self-emp-not-inc",
+        "self-emp-inc",
+        "federal-gov"
+      ],
+      "exact_share_q1": [
+        0.5638,
+        0.0355,
+        0.0192,
+        0.2223,
+        0.0098,
+        0.0671,
+        0.0659,
+        0.0163
+      ],
+      "exact_share_q2": [
+        0.6722,
+        0.0393,
+        0.0142,
+        0.1816,
+        0.0077,
+        0.0599,
+        0.0058,
+        0.0193
+      ],
+      "noisy_total_q1": 4518.044,
+      "noisy_total_q2": 1553.281,
       "exact_total_q1": 4367,
       "exact_total_q2": 1553,
       "exact_abs_diff_total": 2814
     }
   ],
   "timings": {
-    "view_stage_ms": 0.2558530013629934,
-    "explanation_stage_ms": 575.9056419992703,
-    "mechanism_ms": 576.1614950006333,
-    "cache_build_s": 27.464722524000535
+    "view_stage_ms": 0.2037950002886646,
+    "explanation_stage_ms": 600.4190069998003,
+    "mechanism_ms": 600.622802000089,
+    "cache_build_s": 25.0043765370001
   },
   "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
 }
