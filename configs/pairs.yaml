@@ -177,3 +177,146 @@ C4:  # the paper's H1 on the hospital benchmark
   role: small-data
   aggregate: Score
   q1: "HospitalType = 'acute care hospitals'"
+
+# ---------------------------------------------------------------------------
+# Contrast pairs on IPUMS-CPS: the group comparisons of DPXPlain's experiments
+# (Tao et al., PVLDB 16(1), 2022; experiment-2/ipums/{default,questions}.py of
+# github.com/yuchaotao/Private-Explanation-System).  I1 is DPXPlain's default
+# question; I2-I17 are its control questions.  The aggregate is DPXPlain's AVG(INCTOT).
+# Views on, and histograms of, the group attribute are excluded (exclude_group_attrs).
+
+I1:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), default question
+  q1: "SEX = 'Male'"
+  q2: "SEX = 'Female'"
+
+I2:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  q1: "RELATE = 'Spouse'"
+  q2: "RELATE = 'Head/householder'"
+
+I3:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  q1: "RELATE = 'Spouse'"
+  q2: "RELATE = 'Unmarried partner'"
+
+I4:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  q1: "RELATE = 'Head/householder'"
+  q2: "RELATE = 'Child'"
+
+I5:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  q1: "RELATE = 'Head/householder'"
+  q2: "RELATE = 'Parent'"
+
+I6:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  q1: "MARST = 'Married, spouse present'"
+  q2: "MARST = 'Never married/single'"
+
+I7:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  q1: "MARST = 'Divorced'"
+  q2: "MARST = 'Never married/single'"
+
+I8:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  q1: "RACE = 'White'"
+  q2: "RACE = 'Black'"
+
+I9:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  q1: "RACE = 'Asian only'"
+  q2: "RACE = 'White'"
+
+I10:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  q1: "CITIZEN = 'Born in U.S'"
+  q2: "CITIZEN = 'Not a citizen'"
+
+I11:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  q1: "CITIZEN = 'Naturalized citizen'"
+  q2: "CITIZEN = 'Born in U.S'"
+
+I12:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  q1: "CLASSWKR = 'Wage/salary, private'"
+  q2: "CLASSWKR = 'Self-employed, not incorporated'"
+
+I13:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  q1: "CLASSWKR = 'Federal government employee'"
+  q2: "CLASSWKR = 'State government employee'"
+
+I14:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  q1: "AGE = '(40, 50]'"
+  q2: "AGE = '(30, 40]'"
+
+I15:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  q1: "AGE = '(60, 70]'"
+  q2: "AGE = '(20, 30]'"
+
+I16:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  q1: "EDUC = 'Bachelor''s degree'"
+  q2: "EDUC = 'High school diploma or equivalent'"
+
+I17:
+  dataset: ipums
+  kind: contrast
+  aggregate: INCTOT
+  source: DPXPlain (Tao et al., PVLDB 2022), control question
+  q1: "EDUC = 'Master''s degree'"
+  q2: "EDUC = 'Bachelor''s degree'"

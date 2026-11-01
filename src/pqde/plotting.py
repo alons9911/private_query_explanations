@@ -258,7 +258,7 @@ METHOD_COLORS = {"PRIV_EXPL": BLUE, "B1": ORANGE, "B2": AQUA, "B3": YELLOW, "OPT
 METHOD_MARKERS = {"PRIV_EXPL": "o", "B1": "s", "B2": "^", "B3": "D", "OPT_PRIV_EXPL": "P"}
 RUNTIME_METHODS = ("PRIV_EXPL", "OPT_PRIV_EXPL", "B1", "B2", "B3")
 DATASET_TITLES = {"adult": "Adult", "tax": "Tax", "tax_dirty": "Tax (dirty, CQA)", "hospital": "Hospital",
-                  "stackoverflow": "StackOverflow"}
+                  "stackoverflow": "StackOverflow", "ipums": "IPUMS-CPS (contrast)"}
 
 
 def _ds_title(ds: str, synthetic: dict | None) -> str:

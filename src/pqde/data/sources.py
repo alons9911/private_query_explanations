@@ -51,6 +51,9 @@ URLS = {
     # ground truth in (tid, attribute, correct_val) form; used only to read the declared value domains
     "hospital_clean": ["https://raw.githubusercontent.com/HoloClean/holoclean/master/testdata/hospital_clean.csv"],
     "stackoverflow": ["https://survey.stackoverflow.co/datasets/stack-overflow-developer-survey-2024.zip"],
+    # IPUMS-CPS extract and codebook distributed with DPXPlain (Tao et al., PVLDB 16(1), 2022)
+    "ipums": ["https://raw.githubusercontent.com/yuchaotao/Private-Explanation-System/main/data/ipums/cps_00005.csv.gz",
+              "https://raw.githubusercontent.com/yuchaotao/Private-Explanation-System/main/data/ipums/cps_00005.xml"],
 }
 
 ADULT_COLUMNS = [
@@ -123,6 +126,17 @@ def fetch(name: str, raw_dir: Path | None = None, force: bool = False) -> dict:
             if not target.exists() or force:
                 try:
                     _download(url, target)
+                except Exception as e:  # noqa: BLE001
+                    out["errors"].append(f"{target.name}: {e}")
+            if target.exists():
+                out["files"][target.name] = sha256(target)
+    elif name == "ipums":
+        d = raw_dir / "ipums"
+        for url in URLS["ipums"]:
+            target = d / Path(url).name
+            if not target.exists() or force:
+                try:
+                    _download(url, target, timeout=600)
                 except Exception as e:  # noqa: BLE001
                     out["errors"].append(f"{target.name}: {e}")
             if target.exists():
@@ -244,6 +258,56 @@ def load_hospital(raw_dir: Path | None = None) -> tuple[pd.DataFrame, dict]:
         gt = pd.read_csv(clean, dtype=str, keep_default_na=False, na_values=[""])
         meta["declared_domains"] = {a: sorted(g["correct_val"].dropna().unique().tolist())
                                     for a, g in gt.groupby("attribute")}
+    return df, meta
+
+
+# --------------------------------------------------------------------------- IPUMS-CPS (DPXPlain)
+
+IPUMS_CODED = ["RELATE", "SEX", "RACE", "MARST", "CITIZEN", "CLASSWKR", "EDUC"]
+
+
+def _ipums_codebook(xml_path: Path) -> dict:
+    import xml.etree.ElementTree as ET
+
+    tag = lambda e: e.tag.split("}")[-1]  # noqa: E731
+    code: dict = {}
+    for var in ET.parse(xml_path).getroot().iter():
+        if tag(var) == "var" and var.get("ID") in IPUMS_CODED:
+            d = {}
+            for c in var:
+                if tag(c) == "catgry":
+                    v = [x.text for x in c if tag(x) == "catValu"]
+                    lab = [x.text for x in c if tag(x) == "labl"]
+                    if v and lab:
+                        d[int(v[0])] = lab[0]
+            code[var.get("ID")] = d
+    return code
+
+
+def load_ipums(raw_dir: Path | None = None) -> tuple[pd.DataFrame, dict]:
+    """IPUMS-CPS exactly as prepared by DPXPlain (``data/ipums/ipumscps.py`` in its repository).
+
+    Years 2011-2019, 0 < INCTOT < 200,000 (1,146,552 rows); AGE cut into decades;
+    coded attributes mapped to their labels with the extract's XML codebook.
+    The prepared relation is cached as ``ipumscps.csv``.
+    """
+    raw_dir = Path(raw_dir or DEFAULT_RAW_DIR)
+    d = raw_dir / "ipums"
+    cached = d / "ipumscps.csv"
+    meta = {"source": "IPUMS-CPS extract of DPXPlain (github.com/yuchaotao/Private-Explanation-System)",
+            "synthetic": False}
+    if cached.exists():
+        return pd.read_csv(cached), meta
+    if not (d / "cps_00005.csv.gz").exists() or not (d / "cps_00005.xml").exists():
+        fetch("ipums", raw_dir)
+    cols = ["YEAR", "MARST", "RELATE", "SEX", "RACE", "CITIZEN", "CLASSWKR", "AGE", "EDUC", "INCTOT"]
+    df = pd.read_csv(d / "cps_00005.csv.gz", usecols=lambda c: c in cols)
+    df = df.query("2011 <= YEAR <= 2019 and 0 < INCTOT < 200000").copy()
+    df["AGE"] = pd.cut(df["AGE"], bins=np.linspace(0, 100, 11).astype(int)).astype(str)
+    for col, mapping in _ipums_codebook(d / "cps_00005.xml").items():
+        df[col] = df[col].map(mapping)
+    df = df[cols].reset_index(drop=True)
+    df.to_csv(cached, index=False)
     return df, meta
 
 
@@ -386,4 +450,5 @@ LOADERS = {
     "tax_dirty": load_tax_dirty,
     "hospital": load_hospital,
     "stackoverflow": load_stackoverflow,
+    "ipums": load_ipums,
 }

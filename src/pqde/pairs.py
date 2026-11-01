@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from functools import lru_cache
 from pathlib import Path
 
@@ -108,6 +108,15 @@ def _resolve(pair_id: str, config_path: str | None) -> QueryPair:
         y = pd.to_numeric(df[spec["aggregate"]], errors="coerce").to_numpy(dtype=float)
         info["AVG_Q1"] = float(np.nanmean(y[q1])) if q1.any() else float("nan")
         info["AVG_Q2"] = float(np.nanmean(y[q2])) if q2.any() else float("nan")
+    if spec.get("exclude_group_attrs", kind == "contrast"):
+        # Contrast pairs: a view on an attribute that defines the two groups is one-sided by
+        # construction, and that attribute's own histogram only restates the groups, so both
+        # are removed (views and explanation attributes); A_R is kept.
+        group_attrs = parse(q1_sql).attributes() | parse(q2_sql).attributes()
+        ds = replace(ds, explain_attrs=[a for a in ds.explain_attrs if a not in group_attrs],
+                     view_attrs=[a for a in ds.view_attrs if a not in group_attrs],
+                     meta={**ds.meta, "excluded_group_attrs": sorted(group_attrs)})
+        info["excluded_group_attrs"] = sorted(group_attrs)
     return QueryPair(pair_id, ds, kind, q1_sql, q2_sql, q1, q2, constraints, info)
 
 
@@ -142,5 +151,6 @@ def pair_on_sample(pair: QueryPair, fraction: float, seed: int = 0) -> tuple[Enc
 
 
 TABLE2_PAIRS = ["A1", "A2", "A3", "T1", "T2", "T3", "S1", "S2", "S3", "H1", "H2", "H3"]
+IPUMS_PAIRS = [f"I{i}" for i in range(1, 18)]
 CASE_STUDY_PAIRS = ["R1", "R2", "R3", "R4", "R5", "R6", "C1", "C2", "C3", "C4"]
-ALL_PAIRS = TABLE2_PAIRS + CASE_STUDY_PAIRS
+ALL_PAIRS = TABLE2_PAIRS + CASE_STUDY_PAIRS + IPUMS_PAIRS

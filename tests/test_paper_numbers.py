@@ -44,3 +44,16 @@ def test_hospital_declared_domain():
     h = load_dataset("hospital")
     assert h.domains["EmergencyService"][:2] == ["no", "yes"]
     assert "yxs" not in h.domains["EmergencyService"]
+
+
+@pytest.mark.skipif(not (DEFAULT_RAW_DIR / "ipums" / "cps_00005.csv.gz").exists(), reason="IPUMS not downloaded")
+def test_ipums_as_dpxplain_and_contrast_exclusion():
+    """DPXPlain's preparation gives 1,146,552 rows; contrast pairs drop the group attribute."""
+    from pqde.pairs import resolve_pair
+    from pqde.views import enumerate_views
+
+    p = resolve_pair("I1")
+    assert p.dataset.N == 1_146_552
+    assert (int(p.q1.sum()), int(p.q2.sum())) == (556_230, 590_322)
+    assert "SEX" not in p.dataset.explain_attrs and "SEX" not in p.dataset.view_attrs
+    assert all("SEX" not in v.attrs for v in enumerate_views(p.dataset))

@@ -1,0 +1,781 @@
+{
+  "pair": {
+    "pair": "I14",
+    "dataset": "ipums",
+    "synthetic_data": false,
+    "N": 1146552,
+    "kind": "contrast",
+    "Q1": "AGE = '(40, 50]'",
+    "Q2": "AGE = '(30, 40]'",
+    "|Q1|": 214313,
+    "|Q2|": 213553,
+    "|Q1 & Q2|": 0,
+    "aggregate": "INCTOT",
+    "AVG_Q1": 47945.132245827364,
+    "AVG_Q2": 44219.72848894654,
+    "excluded_group_attrs": [
+      "AGE"
+    ]
+  },
+  "parameters": {
+    "k": 5,
+    "lambda": 0.5,
+    "epsilon": 1.0,
+    "eps_P": 0.333333333,
+    "eps_S": 0.333333333,
+    "eps_H": 0.333333334,
+    "tau": 15,
+    "gamma": 143.62475242708612,
+    "gamma_R": 1146552.0,
+    "|P|": 818,
+    "|Attrs|": 8,
+    "Delta_Use": 1.5263154222398985e-06,
+    "laplace_scale_per_bin": 29.999999940000002,
+    "sigma_of_released_difference": 59.999999880000004
+  },
+  "view_stage": {
+    "exact_top_tau": [
+      {
+        "rank": 1,
+        "view": "CITIZEN='Born in U.S'",
+        "use": 0.21374119803302424,
+        "coverage": 0.2942247713143407,
+        "representativeness": 0.7264554819032205
+      },
+      {
+        "rank": 2,
+        "view": "RACE='White'",
+        "use": 0.2115716191487756,
+        "coverage": 0.29393782401495966,
+        "representativeness": 0.7197835795981393
+      },
+      {
+        "rank": 3,
+        "view": "RACE='White' AND CITIZEN='Born in U.S'",
+        "use": 0.1705530670862501,
+        "coverage": 0.24311675353581869,
+        "representativeness": 0.7015274126763227
+      },
+      {
+        "rank": 4,
+        "view": "CLASSWKR='Wage/salary, private'",
+        "use": 0.1649018025362062,
+        "coverage": 0.24489774558851235,
+        "representativeness": 0.673349614305071
+      },
+      {
+        "rank": 5,
+        "view": "MARST='Married, spouse present'",
+        "use": 0.16403568244841296,
+        "coverage": 0.24312896405919662,
+        "representativeness": 0.6746858938965159
+      },
+      {
+        "rank": 6,
+        "view": "RELATE='Head/householder'",
+        "use": 0.13739898531672096,
+        "coverage": 0.20448789064953007,
+        "representativeness": 0.6719174660186007
+      },
+      {
+        "rank": 7,
+        "view": "MARST='Married, spouse present' AND RACE='White'",
+        "use": 0.1318242105799816,
+        "coverage": 0.20153294399207364,
+        "representativeness": 0.6541075020725459
+      },
+      {
+        "rank": 8,
+        "view": "SEX='Female'",
+        "use": 0.12689681621724946,
+        "coverage": 0.1894157438999714,
+        "representativeness": 0.6699380611374228
+      },
+      {
+        "rank": 9,
+        "view": "RACE='White' AND CLASSWKR='Wage/salary, private'",
+        "use": 0.12503702687723237,
+        "coverage": 0.19313123172782395,
+        "representativeness": 0.6474200250192811
+      },
+      {
+        "rank": 10,
+        "view": "MARST='Married, spouse present' AND CITIZEN='Born in U.S'",
+        "use": 0.12323906455845723,
+        "coverage": 0.1892543905553346,
+        "representativeness": 0.6511820634482154
+      },
+      {
+        "rank": 11,
+        "view": "SEX='Male'",
+        "use": 0.1218938290709465,
+        "coverage": 0.18376052721551225,
+        "representativeness": 0.6633297744514566
+      },
+      {
+        "rank": 12,
+        "view": "CITIZEN='Born in U.S' AND CLASSWKR='Wage/salary, private'",
+        "use": 0.12144233521476441,
+        "coverage": 0.18710359408033828,
+        "representativeness": 0.6490646842551815
+      },
+      {
+        "rank": 13,
+        "view": "RELATE='Head/householder' AND CITIZEN='Born in U.S'",
+        "use": 0.10684683825567355,
+        "coverage": 0.16381027637647486,
+        "representativeness": 0.6522596788135208
+      },
+      {
+        "rank": 14,
+        "view": "RELATE='Head/householder' AND RACE='White'",
+        "use": 0.10255588943595899,
+        "coverage": 0.15908131510825502,
+        "representativeness": 0.644675896513488
+      },
+      {
+        "rank": 15,
+        "view": "SEX='Female' AND CITIZEN='Born in U.S'",
+        "use": 0.09884429785944321,
+        "coverage": 0.15193990329265486,
+        "representativeness": 0.6505486427028783
+      }
+    ],
+    "retained": [
+      {
+        "noisy_rank": 1,
+        "view": "CITIZEN='Born in U.S'",
+        "exact_rank": 1,
+        "use": 0.21374119803302424,
+        "coverage": 0.2942247713143407,
+        "representativeness": 0.7264554819032205
+      },
+      {
+        "noisy_rank": 2,
+        "view": "RACE='White'",
+        "exact_rank": 2,
+        "use": 0.2115716191487756,
+        "coverage": 0.29393782401495966,
+        "representativeness": 0.7197835795981393
+      },
+      {
+        "noisy_rank": 3,
+        "view": "RACE='White' AND CITIZEN='Born in U.S'",
+        "exact_rank": 3,
+        "use": 0.1705530670862501,
+        "coverage": 0.24311675353581869,
+        "representativeness": 0.7015274126763227
+      },
+      {
+        "noisy_rank": 4,
+        "view": "CLASSWKR='Wage/salary, private'",
+        "exact_rank": 4,
+        "use": 0.1649018025362062,
+        "coverage": 0.24489774558851235,
+        "representativeness": 0.673349614305071
+      },
+      {
+        "noisy_rank": 5,
+        "view": "MARST='Married, spouse present'",
+        "exact_rank": 5,
+        "use": 0.16403568244841296,
+        "coverage": 0.24312896405919662,
+        "representativeness": 0.6746858938965159
+      },
+      {
+        "noisy_rank": 6,
+        "view": "RELATE='Head/householder'",
+        "exact_rank": 6,
+        "use": 0.13739898531672096,
+        "coverage": 0.20448789064953007,
+        "representativeness": 0.6719174660186007
+      },
+      {
+        "noisy_rank": 7,
+        "view": "MARST='Married, spouse present' AND RACE='White'",
+        "exact_rank": 7,
+        "use": 0.1318242105799816,
+        "coverage": 0.20153294399207364,
+        "representativeness": 0.6541075020725459
+      },
+      {
+        "noisy_rank": 8,
+        "view": "SEX='Female'",
+        "exact_rank": 8,
+        "use": 0.12689681621724946,
+        "coverage": 0.1894157438999714,
+        "representativeness": 0.6699380611374228
+      },
+      {
+        "noisy_rank": 9,
+        "view": "RACE='White' AND CLASSWKR='Wage/salary, private'",
+        "exact_rank": 9,
+        "use": 0.12503702687723237,
+        "coverage": 0.19313123172782395,
+        "representativeness": 0.6474200250192811
+      },
+      {
+        "noisy_rank": 10,
+        "view": "MARST='Married, spouse present' AND CITIZEN='Born in U.S'",
+        "exact_rank": 10,
+        "use": 0.12323906455845723,
+        "coverage": 0.1892543905553346,
+        "representativeness": 0.6511820634482154
+      },
+      {
+        "noisy_rank": 11,
+        "view": "SEX='Male'",
+        "exact_rank": 11,
+        "use": 0.1218938290709465,
+        "coverage": 0.18376052721551225,
+        "representativeness": 0.6633297744514566
+      },
+      {
+        "noisy_rank": 12,
+        "view": "CITIZEN='Born in U.S' AND CLASSWKR='Wage/salary, private'",
+        "exact_rank": 12,
+        "use": 0.12144233521476441,
+        "coverage": 0.18710359408033828,
+        "representativeness": 0.6490646842551815
+      },
+      {
+        "noisy_rank": 13,
+        "view": "RELATE='Head/householder' AND CITIZEN='Born in U.S'",
+        "exact_rank": 13,
+        "use": 0.10684683825567355,
+        "coverage": 0.16381027637647486,
+        "representativeness": 0.6522596788135208
+      },
+      {
+        "noisy_rank": 14,
+        "view": "RELATE='Head/householder' AND RACE='White'",
+        "exact_rank": 14,
+        "use": 0.10255588943595899,
+        "coverage": 0.15908131510825502,
+        "representativeness": 0.644675896513488
+      },
+      {
+        "noisy_rank": 15,
+        "view": "SEX='Female' AND CITIZEN='Born in U.S'",
+        "exact_rank": 15,
+        "use": 0.09884429785944321,
+        "coverage": 0.15193990329265486,
+        "representativeness": 0.6505486427028783
+      }
+    ],
+    "overlap_with_exact_top_tau": 1.0,
+    "retained_atom_counts": {
+      "CITIZEN='Born in U.S'": 6,
+      "RACE='White'": 5,
+      "CLASSWKR='Wage/salary, private'": 3,
+      "MARST='Married, spouse present'": 3,
+      "RELATE='Head/householder'": 3,
+      "SEX='Female'": 2,
+      "SEX='Male'": 1
+    },
+    "query_attribute_views": []
+  },
+  "explanations": [
+    {
+      "round": 1,
+      "view": "CLASSWKR='Wage/salary, private'",
+      "attr": "RELATE",
+      "bins": [
+        "Head/householder",
+        "Spouse",
+        "Child",
+        "Other",
+        "Unmarried partner",
+        "Opposite sex spouse",
+        "Parent",
+        "Housemate/roomate",
+        "Other relatives, n.s."
+      ],
+      "noisy_h1": [
+        74384.4,
+        40321.781,
+        3949.061,
+        2683.359,
+        4013.55,
+        4367.967,
+        3348.197,
+        1277.276,
+        1651.296
+      ],
+      "noisy_h2": [
+        77431.674,
+        38294.654,
+        8263.268,
+        4356.568,
+        6215.84,
+        4494.99,
+        878.065,
+        2470.061,
+        2618.144
+      ],
+      "exact_n": [
+        300594,
+        138784,
+        74591,
+        22665,
+        22280,
+        15788,
+        9707,
+        13499,
+        10554
+      ],
+      "exact_h1": [
+        74412,
+        40277,
+        3939,
+        2684,
+        3977,
+        4292,
+        3328,
+        1265,
+        1660
+      ],
+      "exact_h2": [
+        77463,
+        38303,
+        8223,
+        4305,
+        6280,
+        4435,
+        850,
+        2464,
+        2631
+      ],
+      "hd_gamma": 0.6946381409486438,
+      "utility": 0.6946381409486438,
+      "n_candidates": 97,
+      "bins_clearing_2sigma": [
+        "Head/householder",
+        "Spouse",
+        "Child",
+        "Other",
+        "Unmarried partner",
+        "Opposite sex spouse",
+        "Parent",
+        "Housemate/roomate",
+        "Other relatives, n.s."
+      ],
+      "exact_share_q1": [
+        0.5478,
+        0.2965,
+        0.029,
+        0.0198,
+        0.0293,
+        0.0316,
+        0.0245,
+        0.0093,
+        0.0122
+      ],
+      "exact_share_q2": [
+        0.5344,
+        0.2642,
+        0.0567,
+        0.0297,
+        0.0433,
+        0.0306,
+        0.0059,
+        0.017,
+        0.0182
+      ],
+      "noisy_total_q1": 135996.887,
+      "noisy_total_q2": 145023.264,
+      "exact_total_q1": 135834,
+      "exact_total_q2": 144954,
+      "exact_abs_diff_total": 18024
+    },
+    {
+      "round": 2,
+      "view": "RACE='White' AND CLASSWKR='Wage/salary, private'",
+      "attr": "RELATE",
+      "bins": [
+        "Head/householder",
+        "Spouse",
+        "Child",
+        "Other",
+        "Unmarried partner",
+        "Opposite sex spouse",
+        "Parent",
+        "Housemate/roomate",
+        "Other relatives, n.s."
+      ],
+      "noisy_h1": [
+        58137.015,
+        33342.75,
+        2752.532,
+        1963.574,
+        3211.496,
+        3550.548,
+        2453.966,
+        959.304,
+        1084.199
+      ],
+      "noisy_h2": [
+        59914.412,
+        31893.942,
+        5743.794,
+        3108.27,
+        5002.044,
+        3644.849,
+        630.977,
+        1873.379,
+        1821.521
+      ],
+      "exact_n": [
+        233951,
+        115777,
+        57346,
+        16489,
+        17944,
+        13094,
+        6870,
+        10641,
+        7282
+      ],
+      "exact_h1": [
+        58227,
+        33452,
+        2776,
+        1989,
+        3214,
+        3536,
+        2486,
+        959,
+        1077
+      ],
+      "exact_h2": [
+        59921,
+        31915,
+        5753,
+        3113,
+        5008,
+        3653,
+        620,
+        1881,
+        1855
+      ],
+      "hd_gamma": 0.7041970204362039,
+      "utility": 0.35209851021810196,
+      "n_candidates": 96,
+      "bins_clearing_2sigma": [
+        "Head/householder",
+        "Spouse",
+        "Child",
+        "Other",
+        "Unmarried partner",
+        "Parent",
+        "Housemate/roomate",
+        "Other relatives, n.s."
+      ],
+      "exact_share_q1": [
+        0.5406,
+        0.3106,
+        0.0258,
+        0.0185,
+        0.0298,
+        0.0328,
+        0.0231,
+        0.0089,
+        0.01
+      ],
+      "exact_share_q2": [
+        0.5269,
+        0.2806,
+        0.0506,
+        0.0274,
+        0.044,
+        0.0321,
+        0.0055,
+        0.0165,
+        0.0163
+      ],
+      "noisy_total_q1": 107455.38399999999,
+      "noisy_total_q2": 113633.18799999998,
+      "exact_total_q1": 107716,
+      "exact_total_q2": 113719,
+      "exact_abs_diff_total": 12809
+    },
+    {
+      "round": 3,
+      "view": "CITIZEN='Born in U.S' AND CLASSWKR='Wage/salary, private'",
+      "attr": "SEX",
+      "bins": [
+        "Female",
+        "Male"
+      ],
+      "noisy_h1": [
+        50241.525,
+        52815.493
+      ],
+      "noisy_h2": [
+        54326.408,
+        57292.103
+      ],
+      "exact_n": [
+        239734,
+        247280
+      ],
+      "exact_h1": [
+        50278,
+        52676
+      ],
+      "exact_h2": [
+        54317,
+        57253
+      ],
+      "hd_gamma": 0.03533638991315668,
+      "utility": 0.03533638991315668,
+      "n_candidates": 95,
+      "bins_clearing_2sigma": [
+        "Female",
+        "Male"
+      ],
+      "exact_share_q1": [
+        0.4884,
+        0.5116
+      ],
+      "exact_share_q2": [
+        0.4868,
+        0.5132
+      ],
+      "noisy_total_q1": 103057.01800000001,
+      "noisy_total_q2": 111618.511,
+      "exact_total_q1": 102954,
+      "exact_total_q2": 111570,
+      "exact_abs_diff_total": 8616
+    },
+    {
+      "round": 4,
+      "view": "SEX='Male'",
+      "attr": "CLASSWKR",
+      "bins": [
+        "Wage/salary, private",
+        "NIU",
+        "Local government employee",
+        "Self-employed, not incorporated",
+        "State government employee",
+        "Self-employed, incorporated",
+        "Federal government employee",
+        "Armed forces",
+        "Unpaid family worker"
+      ],
+      "noisy_h1": [
+        70667.842,
+        7975.96,
+        6109.764,
+        7481.717,
+        3871.207,
+        5262.539,
+        3266.688,
+        831.969,
+        44.765
+      ],
+      "noisy_h2": [
+        76510.474,
+        5941.245,
+        5338.573,
+        5771.425,
+        3573.752,
+        3549.311,
+        2684.863,
+        1866.054,
+        20.032
+      ],
+      "exact_n": [
+        315451,
+        136325,
+        22542,
+        30030,
+        15756,
+        18463,
+        12476,
+        5017,
+        170
+      ],
+      "exact_h1": [
+        70650,
+        8027,
+        6114,
+        7462,
+        3873,
+        5254,
+        3268,
+        849,
+        11
+      ],
+      "exact_h2": [
+        76474,
+        5916,
+        5341,
+        5747,
+        3584,
+        3512,
+        2726,
+        1865,
+        18
+      ],
+      "hd_gamma": 0.49877810287477836,
+      "utility": 0.49877810287477836,
+      "n_candidates": 94,
+      "bins_clearing_2sigma": [
+        "Wage/salary, private",
+        "NIU",
+        "Local government employee",
+        "Self-employed, not incorporated",
+        "State government employee",
+        "Self-employed, incorporated",
+        "Federal government employee",
+        "Armed forces"
+      ],
+      "exact_share_q1": [
+        0.6696,
+        0.0761,
+        0.0579,
+        0.0707,
+        0.0367,
+        0.0498,
+        0.031,
+        0.008,
+        0.0001
+      ],
+      "exact_share_q2": [
+        0.7271,
+        0.0562,
+        0.0508,
+        0.0546,
+        0.0341,
+        0.0334,
+        0.0259,
+        0.0177,
+        0.0002
+      ],
+      "noisy_total_q1": 105512.45100000002,
+      "noisy_total_q2": 105255.729,
+      "exact_total_q1": 105508,
+      "exact_total_q2": 105183,
+      "exact_abs_diff_total": 14019
+    },
+    {
+      "round": 5,
+      "view": "RELATE='Head/householder' AND CITIZEN='Born in U.S'",
+      "attr": "CLASSWKR",
+      "bins": [
+        "Wage/salary, private",
+        "NIU",
+        "Local government employee",
+        "Self-employed, not incorporated",
+        "State government employee",
+        "Self-employed, incorporated",
+        "Federal government employee",
+        "Armed forces",
+        "Unpaid family worker"
+      ],
+      "noisy_h1": [
+        57367.685,
+        11879.765,
+        8042.575,
+        5792.983,
+        5123.462,
+        3585.642,
+        3170.906,
+        404.945,
+        -31.328
+      ],
+      "noisy_h2": [
+        60475.174,
+        9908.028,
+        6860.035,
+        4466.618,
+        4431.103,
+        2387.275,
+        2723.816,
+        1041.082,
+        -5.398
+      ],
+      "exact_n": [
+        241120,
+        161038,
+        28326,
+        24178,
+        19605,
+        12997,
+        12041,
+        2625,
+        93
+      ],
+      "exact_h1": [
+        57365,
+        11860,
+        8042,
+        5767,
+        5085,
+        3637,
+        3202,
+        472,
+        24
+      ],
+      "exact_h2": [
+        60485,
+        9870,
+        6873,
+        4459,
+        4496,
+        2401,
+        2729,
+        1032,
+        18
+      ],
+      "hd_gamma": 0.5104456619688332,
+      "utility": 0.2552228309844166,
+      "n_candidates": 93,
+      "bins_clearing_2sigma": [
+        "Wage/salary, private",
+        "NIU",
+        "Local government employee",
+        "Self-employed, not incorporated",
+        "State government employee",
+        "Self-employed, incorporated",
+        "Federal government employee",
+        "Armed forces"
+      ],
+      "exact_share_q1": [
+        0.601,
+        0.1242,
+        0.0843,
+        0.0604,
+        0.0533,
+        0.0381,
+        0.0335,
+        0.0049,
+        0.0003
+      ],
+      "exact_share_q2": [
+        0.6549,
+        0.1069,
+        0.0744,
+        0.0483,
+        0.0487,
+        0.026,
+        0.0295,
+        0.0112,
+        0.0002
+      ],
+      "noisy_total_q1": 95336.63500000001,
+      "noisy_total_q2": 92287.73300000001,
+      "exact_total_q1": 95454,
+      "exact_total_q2": 92363,
+      "exact_abs_diff_total": 10451
+    }
+  ],
+  "timings": {
+    "view_stage_ms": 0.16058300002441683,
+    "explanation_stage_ms": 503.0902690000403,
+    "mechanism_ms": 503.2508520000647,
+    "cache_build_s": 12.128170387999944
+  },
+  "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
+}

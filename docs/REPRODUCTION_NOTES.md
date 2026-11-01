@@ -73,3 +73,26 @@ their distributional similarity to D (1 − TVD) is 0.931 and 0.713, so the
 | Re-check the `γ` paragraph | `results/e3/bin_stats.csv`, `gamma_sweep.csv` (the Eq. (12) value is at or near the peak of ApproxRatio on A1, A2; T1 is flat above it) |
 | Runtime of the CQA and StackOverflow pairs; end-to-end time incl. cache build | `results/e5/runtime_per_pair.csv` (`cache_build_s`, `private_ms`, `end_to_end_s`) |
 | Utility guarantees (Alon TODO in §4.2) | not addressed (theory) |
+
+## Contrast pairs (IPUMS-CPS, DPXPlain's questions)
+
+A contrast pair compares two disjoint sub-populations, Q1 = σ_φ1(D) and
+Q2 = σ_φ2(D) with φ1 ∧ φ2 unsatisfiable, neither derived from the other (the
+setting of contrast-set mining, emerging patterns, Sarawagi's DIFF operator,
+DIFF/MacroBase, Roy & Suciu, and DPXPlain).  The pairs I1–I17 are the group
+comparisons of DPXPlain's experiments on its IPUMS-CPS extract (I1 = its default
+question SEX Male vs Female; I2–I17 its control questions), with DPXPlain's
+aggregate AVG(INCTOT).
+
+Every view on an attribute mentioned by φ1 or φ2 is one-sided by construction
+(one output is empty in it), and that attribute's own histogram only restates
+the two groups; both are therefore excluded for contrast pairs
+(`exclude_group_attrs`, default for `kind: contrast`): the group attribute is
+neither a view attribute nor an explanation attribute (it stays a reference
+attribute of Rep).
+
+Open design point: HD_γ compares counts, so when the two groups differ much in
+size (e.g. I8, White 899k vs Black 136k) the score of a view grows with the size
+gap in every bin, not only with differences in distribution.  For contrasts a
+size-normalised variant may be the more natural object; refinement and CQA pairs
+are unaffected (their outputs overlap and the count difference is the change).

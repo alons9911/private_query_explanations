@@ -57,7 +57,7 @@ releases on them (`pqde run search`, then `pqde run cases`).
 |---|---|---|---|
 | Adult | UCI census extract (train + test); falls back to a GitHub mirror when UCI is unreachable | 48,842 | |
 | Tax | Tax benchmark of the data-cleaning literature (BigDaMa/raha copy, clean version) | 200,000 | the paper quotes N = 500,000; set `target_rows: 500000` in `configs/datasets.yaml` to up-sample (E4 does so for its N sweep) |
-| StackOverflow | Developer Survey 2024 (`survey_results_public.csv`) | ≈65k | if the official file cannot be downloaded, a **synthetic** generator with the same normalised schema is used and every output is flagged `synthetic` — put the CSV in `data/raw/stackoverflow/` to use the real survey |
+| IPUMS-CPS | the extract distributed with DPXPlain (Tao et al., PVLDB 2022), prepared exactly as DPXPlain does (2011–2019, 0 < INCTOT < 200k); used for the **contrast** pairs I1–I17 = DPXPlain's group comparisons | 1,146,552 | replaces the synthetic StackOverflow pairs S1–S3 (still loadable) |
 | Tax (dirty) | the same 200k tuples with injected errors (BigDaMa/raha `dirty.csv`), formatting differences normalised; FDs `Zip→City`, `Zip→State`, `(State, MaritalStatus)→Single/MarriedExemp`, `(State, HasChild)→ChildExemp`, `(State, Salary)→Rate` | 200,000 | used for the CQA case studies C1–C3 |
 | Hospital | HoloClean hospital benchmark (dirty), FDs `HospitalName→ZipCode`, `HospitalName→PhoneNumber`, `ZipCode→City` | 1,000 | categorical domains declared by the clean file; typos fall into `Other` |
 
