@@ -1,234 +1,328 @@
 \section{Experiments}
 \label{sec:experiments}
 
-This section evaluates the algorithm of Section~\ref{sec:solution} on real data.
-All results below were produced on the real UCI Adult extract ($N=48{,}842$) and the real Tax benchmark ($N=500{,}000$).
+We evaluate the algorithm of Section~\ref{sec:solution} on six real datasets and $45$ query pairs that cover the three settings of the paper: query refinement, consistent query answering, and contrasts between two subpopulations.
+Wherever possible the data, the constraints and the queries are those of earlier work on these problems, so that the pairs we explain are pairs that a refinement system, a repair benchmark or a private explanation system has already been run on.
+
+\alon{All numbers in this section were produced with the constants of the previous draft, $\gamma_R=N$ and the view-stage sensitivity $\Delta=7/(4|D|)$. They must be re-run under Eq.~(\ref{eq:gammaR-rule}), $\gamma_R=N/100$, and $\Delta=4/|D|$ of Proposition~\ref{prop:usefulness-sensitivity}. The code for the new constants is ready (commit 70cfa6f of the experiment repository); running times do not depend on the two constants, accuracy does.}
 
 \subsection{Experimental Goals}
 \label{subsec:experimental-goals}
 
 \begin{description}
-  \item[RQ1 -- Use cases.] Do the released explanations identify the semantic change a refinement actually makes, on the query pairs the paper motivates?
-  \item[RQ2 -- Scalability.] How does running time depend on $k$, $N$, $\epsilon$, $|\mathcal{P}|$, $\tau$, $\gamma$, and on the choice of algorithm?
-  \item[RQ3 -- Quality.] How close is the private algorithm to non-private references, measured against three separate baselines?
+  \item[RQ1 -- Use cases.] Do the released explanations tell an analyst something about the difference between $Q_1$ and $Q_2$ that the two queries and the constraint do not already say?
+  \item[RQ2 -- Quality.] How close is the private algorithm to non-private references, how does that depend on $\epsilon$ and $\gamma$, and which of the two stages limits it?
+  \item[RQ3 -- Scalability.] How does the end-to-end running time depend on $k$, $N$, $\epsilon$, $|\mathcal{P}|$, $\tau$ and $\gamma$, and what does privacy cost in time compared with the non-private baselines?
 \end{description}
 
 \subsection{Experimental Setup}
 \label{subsec:experimental-setup}
 
-\subsubsection{Datasets and Query Pairs}
+\subsubsection{Datasets}
 \label{subsubsec:datasets}
 
-\paragraph{Adult.} The real UCI Adult extract, $48{,}842$ records.
-We use two refinements, denoted Adult 6.7 (occupation broadening) and Adult 6.8 (education--hours), listed in Table~\ref{tab:query-pairs}.
-
-\paragraph{Tax.} The real Tax benchmark used in the data-cleaning literature, $500{,}000$ records, with the marital-status refinement denoted Tax 6.6 in Table~\ref{tab:query-pairs}.
-
-\paragraph{Not evaluated.}
-IPUMS-CPS and the Stack Overflow Developer Survey are not included in this pass, and the Hospital/CQA setting is not evaluated at all: the framework has only ever been exercised on query-refinement pairs, never on a repair-semantics pair, and doing so would additionally require implementing repair semantics.
-Section~\ref{sec:usecase-results} therefore substantiates the query-refinement use case only.
+Table~\ref{tab:datasets} lists the datasets.
+Numeric attributes are bucketed into six quantile bins and views are conjunctions of at most two atomic conditions ($\ell=2$); $|\mathcal{P}|$ counts every such view with at least one tuple.
 
 \begin{table}[t]
 \centering
 \small
-\caption{Query pairs, on the real data. Each $Q$ violates its representation constraint and each $Q'$ satisfies it.}
-\label{tab:query-pairs}
-\begin{tabular}{@{}llrrr@{}}
+\caption{Datasets, the setting each one is used for, and where its query pairs come from.}
+\label{tab:datasets}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lrrrlrl@{}}
 \toprule
-Pair & Constraint & $|Q|$ & $|Q'|$ & share in $Q\rightarrow Q'$ \\
+Dataset & $N$ & $|\Attrs|$ & $|\mathcal{P}|$ & Setting & Pairs & Pairs from \\
 \midrule
-Adult 6.7  & $\ge25\%$ female   & 5{,}447  & 37{,}155  & $4.7\%\rightarrow26.9\%$ \\
-Adult 6.8  & $\ge25\%$ female   & 3{,}055  & 2{,}453   & $19.5\%\rightarrow30.6\%$ \\
-Tax 6.6    & $\ge30\%$ HasChild & 145{,}576 & 291{,}659 & $3.5\%\rightarrow50.1\%$ \\
+Adult~\cite{adult-uci}            & 48{,}842    & 10 & 1{,}048 & refinement & 7  & Sec.~\ref{sec:introduction}, ours \\
+ACSIncome~\cite{DingHMS21}       & 1{,}664{,}500 & 10 & 914   & refinement & 10 & Erica~\cite{LMSJ23} \\
+Tax~\cite{BohannonFGJK07}        & 200{,}000   & 9  & 1{,}792 & refinement & 5  & ours \\
+Tax-dirty~\cite{MahdaviAFMOST19} & 200{,}000   & 9  & 1{,}977 & CQA        & 3  & rules of~\cite{NiMZWLY24} \\
+Hospital~\cite{rekatsinas2017}   & 1{,}000     & 10 & 502     & CQA        & 3  & ours \\
+IPUMS-CPS~\cite{TaoGMR22}        & 1{,}146{,}552 & 8 & 1{,}070 & contrast  & 17 & DPXPlain~\cite{TaoGMR22} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The Adult 6.8 figures reproduce the numbers quoted in Section~\ref{sec:introduction} ($19.5\%\rightarrow30.6\%$) exactly, on the real data.
+\paragraph{Query refinement.}
+\emph{ACSIncome} is the Folktables replacement of Adult~\cite{DingHMS21} and the dataset of the experiments of Erica~\cite{LMSJ23,ERICA}.
+We use the same extract, the four queries $Q_1$--$Q_4$ and the constraint sets $C_1$--$C_9$ of that paper, and take as $Q'$ one of the minimal refinements Erica itself returned, as stored with its artifacts; we decode the stored refinement vectors and check on the data that every decoded $Q'$ satisfies its constraints and that $Q$ violates them.
+Ten of the twelve (query, constraint set) combinations pass this check.\footnote{For $Q_1C_3$ and $Q_4C_9$ the order of the flags in the stored vectors is ambiguous, and no reading of it gives refinements that satisfy the constraints, so we leave them out.}
+When Erica returned several minimal refinements we keep the one whose effect is least visible from the query and the constraints: the largest change in the distribution of attributes that neither mentions.
+\emph{Adult} contributes the running example of Section~\ref{sec:introduction} (A2) and the occupation-broadening pair of the earlier draft (A1), and five pairs of our own whose $Q'$ we obtained with an Erica-style search for a minimal refinement under a gender, race or age representation constraint.
+\emph{Tax} is the synthetic tax generator of the data-cleaning literature~\cite{BohannonFGJK07}; we use the clean $200{,}000$-tuple file distributed with Raha~\cite{MahdaviAFMOST19} and five refinement pairs of our own under constraints on \texttt{HasChild} and on the share of non-zero tax rates.
+
+\paragraph{Consistent query answering.}
+For CQA we need a database that actually violates its constraints.
+\emph{Tax-dirty} is the dirty version of the same Tax file from Raha~\cite{MahdaviAFMOST19}, with the Tax rules distributed with the repair benchmark of Ni et~al.~\cite{NiMZWLY24}: $\texttt{Zip}\to\texttt{City}$, $\texttt{Zip}\to\texttt{State}$, $\texttt{FName}\to\texttt{Gender}$, $(\texttt{Phone},\texttt{Zip})\to\texttt{AreaCode}$ and three rules on exemptions.
+We drop one rule of that benchmark, $\texttt{AreaCode}\to\texttt{State}$: it was written for cell-level repair, and under the subset-repair semantics of Definition~\ref{def:consistent-answer} it puts $82\%$ of the tuples in conflict (every area code that occurs with a single misspelled state), which leaves almost nothing to answer.
+With the remaining seven rules $3.9\%$ of the tuples are in conflict, very unevenly: $52\%$ in Alaska, $29\%$ in Alabama, at most $13\%$ elsewhere.
+\emph{Hospital} is the dirty hospital file of HoloClean~\cite{rekatsinas2017} with the dependencies $\texttt{HospitalName}\to\texttt{ZipCode}$ and $\texttt{HospitalName}\to\texttt{PhoneNumber}$, which are among the constraints HoloClean distributes, and $\texttt{ZipCode}\to\texttt{City}$.
+In both datasets $Q_\Sigma(D)$ is computed with the conflict hypergraph~\cite{chomicki2004}: for a selection query it is $Q(D)$ without the tuples that take part in a conflict.
+We pick each CQA pair by one rule: a selection whose consistent answer drops between $10\%$ and $90\%$ of $Q(D)$, and drops it unevenly across the other attributes, since a uniform loss leaves nothing to explain.
+On Tax-dirty the selections are US Census divisions (C1--C3); on Hospital they are single-predicate selections on \texttt{HospitalType}, \texttt{EmergencyService} and \texttt{HospitalOwner} (H1--H3).
+
+\paragraph{Contrasts.}
+Explaining how two subpopulations differ is the classical problem of contrast-set and emerging-pattern mining~\cite{BayPazzani01,DongLi99}, and it is the question DPXPlain answers privately for an aggregate~\cite{TaoGMR22}.
+We use the IPUMS-CPS extract as prepared by DPXPlain ($1{,}146{,}552$ tuples) and all $17$ of its questions: its default question ($\texttt{SEX}=\texttt{Male}$ against $\texttt{Female}$) and its control questions on \texttt{RELATE}, \texttt{MARST}, \texttt{RACE}, \texttt{CITIZEN}, \texttt{CLASSWKR}, \texttt{AGE} and \texttt{EDUC}.
+The attribute that defines the two groups is removed from the views and from the explanation attributes of its pair: a view on it contains only one of the two outputs, and a histogram over it says only that the groups are different groups.
+
+\paragraph{Where each pair comes from.}
+Of the $45$ pairs, $27$ come from earlier work (ten from Erica, seventeen from DPXPlain), three from the earlier draft of this paper, and the rest from our own search (A3, R1--R4, T2, T3, R5, R6) or our selection rule (C1--C3, H2, H3).
+The repository lists the source of every pair.
+
+\subsubsection{Case-study pairs}
+Table~\ref{tab:case-pairs} lists the four pairs of Section~\ref{sec:usecase-results}, one per source of pairs and one per setting.
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{The four case-study pairs. $|Q_1|\rightarrow|Q_2|$ are output sizes on the real data.}
+\label{tab:case-pairs}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llp{4.6cm}p{3.5cm}p{3.6cm}r@{}}
+\toprule
+ID & Data (setting) & $Q_1$ & $Q_2$ & Constraint / source & $|Q_1|\rightarrow|Q_2|$\\
+\midrule
+A2 & Adult (refinement) & \texttt{education IN (Bachelors, Masters) AND hours$\ge$50} & \texttt{education = Masters AND hours$\ge$30} & $\ge25\%$ female ($19.5\%\rightarrow30.6\%$); Sec.~\ref{sec:introduction} & $3{,}055\rightarrow2{,}453$\\
+ACS1 & ACSIncome (refinement) & \texttt{WKHP$\ge$40 AND SCHL$\ge$19 AND COW IN (local, state, federal gov.)} & same, \texttt{COW} also \texttt{private for-profit} & $\ge48{,}884$ married women, $\ge15{,}719$ Black; Erica $Q_1C_1$~\cite{LMSJ23} & $141{,}100\rightarrow587{,}712$\\
+C1 & Tax-dirty (CQA) & \texttt{State IN (AK, CA, HI, OR, WA)} & $Q_\Sigma$ & Tax rules of~\cite{NiMZWLY24} & $18{,}729\rightarrow16{,}404$\\
+I1 & IPUMS-CPS (contrast) & \texttt{SEX = Male} & \texttt{SEX = Female} & DPXPlain default question~\cite{TaoGMR22} & $556{,}230$ / $590{,}322$\\
+\bottomrule
+\end{tabular}
+\end{table*}
 
 \subsubsection{Parameters}
 \label{subsubsec:parameters}
 
-Unless stated otherwise $k=5$, $\lambda=0.5$, $\epsilon=1$, and the budget is split equally, $(\epsilon_P,\epsilon_S,\epsilon_H)=(\epsilon/3,\epsilon/3,\epsilon/3)$; $\tau$ and $\gamma$ follow Eqs.~\eqref{eq:tau-rule} and~\eqref{eq:gamma-rule}, giving $\tau=15$ and $\gamma\approx150$ on both datasets.
-Equal shares is not an arbitrary default: sweeping the split over the three query pairs found no allocation that dominates it.
-Equal shares gave the lowest released-histogram error on all three, and the best selection quality on the hardest of them.
-Starving the view stage is the one clearly bad choice, since the explanation stage can only choose among the views that survive it: at $(0.10,0.55,0.35)$ the approximation ratio on Adult education-hours falls from $0.89$ to $0.57$.
-Moving budget the other way buys a few points of selection quality on that pair alone and costs histogram accuracy on all three.
-\alon{TODO: all numbers below were produced with $\tau=35$ and $\gamma=\lceil0.005N\rceil$ ($244$ for Adult, $2{,}500$ for Tax). They must be re-run under Eqs.~(\ref{eq:tau-rule}) and~(\ref{eq:gamma-rule}), \added{and now also under Eq.~(\ref{eq:gammaR-rule}), $\gamma_R=N/100$ in place of $\gamma_R=N$, with the view-stage sensitivity $\Delta=4/|D|$ of Proposition~\ref{prop:usefulness-sensitivity} in place of $7/(4|D|)$}. A first look on Adult education-hours, scored against a fixed yardstick so the comparison does not move with $\gamma$, put the new setting ahead of the old one, so the rerun is expected to improve rather than weaken the results.}
-\alon{TODO (experiment to add): measure the view stage in isolation. For each query pair and each $\epsilon_P$, report the overlap between the privately retained $\tau$ views and the exact top-$\tau$ by $\Use$, and the lowest $\Use$ actually retained against the true $\tau$-th best. A first look at Adult education-hours suggests the overlap is low at the budgets used here and rises sharply with $\epsilon_P$, which would explain why the view stage is the one that must not be starved (Section~\ref{subsubsec:parameters}) and would give Section~\ref{subsec:two-stages} the empirical counterpart to the utility guarantee it lacks.}
-
-Reported quantities average $40$ trials; this count is not incidental, as the between-trial standard deviation of set score is frequently comparable to its mean, and smaller counts cannot separate configurations reliably.
+Every experiment fixes the parameters it does not study to one default, chosen to be the realistic deployment rather than the favourable one: the whole dataset, every public view, $k=5$, $\lambda=0.5$, $\epsilon=1$ split equally between the three stages, and $\tau$ and $\gamma$ from Eqs.~\eqref{eq:tau-rule} and~\eqref{eq:gamma-rule}, which give $\tau=15$ and $\gamma\approx150$ on every dataset.
+When an experiment varies $k$, $\epsilon$ or $\tau$, the two derived constants follow their rules, because that is what the algorithm does; only the $\gamma$ experiment overrides Eq.~\eqref{eq:gamma-rule}, by a multiplier.
+Accuracy figures average $40$ private runs per point: the run-to-run standard deviation of the set score is often comparable to its mean, and fewer runs do not separate neighbouring configurations.
+Every timed run is end to end, from the raw data to the released histograms, and is stopped after $60$\,s; a stopped run is reported as a timeout.
+The running-time experiments use two to three pairs per dataset ($17$ in total), since running time hardly depends on the pair.
+All experiments ran single-threaded in Python with NumPy on a 4-core cloud machine with 16\,GB of memory.
 
 \subsection{Compared Methods}
 \label{subsec:compared-methods}
 
-We compare the algorithm of Section~\ref{sec:solution} against three baselines.
+No earlier system explains the difference between two query outputs privately, so, as in DPXPlain, we compare against references that each remove one ingredient of the algorithm.
 
 \begin{description}
-  \item[B1 --- $\epsilon\rightarrow\infty$.] The identical algorithm, run with a privacy budget large enough that every mechanism is numerically deterministic. Isolates the cost of privacy noise alone, holding the architecture fixed.
-  \item[B2 --- exhaustive optimum, non-private.] Enumerates \emph{all} size-$k$ subsets of the candidate explanations, scores each with the set-level objective of Definition~\ref{def:setobj}, and returns the maximiser.
-  \item[B3 --- greedy, non-private.] Takes the top-$\tau$ views by $Usefulness$ with no privacy mechanism, then performs $k$ rounds selecting the best remaining histogram with no privacy mechanism.
+  \item[\Bone{} --- no noise.] The same algorithm with every mechanism made deterministic ($\epsilon\rightarrow\infty$ in the mechanisms, while $\tau$ and $\gamma$ keep their values). The gap to \Bone{} is the cost of the noise alone.
+  \item[\Btwo{} --- exhaustive optimum.] Takes the exact top-$\tau$ views by $\Use$, scores every size-$k$ subset of their candidates with $F_\lambda$, and returns the best. The full space is too large ($\binom{150}{5}\approx6\times10^{8}$ subsets on Adult), but the optimum lies within the top $k$ candidates of each attribute: a set that used a candidate outside the top $k$ of its attribute could swap in an unused higher-scoring candidate of the same attribute without lowering $F_\lambda$. The pool therefore has $k\,|\Attrs|$ candidates, and \Btwo{} enumerates $\binom{k|\Attrs|}{k}$ subsets.
+  \item[\Bthree{} --- non-private greedy.] The exact top-$\tau$ views by $\Use$, then $k$ greedy rounds with no noise.
+  \item[\textsf{OptPrivExpl}.] The private algorithm with a different computation of the statistics, used only in the running-time experiments: the counts of all views that constrain the same set of attributes are computed in one grouped pass, and the explanation histograms of the retained views in one combined pass. It releases exactly what the private algorithm releases with the same randomness, so it does not change the privacy analysis. Every other experiment uses the direct route of Section~\ref{subsec:complexity-analysis}.
 \end{description}
 
-B2 is exponential in $k$: with $\tau=35$ views and $10$ attributes the candidate space holds $350$ explanations and $\binom{350}{5}\approx5\times10^{11}$ subsets, which is not enumerable.
-It is nevertheless computed \emph{exactly}, by restricting the search to the union over attributes of the top-$k$ candidates of each attribute group.
-That restriction is lossless: if an optimal set contained a candidate outside the top-$k$ of its own group, some higher-scoring member of that group would be unused, and swapping it in cannot decrease $F_\lambda$, which is non-decreasing in the score of every member.
-The pool is therefore $k\,|Attrs|=50$ candidates and $\binom{50}{5}\approx2.1\times10^{6}$ subsets, and B2 is the true optimum of the $\tau$-filtered space rather than an approximation to it.
-
-\paragraph{Scoring.}
-All four methods are scored on their output \emph{set} under one common yardstick: the paper's own objective, Definition~\ref{def:hd} with $\gamma_{\text{eval}}=0$, combined with the set-level utility of Definition~\ref{def:setobj}.
-This is deliberate. Smoothing is a mechanism-internal device, and allowing it to define the metric as well would make the comparison circular; scoring at $\gamma_{\text{eval}}=0$ means the algorithm is judged by the standard of the unmodified paper even though it selects under smoothing.
+\paragraph{Metrics.}
+All methods are scored on their output set with one yardstick, $F_\lambda$ of Definition~\ref{def:setobj} with the unsmoothed $\HD$ ($\gammaeval=0$): smoothing is a device of the mechanism, and letting it define the metric too would make the comparison circular.
+The ApproxRatio is $F_\lambda$ of the released set divided by $F_\lambda$ of the baseline's set.
+A ratio says how good the released set is, not whether it is the same set, so we also report three set-overlap measures against the baseline's $k$ explanations: \emph{precision@k}, the share of the baseline's (view, attribute) pairs that the released set contains; the Jaccard index of the two sets; and \emph{attribute precision}, the overlap of the two multisets of explained attributes, which gives credit for explaining the right attribute inside a different view.
 
 \subsection{Use Case Results}
 \label{sec:usecase-results}
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/U1_constraint_premise.png}
-\caption{Each original query violates its representation constraint (dashed line) and each refined query satisfies it, on the real data.}
-\label{fig:premise}
-\end{figure}
+Each figure below shows explanations of one released run at the defaults ($\epsilon=1$, $k=5$), not chosen among runs.
+Bars are the released noisy histograms; the black ticks are the exact counts, drawn for the reader and never released.
+To keep the panels readable each shows the bins with the largest exact difference.
 
-Figure~\ref{fig:premise} establishes the premise: on real data all three refinements do what the motivating examples claim.
-Figures~\ref{fig:rel-tax}--\ref{fig:rel-adult-edu} show the differentially private explanations the algorithm releases for each pair at $\epsilon=1$, $k=5$.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/U2_released_tax_marital.png}
-\caption{Tax 6.6 --- released differentially private explanations.}
-\label{fig:rel-tax}
-\end{figure}
-
-For Tax the refinement removes the predicate $\texttt{MaritalStatus}=\texttt{'M'}$.
-The algorithm recovers exactly that subgroup: three of the five released explanations are conditioned on $\texttt{MaritalStatus}=\texttt{'S'}$, the population the refinement mechanically introduces, with a shift of $-85{,}178$ tuples concentrated in the lowest \texttt{Rate} bucket.
-The framework is never given the query predicates.
+\paragraph{Adult: what the running example actually changes (A2).}
+The refinement of Section~\ref{sec:introduction} replaces \texttt{Bachelors} by \texttt{Masters} and lowers the hours threshold from $50$ to $30$, and the female share rises from $19.5\%$ to $30.6\%$.
+Reading the two queries, one would credit the education predicate.
+The release points to the hours threshold instead (Figure~\ref{fig:case-a2}).
+Among white holders of a master's degree, $Q$ has no one in the $32$--$40$ hour band and $Q'$ has $999$; the released counts, $61$ and $985$, leave no doubt about it.
+The same population moves in occupation and marital status: professional-specialty workers more than triple while executives only double, and the never-married grow from $165$ to $584$.
+This is the change the introduction describes: a population of long-hour, managerial, mostly married workers is replaced by a regular-hours, professional and more often unmarried one, and the female share rises as a consequence.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/U2_released_adult_occupation.png}
-\caption{Adult 6.7 --- released differentially private explanations.}
-\label{fig:rel-adult-occ}
+\includegraphics[width=\linewidth]{figures/exp/case_a2.pdf}
+\caption{A2 (Adult, the running example): three of the five released explanations.}
+\label{fig:case-a2}
 \end{figure}
+
+\paragraph{ACSIncome: a refinement from Erica (ACS1).}
+Erica satisfies the constraints on married women and Black workers by adding private-sector employees to a query over full-time government employees with some college education.
+The output grows from $141{,}100$ to $587{,}712$, which is expected; what the queries and the constraints do not say is what kind of workers arrive.
+Among holders of an associate's or bachelor's degree the release shows the occupational mix turning over (Figure~\ref{fig:case-acs}): sales workers grow from $482$ to $31{,}200$, a factor of $65$, against a factor of $4.3$ for office support and $7.7$ for management.
+A query about public-sector workers has become, for this education group, largely a query about salespeople, and an analyst comparing average incomes across the two outputs should know that before attributing the difference to the sector.
+At this size the noise, about $30$ tuples per bin, is invisible.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/U2_released_adult_education_hours.png}
-\caption{Adult 6.8 --- released differentially private explanations.}
-\label{fig:rel-adult-edu}
+\includegraphics[width=\linewidth]{figures/exp/case_acs.pdf}
+\caption{ACS1 (ACSIncome, Erica's $Q_1C_1$): two released explanations. \texttt{SCHL IN (19, 21]} is an associate's or bachelor's degree; SRO is sales, OASO office support, MBSA management.}
+\label{fig:case-acs}
 \end{figure}
 
-For Adult 6.7 the released explanations are dominated by shifts \emph{within} $\texttt{race}=\texttt{'White'}$ across \texttt{occupation}, \texttt{education} and \texttt{workclass}, showing that broadening a narrow occupational query changes the occupational and educational composition of the result rather than merely enlarging it.
-For Adult 6.8 the explanations localise on $\texttt{education}=\texttt{'Bachelors'}$ subgroups, which is the population the refinement removes when it restricts education to \texttt{Masters}.
-
-These are the un-cherry-picked outputs of a single run at the default parameters.
-
-\subsection{Scalability}
-\label{subsec:scalability}
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/S1_scalability_grid.png}
-\caption{Running time of the algorithm. Panels (b) and (d) separate the one-off cache build, which carries the $O(N)$ and $O(|\mathcal{P}|)$ work, from the per-invocation mechanism cost.}
-\label{fig:scalability}
-\end{figure*}
-
-Figure~\ref{fig:scalability} reports the six sweeps.
-
-\paragraph{$k$, $\tau$, $|\mathcal{P}|$.}
-Running time is linear in $k$ ($4.6$\,ms at $k=1$ to $36.3$\,ms at $k=40$) and in $\tau$, matching the $O(k\tau m b)$ term of Section~\ref{subsec:complexity-analysis}.
-Expressed as a fraction of $|\mathcal{P}|$, moving $\tau$ from $5\%$ to $10\%$ doubles per-round cost ($11.1$\,ms to $19.9$\,ms) and from $5\%$ to $40\%$ multiplies it sevenfold.
-
-\paragraph{$N$ and $|\mathcal{P}|$.}
-The per-invocation cost is essentially flat in $N$ ($7.7$--$8.3$\,ms across a tenfold range), because the $O(N)$ work is confined to the one-off preprocessing, which grows from $16.7$\,s to $23.2$\,s over the same range.
-Panels (b) and (d) plot both; presenting only the per-run curve on an autoscaled axis would turn a sub-millisecond spread into an apparent trend.
-
-\paragraph{$\epsilon$ and $\gamma$.}
-Running time is invariant to both ($7.8$--$8.2$\,ms across $\epsilon\in[0.1,5]$, and $7.9$--$8.3$\,ms across $\gamma$ from $0\%$ to $5\%$ of $N$).
-For $\epsilon$ this is the expected result and confirms no budget-dependent overhead.
-For $\gamma$ it is a consequence of the caching described in Section~\ref{subsec:complexity-analysis}: $\gamma$ enters only the denominator, so changing it costs nothing.
-This is what makes re-scoring at a different $\gamma$ free in running time as well as in privacy.
-
-\subsubsection{Running Time by Algorithm}
-\label{subsec:runtime-algorithm}
+\paragraph{Tax-dirty: the consistent answer is not a random sample (C1).}
+Over the five Pacific states, $\texttt{AVG(Rate)}$ is $4.74$ on $Q(D)$ and $5.23$ on $Q_\Sigma(D)$, although the consistent answer only drops $12\%$ of the tuples.
+Two released explanations account for the whole difference (Figure~\ref{fig:case-c1}).
+The first two panels show that the dropped tuples are not spread over the states: Alaska loses about half of its taxpayers, the other four states at most $7\%$.
+The third shows where the dropped tuples sat in the rate distribution: the lowest rate bucket shrinks by $22\%$, the top one by $2.5\%$.
+The two facts connect, because Alaska has no state income tax and every Alaskan tuple has rate $0$.
+The repair semantics, not the taxpayers, moved the average: half of Alaska's tuples take part in some violation of the dependencies, and the consistent answer removes, disproportionately, the state with the lowest rates. An analyst who sees only the two averages has no way to know this.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/S2_runtime_by_algorithm.png}
-\caption{Per-invocation cost of each method, and the combinatorial blow-up of the exhaustive baseline B2.}
-\label{fig:runtime-algorithm}
+\includegraphics[width=\linewidth]{figures/exp/case_c1.pdf}
+\caption{C1 (Tax-dirty, Pacific division, $Q$ against its consistent answer $Q_\Sigma$): three released explanations.}
+\label{fig:case-c1}
 \end{figure}
 
-The private algorithm ($8.1$\,ms), B1 ($8.4$\,ms) and B3 ($6.3$\,ms) are all within a small constant of one another: privacy costs essentially nothing in running time, since the exponential mechanism replaces an $\arg\max$ over the same scores.
+\paragraph{IPUMS-CPS: where the income gap lives (I1).}
+DPXPlain's default question asks why the average income of men is higher than that of women.
+The release finds the gap among married white respondents (Figure~\ref{fig:case-i1}): in the top income bucket there are $84{,}299$ men and $32{,}294$ women, in the bottom bucket $11{,}638$ men and $50{,}356$ women.
+A second explanation gives one reason: among respondents outside the labour force, more than twice as many women as men are the householder's spouse ($46{,}532$ against $21{,}129$).
+DPXPlain answers the same question with a ranked list of predicates for the aggregate; the histograms here show the shape of the difference rather than its size alone.
 
-B2 is different in kind.
-On a $20$-candidate pool it takes $0.41$\,s; at $30$, $3.6$\,s; at $40$, $16.5$\,s; at $45$, $30.0$\,s --- a $73\times$ increase for a $2.25\times$ increase in pool size, tracking $\binom{|C|}{5}$.
-On the lossless $50$-candidate pool it takes $57$\,s, versus $8$\,ms for the private algorithm.
-Enumerating the unrestricted $350$-candidate space would take on the order of months, which is why the losslessness argument above is needed rather than optional, and why the selection is run greedily: by Proposition~\ref{prop:greedy-exact} that costs nothing in quality.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/exp/case_i1.pdf}
+\caption{I1 (IPUMS-CPS, men against women): two released explanations. \texttt{CLASSWKR=NIU}: not in the labour force.}
+\label{fig:case-i1}
+\end{figure}
+
+\paragraph{When the data is too small: Hospital.}
+The Hospital pairs show the other side.
+In H1 the consistent answer keeps $93$ of $968$ tuples: nearly every hospital takes part in some conflict, so there is little structure to find, and the file is itself almost all Alabama ($923$ of the $968$ tuples), which is the view the algorithm returns.
+With $N=1{,}000$ the bins hold a handful of tuples, and Laplace noise of scale $2k/\epsilon_H=30$ per bin swamps most of them; only the largest differences, such as Birmingham dropping from $73$ to $5$ hospitals, survive the release.
+Section~\ref{subsec:quality} shows that the view stage suffers too.
 
 \subsection{Quality}
 \label{subsec:quality}
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/Q1_approxratio_vs_baselines.png}
-\caption{ApproxRatio of the algorithm against each baseline, scored on the paper's own objective ($\gamma_{\text{eval}}=0$), $40$ trials per point.}
+\includegraphics[width=\linewidth]{figures/exp/runtime_grid.pdf}
+\caption{End-to-end running time, one row per dataset (mean over its runtime pairs), one column per varied parameter; all other parameters at the defaults. A cross marks a run stopped at the $60$\,s limit.}
+\label{fig:scalability}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/exp/runtime_methods.pdf}
+\caption{Left: end-to-end time of each method at the defaults (mean over the runtime pairs of each dataset). Right: \Btwo{} end to end against the size of its candidate pool.}
+\label{fig:runtime-methods}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/exp/quality.pdf}
+\caption{Quality of the released set against the baselines, averaged over the pairs of each dataset (number of pairs in parentheses), $40$ runs per point. Top: against the privacy budget. Bottom: against $\gamma$, as a multiple of the value of Eq.~\eqref{eq:gamma-rule} at $\epsilon=1$. Dashed vertical lines mark the defaults. \Btwo{} and \Bthree{} coincide.}
 \label{fig:quality}
 \end{figure*}
 
 \begin{table}[t]
 \centering
 \small
-\caption{ApproxRatio against each baseline at $\epsilon=1$ and $\epsilon=5$.}
+\caption{Quality at the defaults ($\epsilon=1$), averaged over the pairs of each dataset, against \Btwo{}/\Bthree{} unless marked.}
 \label{tab:quality}
-\begin{tabular}{@{}lcccccc@{}}
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}lccccc@{}}
 \toprule
-& \multicolumn{3}{c}{$\epsilon=1$} & \multicolumn{3}{c}{$\epsilon=5$}\\
-\cmidrule(lr){2-4}\cmidrule(lr){5-7}
-Pair & B1 & B2 & B3 & B1 & B2 & B3\\
+Dataset & Ratio vs \Bone{} & Ratio & Attr.\ prec. & Prec.@$k$ & Jaccard\\
 \midrule
-Adult 6.7 & 0.883 & 0.875 & 0.875 & 0.950 & 0.941 & 0.941\\
-Adult 6.8 & 0.691 & 0.612 & 0.612 & 0.950 & 0.842 & 0.842\\
-Tax 6.6   & 0.931 & 0.901 & 0.901 & 0.995 & 0.963 & 0.963\\
+Adult      & 1.02 & 0.95 & 0.80 & 0.40 & 0.29\\
+ACSIncome  & 0.80 & 0.80 & 0.70 & 0.49 & 0.36\\
+Tax        & 0.97 & 0.96 & 0.82 & 0.55 & 0.41\\
+Tax-dirty  & 0.65 & 0.64 & 0.57 & 0.15 & 0.09\\
+Hospital   & 0.73 & 0.63 & 0.57 & 0.15 & 0.09\\
+IPUMS-CPS  & 0.91 & 0.91 & 0.87 & 0.34 & 0.23\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-At the default $\epsilon=1$ the algorithm attains $0.88$--$0.93$ of the $\epsilon\rightarrow\infty$ reference on two of the three pairs and $0.88$--$0.90$ of the exhaustive optimum, rising to $0.94$--$1.00$ and $0.94$--$0.96$ respectively at $\epsilon=5$.
-Adult 6.8 is the hardest pair and the only one that degrades sharply at small $\epsilon$ ($0.11$ against B1 at $\epsilon=0.1$); it is also the pair whose top candidates are most tightly bunched, so the exponential mechanism has the least separation to exploit.
+Figure~\ref{fig:quality} and Table~\ref{tab:quality} summarise the $45$ pairs.
+At the default budget the released set reaches $0.95$ and $0.96$ of the optimum on Adult and Tax, $0.91$ on IPUMS-CPS and $0.80$ on ACSIncome; the two CQA datasets are the hard cases, at $0.63$--$0.64$.
+\Btwo{} and \Bthree{} return sets of exactly the same score on every pair and at every $\epsilon$, so non-private greedy is optimal on the $\tau$-filtered candidates, as Proposition~\ref{prop:greedy-exact} predicts; we report them as one line.
+Four findings deserve comment.
 
-Two observations are worth isolating.
+\paragraph{A good set is not the same set.}
+The ApproxRatio and the overlap measures tell different stories.
+On Adult the released set scores $0.95$ of the optimum but contains on average only $40\%$ of the optimum's explanations; on IPUMS-CPS $0.91$ against $34\%$.
+The reason is that the leading candidates are nearly tied.
+A view and its refinements by one more predicate, such as $\texttt{race}=\texttt{White}$ and $\texttt{race}=\texttt{White}\wedge\texttt{gender}=\texttt{Male}$, explain the same attribute with almost the same histogram distance, and the exponential mechanism has no reason to prefer one of them; on Adult the relative gap between the best and second-best candidate is under $2\%$ for a typical pair.
+Attribute precision, which forgives the choice of view, stays at $0.80$--$0.87$ on these datasets: the release usually explains the right attributes, through a neighbouring view.
+For an analyst this is the relevant guarantee, but it has a practical consequence that ApproxRatio hides: two runs on the same pair return different, equally valid, explanation sets, and a user who compares runs should be told so.
+It also suggests that ApproxRatio alone, the measure used by earlier private explanation work, flatters any method whose candidate space contains many near-duplicates.
 
-First, \textbf{B2 and B3 coincide exactly on all three query pairs} (Figure~\ref{fig:absolute}): the non-private greedy procedure attains the true optimum of the $\tau$-filtered space, not merely an approximation to it.
-This is what Proposition~\ref{prop:greedy-exact} predicts: on a fixed candidate set and a fixed $\gamma$ greedy returns the exact maximiser, so the two references answer the same question here.
-The measurement confirms it on real instances rather than establishing it.
+\paragraph{Noise sometimes helps.}
+On Adult the ratio against \Bone{} exceeds $1$ at $\epsilon=0.5$ and $\epsilon=1$: the noisy algorithm finds better sets, by the paper's own unsmoothed measure, than the same algorithm without noise.
+The two objectives differ.
+\Bone{} maximises $\HD_\gamma$ with $\gamma\approx150$, and on Adult that $\gamma$ exceeds the count of $79\%$ of the non-empty bins, so the smoothed score favours candidates with large bins over candidates with sharp changes in small ones.
+Noise occasionally lands on the latter, and the unsmoothed yardstick rewards it.
+The effect is a measure of how far smoothing moves the target on a dataset with small bins, and it disappears on the large datasets, where \Bone{} and the optimum coincide.
 
-Second, the ratio against B2/B3 is consistently slightly below the ratio against B1.
-B1 holds the architecture fixed and removes only the noise, so it isolates the cost of privacy; B2/B3 remove the noise \emph{and} search without a privacy-imposed $\tau$ budget, so the residual gap to them also includes what the mechanism gives up by having to select views privately at all.
-Reporting both separates those two costs.
+\paragraph{More data does not help the second stage.}
+On ACSIncome and IPUMS-CPS the curves flatten early: from $\epsilon=1$ to $\epsilon=5$ the ratio moves from $0.80$ to $0.84$ and from $0.91$ to $0.92$, while Adult and Tax close their gap.
+The view stage is not the cause.
+Figure~\ref{fig:view-stage} measures it in isolation, as the overlap between the $\tau$ views it retains and the exact top-$\tau$ by $\Use$: at the default $\epsilon_P$ the overlap is $0.94$ or higher on every dataset except Hospital, and it is $0.98$ on IPUMS-CPS even at $\epsilon_P=0.03$.
+That is the sensitivity of $\Use$ at work, which shrinks as $1/N$.
+The second stage has no such help.
+The sensitivity of $\HD_\gamma$ is $1/(1+\gamma)$ whatever the size of the data (Proposition~\ref{prop:hd-sensitivity}), and the distance it measures is relative, so a million tuples give the exponential mechanism no more separation between two candidates than fifty thousand do.
+What decides the second stage is the margin between the leading candidates, and that is a property of the pair, not of $N$.
+The two stages therefore fail in different regimes: the first on small data, the second on pairs whose best explanations are close, at any size.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/Q2_absolute_scores.png}
-\caption{Absolute set scores at $\epsilon=1$. B2 and B3 coincide exactly: non-private greedy attains the exhaustive optimum on every pair.}
-\label{fig:absolute}
+\includegraphics[width=\linewidth]{figures/exp/view_stage.pdf}
+\caption{The view stage alone: overlap between the $\tau$ retained views and the exact top-$\tau$ by $\Use$, averaged over the pairs of each dataset ($40$ runs per point).}
+\label{fig:view-stage}
 \end{figure}
+
+\paragraph{Where CQA is hard, and why.}
+Hospital is the one dataset on which the view stage fails: at the default budget only $15\%$ of the retained views belong to the exact top-$\tau$, and $\epsilon_P=10$ is needed to reach $0.89$.
+With $N=1{,}000$ the noise of the one-shot top-$\tau$ is large against the differences in $\Use$ between views, and the second stage then chooses among the wrong views.
+Tax-dirty has the opposite profile: the view stage is accurate ($0.94$) but the ratio is $0.64$.
+Here the differences themselves are small.
+The conflicts are concentrated in a few states, so inside most views $Q_\Sigma$ is $Q$ minus a thin, even slice, and the best candidate of a typical pair has $\HD_\gamma=0.61$, less than the $2\Delta\ln|C_i|/\epsilon_i\approx0.96$ within which the exponential mechanism guarantees to land; on the other datasets the best candidate scores $3.4$ to $13$, several times that bound.
+The second stage is then close to a uniform choice among reasonable candidates, which is what the ratio of $0.64$ and the precision@k of $0.15$ say.
+The difficulty comes from the size of the difference rather than from its CQA origin: Tax, a refinement dataset on the same schema, is the easiest of the six.
+
+\paragraph{Budget split.}
+We repeated the accuracy experiment with five splits of $\epsilon$ between the three stages.
+The ratio varies little: from $0.84$ to $0.87$ for every split that gives the view stage at least a tenth of the budget, with equal shares at $0.86$; giving it $5\%$ is the one clearly worse choice ($0.81$).
+Equal shares is therefore a safe default rather than a tuned one.
 
 \subsubsection{The $\gamma$ Trade-off}
 \label{subsec:gamma-tradeoff}
 
-Smoothing is not free, and the cost is worth stating precisely.
-$\gamma$ competes against the size of individual histogram \emph{bins}, and the bin-count distribution relative to $|D|$ differs sharply between datasets: the median non-empty bin holds $20$ tuples on Adult but $3{,}897$ on Tax, a factor of $200$ despite only a factor of $10$ in $N$.
-Consequently the same "fraction of $N$" rule lands in very different regimes.
-At $\gamma=0.5\%$ of $N$, $\gamma$ exceeds the bin count for $84\%$ of Adult bins but only $30\%$ of Tax bins; at $5\%$ of $N$ it exceeds $98\%$ and $94\%$ respectively, at which point the median ratio $m_v/(m_v+\gamma)$ falls to $0.008$ on Adult and $HD_\gamma$ has effectively stopped measuring \emph{relative} change at all.
+The bottom row of Figure~\ref{fig:quality} varies $\gamma$ from $0$ to $30$ times the value of Eq.~\eqref{eq:gamma-rule}.
+Without smoothing the algorithm does not work at these budgets: averaged over all pairs the ratio is $0.40$ at $\gamma=0$, against $0.86$ at the default.
+Eq.~\eqref{eq:gamma-rule} lands on the best value on Adult, where the ratio peaks at the default and falls on both sides, and on Hospital the curve is flat around it.
+On the datasets with large bins it is too small: the best value is three times the default on Tax and Tax-dirty and ten times on ACSIncome and IPUMS-CPS, and averaged over all pairs $3\times$ gives $0.91$ against $0.86$.
+The reason is that Eq.~\eqref{eq:gamma-rule} depends on $\tau$, $|\Attrs|$, $k$ and $\epsilon_S$ but not on the data, while what $\gamma$ competes with is the size of a bin.
+The median non-empty bin holds $20$ tuples on Adult but $229$ on IPUMS-CPS, $883$ on ACSIncome and $898$ on Tax, and the default $\gamma\approx150$ exceeds the count of $79\%$ of the bins on Adult but of only $5\%$ on Tax.
+On Tax it is therefore almost no smoothing at all, and the exponential mechanism pays the full sensitivity without the benefit.
+A rule that also scales with a public proxy for the bin size, such as $N/b$, would fix the large datasets without hurting the small ones; we leave its analysis to future work.
+Precision@k shows the same optimum, so the gain is not an artefact of the ratio.
 
-The pre-registered rule of Section~\ref{subsubsec:parameters} is therefore defensible but crude, and $\gamma$ at $5\%$ of $N$ would be clearly too aggressive.
-A sharper anchor follows from Proposition~\ref{prop:hd-sensitivity}: the separation available to the exponential mechanism scales as $\epsilon\,\delta u\,(1+\gamma)/2$, so the $\gamma$ actually required is governed by the \emph{margin} between the leading candidates rather than by $N$.
-Measured on the three pairs, that margin is $0.027$, $0.121$ and $0.315$ respectively, implying required $\gamma$ of roughly $292$, $66$ and $25$ --- an ordering unrelated to dataset size, and inverted with respect to it.
+\subsection{Scalability}
+\label{subsec:scalability}
+
+Figure~\ref{fig:scalability} varies one parameter at a time on every dataset.
+The private algorithm is linear in $N$ and in $|\mathcal{P}|$ and flat in $k$, $\epsilon$ and $\gamma$, as the complexity analysis of Section~\ref{subsec:complexity-analysis} predicts: $97$--$98\%$ of its time is the pass that computes $\Use$ for every view, which depends on neither $k$ nor $\epsilon$, and the $k$ selection rounds take milliseconds.
+$\tau$ matters only through the explanation histograms of the retained views and adds $10\%$ on ACSIncome at $\tau=120$.
+
+\paragraph{Privacy is free; exhaustiveness is not.}
+\Bone{}, \Bthree{} and the private algorithm are within $0.5\%$ of one another on every pair: they share the expensive pass, and the exponential mechanism replaces an $\arg\max$ over the same scores.
+\Btwo{} is different in kind.
+At $k\le3$ it is as fast as the others, at $k=5$ it adds a few seconds (from $0.7$\,s to $2.4$\,s on Adult, from $0.1$\,s to $1.6$\,s on Hospital), and at $k=7$ it hits the time limit on every dataset, because its pool grows from $50$ to $70$ candidates and the number of subsets from $2.1\times10^{6}$ to $1.2\times10^{9}$.
+Since \Bthree{} returns the same sets as \Btwo{} wherever both finish, the exhaustive search buys nothing; the case for greedy selection is not only that it is fast but that, by Proposition~\ref{prop:greedy-exact}, it loses nothing.
+
+\paragraph{The cost is the statistics, and it can be cut.}
+Since the private algorithm spends almost all its time computing statistics, that is where an optimisation pays.
+\textsf{OptPrivExpl} computes the same statistics in grouped passes and is $5.7$--$11.7\times$ faster end to end (median $8.9\times$; Figure~\ref{fig:runtime-methods}), from $25.8$\,s to $4.0$\,s on ACSIncome and from $14.0$\,s to $2.2$\,s on IPUMS-CPS.
+It released exactly the same output as the private algorithm in all $95$ runs we compared ($19$ pairs, $5$ runs each, same randomness), as it must, since it only changes how exact counts are computed.
+Its cost has a different shape, which Figure~\ref{fig:scalability} shows: it is nearly flat in $|\mathcal{P}|$, because it pays per set of constrained attributes rather than per view, and it grows with $\tau$, because the explanation histograms are now a visible part of its cost.
+At $10\%$ of the views it is no faster than the direct route on ACSIncome, since there are few views per attribute set to share a pass; the gain comes with the realistic case of many views.
 
 \subsection{Summary of Findings}
 \label{subsec:experiments-summary}
 
-Running time is linear in $k$, $\tau$ and $|\mathcal{P}|$, invariant to $\epsilon$ and $\gamma$, and independent of $N$ once preprocessing is amortised; privacy adds no measurable cost relative to the non-private greedy baseline, while the exhaustive baseline is intractable beyond a few dozen candidates.
-On quality the algorithm reaches $0.88$--$0.93$ of the $\epsilon\rightarrow\infty$ reference at the default budget and $0.95$--$1.00$ at $\epsilon=5$, judged by the paper's own unsmoothed objective; non-private greedy attains the exhaustive optimum exactly on all three pairs, as Proposition~\ref{prop:greedy-exact} predicts.
-The use cases show that the released explanations localise the population a refinement adds or removes without being given the query predicates --- most sharply on Tax, where three of five released explanations recover exactly the subgroup the dropped predicate introduces.
-The principal caveat is the choice of $\gamma$: it is what makes private selection work at these budgets, but anchoring it to a fraction of $|D|$ is a crude proxy for the quantity that actually determines it.
+The released explanations exposed, in every setting, a change that neither the queries nor the constraint states: a refinement on Adult that works through the hours threshold rather than education, an Erica refinement that turns a public-sector query into one dominated by salespeople, a consistent answer whose average tax rate rises because the repair removes the one state without income tax, and an income gap concentrated among married respondents.
+Against the non-private optimum the released sets reach $0.80$--$0.96$ of its score on the four non-CQA datasets at $\epsilon=1$, while containing only a third to a half of its explanations, because the best candidates are near-ties; attribute precision shows that the right attributes are explained nonetheless.
+The view stage scales with $N$ and is accurate everywhere but on the $1{,}000$-tuple Hospital file; the explanation stage does not scale with $N$ and is limited by the margin between candidates, which is why the two CQA datasets, whose differences are small or whose data is small, are the hard cases.
+The $\gamma$ of Eq.~\eqref{eq:gamma-rule} is near-optimal on data with small bins and too small, by a factor of three to ten, on data with large bins.
+Privacy costs nothing in running time, greedy selection costs nothing in quality, and the exhaustive alternative stops being feasible at $k=7$; computing the statistics in grouped passes makes the whole pipeline about nine times faster with identical output.

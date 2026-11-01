@@ -17,6 +17,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
+from matplotlib.ticker import FuncFormatter, LogLocator, NullFormatter  # noqa: E402
 
 from . import plotting as P  # noqa: E402  (palette and base style)
 from .experiments import e4_scalability  # noqa: E402
@@ -175,14 +176,17 @@ def _rt_panel(ax, sub: pd.DataFrame, x: str, logx: bool, limit: float):
         _logx(ax, sub[x])
 
 
-def fig_runtime_grid() -> Path:
-    raw = pd.read_csv(RES / "e4" / "raw" / "runtime.csv")
+def fig_runtime_grid(raw_path: Path | None = None) -> Path:
+    raw = pd.read_csv(raw_path or RES / "e4" / "raw" / "runtime.csv")
     pts = e4_scalability.points(_drop(raw))
     limit = float(json.loads((RES / "e4" / "metadata.json").read_text()).get("timeout_s", 60)) \
         if (RES / "e4" / "metadata.json").exists() else 60.0
     dss = _datasets(pts)
     sweeps = [s for s in SWEEPS if s[0] in set(pts.sweep)]
-    fig, axes = plt.subplots(len(dss), len(sweeps), figsize=(7.05, 1.12 * len(dss) + 0.35), squeeze=False)
+    fig, axes = plt.subplots(len(dss), len(sweeps), figsize=(7.05, 1.12 * len(dss) + 0.35), squeeze=False,
+                             sharey="row")
+    plain = FuncFormatter(lambda v, _: f"{v:g}")
+    xticks = {"epsilon": [0.1, 1, 5], "tau": [5, 15, 60], "gamma_mult": [0, 0.1, 1, 10]}
     for i, ds in enumerate(dss):
         for j, (sw, xl, logx) in enumerate(sweeps):
             ax = axes[i, j]
@@ -191,6 +195,15 @@ def fig_runtime_grid() -> Path:
                 sub = sub[sub[sw] <= 1.0]
             _rt_panel(ax, sub, sw, logx, limit)
             ax.axhline(limit, color=P.MUTED, linewidth=0.5, linestyle=":", zorder=0)
+            ax.yaxis.set_major_locator(LogLocator(base=10, subs=(1.0, 3.0)))
+            ax.yaxis.set_major_formatter(plain)
+            ax.yaxis.set_minor_formatter(NullFormatter())
+            if sw in xticks:
+                ax.set_xticks(xticks[sw])
+                ax.xaxis.set_major_formatter(plain)
+                ax.xaxis.set_minor_formatter(NullFormatter())
+            if sw == "gamma_mult":
+                ax.set_xlim(left=0)
             if i == 0:
                 ax.set_title(xl)
             if i == len(dss) - 1:
@@ -256,6 +269,22 @@ def fig_runtime_methods() -> Path:
 
 # ----------------------------------------------------------------------------- case studies
 
+def _bin_label(b: str, n: int = 12) -> str:
+    """Interval bins with large endpoints in k-notation, e.g. (66685, 199999] -> (66.7k, 200k]."""
+    import re
+
+    m = re.fullmatch(r"([\[(])\s*([-\d.]+),\s*([-\d.]+)([\])])", str(b))
+    if m:
+        def k(x: str) -> str:
+            v = float(x)
+            if abs(v) >= 1000:
+                v = round(v / 1000, 1)
+                return (f"{v:g}" if v < 100 else f"{round(v):d}") + "k"
+            return f"{v:g}"
+        return f"{m.group(1)}{k(m.group(2))}, {k(m.group(3))}{m.group(4)}"
+    return P._short(str(b), n)
+
+
 def fig_case(pid: str, rounds: list[int], name: str, q_names=("Q", "Q'"), subdir: str = "e1",
              width: float = 3.33, max_bins: int = 8) -> Path:
     """Released (noisy) histograms of selected explanations of one released run, exact counts as ticks."""
@@ -266,8 +295,8 @@ def fig_case(pid: str, rounds: list[int], name: str, q_names=("Q", "Q'"), subdir
         bins = e["bins"]
         h1, h2 = np.asarray(e["noisy_h1"]), np.asarray(e["noisy_h2"])
         x1, x2 = np.asarray(e["exact_h1"]), np.asarray(e["exact_h2"])
-        order = np.argsort(-np.abs(x1 - x2), kind="stable")[:max_bins]
-        order = np.sort(order)
+        nz = np.flatnonzero((x1 + x2) > 0)
+        order = np.sort(nz[np.argsort(-np.abs(x1 - x2)[nz], kind="stable")[:max_bins]])
         xs = np.arange(len(order))
         ax.bar(xs - 0.2, h1[order], 0.38, color=P.BLUE, label=f"{q_names[0]} (released)")
         ax.bar(xs + 0.2, h2[order], 0.38, color=P.ORANGE, label=f"{q_names[1]} (released)")
@@ -275,8 +304,10 @@ def fig_case(pid: str, rounds: list[int], name: str, q_names=("Q", "Q'"), subdir
         ax.plot(xs + 0.2, x2[order], linestyle="none", marker="_", color=P.INK, markersize=6, markeredgewidth=1.0,
                 label="exact (not released)")
         ax.set_xticks(xs)
-        ax.set_xticklabels([P._short(str(bins[i]), 11) for i in order], rotation=40, ha="right", fontsize=5.3)
-        ax.set_title(f"{P._short(e['view'], 30)}\nby {e['attr']}", fontsize=6)
+        ax.set_xticklabels([_bin_label(bins[i]) for i in order], rotation=40, ha="right", fontsize=5.2)
+        parts = [P._short(x, 24) for x in str(e["view"]).split(" AND ")]
+        ax.set_title("\n".join(parts[:-1] + [parts[-1] + f" by {e['attr']}"]) if len(parts) > 1
+                     else f"{parts[0]}\nby {e['attr']}", fontsize=5.6)
         ax.grid(axis="x", visible=False)
         ax.axhline(0, color=P.MUTED, linewidth=0.5)
     h, lab = axes[0, 0].get_legend_handles_labels()
