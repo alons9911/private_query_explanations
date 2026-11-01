@@ -1,0 +1,388 @@
+\section{Algorithm}\label{sec:solution}
+
+\ag{Explain the quality function and why it is a good proxy for the optimization function that you presented in \Cref{sec:model}, add proposition and proof for its sensitivity, add the algorithms (use the one-shot-top-k mechanism which is equivalent to $k$ times the exponential mechanism, see~\cite{TaoGMR22}), write the pseudo code, add a textual explanation for the code, and a proposition and proof for the algorithm being DP.}
+
+\subsection{Overview}
+\label{subsec:algorithm-overview}
+
+The algorithm follows the model introduced in Section~\ref{sec:model}.
+It first privately selects a small set of useful predicate views, then constructs explanation candidates by pairing selected views with attributes, and finally privately selects and releases the top-$k$ histogram explanations.
+This structure mirrors recent differentially private explanation frameworks, which separate the definition of explanation quality from the design of low-sensitivity private selection mechanisms \cite{TaoGMR22}.
+\alon{TODO: Add citation to Differentially Private Explanations for Clusters.}
+
+Designing a practical algorithm for private query-difference explanations requires addressing two central challenges.
+First, generating all possible views is infeasible because the space of predicate-defined subpopulations is combinatorial.
+We therefore work with a candidate set $\mathcal{P}$ of predicate-based views, as is common in explanation and subgroup-discovery frameworks \cite{FEDEX,ICDE23}.
+Second, the ideal utility function from Section~\ref{sec:explanation-quality} has high sensitivity and may be expensive to optimize.
+We therefore introduce low-sensitivity proxy measures that capture the same conceptual goals: Histogram Distance for interestingness, Usefulness for representativeness and coverage, and DiversityScore for diversity.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\linewidth]{figures/placeholder.png}
+\caption{An illustration of the private query-difference explanation framework.}
+\label{fig:query-refinement}
+\end{figure}
+\alon{TODO: Replace the placeholder with the final framework figure. The figure should show: private database and queries $Q_1,Q_2$; private view selection using Usefulness; candidate construction $(p,A)$; private top-$k$ explanation selection using HD and DiversityScore; noisy histogram release.}
+
+\subsection{Low-Sensitivity Proxy Measures}
+\label{subsec:proxy-measures}
+
+The proxy measures defined below are low-sensitivity counterparts of the ideal explanation-quality criteria introduced in Section~\ref{sec:explanation-quality}.
+Each proxy is designed to capture one component of the model-level objective while remaining suitable for differentially private selection.
+The View Usefulness score is used for private view selection; the Histogram Distance and DiversityScore are used for private explanation selection.
+
+\subsubsection{View Usefulness}
+\label{subsubsec:view-usefulness}
+
+The ideal objective uses representativeness and coverage to prefer views that are both meaningful and statistically supported.
+We capture these two criteria using a low-sensitivity View Usefulness score.
+Coverage favors views that contain enough evidence from the compared query outputs:
+\begin{equation}
+Coverage(p,Q_1,Q_2,D)
+=
+\frac{|Q_1(p(D))|+|Q_2(p(D))|}{|D|}.
+\label{eq:coverage-proxy}
+\end{equation}
+
+Representativeness favors views whose attribute distributions are not too far from the distribution of the full database.
+Let $P_D$ and $P_{p(D)}$ denote the empirical distributions used to compare the database and the view.
+We define
+\begin{equation}
+Representativeness(p,D)
+=
+1-TVD(P_D,P_{p(D)}).
+\label{eq:representativeness-proxy}
+\end{equation}
+The Usefulness score is then
+\begin{equation}
+Usefulness(p,Q_1,Q_2,D)
+=
+Representativeness(p,D) \cdot Coverage(p,Q_1,Q_2,D).
+\label{eq:usefulness-proxy}
+\end{equation}
+\alon{TODO: Specify precisely which empirical distributions are compared in $Representativeness(p,D)$: all attributes, the candidate attribute $A$, or a fixed set of attributes. The previous draft used $TVD(D,p(D))$ directly; since higher utility should be better, the current version uses $1-TVD$. Verify this convention against the implementation.}
+
+\begin{proposition}[Sensitivity of View Usefulness]
+\label{prop:usefulness-sensitivity}
+The View Usefulness score has bounded global sensitivity.
+\end{proposition}
+
+\begin{proof}
+\alon{TODO: Complete proof.}
+\end{proof}
+
+\subsubsection{Histogram Distance}
+\label{subsubsec:histogram-distance}
+
+Histogram Distance serves as a proxy for interestingness.
+In the ideal objective, an explanation is interesting when the distribution of an attribute changes substantially between $Q_1(p(D))$ and $Q_2(p(D))$.
+Histogram Distance captures this idea by comparing the one-way histograms of the same attribute over the two query outputs restricted to the same predicate view.
+
+\begin{definition}[Histogram Distance]
+Given a dataset $D$, a view predicate $p$, an attribute $A$, and two queries $Q_1,Q_2$, let
+\[
+\operatorname{Dom}(p(D)[A])=\{v \in \operatorname{Dom}(D[A]) \mid H_{p(D),A}(v)>0\}
+\]
+be the set of non-empty histogram bins for $A$ inside $p(D)$.
+The \emph{Histogram Distance} is defined as
+\begin{equation}
+HD(D;p,A,Q_1,Q_2)
+=
+\sum_{v \in \operatorname{Dom}(p(D)[A])}
+\frac{\left|H_{Q_1(p(D)),A}(v)-H_{Q_2(p(D)),A}(v)\right|}{H_{p(D),A}(v)}.
+\label{eq:hd-definition}
+\end{equation}
+\end{definition}
+
+The denominator normalizes the contribution of each bin by its size within the view, so the score emphasizes relative changes rather than only absolute count differences.
+Empty bins are excluded to avoid division by zero.
+\alon{TODO: Verify that excluding empty bins is the desired convention. Alternatively, define smoothing with $H_{p(D),A}(v)+\gamma$. This choice affects the sensitivity proof.}
+
+\begin{proposition}[Sensitivity of Histogram Distance]
+\label{prop:hd-sensitivity}
+The Histogram Distance score has bounded global sensitivity.
+\end{proposition}
+
+\begin{proof}
+Let $D, D'$ be neighboring datasets such that $|\,|D'| - |D|\,| = 1$ and $D' = D \cup \{t\}$,  
+where $t$ is a single tuple.  
+Let $t_A = V'$ denote the bucket value for attribute $A$ of tuple $t$.
+
+The global sensitivity of $HD$ is:
+\begin{equation}
+GS_{HD} = \max_{\substack{D,D' \\ D \sim D'}} 
+\left| HD(D) - HD(D') \right|,
+\end{equation}
+where $D \sim D'$ denotes that $D$ and $D'$ are neighboring datasets.
+
+From~\eqref{eq:hd-definition}, we have:
+\begin{align}
+&\left| HD(D) - HD(D') \right| \notag \\
+&= \bigg| 
+\sum_{V \in \text{buckets}(D'[A])} 
+\frac{\left| H_{Q(p(D)),A}(V) - H_{Q'(p(D)),A}(V) \right|}
+     {H_{p(D),A}(V)} \notag \\
+&\quad - 
+\sum_{V \in \text{buckets}(D'[A])} 
+\frac{\left| H_{Q(p(D')),A}(V) - H_{Q'(p(D')),A}(V) \right|}
+     {H_{p(D'),A}(V)}
+\bigg|.
+\end{align}
+
+We partition the set of buckets into two disjoint subsets:
+\[
+\text{buckets}(D'[A]) = 
+\left(\text{buckets}(D'[A]) \setminus \{V'\}\right) \cup \{V'\}.
+\]
+
+\textbf{Case 1: $V \neq V'$}.  
+For all $V \neq V'$, the numerator in each term is unchanged between $D$ and $D'$,  
+while the denominator changes by at most $1$ because the tuple $t$ is not assigned to $V$.  
+Thus:
+\[
+\sum_{V\ne V' \in \text{buckets}(D'[A])} \left| 
+\frac{\cdot}{H_{p(D),A}(V)} - \frac{\cdot}{H_{p(D'),A}(V)}
+\right| \leq 1.
+\]
+
+\textbf{Case 2: $V = V'$}.  
+Here, both numerator and denominator may change, but by the neighboring dataset property,  
+each changes by at most $1$. Therefore:
+\begin{align}
+&\left| 
+\frac{\left| H_{Q(p(D)),A}(V') - H_{Q'(p(D)),A}(V') \right|}{H_{p(D),A}(V')}
+\right. \notag \\
+&\quad \left.
+-
+\frac{\left| H_{Q(p(D')),A}(V') - H_{Q'(p(D')),A}(V') \right|}{H_{p(D'),A}(V')}
+\right| \leq 1.
+\end{align}
+
+
+
+Since only one bucket $V'$ can change between $D$ and $D'$,  
+and the change in that bucket’s contribution is bounded by $1$,  
+it follows that:
+\[
+\left| HD(D) - HD(D') \right| \leq 1.
+\]
+
+Taking the maximum over all neighboring datasets yields:
+\[
+GS_{HD} \leq 1.
+\]
+\end{proof}
+
+\subsubsection{Diversity Score}
+\label{subsubsec:diversity-score}
+
+DiversityScore corresponds to the diversity criterion from the model section.
+When multiple explanations are released, DiversityScore discourages repeatedly selecting explanations that focus on the same attribute or highly similar aspects of the query difference.
+
+For a candidate $(p,A)$ and a set $S$ of attributes selected in previous iterations, we use the following simple penalty:
+\begin{equation}
+DiversityScore(A,S)
+=
+\begin{cases}
+1, & A \notin S,\\
+\lambda, & A \in S,
+\end{cases}
+\label{eq:diversity-score}
+\end{equation}
+where $0\leq \lambda \leq 1$ controls the penalty for repeatedly selecting the same attribute.
+Setting $\lambda=0$ prevents the same attribute from being selected more than once, while larger values allow repeated attributes with a penalty.
+Since $DiversityScore$ depends only on previously selected outputs and not directly on the private database, it does not increase the data sensitivity of the selection utility.
+\alon{TODO: Decide whether diversity should be attribute-level only, view-level, or based on a distance between histograms. If a richer diversity definition is used, update the sensitivity argument accordingly.}
+
+\subsubsection{Combined Proxy Objective}
+\label{subsubsec:combined-proxy-objective}
+
+The proxy measures are used in two stages.
+First, View Usefulness accounts for representativeness and coverage during private view selection.
+Second, for private explanation selection over candidates $c=(p,A)$, we use
+\begin{equation}
+\widetilde{U}_i(D;c)
+=
+HD(D;p,A,Q_1,Q_2) \cdot DiversityScore(A,S_{i-1}),
+\label{eq:selection-utility}
+\end{equation}
+where $S_{i-1}$ is the set of attributes selected in the previous iterations.
+Thus, the final selection utility uses Histogram Distance as a proxy for interestingness and DiversityScore as a proxy for diversity, while representativeness and coverage have already been handled by the view-selection stage.
+
+\begin{proposition}[Sensitivity of the selection utility]
+\label{prop:selection-utility-sensitivity}
+The selection utility $\widetilde{U}_i$ has bounded global sensitivity whenever $HD$ has bounded global sensitivity.
+\end{proposition}
+
+\begin{proof}
+The diversity term is bounded in $[0,1]$ and, conditioned on the previous selected outputs, does not directly access the private database.
+Therefore it does not increase the global sensitivity of the data-dependent term $HD$.
+\alon{TODO: Complete the formal argument under adaptive composition. The proof should explicitly condition on the history of previously selected candidates.}
+\end{proof}
+
+\subsection{Hardness of Non-Private Proxy Explanation Selection}
+\label{subsec:non-private-hardness}
+
+Even without privacy, selecting the best set of explanations under the proxy objective can be computationally difficult because the algorithm must choose a subset of candidates that balances quality and diversity over a combinatorial candidate space.
+
+\begin{theorem}[Hardness of non-private proxy explanation selection]
+\label{thm:non-private-hardness}
+The problem of selecting the optimal set of $k$ explanation candidates under the proxy objective is NP-hard, even when the proxy scores are known exactly and no privacy constraint is imposed.
+\end{theorem}
+
+\begin{proof}
+\alon{TODO: Add reduction, likely from Maximum Coverage or Maximum Diversity.}
+\end{proof}
+
+\subsection{Private Query-Difference Explanation Algorithm}
+\label{subsec:private-algorithm}
+
+Algorithm~\ref{alg:main} gives the end-to-end pipeline.
+It receives the private database, the two related queries, a candidate set of predicate views, the attribute set, the number of views $\tau$, the number of explanations $k$, and the privacy budget $\epsilon$.
+It allocates the privacy budget across private view selection, private explanation selection, and noisy histogram release.
+
+\begin{algorithm}[t]
+\caption{Private-Queries-Diff-Top-$k$-Explanation}
+\label{alg:main}
+\begin{algorithmic}[1]
+\Require Private dataset $D$; queries $Q_1, Q_2$; predicate-based views $\mathcal{P}$; attribute set $Attrs$; number of selected views $\tau$; number of explanations $k$; privacy budget $\epsilon$
+\Ensure A set of $k$ differentially private explanation histograms
+
+\Statex \textbf{Overview.} Privately select a subset of informative views, generate candidates, and privately select and release the top-$k$ explanations.
+\State \textbf{/* Privacy budget allocation */}
+\State $\epsilon_P, \epsilon_S, \epsilon_H  \gets \epsilon/2, \epsilon/4, \epsilon/4$
+
+\State \textbf{/* Private view selection */}
+\State Define $u_{use}(p) \gets Usefulness(p, D, Q_1, Q_2)$
+\State $\widehat{\mathcal{P}} \gets \textsc{OneShotTop-}\tau(\mathcal{P}, u_{use}(\cdot), \epsilon_P)$ \Comment{$\epsilon_P$-DP}
+
+\Statex \textbf{(Post-processing)} Candidate construction does not incur additional privacy loss.
+
+\State \textbf{/* Construct explanation candidates */}
+\State $C \gets \emptyset$
+\ForAll{$p \in \widehat{\mathcal{P}}$}
+    \ForAll{$A \in Attrs$}
+        \State $C \gets C \cup \{(p,A)\}$
+    \EndFor
+\EndFor
+
+\State \textbf{/* Private top-$k$ explanation selection and release */}
+\State $\mathcal{E} \gets \textsc{Find-Top-$k$-Explanations}(D,Q_1,Q_2,C,k,\epsilon_S,\epsilon_H)$
+
+\Return $\mathcal{E}$
+\end{algorithmic}
+\end{algorithm}
+
+The algorithm has three stages.
+First, it privately selects useful views using the Usefulness proxy.
+Second, it constructs candidate explanations by pairing each selected view with each attribute; this is post-processing.
+Third, it invokes Algorithm~\ref{alg:topk} to privately select and release the final top-$k$ explanations.
+
+\begin{algorithm}[t]
+\caption{Find-Top-$k$-Explanations}
+\label{alg:topk}
+\begin{algorithmic}[1]
+\Require Private dataset $D$; queries $Q_1,Q_2$; candidates $C$; number of explanations $k$; budgets $\epsilon_S,\epsilon_H$
+\Ensure $k$ differentially private explanation histograms
+
+\State $ChosenAttrs \gets \emptyset$
+\State $\mathcal{E} \gets \emptyset$
+
+\For{$i \gets 1$ to $k$}
+  \State \textbf{/* Private selection using the exponential mechanism */}
+  \State $u_i(c=(p,A)) \gets HD(D;p,A,Q_1,Q_2) \cdot DiversityScore(A,ChosenAttrs)$
+  \State $c_i=(p_i,A_i) \gets \textsc{ExponentialMechanism}(C,u_i(\cdot),\epsilon_S/k)$
+
+  \State \textbf{/* Private histogram release */}
+  \State $\Delta H_i(v) \gets H_{Q_1(p_i(D)),A_i}(v)-H_{Q_2(p_i(D)),A_i}(v)$ for all bins $v$
+  \State $\widetilde{\Delta H_i}(v) \gets \Delta H_i(v)+\textsc{Laplace}(2k/\epsilon_H)$ for all bins $v$
+
+  \State $\mathcal{E} \gets \mathcal{E} \cup \{(p_i,A_i,\widetilde{\Delta H_i})\}$
+  \State $ChosenAttrs \gets ChosenAttrs \cup \{A_i\}$
+  \State $C \gets C \setminus \{c_i\}$
+\EndFor
+
+\State \Return $\mathcal{E}$
+\end{algorithmic}
+\end{algorithm}
+
+Algorithm~\ref{alg:topk} proceeds iteratively for $k$ rounds.
+In each iteration, it computes a selection utility for every remaining candidate using Histogram Distance and the diversity penalty, selects one candidate privately, and releases a noisy difference histogram for the selected candidate.
+The difference histogram captures how the distribution of attribute $A_i$ changes between $Q_1(p_i(D))$ and $Q_2(p_i(D))$.
+
+\subsection{Differential Privacy Analysis}
+\label{subsec:dp-proof}
+
+We now prove that Algorithms~\ref{alg:main} and~\ref{alg:topk} satisfy $\epsilon$-differential privacy with respect to the input private dataset $D$.
+The proof uses the sensitivity bounds for the proxy scores, the exponential mechanism for private selection, the Laplace mechanism for histogram release, and sequential composition.
+
+\begin{proposition}[Sensitivity of noisy difference histogram release]
+\label{prop:histogram-release-sensitivity}
+For a fixed candidate $(p,A)$, the difference histogram
+\[
+\Delta H_{p,A}(v)=H_{Q_1(p(D)),A}(v)-H_{Q_2(p(D)),A}(v)
+\]
+has bounded $L_1$-sensitivity.
+\end{proposition}
+
+\begin{proof}
+\alon{TODO: Complete proof.}
+\end{proof}
+
+\begin{proposition}[Differential Privacy of Algorithm~\ref{alg:main}]
+\label{thm:alg1-dp}
+Algorithm~\ref{alg:main} satisfies $\epsilon$-differential privacy.
+\end{proposition}
+
+\begin{proof}
+Algorithm~\ref{alg:main} partitions the privacy budget into three components: $\epsilon_P$ for private view selection, $\epsilon_S$ for private explanation selection, and $\epsilon_H$ for private histogram release, with $\epsilon_P+\epsilon_S+\epsilon_H=\epsilon$.
+
+The first privacy-sensitive step is the selection of predicate-based views using a One-Shot Top-$\tau$ mechanism with the Usefulness score.
+By Proposition~\ref{prop:usefulness-sensitivity}, this score has bounded sensitivity, so the view-selection step satisfies $\epsilon_P$-differential privacy.
+\alon{TODO: Cite the exact one-shot top-$k$ or one-shot top-$\tau$ mechanism used here and state its sensitivity parameter.}
+
+Candidate construction pairs selected views with attributes.
+This step is a deterministic function of the privately selected views and therefore incurs no additional privacy loss by post-processing.
+Algorithm~\ref{alg:main} then invokes Algorithm~\ref{alg:topk}, which satisfies $(\epsilon_S+\epsilon_H)$-differential privacy by Proposition~\ref{thm:alg2-dp}.
+By sequential composition, the total privacy loss is $\epsilon_P+\epsilon_S+\epsilon_H=\epsilon$.
+\end{proof}
+
+\begin{proposition}[Differential Privacy of Algorithm~\ref{alg:topk}]
+\label{thm:alg2-dp}
+Algorithm~\ref{alg:topk} satisfies $(\epsilon_S+\epsilon_H)$-differential privacy.
+\end{proposition}
+
+\begin{proof}
+Algorithm~\ref{alg:topk} performs $k$ adaptive iterations.
+In each iteration, it first selects an explanation candidate using the exponential mechanism with budget $\epsilon_S/k$.
+The utility used by the exponential mechanism is $\widetilde{U}_i$, whose sensitivity is bounded by Proposition~\ref{prop:selection-utility-sensitivity}.
+Therefore, each selection step satisfies $(\epsilon_S/k)$-differential privacy.
+
+After selecting a candidate, the algorithm releases a noisy difference histogram using the Laplace mechanism with budget $\epsilon_H/k$.
+By Proposition~\ref{prop:histogram-release-sensitivity}, the released histogram has bounded $L_1$-sensitivity, so each histogram release satisfies $(\epsilon_H/k)$-differential privacy.
+
+By sequential composition within each iteration and across the $k$ iterations, the total privacy loss is
+\[
+    k\left(\frac{\epsilon_S}{k}+\frac{\epsilon_H}{k}\right)
+    =
+    \epsilon_S+\epsilon_H.
+\]
+The iterations are adaptive because later utilities depend on previously selected attributes, but adaptive sequential composition still applies.
+All remaining operations, including updating the candidate set and the selected-attribute set, are post-processing of previously released private outputs.
+Thus, Algorithm~\ref{alg:topk} satisfies $(\epsilon_S+\epsilon_H)$-differential privacy.
+\alon{TODO: Add citation to adaptive composition, e.g., \cite{DBLP:series/synthesis/2016Li}, and verify whether the noisy histogram release should be analyzed under parallel or sequential composition if histograms use disjoint views.}
+\end{proof}
+
+\begin{corollary}[End-to-End Differential Privacy]
+\label{cor:end-to-end-dp}
+By sequential composition of Algorithms~\ref{alg:main} and~\ref{alg:topk}, the overall explanation pipeline satisfies $\epsilon$-differential privacy.
+\end{corollary}
+
+\subsection{Complexity Analysis}
+\label{subsec:complexity-analysis}
+
+Let $|\mathcal{P}|$ be the number of candidate predicate views, $m=|Attr(D)|$ the number of attributes, and $b$ the maximum number of bins in an attribute histogram.
+The view-selection stage evaluates Usefulness over the candidate views.
+After selecting $\tau$ views, the algorithm constructs at most $\tau m$ explanation candidates.
+Each iteration of Algorithm~\ref{alg:topk} evaluates the selection utility over the remaining candidates and computes one noisy histogram.
+\alon{TODO: Complete the asymptotic complexity bound in terms of $|D|$, $|\mathcal{P}|$, $m$, $b$, $\tau$, and $k$. Also explain whether histograms are precomputed or computed on demand.}

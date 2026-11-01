@@ -1,0 +1,781 @@
+@article{LMSJ23,
+author = {Li, Jinyang and Moskovitch, Yuval and Stoyanovich, Julia and Jagadish, H. V.},
+title = {Query Refinement for Diversity Constraint Satisfaction},
+year = {2023},
+issue_date = {October 2023},
+publisher = {VLDB Endowment},
+volume = {17},
+number = {2},
+issn = {2150-8097},
+url = {https://doi.org/10.14778/3626292.3626295},
+doi = {10.14778/3626292.3626295},
+abstract = {Diversity, group representation, and similar needs often apply to query results, which in turn require constraints on the sizes of various subgroups in the result set. Traditional relational queries only specify conditions as part of the query predicate(s), and do not support such restrictions on the output. In this paper, we study the problem of modifying queries to have the result satisfy constraints on the sizes of multiple subgroups in it. This problem, in the worst case, cannot be solved in polynomial time. Yet, with the help of provenance annotation, we are able to develop a query refinement method that works quite efficiently, as we demonstrate through extensive experiments.},
+journal = {Proc. VLDB Endow.},
+month = oct,
+pages = {106–118},
+numpages = {13}
+}
+
+@article{ERICA,
+author = {Li, Jinyang and Silberstein, Alon and Moskovitch, Yuval and Stoyanovich, Julia and Jagadish, H. V.},
+title = {Erica: Query Refinement for Diversity Constraint Satisfaction},
+year = {2023},
+publisher = {VLDB Endowment},
+volume = {16},
+number = {12},
+issn = {2150-8097},
+url = {https://doi.org/10.14778/3611540.3611623},
+doi = {10.14778/3611540.3611623},
+journal = {Proc. VLDB Endow.},
+pages = {4070–4073},
+numpages = {4}
+}
+
+@inproceedings{MK09,
+  author    = {Chaitanya Mishra and
+               Nick Koudas},
+  editor    = {Martin L. Kersten and
+               Boris Novikov and
+               Jens Teubner and
+               Vladimir Polutin and
+               Stefan Manegold},
+  title     = {Interactive query refinement},
+  booktitle = {{EDBT} 2009, 12th International Conference on Extending Database Technology,
+               Saint Petersburg, Russia, March 24-26, 2009, Proceedings},
+  series    = {{ACM} International Conference Proceeding Series},
+  volume    = {360},
+  pages     = {862--873},
+  publisher = {{ACM}},
+  year      = {2009},
+  url       = {https://doi.org/10.1145/1516360.1516459},
+  doi       = {10.1145/1516360.1516459},
+  timestamp = {Wed, 04 May 2022 13:02:27 +0200},
+  biburl    = {https://dblp.org/rec/conf/edbt/MishraK09.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{MLJ22,
+  author    = {Yuval Moskovitch and
+               Jinyang Li and
+               H. V. Jagadish},
+  editor    = {Adriane Chapman and
+               Daniel Deutch and
+               Tanu Malik},
+  title     = {Bias analysis and mitigation in data-driven tools using provenance},
+  booktitle = {Proceedings of the 14th International Workshop on the Theory and Practice
+               of Provenance, TaPP 2022, Philadelphia, Pennsylvania, 17 June 2022},
+  pages     = {1:1--1:4},
+  publisher = {{ACM}},
+  year      = {2022},
+  url       = {https://doi.org/10.1145/3530800.3534528},
+  doi       = {10.1145/3530800.3534528},
+  timestamp = {Tue, 24 May 2022 16:30:45 +0200},
+  biburl    = {https://dblp.org/rec/conf/tapp/MoskovitchLJ22.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{TaoGMR22,
+  author       = {Yuchao Tao and
+                  Amir Gilad and
+                  Ashwin Machanavajjhala and
+                  Sudeepa Roy},
+  title        = {DPXPlain: Privately Explaining Aggregate Query Answers},
+  journal      = {Proc. {VLDB} Endow.},
+  volume       = {16},
+  number       = {1},
+  pages        = {113--126},
+  year         = {2022},
+  url          = {https://www.vldb.org/pvldb/vol16/p113-tao.pdf},
+  doi          = {10.14778/3561261.3561271},
+  timestamp    = {Mon, 23 Oct 2023 01:00:00 +0200},
+  biburl       = {https://dblp.org/rec/journals/pvldb/TaoGMR22.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+@book{barocas-hardt-narayanan,
+  title = {Fairness and Machine Learning: Limitations and Opportunities},
+  author = {Solon Barocas and Moritz Hardt and Arvind Narayanan},
+  publisher = {MIT Press},
+  year = {2023}
+}
+
+@article{CSSM24,
+author = {Campbell, Felix S. and Silberstein, Alon and Stoyanovich, Julia and Moskovitch, Yuval},
+title = {Query Refinement for Diverse Top-k Selection},
+year = {2024},
+issue_date = {June 2024},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {2},
+number = {3},
+url = {https://doi.org/10.1145/3654969},
+doi = {10.1145/3654969},
+abstract = {Database queries are often used to select and rank items as decision support for many applications. As automated decision-making tools become more prevalent, there is a growing recognition of the need to diversify their outcomes. In this paper, we define and study the problem of modifying the selection conditions of an ORDER BY query so that the result of the modified query closely fits some user-defined notion of diversity while simultaneously maintaining the intent of the original query. We show the hardness of this problem and propose a mixed-integer linear programming (MILP) based solution. We further present optimizations designed to enhance the scalability and applicability of the solution in real-life scenarios. We investigate the performance characteristics of our algorithm and show its efficiency and the usefulness of our optimizations.},
+journal = {Proc. ACM Manag. Data},
+month = may,
+articleno = {166},
+numpages = {27},
+keywords = {diversity, provenance, query refinement, ranking, top-k}
+}
+
+@article{TabEE,
+author = {Copul, Roni and Frost, Nave and Milo, Tova and Razmadze, Kathy},
+title = {TabEE: Tabular Embeddings Explanations},
+year = {2024},
+issue_date = {February 2024},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {2},
+number = {1},
+url = {https://doi.org/10.1145/3639329},
+doi = {10.1145/3639329},
+abstract = {Tabular embedding methods have become increasingly popular due to their effectiveness in improving the results of various tasks, including classic databases tasks and machine learning predictions. However, most current methods treat these embedding models as "black boxes" making it difficult to understand the insights captured by the models. Our research proposes a novel approach to interpret these models, aiming to provide local and global explanations for the original data and detect potential flaws in the embedding models. The proposed solution is appropriate for every tabular embedding algorithm, as it fits the black box view of the embedding model. Furthermore, we propose methods for comparing different embedding models, which can help identify data biases that might impact the models' credibility without the user's knowledge. Our approach is evaluated on multiple datasets and multiple embeddings, demonstrating that our proposed explanations provide valuable insights into the behavior of tabular embedding methods. By making these models more transparent, we believe our research will contribute to the development of more effective and reliable embedding methods for a wide range of applications.},
+journal = {Proc. ACM Manag. Data},
+month = mar,
+articleno = {72},
+numpages = {26},
+keywords = {model explainability, table embedding}
+}
+
+@article{FEDEX,
+author = {Deutch, Daniel and Gilad, Amir and Milo, Tova and Mualem, Amit and Somech, Amit},
+title = {FEDEX: An Explainability Framework for Data Exploration Steps},
+year = {2022},
+issue_date = {September 2022},
+publisher = {VLDB Endowment},
+volume = {15},
+number = {13},
+issn = {2150-8097},
+url = {https://doi.org/10.14778/3565838.3565841},
+doi = {10.14778/3565838.3565841},
+abstract = {When exploring a new dataset, Data Scientists often apply analysis queries, look for insights in the resulting dataframe, and repeat to apply further queries. We propose in this paper a novel solution that assists data scientists in this laborious process. In a nutshell, our solution pinpoints the most interesting (sets of) rows in each obtained dataframe. Uniquely, our definition of interest is based on the contribution of each row to the interestingness of different columns of the entire dataframe, which, in turn, is defined using standard measures such as diversity and exceptionality. Intuitively, interesting rows are ones that explain why (some column of) the analysis query result is interesting as a whole. Rows are correlated in their contribution and so the interesting score for a set of rows may not be directly computed based on that of individual rows. We address the resulting computational challenge by restricting attention to semantically-related sets, based on multiple notions of semantic relatedness; these sets serve as more informative explanations. Our experimental study across multiple real-world datasets shows the usefulness of our system in various scenarios.},
+journal = {Proc. VLDB Endow.},
+month = sep,
+pages = {3854–3868},
+numpages = {15}
+}
+
+@article{ICDE23,
+  author       = {Yuval Moskovitch and
+                  Jinyang Li and
+                  H. V. Jagadish},
+  title        = {Detection of Groups with Biased Representation in Ranking},
+  journal      = {CoRR},
+  volume       = {abs/2301.00719},
+  year         = {2023},
+  url          = {https://doi.org/10.48550/arXiv.2301.00719},
+  doi          = {10.48550/arXiv.2301.00719},
+  eprinttype    = {arXiv},
+  eprint       = {2301.00719},
+  timestamp    = {Tue, 10 Jan 2023 15:10:12 +0100},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2301-00719.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{CMR23,
+  author       = {Zixuan Chen and
+                  Panagiotis Manolios and
+                  Mirek Riedewald},
+  title        = {Why Not Yet: Fixing a Top-k Ranking that Is Not Fair to Individuals},
+  journal      = {Proc. {VLDB} Endow.},
+  volume       = {16},
+  number       = {9},
+  pages        = {2377--2390},
+  year         = {2023},
+  url          = {https://www.vldb.org/pvldb/vol16/p2377-chen.pdf},
+  timestamp    = {Fri, 23 Jun 2023 23:15:28 +0200},
+  biburl       = {https://dblp.org/rec/journals/pvldb/ChenMR23.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+@book{Foundations,
+  author       = {Serge Abiteboul and
+                  Richard Hull and
+                  Victor Vianu},
+  title        = {Foundations of Databases},
+  publisher    = {Addison-Wesley},
+  year         = {1995},
+  url          = {http://webdam.inria.fr/Alice/},
+  isbn         = {0-201-53771-0},
+  timestamp    = {Sat, 11 Nov 2017 21:53:30 +0100},
+  biburl       = {https://dblp.org/rec/books/aw/AbiteboulHV95.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+@misc{impossibilityfairness,
+      title={On the (im)possibility of fairness}, 
+      author={Sorelle A. Friedler and Carlos Scheidegger and Suresh Venkatasubramanian},
+      year={2016},
+      eprint={1609.07236},
+      archivePrefix={arXiv},
+      primaryClass={cs.CY},
+      url={https://arxiv.org/abs/1609.07236}, 
+}
+
+@inproceedings{SYJ18,
+  author       = {Julia Stoyanovich and
+                  Ke Yang and
+                  H. V. Jagadish},
+  editor       = {Michael H. B{\"{o}}hlen and
+                  Reinhard Pichler and
+                  Norman May and
+                  Erhard Rahm and
+                  Shan{-}Hung Wu and
+                  Katja Hose},
+  title        = {Online Set Selection with Fairness and Diversity Constraints},
+  booktitle    = {Proceedings of the 21st International Conference on Extending Database
+                  Technology, {EDBT} 2018, Vienna, Austria, March 26-29, 2018},
+  pages        = {241--252},
+  publisher    = {OpenProceedings.org},
+  year         = {2018},
+  url          = {https://doi.org/10.5441/002/edbt.2018.22},
+  doi          = {10.5441/002/edbt.2018.22},
+  timestamp    = {Fri, 29 Jan 2021 22:08:41 +0100},
+  biburl       = {https://dblp.org/rec/conf/edbt/StoyanovichYJ18.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+@InProceedings{DMNS2006,
+author="Dwork, Cynthia
+and McSherry, Frank
+and Nissim, Kobbi
+and Smith, Adam",
+editor="Halevi, Shai
+and Rabin, Tal",
+title="Calibrating Noise to Sensitivity in Private Data Analysis",
+booktitle="Theory of Cryptography",
+year="2006",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="265--284",
+abstract="We continue a line of research initiated in [10,11]on privacy-preserving statistical databases. Consider a trusted server that holds a database of sensitive information. Given a query function f mapping databases to reals, the so-called true answer is the result of applying f to the database. To protect privacy, the true answer is perturbed by the addition of random noise generated according to a carefully chosen distribution, and this response, the true answer plus noise, is returned to the user.",
+isbn="978-3-540-32732-5"
+}
+
+@article{TheAlgFoundDP2014,
+author = {Dwork, Cynthia and Roth, Aaron},
+title = {The Algorithmic Foundations of Differential Privacy},
+year = {2014},
+issue_date = {Aug 2014},
+publisher = {Now Publishers Inc.},
+address = {Hanover, MA, USA},
+volume = {9},
+number = {3–4},
+issn = {1551-305X},
+url = {https://doi.org/10.1561/0400000042},
+doi = {10.1561/0400000042},
+abstract = {The problem of privacy-preserving data analysis has a long history spanning multiple disciplines. As electronic data about individuals becomes increasingly detailed, and as technology enables ever more powerful collection and curation of these data, the need increases for a robust, meaningful, and mathematically rigorous definition of privacy, together with a computationally rich class of algorithms that satisfy this definition. Differential Privacy is such a definition.After motivating and discussing the meaning of differential privacy, the preponderance of this monograph is devoted to fundamental techniques for achieving differential privacy, and application of these techniques in creative combinations, using the query-release problem as an ongoing example. A key point is that, by rethinking the computational goal, one can often obtain far better results than would be achieved by methodically replacing each step of a non-private computation with a differentially private implementation. Despite some astonishingly powerful computational results, there are still fundamental limitations — not just on what can be achieved with differential privacy but on what can be achieved with any method that protects against a complete breakdown in privacy. Virtually all the algorithms discussed herein maintain differential privacy against adversaries of arbitrary computational power. Certain algorithms are computationally intensive, others are efficient. Computational complexity for the adversary and the algorithm are both discussed.We then turn from fundamentals to applications other than queryrelease, discussing differentially private methods for mechanism design and machine learning. The vast majority of the literature on differentially private algorithms considers a single, static, database that is subject to many analyses. Differential privacy in other models, including distributed databases and computations on data streams is discussed.Finally, we note that this work is meant as a thorough introduction to the problems and techniques of differential privacy, but is not intended to be an exhaustive survey — there is by now a vast amount of work in differential privacy, and we can cover only a small portion of it.},
+journal = {Found. Trends Theor. Comput. Sci.},
+month = aug,
+pages = {211–407},
+numpages = {197}
+}
+
+@book{DBLP:series/synthesis/2016Li,
+  author       = {Ninghui Li and
+                  Min Lyu and
+                  Dong Su and
+                  Weining Yang},
+  title        = {Differential Privacy: From Theory to Practice},
+  series       = {Synthesis Lectures on Information Security, Privacy, {\&} Trust},
+  publisher    = {Morgan {\&} Claypool Publishers},
+  year         = {2016},
+  url          = {https://doi.org/10.2200/S00735ED1V01Y201609SPT018},
+  doi          = {10.2200/S00735ED1V01Y201609SPT018},
+  isbn         = {978-3-031-01222-8},
+  timestamp    = {Fri, 27 Oct 2023 16:14:13 +0200},
+  biburl       = {https://dblp.org/rec/series/synthesis/2016Li.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+@book{bertossi2011,
+  author = {Bertossi, Leopoldo},
+  title = {Database Repairing and Consistent Query Answering},
+  publisher = {Morgan and Claypool Publishers},
+  year = {2011}
+}
+
+@article{bertossi2006,
+  author = {Bertossi, Leopoldo},
+  title = {Consistent Query Answering in Databases},
+  journal = {SIGMOD Record},
+  volume = {35},
+  number = {2},
+  pages = {68--76},
+  year = {2006},
+  doi = {10.1145/1154448.1154461}
+}
+
+@inproceedings{arenas1999,
+  author = {Arenas, Marcelo and Bertossi, Leopoldo and Chomicki, Jan},
+  title = {Consistent Query Answers in Inconsistent Databases},
+  booktitle = {PODS},
+  pages = {68--79},
+  year = {1999}
+}
+
+@inproceedings{wu2013,
+  author = {Wu, Eugene and Madden, Samuel},
+  title = {Scorpion: Explaining Away Outliers in Aggregate Queries},
+  booktitle = {Proceedings of the VLDB Endowment},
+  volume = {6},
+  number = {8},
+  pages = {553--564},
+  year = {2013}
+}
+
+@inproceedings{mcsherry2009,
+  author = {McSherry, Frank D.},
+  title = {Privacy Integrated Queries: An Extensible Platform for Privacy-Preserving Data Analysis},
+  booktitle = {Proceedings of the 2009 ACM SIGMOD International Conference on Management of Data},
+  pages = {19--30},
+  year = {2009},
+  doi = {10.1145/1559845.1559850}
+}
+
+@inproceedings{bun2016,
+  author = {Bun, Mark and Steinke, Thomas},
+  title = {Concentrated Differential Privacy: Simplifications, Extensions, and Lower Bounds},
+  booktitle = {Theory of Cryptography Conference},
+  pages = {635--658},
+  publisher = {Springer},
+  year = {2016}
+}
+
+@inproceedings{mcsherry2007,
+  author = {McSherry, Frank and Talwar, Kunal},
+  title = {Mechanism Design via Differential Privacy},
+  booktitle = {FOCS},
+  year = {2007},
+  pages = {94--103}
+}
+
+@inproceedings{buneman2001,
+  author = {Buneman, Peter and Khanna, Sanjeev and Tan, Wang-Chiew},
+  title = {Why and Where: A Characterization of Data Provenance},
+  booktitle = {ICDT},
+  year = {2001},
+  pages = {316--330}
+}
+
+@article{cheney2009,
+  author = {Cheney, James and Chiticariu, Laura and Tan, Wang-Chiew},
+  title = {Provenance in Databases: Why, How, and Where},
+  journal = {Foundations and Trends in Databases},
+  volume = {1},
+  number = {4},
+  pages = {379--474},
+  year = {2009}
+}
+
+@article{herschel2017,
+  author = {Herschel, Melanie and Diestelk{\"a}mper, Ralph and Ben Lahmar, Houssem},
+  title = {A Survey on Provenance: What for? What Form? What From?},
+  journal = {VLDB Journal},
+  volume = {26},
+  number = {6},
+  pages = {881--906},
+  year = {2017}
+}
+
+@article{McKennaMSM22,
+  author    = {Ryan McKenna and Brett Mullins and Daniel Sheldon and Gerome Miklau},
+  title     = {{AIM}: An Adaptive and Iterative Mechanism for Differentially Private Synthetic Data},
+  journal   = {Proc. {VLDB} Endow.},
+  volume    = {15},
+  number    = {11},
+  pages     = {2599--2612},
+  year      = {2022},
+  doi       = {10.14778/3551793.3551817}
+}
+
+@article{DPClustX,
+  author    = {Amir Gilad and Tova Milo and Kathy Razmadze and Ron Zadicario},
+  title     = {Differentially Private Explanations for Clusters},
+  journal   = {Proc. {ACM} Manag. Data},
+  year      = {2025},
+  note      = {Also available as arXiv:2506.05900}
+}
+
+@inproceedings{DurfeeRogers19,
+  author    = {David Durfee and Ryan M. Rogers},
+  title     = {Practical Differentially Private Top-$k$ Selection with Pay-what-you-get Composition},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  pages     = {3527--3537},
+  year      = {2019}
+}
+
+@article{NemhauserWF78,
+  author    = {George L. Nemhauser and Laurence A. Wolsey and Marshall L. Fisher},
+  title     = {An Analysis of Approximations for Maximizing Submodular Set Functions---{I}},
+  journal   = {Mathematical Programming},
+  volume    = {14},
+  number    = {1},
+  pages     = {265--294},
+  year      = {1978}
+}
+
+@article{Feige98,
+  author    = {Uriel Feige},
+  title     = {A Threshold of $\ln n$ for Approximating Set Cover},
+  journal   = {Journal of the {ACM}},
+  volume    = {45},
+  number    = {4},
+  pages     = {634--652},
+  year      = {1998}
+}
+
+@inproceedings{FriedmanSchuster10,
+  author    = {Arik Friedman and Assaf Schuster},
+  title     = {Data Mining with Differential Privacy},
+  booktitle = {Proceedings of the 16th {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining},
+  pages     = {493--502},
+  year      = {2010}
+}
+
+@inproceedings{NissimRS07,
+  author    = {Kobbi Nissim and Sofya Raskhodnikova and Adam Smith},
+  title     = {Smooth Sensitivity and Sampling in Private Data Analysis},
+  booktitle = {Proceedings of the 39th Annual {ACM} Symposium on Theory of Computing (STOC)},
+  pages     = {75--84},
+  year      = {2007}
+}
+
+@inproceedings{DworkLei09,
+  author    = {Cynthia Dwork and Jing Lei},
+  title     = {Differential Privacy and Robust Statistics},
+  booktitle = {Proceedings of the 41st Annual {ACM} Symposium on Theory of Computing (STOC)},
+  pages     = {371--380},
+  year      = {2009}
+}
+
+% ---------------------------------------------------------------
+% Background on classical explanation-quality measures (Section 2.4)
+% ---------------------------------------------------------------
+
+@article{SilberschatzT96,
+  author    = {Abraham Silberschatz and Alexander Tuzhilin},
+  title     = {What Makes Patterns Interesting in Knowledge Discovery Systems},
+  journal   = {{IEEE} Transactions on Knowledge and Data Engineering},
+  volume    = {8},
+  number    = {6},
+  pages     = {970--974},
+  year      = {1996}
+}
+
+@article{GengHamilton06,
+  author    = {Liqiang Geng and Howard J. Hamilton},
+  title     = {Interestingness Measures for Data Mining: A Survey},
+  journal   = {{ACM} Computing Surveys},
+  volume    = {38},
+  number    = {3},
+  pages     = {9},
+  year      = {2006}
+}
+
+@inproceedings{TanKS02,
+  author    = {Pang{-}Ning Tan and Vipin Kumar and Jaideep Srivastava},
+  title     = {Selecting the Right Interestingness Measure for Association Patterns},
+  booktitle = {{ACM SIGKDD} International Conference on Knowledge Discovery and Data Mining ({KDD})},
+  pages     = {32--41},
+  year      = {2002}
+}
+
+@inproceedings{Sarawagi98,
+  author    = {Sunita Sarawagi and Rakesh Agrawal and Nimrod Megiddo},
+  title     = {Discovery-Driven Exploration of {OLAP} Data Cubes},
+  booktitle = {International Conference on Extending Database Technology ({EDBT})},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {1377},
+  pages     = {168--182},
+  year      = {1998}
+}
+
+@article{SeeDB,
+  author    = {Manasi Vartak and Sajjadur Rahman and Samuel Madden and Aditya G. Parameswaran and Neoklis Polyzotis},
+  title     = {{SeeDB}: Efficient Data-Driven Visualization Recommendations to Support Visual Analytics},
+  journal   = {Proceedings of the {VLDB} Endowment},
+  volume    = {8},
+  number    = {13},
+  pages     = {2182--2193},
+  year      = {2015}
+}
+
+@inproceedings{AgrawalIS93,
+  author    = {Rakesh Agrawal and Tomasz Imieli{\'{n}}ski and Arun N. Swami},
+  title     = {Mining Association Rules Between Sets of Items in Large Databases},
+  booktitle = {{ACM SIGMOD} International Conference on Management of Data},
+  pages     = {207--216},
+  year      = {1993}
+}
+
+@inproceedings{MacroBase,
+  author    = {Peter Bailis and Edward Gan and Samuel Madden and Deepak Narayanan and Kexin Rong and Sahaana Suri},
+  title     = {{MacroBase}: Prioritizing Attention in Fast Data},
+  booktitle = {{ACM SIGMOD} International Conference on Management of Data},
+  pages     = {541--556},
+  year      = {2017}
+}
+
+@article{DIFF,
+  author    = {Firas Abuzaid and Peter Kraft and Sahaana Suri and Edward Gan and Eric Xu and Atul Shenoy and Asvin Ananthanarayan and John Sheu and Erik Meijer and Xi Wu and Jeff Naughton and Peter Bailis and Matei Zaharia},
+  title     = {{DIFF}: A Relational Interface for Large-Scale Data Explanation},
+  journal   = {Proceedings of the {VLDB} Endowment},
+  volume    = {12},
+  number    = {4},
+  pages     = {419--432},
+  year      = {2018}
+}
+
+@inproceedings{Anchors,
+  author    = {Marco T{\'{u}}lio Ribeiro and Sameer Singh and Carlos Guestrin},
+  title     = {Anchors: High-Precision Model-Agnostic Explanations},
+  booktitle = {{AAAI} Conference on Artificial Intelligence},
+  pages     = {1527--1535},
+  year      = {2018}
+}
+
+@article{ExplanationTables,
+  author    = {Kareem El Gebaly and Parag Agrawal and Lukasz Golab and Flip Korn and Divesh Srivastava},
+  title     = {Interpretable and Informative Explanations of Outcomes},
+  journal   = {Proceedings of the {VLDB} Endowment},
+  volume    = {8},
+  number    = {1},
+  pages     = {61--72},
+  year      = {2014}
+}
+
+@inproceedings{AsudehJJ19,
+  author    = {Abolfazl Asudeh and Zhongjun Jin and H. V. Jagadish},
+  title     = {Assessing and Remedying Coverage for a Given Dataset},
+  booktitle = {{IEEE} International Conference on Data Engineering ({ICDE})},
+  pages     = {554--565},
+  year      = {2019}
+}
+
+@inproceedings{Wrobel97,
+  author    = {Stefan Wrobel},
+  title     = {An Algorithm for Multi-relational Discovery of Subgroups},
+  booktitle = {European Symposium on Principles of Data Mining and Knowledge Discovery ({PKDD})},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {1263},
+  pages     = {78--87},
+  year      = {1997}
+}
+
+@article{HerreraCGJ11,
+  author    = {Francisco Herrera and Crist{\'{o}}bal Jos{\'{e}} Carmona and Pedro Gonz{\'{a}}lez and Mar{\'{\i}}a Jos{\'{e}} del Jesus},
+  title     = {An Overview on Subgroup Discovery: Foundations and Applications},
+  journal   = {Knowledge and Information Systems},
+  volume    = {29},
+  number    = {3},
+  pages     = {495--525},
+  year      = {2011}
+}
+
+@inproceedings{MMR,
+  author    = {Jaime G. Carbonell and Jade Goldstein},
+  title     = {The Use of {MMR}, Diversity-Based Reranking for Reordering Documents and Producing Summaries},
+  booktitle = {{ACM SIGIR} Conference on Research and Development in Information Retrieval},
+  pages     = {335--336},
+  year      = {1998}
+}
+
+@inproceedings{GollapudiS09,
+  author    = {Sreenivas Gollapudi and Aneesh Sharma},
+  title     = {An Axiomatic Approach for Result Diversification},
+  booktitle = {International Conference on World Wide Web ({WWW})},
+  pages     = {381--390},
+  year      = {2009}
+}
+
+@article{DrosouP10,
+  author    = {Marina Drosou and Evaggelia Pitoura},
+  title     = {Search Result Diversification},
+  journal   = {{ACM SIGMOD} Record},
+  volume    = {39},
+  number    = {1},
+  pages     = {41--47},
+  year      = {2010}
+}
+
+@inproceedings{LinBilmes11,
+  author    = {Hui Lin and Jeff A. Bilmes},
+  title     = {A Class of Submodular Functions for Document Summarization},
+  booktitle = {Annual Meeting of the Association for Computational Linguistics ({ACL})},
+  pages     = {510--520},
+  year      = {2011}
+}
+
+@inproceedings{RoyS14,
+  author    = {Sudeepa Roy and Dan Suciu},
+  title     = {A Formal Approach to Finding Explanations for Database Queries},
+  booktitle = {{ACM SIGMOD} International Conference on Management of Data},
+  pages     = {1579--1590},
+  year      = {2014}
+}
+@inproceedings{muslea2005online,
+  title={Online query relaxation via bayesian causal structures discovery},
+  author={Muslea, Ion and Lee, Thomas J},
+  booktitle={AAAI},
+  pages={831--836},
+  year={2005}
+}
+
+@inproceedings{KoudasLTV06,
+  author    = {Nick Koudas and Chen Li and Anthony K. H. Tung and Rares Vernica},
+  title     = {Relaxing Join and Selection Queries},
+  booktitle = {{VLDB}},
+  year      = {2006}
+}
+
+@article{chu1994structured,
+  title={A structured approach for cooperative query answering},
+  author={Chu, Wesley W. and Chen, Qiming},
+  journal={IEEE Transactions on Knowledge and Data Engineering},
+  volume={6},
+  number={5},
+  pages={738--749},
+  year={1994},
+  publisher={IEEE}
+}
+
+@inproceedings{tran2010conquer,
+  title={How to conquer why-not questions},
+  author={Tran, Quoc Trung and Chan, Chee-Yong},
+  booktitle={Proceedings of the 2010 ACM SIGMOD International Conference on Management of data},
+  pages={15--26},
+  year={2010}
+}
+
+@inproceedings{SSAD22,
+  author    = {Suraj Shetiya and Ian P. Swift and Abolfazl Asudeh and Gautam Das},
+  title     = {Fairness-Aware Range Queries for Selecting Unbiased Data},
+  booktitle = {38th {IEEE} International Conference on Data Engineering, {ICDE} 2022},
+  pages     = {1423--1436},
+  publisher = {{IEEE}},
+  year      = {2022},
+  doi       = {10.1109/ICDE53745.2022.00111}
+}
+
+% ---- New entries ----
+% Verified: authors, title, venue, pages (par.nsf.gov). Year 2019. DOI not retrieved.
+@inproceedings{MZGR19,
+  author    = {Zhengjie Miao and Qitian Zeng and Boris Glavic and Sudeepa Roy},
+  title     = {Going Beyond Provenance: Explaining Query Answers with Pattern-based Counterbalances},
+  booktitle = {Proceedings of the 2019 ACM SIGMOD International Conference on Management of Data},
+  pages     = {485--502},
+  year      = {2019}
+}
+
+% Verified via Crossref.
+@inproceedings{CJ09,
+  author    = {Adriane Chapman and H. V. Jagadish},
+  title     = {Why Not?},
+  booktitle = {Proceedings of the 2009 ACM SIGMOD International Conference on Management of Data},
+  pages     = {523--534},
+  year      = {2009},
+  doi       = {10.1145/1559845.1559901}
+}
+
+% Verified via Crossref.
+@inproceedings{DongLi99,
+  author    = {Guozhu Dong and Jinyan Li},
+  title     = {Efficient Mining of Emerging Patterns: Discovering Trends and Differences},
+  booktitle = {Proceedings of the Fifth ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
+  pages     = {43--52},
+  year      = {1999},
+  doi       = {10.1145/312129.312191}
+}
+
+% Verified via Springer (volume, pages, DOI).
+@article{BayPazzani01,
+  author  = {Stephen D. Bay and Michael J. Pazzani},
+  title   = {Detecting Group Differences: Mining Contrast Sets},
+  journal = {Data Mining and Knowledge Discovery},
+  volume  = {5},
+  pages   = {213--246},
+  year    = {2001},
+  doi     = {10.1023/A:1011429418057}
+}
+
+% Authors/title verified (arXiv 1706.09479); venue "VLDB 2018" confirmed by the authors' page.
+% Volume/number/pages are from memory -- PLEASE CHECK before submission.
+@article{JNS18,
+  author  = {Noah Johnson and Joseph P. Near and Dawn Song},
+  title   = {Towards Practical Differential Privacy for {SQL} Queries},
+  journal = {Proceedings of the VLDB Endowment},
+  volume  = {11},
+  number  = {5},
+  pages   = {526--539},
+  year    = {2018}
+}
+
+% Authors/title/DOI verified (arXiv 1809.07750; DOI 10.1109/EuroSP48549.2020.00041).
+% Venue (IEEE EuroS&P 2020) is inferred from the DOI; pages not retrieved.
+@inproceedings{JNHS20,
+  author    = {Noah Johnson and Joseph P. Near and Joseph M. Hellerstein and Dawn Song},
+  title     = {Chorus: a Programming Framework for Building Scalable Differential Privacy Mechanisms},
+  booktitle = {IEEE European Symposium on Security and Privacy (EuroS\&P)},
+  year      = {2020},
+  doi       = {10.1109/EuroSP48549.2020.00041}
+}
+
+@article{rekatsinas2017,
+  author  = {Theodoros Rekatsinas and Xu Chu and Ihab F. Ilyas and Christopher R{\'e}},
+  title   = {{HoloClean}: Holistic Data Repairs with Probabilistic Inference},
+  journal = {Proc. VLDB Endow.},
+  volume  = {10},
+  number  = {11},
+  pages   = {1190--1201},
+  year    = {2017}
+}
+
+@inproceedings{chomicki2004,
+  author    = {Jan Chomicki and Jerzy Marcinkowski and Slawomir Staworko},
+  title     = {Computing Consistent Query Answers Using Conflict Hypergraphs},
+  booktitle = {Proceedings of the 13th ACM International Conference on Information and Knowledge Management (CIKM)},
+  pages     = {417--426},
+  year      = {2004}
+}
+
+% ---- added with the experiments of 1 Nov: datasets and benchmarks ----
+@misc{adult-uci,
+  author       = {Barry Becker and Ronny Kohavi},
+  title        = {Adult},
+  howpublished = {UCI Machine Learning Repository},
+  year         = {1996},
+  doi          = {10.24432/C5XW20}
+}
+
+@inproceedings{DingHMS21,
+  author    = {Frances Ding and Moritz Hardt and John Miller and Ludwig Schmidt},
+  title     = {Retiring Adult: New Datasets for Fair Machine Learning},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2021}
+}
+
+@inproceedings{BohannonFGJK07,
+  author    = {Philip Bohannon and Wenfei Fan and Floris Geerts and Xibei Jia and Anastasios Kementsietsidis},
+  title     = {Conditional Functional Dependencies for Data Cleaning},
+  booktitle = {Proceedings of the 23rd International Conference on Data Engineering (ICDE)},
+  pages     = {746--755},
+  year      = {2007}
+}
+
+@inproceedings{MahdaviAFMOST19,
+  author    = {Mohammad Mahdavi and Ziawasch Abedjan and Raul Castro Fernandez and Samuel Madden and Mourad Ouzzani and Michael Stonebraker and Nan Tang},
+  title     = {Raha: A Configuration-Free Error Detection System},
+  booktitle = {Proceedings of the 2019 International Conference on Management of Data (SIGMOD)},
+  pages     = {865--882},
+  year      = {2019}
+}
+
+@article{NiMZWLY24,
+  author  = {Wei Ni and Xiaoye Miao and Xiangyu Zhao and Yangyang Wu and Shuwei Liang and Jianwei Yin},
+  title   = {Automatic Data Repair: Are We Ready to Deploy?},
+  journal = {Proc. VLDB Endow.},
+  volume  = {17},
+  number  = {10},
+  year    = {2024}
+}

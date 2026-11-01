@@ -1,0 +1,574 @@
+\input{macros}
+\section{Problem Statement and Model}\label{sec:model}
+
+This section states what an explanation is and what we are looking for (Section~\ref{subsec:private-query-difference-setting}), gives the measures of explanation quality as modifications of the forms used in prior work (Section~\ref{sec:explanation-quality}), \added{bounds the sensitivity of the smoothed histogram distance and shows that the forms used in prior work admit none that decays with the database} (Section~\ref{subsec:ideal-sensitivity}), and derives from that the two-stage structure the framework uses and the two utilities it optimises (Section~\ref{subsec:two-stages}).
+\ag{Slightly overstated. Section~\ref{subsec:ideal-sensitivity} bounds the smoothed Histogram Distance and gives lower bounds for the three forms used in prior work, but it gives no bound for $\Rep_{\gamma_R}$ or $\Cov$ on its own, and the zero sensitivity of $\DivS$ is stated where $\DivS$ is defined. Suggest rephrasing to what it actually does, and likewise for the closing sentence of the Section~\ref{sec:explanation-quality} preamble.}
+
+\subsection{Private Explanations of Query Differences}
+\label{subsec:private-query-difference-setting}
+
+We consider a trusted server that holds a private database $D$ and two related queries $Q_1$ and $Q_2$ over it.
+The second query is typically derived from the first by a mechanism that the framework treats as a black box.
+In query refinement (Definition~\ref{def:refinement}), $Q_1=Q$ is the original query and $Q_2=Q'$ its refinement; in consistent query answering (Definition~\ref{def:consistent-answer}), $Q_2$ is $Q_1$ evaluated under repair semantics.
+Both are instances of the same problem, explaining how two related queries differ on the same database, and the framework does not depend on which one produced the pair.
+For a view $p$ we write $Q_i(p(D))$ for the restriction of the output of $Q_i$ to the view, $Q_i(D)\cap p(D)$ (Section~\ref{subsec:prelim-settings}); for a selection query it is the result of evaluating $Q_i$ on $p(D)$ (Proposition~\ref{prop:view-restriction}).
+
+Our goal is to let an analyst see \emph{how} the two outputs differ, which parts of the population the change added, removed or reshaped, while revealing nothing about any individual in $D$.
+Two things have to be settled for that: what an explanation looks like, and what makes one good.
+This subsection settles the first, and Section~\ref{sec:explanation-quality} the second; given those quality measures, the task is to return a handful of explanations that score well under them, privately.
+
+\paragraph{Workflow.}
+The analyst states what is to be explained and under what budget (Figure~\ref{fig:framework}): the two queries $Q_1$ and $Q_2$, the collection $\views$ of view predicates to search over, the explanation attributes $\Attrs$, the number of explanations $k$ and the privacy budget $\epsilon$.
+Both queries are given.
+How $Q_2$ was obtained, whether from a refinement algorithm, a repair procedure or the analyst writing it by hand, happens before the framework runs and is not part of it; the same holds for $\views$, which the analyst either supplies or has generated from the schema under the bound of Section~\ref{subsec:prelim-db-queries}.
+\added{Algorithm~\ref{alg:main} takes one further argument, the diversity weight $\lambda$, which does not say what to explain but tunes how strongly the second stage spreads the explanations across attributes.
+The reference smoothing constant $\gamma_R$ is not an argument either: Eq.~\eqref{eq:gammaR-rule} fixes it from $N$ alone, and Proposition~\ref{prop:usefulness-sensitivity} holds at every public choice of it.}
+The two constants that matter most, how many views the first stage keeps and how hard the second stage smooths, the algorithm fixes for itself in Section~\ref{subsec:explanation-generation}.
+The server then evaluates both queries, privately selects a small set of views from $\views$ and, within them, the explanation candidates that best characterise the difference, and releases noisy histograms for the selected candidates.
+Only this last object leaves the server; the analyst never observes $D$, the exact outputs, or the exact scores that drove the selection.
+Because $Q_2$ arrives as an input, the privacy analysis accounts for the explanation alone; if the mechanism that produced $Q_2$ read $D$, its own privacy cost composes with ours and is outside our scope.
+
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/framework.png}
+\caption{The private query-difference explanation framework.
+The analyst supplies both queries together with the search space and the budget; where $Q_2$ came from, whether a refinement algorithm, a repair procedure or the analyst, is outside the framework.
+The server privately selects views, then explanations, and releases only noisy histogram pairs.
+The constants $\tau$ and $\gamma$ are fixed from public quantities and therefore consume no budget.}
+\label{fig:framework}
+\end{figure*}
+
+\paragraph{The structure of an explanation.}
+An explanation answers \emph{where} the two outputs differ and \emph{in what respect}.
+The where is a region of the database, given by a view predicate $p\in\views$; the respect is an attribute $A\in\Attrs$, whose distribution the two outputs are compared on.
+
+\begin{definition}[Histogram Explanation Candidate]
+\label{def:candidate}
+Given a view $p\in\views$ and an explanation attribute $A\in\Attrs$, the \emph{histogram explanation candidate} $e=(p,A)$ induces the two histograms
+\[
+    \hist{Q_1(\pD)}{A}
+    \qquad\text{and}\qquad
+    \hist{Q_2(\pD)}{A}.
+\]
+Writing $\mathrm{attr}(p)$ for the attributes the predicate $p$ constrains, the space of candidates is
+\[
+\added{\mathcal{E}}=\{(p,A)\in\views\times\Attrs \;:\; A\notin\mathrm{attr}(p)\},
+\]
+and we write $E\subseteq\mathcal{E}$ for a set of them\added{, and $A_c$ for the attribute of a candidate $c\in\mathcal{E}$}.
+\ag{$\mathcal{C}$ already denotes the output-constraint set in Definitions~\ref{def:output-constraint} and~\ref{def:refinement}, both cited earlier in this section. Suggest renaming one of the two, for instance $\mathcal{E}$ for the candidate space here.}
+A view that fixes $A$ leaves the two histograms supported on a single bin, so such a pair reports the change in one count rather than a change in a distribution; excluding it also keeps the candidate space aligned with the reference set of Section~\ref{sec:explanation-quality}, from which $\mathrm{attr}(p)$ is excluded for the same reason.
+\end{definition}
+
+\begin{example}[Explanation candidates]
+\label{ex:candidate}
+Figure~\ref{fig:candidates} shows two candidates for the refinement of Example~\ref{ex:running}, both on $A=\texttt{occupation}$.
+In panel (a) the view is $p=(\texttt{education}=\texttt{Masters})$: both queries meet it, and the refinement shifts the occupational mix towards professional-specialty roles rather than merely adding people.
+In panel (b) the view is $p'=(\texttt{education}=\texttt{Bachelors})$, which $\varphi_2$ cannot satisfy, so $Q_2(p'(D))=\emptyset$ and the candidate reports a population the refinement removes in its entirety.
+Neither change is visible in the aggregate value, and the second is the kind of one-sided view the measures of Section~\ref{sec:explanation-quality} have to handle rather than discard.
+\end{example}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/candidates.png}
+\caption{Two explanation candidates on Adult, for $Q_1$ selecting Bachelor's and Master's degree holders working at least $50$ hours and $Q_2$ selecting Master's degree holders working at least $30$ (Example~\ref{ex:candidate}). Counts are exact; what the framework releases is each pair of bars perturbed with Laplace noise.}
+\label{fig:candidates}
+\end{figure*}
+
+What is released for a selected candidate is a perturbed version of its two histograms, in the sense of the Laplace mechanism (Definition~\ref{def:laplace-mechanism}).
+
+\begin{definition}[Noisy histogram]
+\label{def:noisy-histogram}
+For a set of tuples $T\subseteq D$, an attribute $A$ and a scale $b>0$, the \emph{noisy histogram} of $A$ over $T$ is
+\[
+\hat H_{T,A}(v)=\hist{T}{A}(v)+Y_v,\qquad v\in\Dom(D[A]),
+\]
+with $Y_v$ drawn independently from the Laplace distribution of scale $b$, one draw per bin of the public domain of $A$.
+\end{definition}
+
+We release the pair $\big(\hat H_{Q_1(p(D)),A},\hat H_{Q_2(p(D)),A}\big)$ rather than only its difference, so that the analyst sees the two profiles themselves and not just the size of the gap between them.
+The pair costs more: a tuple selected by both queries changes both histograms, so the pair has $L_1$-sensitivity $2$ against $1$ for the difference (Proposition~\ref{prop:histogram-release-sensitivity}), which doubles the noise scale at a fixed budget.
+Where budget is scarce the difference can be released instead.
+
+
+\subsection{Measures of Explanation Quality}
+\label{sec:explanation-quality}
+
+The criteria we optimise are the four reviewed in Section~\ref{subsec:prelim-quality}: interestingness, representativeness, coverage and diversity.
+None is new.
+What is new is the form we give them, and the reason for the change is always the same: a measure whose value can be swung by one individual cannot be optimised under differential privacy at all, because the noise a private mechanism must add is calibrated to exactly that swing.
+\added{For the three criteria that read the database we therefore recall the form used in prior work, say what goes wrong with it here, and give the form we use; diversity reads only released outputs and needs no such change.}
+Section~\ref{subsec:ideal-sensitivity} states the effect of all four changes in one place.
+
+\paragraph{Interestingness.}
+In its distributional form a candidate is scored by the distance between the two distributions it induces~\cite{SeeDB,FEDEX}, which in our setting is the total variation distance between the conditional distributions of $A$ over $Q_1(p(D))$ and $Q_2(p(D))$, or twice it in the normalised form.
+Two things go wrong.
+It is undefined when one of the two outputs does not meet the view, which is exactly the case of the one-sided views of Example~\ref{ex:candidate}, where a refinement adds or removes a population wholesale.
+And because it is a ratio over the output sizes, a single tuple can move it by half of its entire range, however large the database (Proposition~\ref{prop:sensitivity-itemized}).
+We therefore compare the two outputs \emph{bin by bin in counts}, normalised by the size of the bin in the view rather than by the size of the outputs, and add a public constant $\gamma$ to each denominator.
+
+\begin{definition}[Smoothed Histogram Distance]
+\label{def:hd}
+Given a dataset $D$, a view predicate $p$, an attribute $A$, two queries $Q_1,Q_2$, and a public smoothing constant $\gamma \ge 0$,
+\begin{multline}
+\HD_\gamma(D;p,A,Q_1,Q_2) = \\
+\sum_{v\in \Dom(D[A])}
+\frac{\big|\hist{\Qone(\pD)}{A}(v)-\hist{\Qtwo(\pD)}{A}(v)\big|}
+     {\hist{\pD}{A}(v)+\gamma}
+\label{eq:hd-definition}
+\end{multline}
+\end{definition}
+
+Setting $\gamma=0$ recovers the unsmoothed score, in which case the sum must be restricted to bins with $H_{p(D),A}(v)>0$ to avoid division by zero.
+For $\gamma>0$ no such restriction is needed: a bin absent from $p(D)$ is necessarily absent from $Q_1(p(D))$ and $Q_2(p(D))$ as well, since both are subsets of $p(D)$, so it contributes exactly $0/\gamma=0$.
+
+The motivation for $\gamma$ is a mismatch between the \emph{worst case} the sensitivity bound must cover and the \emph{typical case} the mechanism actually encounters.
+A bin containing two tuples can have its ratio swung by a full unit by a single individual, so the unsmoothed bound must accommodate that; yet the bound is then applied uniformly, including to candidates supported by thousands of tuples.
+The exponential mechanism consequently cannot separate candidates whose scores differ by far less than the bound.
+Smoothing raises every denominator by a fixed public amount, which barely perturbs well-supported bins while removing the pathological ones from consideration.
+
+The resulting bound is strictly decreasing in $\gamma$, which is the entire point: $\gamma$ buys a tighter worst case at the cost of a mild, uniform compression of every candidate's score.
+The same device appears in differentially private decision-tree induction, where split criteria built from ratios of counts are smoothed for this reason~\cite{FriedmanSchuster10}, and in~\cite{DPClustX}, which rescales its cluster-quality measures by the cluster size; Section~\ref{subsec:prelim-dp} contrasts it with calibrating noise to the data instead.
+
+\paragraph{Representativeness.}
+Subgroup discovery scores a region by trading its unusualness against its generality~\cite{Wrobel97,HerreraCGJ11}; we need the requirement in the opposite direction, since the deviation we report is the change \emph{inside} a region and the region itself should be typical of the database.
+The natural form is $1-\TVD$ between the distribution of an attribute inside the view and in the whole database.
+Here too the view-side term $d_v/m$ is a ratio whose denominator is the view size, so a single tuple can rewrite the profile of a near-empty view (Proposition~\ref{prop:sensitivity-itemized}), and the measure is undefined when the view is empty.
+\added{That instability is a question of evidence rather than of privacy: Proposition~\ref{prop:usefulness-sensitivity} holds at every $\gamma_R$, the product with coverage absorbing the sensitivity, since $\Cov\le2m/N$ vanishes on exactly the views whose profile is unstable.
+But a profile built on a handful of tuples is not worth reading at face value, whatever its sensitivity.}
+The same smoothing repairs both.
+
+\begin{definition}[Smoothed Representativeness]
+\label{def:rep}
+Let $c^A_v$ and $d^A_v$ be the number of tuples with $A$-value $v$ in $D$ and in $p(D)$, let $N=|D|$ and $m=|p(D)|$, and let $\gamma_R\ge0$ be a public constant.
+For a single attribute,
+\begin{equation}
+\Rep^A_{\gamma_R}(p,D)=1-\frac{1}{2}\sum_{v\in\Dom(D[A])}\left|\frac{c^A_v}{N}-\frac{d^A_v}{m+\gamma_R}\right| ,
+\label{eq:representativeness-proxy}
+\end{equation}
+and the representativeness of the view is the average over the reference attributes it does not itself constrain,
+\begin{equation}
+\Rep_{\gamma_R}(p,D)=\frac{1}{|\mathcal{A}_R(p)|}\sum_{A\in\mathcal{A}_R(p)}\Rep^A_{\gamma_R}(p,D),
+\label{eq:rep-average}
+\end{equation}
+where $\mathcal{A}_R(p)=\mathcal{A}_R\setminus\mathrm{attr}(p)$.
+\end{definition}
+
+Two conventions are fixed by Eq.~\eqref{eq:rep-average}.
+The reference set $\mathcal{A}_R$ is chosen in advance and does not depend on the candidate attribute, since representativeness is a property of the view and is evaluated before views are paired with attributes.
+And the attributes the view itself constrains are excluded, because comparing $p(D)$ with $D$ on the attribute that defines $p$ is close to tautological: a view $\texttt{occupation}=c$ necessarily has an extreme occupation distribution.
+We assume $|\mathcal{A}_R|>\ell$, so that $\mathcal{A}_R(p)$ is never empty.
+
+\added{How large should $\gamma_R$ be?
+Of the mass Eq.~\eqref{eq:representativeness-proxy} weighs against $D$, the view supplies
+$m/(m+\gamma_R)$ and the smoothing the rest; since the smoothing part copies the profile of $D$
+itself, that ratio is the \emph{fidelity} at which the view is read.
+Proposition~\ref{prop:rep-range} prices it: the values $\Rep_{\gamma_R}$ can take span an interval
+of length $\tfrac{m}{m+\gamma_R}\big(1-\tfrac{m+\gamma_R}{N}\big)$, which closes to a point once
+$m+\gamma_R\ge N$ --- at $\gamma_R=N$, for every view at once, leaving the reference attributes
+unread. We set instead
+\begin{equation}
+\gamma_R=\alpha N,\qquad \alpha=\tfrac{1}{100},
+\label{eq:gammaR-rule}
+\end{equation}
+reading a view at fidelity $\tfrac12$ once it holds an $\alpha$ fraction of $D$ and damping
+smaller ones, which is what smoothing is for; on Adult that is a few hundred tuples.
+Section~\ref{subsec:two-stages} balances $\gamma$ the same way, against the support of a single
+bin rather than of the whole view (Remark~\ref{rem:gamma-window}).
+Both $\alpha$ and $N$ are public (Section~\ref{subsec:prelim-db-queries}), so the choice costs no
+budget and $\gamma_R$ is a constant of the mechanism rather than an argument of
+Algorithm~\ref{alg:main}.}
+
+\begin{proposition}[Range of smoothed representativeness]
+\label{prop:rep-range}
+\added{Fix a database size $N$, a view size $m\le N$ and a reference attribute $A$, and write
+$M=m+\gamma_R$. As the two $A$-profiles range over all non-negative vectors $(c^A_v)_v$ and
+$(d^A_v)_v$ with $\sum_v c^A_v=N$, $\sum_v d^A_v=m$ and $d^A_v\le c^A_v$, the values of
+$\Rep^A_{\gamma_R}$ fill an interval of length
+\[
+\frac{m}{M}\Big(1-\frac{M}{N}\Big)\quad\text{if }M<N,\qquad\text{and a single point otherwise.}
+\]
+So do the values of $\Rep_{\gamma_R}$, which averages such quantities over attributes whose
+profiles may be chosen independently of one another.}
+\end{proposition}
+
+\begin{proof}
+\added{Write $x_v=c^A_v/N$ and $y_v=d^A_v/M$, so $\sum_v x_v=1$ and $\sum_v y_v=m/M$, and put
+\[
+S=\sum_v\min(x_v,y_v) .
+\]
+Since $\sum_v|x_v-y_v|=\sum_v x_v+\sum_v y_v-2S$, Eq.~\eqref{eq:representativeness-proxy} reads
+\[
+\Rep^A_{\gamma_R}=\frac{1-m/M}{2}+S ,
+\]
+an increasing affine function of $S$. The admissible pairs form a convex set and $S$ is
+continuous on it, so both range over an interval of the same length, and it is enough to find the
+two ends of the overlap $S$.
+
+\emph{Above.} $\min(x_v,y_v)\le y_v$ gives $S\le m/M$, with equality exactly when $y_v\le x_v$ for
+every $v$. A view drawn in proportion to the database, $d^A_v=m\,c^A_v/N$, has
+$y_v=(m/M)\,x_v\le x_v$ and attains it.
+
+\emph{Below.} From $d^A_v\le c^A_v$ we get $y_v\le c^A_v/M=(N/M)\,x_v$, so $x_v\ge(M/N)\,y_v$; and
+$y_v\ge(M/N)\,y_v$ whenever $M\le N$. Hence $\min(x_v,y_v)\ge(M/N)\,y_v$ for every $v$, and
+summing, $S\ge(M/N)(m/M)=m/N$. A view sitting on a single value attains it: let one value occur
+exactly $m$ times in $D$ with all of its tuples inside the view, so that
+$S=\min(m/N,\,m/M)=m/N$.
+
+So $S$ fills $[m/N,\,m/M]$, an interval of length $\tfrac{m}{M}-\tfrac{m}{N}=\tfrac mM(1-\tfrac MN)$.
+If instead $M\ge N$ then $y_v\le c^A_v/M\le c^A_v/N=x_v$ for every $v$, so $S=m/M$ always and the
+interval is a point.}
+\end{proof}
+Smoothing has a second, useful consequence: it bounds $\Rep_{\gamma_R}$ away from $1$, which the proof of Proposition~\ref{prop:usefulness-sensitivity} relies on.
+The two vectors compared in Eq.~\eqref{eq:representativeness-proxy} do not carry the same total mass: the database side sums to $1$, while the view side sums to $m/(m+\gamma_R)$, which is below $1$ because smoothing inflates the denominator without adding to the counts.
+Two non-negative vectors are at least as far apart in $L_1$ as their totals differ, so whatever the two profiles look like,
+\[
+\sum_v\Big|\tfrac{c_v}{N}-\tfrac{d_v}{m+\gamma_R}\Big|\;\ge\;1-\frac{m}{m+\gamma_R}\;=\;\frac{\gamma_R}{m+\gamma_R},
+\]
+and substituting this into Eq.~\eqref{eq:representativeness-proxy} gives
+\begin{equation}
+\Rep_{\gamma_R}(p,D)\;\le\;1-\frac{\gamma_R}{2(m+\gamma_R)}\;\added{\overset{\gamma_R=\alpha N}{\le}\;\frac{2+\alpha}{2(1+\alpha)}},
+\label{eq:rep-upper}
+\end{equation}
+\added{for the last step, $m\le N$ makes $m+\gamma_R\le(1+\alpha)N$, so the fraction is at least $\alpha/(2(1+\alpha))$}, and the average inherits the bound from the attributes it averages.
+It is attained when the view is the whole database, and it is the upper end of the interval of Proposition~\ref{prop:rep-range}.
+
+
+\paragraph{Coverage.}
+A deviation seen on a handful of tuples is not evidence, and explanation frameworks pair a deviation measure with a mass measure: the support of association rules~\cite{AgrawalIS93}, the support threshold of MacroBase~\cite{MacroBase} and of \textsc{Diff}~\cite{DIFF}, the coverage of an anchor~\cite{Anchors}.
+Since the object being explained is a comparison, the mass has to account for both outputs.
+Taking the product of the two output sizes, as a two-sided support measure suggests, has the same defect as the distributional interestingness: it vanishes on one-sided views, and \added{it grows with the two output sizes}, which is what makes a single tuple move it by an amount that grows with $N$ (Proposition~\ref{prop:sensitivity-itemized}).
+\ag{Small issue: The sensitivity of the product is $o_1+o_2+1$, so it grows with the two output sizes, and the view size enters only as an upper bound on them. Saying it grows with the outputs would be more accurate.}
+We take instead the evidence the two outputs place in the view \emph{jointly}, normalised by the public $N$:
+
+\begin{equation}
+\Cov(p,Q_1,Q_2,D)=\frac{|Q_1(p(D))|+|Q_2(p(D))|}{|D|}.
+\label{eq:coverage-proxy}
+\end{equation}
+Dividing by $N$ costs nothing, since $N$ is public (Section~\ref{subsec:prelim-db-queries}), and it removes the growth with the database size: $\Cov$ reads as a fraction of the database rather than a count, so it is comparable across datasets and across views of very different sizes.
+Its range is $[0,2]$, the upper end reached only when both outputs cover all of $D$, and it is $0$ exactly when neither output meets the view, which is the one case in which there is nothing to explain.
+Summing rather than taking the smaller of the two counts matters for the same reason the sum replaces the product: a view that one output fills and the other leaves empty keeps the full weight of the evidence that is there.
+
+\paragraph{Diversity.}
+When several results are returned together their marginal value depends on what has already been shown, which is the principle of maximal marginal relevance~\cite{MMR} and of the axiomatic treatments that follow it~\cite{GollapudiS09,LinBilmes11}.
+The aspect an explanation describes is its attribute, so we discourage reusing one, and grade the penalty by how many times it has already been used rather than charging every repeat alike:
+\begin{equation}
+\DivS(A,S)=\lambda^{\,\mathrm{count}(A,S)},
+\qquad 0\le\lambda\le1,
+\label{eq:diversity-score}
+\end{equation}
+where $\mathrm{count}(A,S)$ is the number of previously selected explanations already using attribute~$A$.
+At $\lambda=1$ the term disappears and repeats are free; at $\lambda=0$ every repeat scores zero, which empties a candidate of value without removing it from the pool, so the mechanism may still return one.
+Since $\DivS$ reads only previously selected \emph{outputs} and never the database, it adds no data sensitivity to the selection utility.
+
+\paragraph{From a sequence to a set.}
+Equation~\eqref{eq:diversity-score} is defined relative to the explanations chosen in earlier iterations, so as written it scores an \emph{ordered sequence}, not a set, while what we release is a set.
+We therefore state the objective the algorithm approximates directly.
+
+\begin{definition}[Set-level explanation utility]
+\label{def:setobj}
+Let $E$ be a set of candidates, and for an attribute $A$ let
+$h^A_{(1)}\ge h^A_{(2)}\ge\cdots$ be the scores $\HD_\gamma(c)$ of the members of $E$ with $A_c=A$, in decreasing order\added{, with $h^A_{(j)}=0$ for every $j$ beyond the size of that group}.
+For a non-increasing weight profile $w_1\ge w_2\ge\cdots\ge0$ with $w_1=1$,
+\begin{equation}
+F_w(E)=\sum_{A}\;\sum_{j\ge1} w_j\, h^A_{(j)} .
+\label{eq:set-objective}
+\end{equation}
+\end{definition}
+\ag{$A_c$ has not been introduced. Adding one clause to Definition~\ref{def:candidate}, writing $A_c$ for the attribute of a candidate $c$, fixes it here and in Proposition~\ref{prop:setobj}.}
+\ag{The inner sum of Eq.~\eqref{eq:set-objective} has no upper limit, while $h^A_{(j)}$ exists only up to the size of the attribute group. Simplest fix is to adopt the convention $h^A_{(j)}=0$ for $j$ beyond the group.}
+
+Within each attribute group the strongest explanation counts in full and every further one is discounted by its rank.
+The graded penalty of Equation~\eqref{eq:diversity-score} is the profile $w_j=\lambda^{\,j-1}$, and a flat rule is $w=(1,\lambda,\lambda,\dots)$.
+The two agree on the first two members of a group and differ only from the third onwards, so they can disagree about which set is best only when some attribute is used at least three times: that needs $k\ge3$, and once $k>2|\Attrs|$ it is unavoidable.
+
+\begin{proposition}[The set objective agrees with the sequential rule]
+\label{prop:setobj}
+Order $E$ arbitrarily and write $S_{<c}$ for the members preceding $c$, so that the per-round rule of Eq.~\eqref{eq:diversity-score} awards $E$ the total $\sum_{c\in E}\HD_\gamma(c)\cdot\DivS(A_c,S_{<c})$.
+With $w_j=\lambda^{\,j-1}$, $F_w(E)$ equals that total under the ordering maximising it, and upper-bounds it under every ordering.
+\end{proposition}
+
+\begin{proof}
+Since $\mathrm{count}(A,S)$ counts only the members of $S$ that carry $A$, the weight a candidate receives depends on its position within its own attribute group and not on how the groups are interleaved.
+The total therefore splits into independent per-group totals, and an ordering is free to choose each group's internal order.
+Within the group of $A$, an ordering that places a member $j$-th awards it $\lambda^{\,j-1}$, so the group total is $\sum_j \lambda^{\,j-1}h_{\sigma(j)}$ for the induced permutation $\sigma$.
+The weights are non-increasing, so by the rearrangement inequality this is maximised by pairing the largest weight with the largest score, that is by visiting the group in decreasing $\HD_\gamma$, and the maximum is $\sum_j \lambda^{\,j-1}h^A_{(j)}$.
+Summing over groups gives Eq.~\eqref{eq:set-objective}, and no ordering gives more.
+The special cases $\lambda=0$ and $\lambda=1$ recover a group maximum and a modular sum respectively.
+\end{proof}
+
+
+\added{Greedy selection on $F_w$ is not a constant-factor approximation. Because $F_w$ decomposes over attribute groups with no interaction between them, it returns the \emph{exact} maximiser, and the per-round score of Algorithm~\ref{alg:topk} is precisely its marginal gain; Appendix~\ref{app:greedy} establishes both.}
+\ag{The $(1-1/e)$ guarantee requires $F_w$ to be monotone submodular, which is now proved only in the appendix, so the reader meets the guarantee before the hypothesis. Please add one sentence recording that $F_w$ is monotone submodular, with a pointer to the appendix, closes the gap.}
+
+\subsection{Sensitivity of the Measures}
+\label{subsec:ideal-sensitivity}
+
+Private selection with the exponential mechanism (Definition~\ref{def:exponential-mechanism}) calibrates its randomness to the global sensitivity of the utility (Definition~\ref{def:global-sensitivity}).
+All statements are with respect to the unbounded neighbouring relation of Definition~\ref{def:neighboring}.
+For a function $f$ and a size $N$ we write $\GS_N(f)$ for the largest change of $f$ between a database of size $N$ and a neighbour, so that $\GS(f)=\sup_N\GS_N(f)$.
+\added{Under Definition~\ref{def:neighboring} a neighbour of a database of size $N$ has size $N+1$ or $N-1$, and that asymmetry is what the two cases of Proposition~\ref{prop:usefulness-sensitivity} turn on.}
+\ag{This sentence is dense. Two things would help. The clause after the semicolon repeats what the supremum already says and can go. And it is worth stating that a neighbour of a database of size $N$ has size $N+1$ or $N-1$, since that asymmetry is exactly what the two cases of Proposition~\ref{prop:usefulness-sensitivity} turn on.}
+\added{A mechanism running on the private database cannot read its scale off $|D|$. Under Definition~\ref{def:neighboring} a neighbouring pair has $|D|=N$ and $|D'|=N+1$, so such a mechanism would run at two different scales on the two databases, whereas the $e^{\epsilon}$ argument needs one scale common to both. It must instead fix the scale from a public $\bar N$ that does not depend on $D$ and satisfies $\bar N\le|D|$, which is what Section~\ref{sec:solution} does; the bounded relation, under which the size is constant across the pair, would serve equally well.}
+\ag{Publicity of $|D|$ is necessary here but it is not sufficient. Under Definition~\ref{def:neighboring} a neighbouring pair has $|D|=N$ and $|D'|=N+1$, so a mechanism that takes its scale from $|D|$ runs the exponential mechanism at two different temperatures on the two databases, whereas the usual $e^{\epsilon}$ argument needs one common scale. Two possible fixes. Either adopt the bounded relation, where $N$ is genuinely constant across the pair, or fix the scale from a public $\bar N$ that does not depend on $D$.}
+Upper bounds below hold for every candidate; lower bounds and equalities are attained by explicit databases, and so require that the view and the two queries admit the tuples those databases use.
+We begin with the one bound that takes real work, the smoothed Histogram Distance, and then state all four results together.
+
+\begin{proposition}[Sensitivity of Smoothed Histogram Distance]
+\label{prop:hd-sensitivity}
+$\GS(\HD_\gamma)=\dfrac{1}{1+\gamma}$.
+\end{proposition}
+
+\begin{proof}
+Let $D'=D\cup\{t\}$.
+If $t$ does not satisfy $p$ nothing changes.
+Otherwise $t$ falls into exactly one bin $v^*$ of $A$, and every other term of Eq.~\eqref{eq:hd-definition} is unchanged, so only that term has to be bounded.
+Write $n=\hist{\pD}{A}(v^*)$ for the support of the view in that bin and $q_j=\hist{Q_j(\pD)}{A}(v^*)$ for $j=1,2$ for the two output counts in it, and let $n'=\hist{p(D')}{A}(v^*)$ and $q_j'=\hist{Q_j(p(D'))}{A}(v^*)$ be the same quantities on $D'$.
+The numerators of the term before and after are $x=|q_1-q_2|$ and $x'=|q_1'-q_2'|$; since $Q_j(\pD)\subseteq\pD$ by Proposition~\ref{prop:view-restriction}, $0\le x\le n$.
+Each query either selects $t$ or not, so $q_j'=q_j+\delta_j$ with $\delta_j\in\{0,1\}$, and $n'=n+1$ because $t$ satisfies $p$ and falls in $v^*$.
+Substituting these,
+\[
+x'=|q_1'-q_2'|=\big|(q_1+\delta_1)-(q_2+\delta_2)\big|=\big|(q_1-q_2)+(\delta_1-\delta_2)\big| ,
+\]
+whereas $x=|q_1-q_2|$.
+Both $x$ and $x'$ are absolute values, so by the reverse triangle inequality their difference is at most the absolute value of the difference of their arguments:
+\[
+|x'-x|\;\le\;\big|\,[(q_1-q_2)+(\delta_1-\delta_2)]-(q_1-q_2)\,\big|\;=\;|\delta_1-\delta_2|\;\le\;1 ,
+\]
+the last step because $\delta_1,\delta_2\in\{0,1\}$.
+The term therefore moves from $x/(n+\gamma)$ to $x'/(n+1+\gamma)$.
+\added{If $n=\gamma=0$ the bin is excluded from the sum on $D$ by the restriction stated after Definition~\ref{def:hd} and present in it on $D'$, so the comparison is between an absent term and one of value $x'\le1=\frac{1}{1+\gamma}$.}
+\ag{One sentence here: At $\gamma=0$ this bin is excluded from the sum on $D$ by the restriction stated after Definition~\ref{def:hd} and included on $D'$, so the comparison is between a term that is absent and a term that is present. As written it reads as though the bin sat in both sums.}
+Otherwise put $K=(n+\gamma)(n+1+\gamma)>0$ and bound the two directions separately.
+Upwards, using in turn $x'\le x+1$, a common denominator, the cancellation of $xn+x\gamma$, then $x\ge0$ and $n\ge0$:
+\begin{align*}
+\frac{x'}{n+1+\gamma}-\frac{x}{n+\gamma}
+&\;\le\;\frac{x+1}{n+1+\gamma}-\frac{x}{n+\gamma}\\[2pt]
+&\;=\;\frac{(x+1)(n+\gamma)-x(n+1+\gamma)}{K}\\[2pt]
+&\;=\;\frac{n+\gamma-x}{K}\\[2pt]
+&\;\le\;\frac{n+\gamma}{K}\;=\;\frac{1}{n+1+\gamma}\\[2pt]
+&\;\le\;\frac{1}{1+\gamma}.
+\end{align*}
+Downwards, using in turn $x'\ge x-1$, a common denominator, the same cancellation, then $x\le n$ and the step $(\star)$ below:
+\begin{align*}
+\frac{x}{n+\gamma}-\frac{x'}{n+1+\gamma}
+&\;\le\;\frac{x}{n+\gamma}-\frac{x-1}{n+1+\gamma}\\[2pt]
+&\;=\;\frac{x(n+1+\gamma)-(x-1)(n+\gamma)}{K}\\[2pt]
+&\;=\;\frac{x+n+\gamma}{K}\\[2pt]
+&\;\le\;\frac{2n+\gamma}{K}\\[2pt]
+&\;\overset{(\star)}{\le}\;\frac{1}{1+\gamma}.
+\end{align*}
+Step $(\star)$ is the only one that is not immediate.
+It asserts $(2n+\gamma)/K\le 1/(1+\gamma)$.
+Since $K>0$ and $1+\gamma>0$, cross-multiplying preserves the inequality, so the claim is equivalent to $K-(2n+\gamma)(1+\gamma)\ge0$.
+Expanding both products,
+\begin{align*}
+(2n+\gamma)(1+\gamma)&=2n+2n\gamma+\gamma+\gamma^2,\\[2pt]
+K=(n+\gamma)(n+1+\gamma)&=n^2+n+2n\gamma+\gamma+\gamma^2 .
+\end{align*}
+The terms $2n\gamma+\gamma+\gamma^2$ occur in both lines and cancel, leaving $n^2+n$ from the second and $2n$ from the first, so
+\[
+K-(2n+\gamma)(1+\gamma)=(n^2+n)-2n=n(n-1),
+\]
+which is non-negative for every integer $n\ge0$, vanishing only at $n=0$ and $n=1$.
+Equality holds for a bin holding one tuple of the view selected by $Q_1$ only, whose term is $\frac{1}{1+\gamma}$: adding a tuple of the same bin selected by $Q_2$ only makes the two counts equal and the term $0$.
+\end{proof}
+
+Step $(\star)$ is an equality exactly when $n(n-1)=0$, that is for $n\in\{0,1\}$: a bin the new tuple populates from empty, or one already holding a single tuple of the view.
+For $n\ge2$ the bound $(2n+\gamma)/\big((n+\gamma)(n+1+\gamma)\big)$ is strictly smaller, and it falls as $n$ grows.
+The sensitivity is therefore dictated by the sparsest bins of any view, whereas the candidates that make good explanations rest on well-populated ones.
+
+
+\begin{proposition}[Sensitivity of the forms used in prior work]
+\label{prop:sensitivity-itemized}
+Let $N$ be the database size, and restrict attention to neighbouring databases on which the measure in question is defined.
+\begin{enumerate}[label=(\roman*),leftmargin=*]
+\item \emph{Interestingness.} The distributional form has $\GS\ge1$, half of its range $[0,2]$.
+\item \emph{Representativeness.} The unsmoothed form $1-\TVD$ has $\GS_N\ge\frac12-\frac1N$.
+\item \emph{Coverage.} The two-sided support $|Q_1(\pD)|\,|Q_2(\pD)|$ has $\GS_N=2N+1$.
+\end{enumerate}
+None of the three decays with $N$, and the last grows with it.
+\end{proposition}
+
+\begin{proof}
+(i) The score is twice a total variation distance and so lies in $[0,2]$.
+Let $Q_1(\pD)=\{t\}$ with $t[A]=v_1$, and let $Q_2(\pD)$ place all its mass on a bin $v_2\ne v_1$, so the two conditional distributions are point masses at $v_1$ and at $v_2$ and the score is $2$.
+Add one tuple of the view, selected by $Q_1$ only and with $A$-value $v_2$: the first distribution becomes uniform on $\{v_1,v_2\}$ and the score drops to $1$.
+The rest of $D$ is unconstrained, so a change of $1$ is available at every database size.
+
+(ii) Let $D$ hold one tuple of the view carrying the value $v_1$ on every attribute of $\mathcal{A}_R(p)$, together with $N-1$ tuples outside the view carrying $v_2$.
+The view distribution is then a point mass at $v_1$ while the database gives $v_1$ weight $\tfrac1N$, so the measure is $\tfrac1N$.
+Adding one tuple of the view with value $v_2$ makes the view distribution uniform on $\{v_1,v_2\}$ and the measure $\tfrac{N+3}{2(N+1)}$.
+The change is $\tfrac{N+3}{2(N+1)}-\tfrac1N$, which exceeds $\tfrac12-\tfrac1N$ because $\tfrac{N+3}{2(N+1)}>\tfrac12$.
+
+(iii) Write $o_j=|Q_j(\pD)|$ for $j=1,2$; by Proposition~\ref{prop:view-restriction} both are at most $m=|\pD|\le N$.
+A tuple of the view selected by both queries sends $o_1o_2$ to $(o_1+1)(o_2+1)$, a change of
+\[
+(o_1+1)(o_2+1)-o_1o_2=o_1+o_2+1\;\le\;2N+1 .
+\]
+Equality holds at $o_1=o_2=m=N$, that is when the view is the whole database and both queries select all of it.
+\end{proof}
+
+\subsection{The Two-Stage Model}
+\label{subsec:two-stages}
+
+A single private selection over $\mathcal{E}$ would have to score every candidate, and scoring a candidate means building the histograms of its attribute over both outputs inside its view.
+That is $|\views|\cdot|\Attrs|$ pieces of work, repeated in each of the $k$ selection rounds.
+Most of it is wasted: representativeness and coverage depend on the view alone, so whether a region can support an explanation at all can be decided before any attribute is looked at.
+The framework therefore splits the problem in two.
+The \emph{view stage} scores each view by the product of the two region-level measures,
+\begin{equation}
+\Use(p,Q_1,Q_2,D)= \Rep_{\gamma_R}(p,D)\cdot \Cov(p,Q_1,Q_2,D),
+\label{eq:usefulness-proxy}
+\end{equation}
+with $\Rep_{\gamma_R}$ from Definition~\ref{def:rep} and $\Cov$ from Eq.~\eqref{eq:coverage-proxy}, and retains the $\tau$ best.
+The \emph{explanation stage} then scores only the candidates built from the retained views, by the product of the two candidate-level measures:
+\begin{equation}
+\widetilde{U}_i(D;c)=\HD_{\gamma}(D;p,A,Q_1,Q_2)\cdot \DivS(A,S_{i-1})
+\label{eq:selection-utility}
+\end{equation}
+for a candidate $c=(p,A)$.
+\ag{The workflow paragraph and Figure~\ref{fig:framework} say $\gamma$ is refreshed each round from the accountant, so this utility and Proposition~\ref{prop:selection-utility-sensitivity} are really stated for the round's $\gamma_i$. Suggest carrying the index here, or adding a clause that the bound holds for whichever $\gamma$ the round uses.}
+This reduces the candidate-level work from $|\views|\cdot|\Attrs|$ to $\tau\cdot|\Attrs|$, a factor $|\views|/\tau$, in every round.
+
+Efficiency is the visible reason for the split, but not the binding one.
+A single-stage mechanism would have to select on the product of all four measures, and a product is worse than its factors: by the product rule its sensitivity picks up a term in which the movement of one factor is multiplied by the \emph{level} of the other, and the levels here are not small.
+Coverage alone can reach $2$, so an interestingness score that moves by $\Delta$ drags the combined score by $2\Delta$ before the coverage term is even counted.
+Splitting removes that cross term entirely.
+Each stage is its own private mechanism, calibrated to the sensitivity of its own utility, and neither pays for the other's range.
+Propositions~\ref{prop:usefulness-sensitivity} and~\ref{prop:selection-utility-sensitivity} are what the two stages pay, and Section~\ref{subsec:dp-proof} composes them into $\epsilon$.
+\begin{proposition}[Sensitivity of View Usefulness]
+\label{prop:usefulness-sensitivity}
+\added{Let $\gamma_R=\alpha N$ for a public $\alpha\in[0,1]$, as in Eq.~\eqref{eq:gammaR-rule}.
+Then
+\[ \GS_N(\Use)\;\le\;\frac{4}{N}. \]}
+\end{proposition}
+
+\begin{proof}
+\added{Write $m=|\pD|$ for the view size, $M=m+\gamma_R$ for the smoothed view size, and
+$s=|Q_1(\pD)|+|Q_2(\pD)|$ for the evidence the two outputs place in the view, so that
+$0\le s\le2m\le2N$ by Proposition~\ref{prop:view-restriction} and $\Cov=s/N$.
+For a reference attribute $A$ let $x^A_v=c^A_v/N$ and $y^A_v=d^A_v/M$ be the two profiles it
+compares, and write $\theta=\sum_v y^A_v=m/M$, the same for every $A$.
+A prime marks a quantity on a neighbour of size $N+1$, and $\Delta$ a primed quantity minus its
+unprimed one.
+We bound the change to such a neighbour first and collect the two directions at the end.
+So let $D'=D\cup\{t\}$, let $v(t)$ be the $A$-value of $t$, and set
+\[
+w^A=\Delta y^A-\Delta x^A ,
+\]
+the relative movement of the two profiles.
+
+\emph{Step 1: the two factors.}
+Since $\Use=\Rep_{\gamma_R}\cdot\Cov$ and
+$\Delta(\Rep_{\gamma_R}\Cov)=\Cov\,\Delta\Rep_{\gamma_R}+\Rep'_{\gamma_R}\Delta\Cov$,
+\begin{equation}
+|\Delta\Use|\;\le\;\Cov\,|\Delta\Rep_{\gamma_R}|+\Rep'_{\gamma_R}\,|\Delta\Cov| .
+\label{eq:use-split}
+\end{equation}
+
+\emph{Step 2: representativeness moves no more than the profiles do.}
+By Eq.~\eqref{eq:representativeness-proxy}, $\Rep^A_{\gamma_R}=1-\tfrac12\|x^A-y^A\|_1$, so the
+reverse triangle inequality for the $L_1$ norm gives
+\begin{align*}
+|\Delta\Rep^A_{\gamma_R}|&=\tfrac12\Big|\,\|x'^A-y'^A\|_1-\|x^A-y^A\|_1\Big|\\
+&\le\;\tfrac12\big\|(x'^A-y'^A)-(x^A-y^A)\big\|_1\;=\;\tfrac12\|w^A\|_1 .
+\end{align*}
+What matters is that $w^A$ stays whole: when the view mirrors the database the arrival of $t$
+rescales both profiles in step and $w^A$ nearly cancels, which bounding $\|\Delta y^A\|_1$ and
+$\|\Delta x^A\|_1$ apart would hide.
+
+\emph{Step 3: how the profiles move.}
+Both cases are one computation.
+Write $\Lambda=M'-M\ge0$ for the growth of the smoothed view size and
+\[
+\kappa=\frac{\Lambda\,(N+1)}{M'} .
+\]
+Away from $v(t)$ neither count changes and only the denominators move, which gives
+\[
+w^A_v=\frac{c^A_v}{N(N+1)}-\frac{d^A_v\Lambda}{MM'}=\frac{x^A_v-\kappa\,y^A_v}{N+1} .
+\]
+At $v=v(t)$ the arrival of $t$ adds a further $\rho$ to this, where
+\[
+\rho=\begin{cases}-1/(N+1), & t\text{ outside the view},\\[2pt]
+1/M'-1/(N+1), & t\text{ inside}.\end{cases}
+\]
+Both $\kappa$ and $\rho$ are the same for every $A$.
+Since $x^A$ and $y^A$ are non-negative with $\sum_v x^A_v=1$ and $\sum_v y^A_v=\theta$, we have
+$\sum_v|x^A_v-\kappa y^A_v|\le\sum_v x^A_v+\kappa\sum_v y^A_v=1+\kappa\theta$, so summing the two
+displays over $v$ and averaging over $\mathcal{A}_R(p)$,
+\begin{equation}
+|\Delta\Rep_{\gamma_R}|\;\le\;\tfrac12\|w\|_1\;\le\;\frac{1+\kappa\theta}{2(N+1)}+\frac{|\rho|}{2} ,
+\label{eq:w-move}
+\end{equation}
+where $\|w\|_1$ denotes the average of $\|w^A\|_1$ over $\mathcal{A}_R(p)$.
+Recall also $\Cov\le2m/N$ and $\Rep'_{\gamma_R}\le\frac{2+\alpha}{2(1+\alpha)}$ from
+Eq.~\eqref{eq:rep-upper}.
+
+\emph{Step 4: $t$ falls outside the view.}
+Then $m$, $s$ and every $d^A_v$ stay put, $\Lambda=\alpha$ and $M'=M+\alpha$, while
+$|\rho|=1/(N+1)$ and $\Delta\Cov=-s/(N(N+1))$ gives $|\Delta\Cov|\le2m/(N(N+1))$.
+Putting these into Eqs.~\eqref{eq:w-move} and~\eqref{eq:use-split} and collecting over the common
+factor $m/(N(N+1))$, which uses $2+\tfrac{2+\alpha}{1+\alpha}=\tfrac{4+3\alpha}{1+\alpha}$,
+\[
+|\Delta\Use|\;\le\;\frac{m}{N(N+1)}\cdot\frac{4+3\alpha}{1+\alpha}\;+\;\frac{\alpha\,m^2}{N\,M\,M'},
+\]
+the second term being $\Cov\cdot\kappa\theta/\big(2(N+1)\big)$ written out.
+Both increase in $m$, so both are largest at $m=N$, where the view is all of $D$:
+\[
+|\Delta\Use|\;\le\;\frac{4+3\alpha}{(1+\alpha)(N+1)}
++\frac{\alpha}{(1+\alpha)\big(N(1+\alpha)+\alpha\big)} .
+\]
+Subtracting this from $4/N$ leaves
+\[
+\frac{4}{N(N+1)}+\frac{\alpha\big[\alpha(N+1)-1\big]}
+{(1+\alpha)(N+1)\big(N(1+\alpha)+\alpha\big)} ,
+\]
+and the second term is at least $-1/\big(N(N+1)\big)$, since $\alpha\le1$ and
+$N(1+\alpha)+\alpha\ge N$. The difference is therefore at least $3/\big(N(N+1)\big)>0$.
+
+\emph{Step 5: $t$ falls inside the view.}
+Now $m$ becomes $m+1$ and $d^A_{v(t)}$ becomes $d^A_{v(t)}+1$, while $s$ becomes $s+\delta$ with
+$\delta\in\{0,1,2\}$.
+The range of $\delta$ is the number of the two queries that select $t$: an output is
+$\sigma_\varphi(D)$ (Section~\ref{subsec:prelim-db-queries}), decided tuple by tuple, so $t$
+cannot change whether any other tuple is selected.
+Here $\Lambda=1+\alpha$ and $|\rho|=|1/M'-1/(N+1)|$, while $|\Delta\Cov|=|\delta N-s|/(N(N+1))$
+is at most $\max(2N-s,\,s)/(N(N+1))$, which ties it to $\Cov=s/N$ rather than letting both reach
+their extremes at once.
+Writing $\beta=m/N$, Eqs.~\eqref{eq:w-move} and~\eqref{eq:use-split} are again explicit in
+$\beta$ and $\Cov$, and the maximum of $(N+1)|\Delta\Use|$ over $\beta\in[0,1]$ and
+$\Cov\in[0,2\beta]$ is $3.99$ at
+$\alpha=\tfrac1{100}$ and $3.95$ at $\alpha=\tfrac1{20}$.
+It rises as $\alpha$ falls, approaching $4$ without reaching it.
+
+\emph{Step 6: the two directions.}
+A neighbour of a database of size $N$ has size $N+1$ or $N-1$.
+Steps 4 and 5 bound the change to a size-$(N+1)$ neighbour by $4/(N+1)$.
+Run at base size $N-1$ they bound the change to a size-$(N-1)$ neighbour by $4/N$: the
+computation is unchanged, because $\gamma_R=\alpha n$ leaves $\alpha$ fixed as the base size $n$
+varies, and every bound above carries $n+1$ in its denominator.
+The second is the larger of the two, and it is what fixes the constant.}
+\end{proof}
+
+
+\begin{proposition}[Sensitivity of the selection utility]
+\label{prop:selection-utility-sensitivity}
+$\GS(\widetilde{U}_i)\le 1/(1+\gamma)$.
+\end{proposition}
+
+\begin{proof}
+Condition on the history $S_{i-1}$ of previously released outputs, which is legitimate under adaptive composition.
+Given that history, $\DivS(A,S_{i-1})$ is a constant in $[0,1]$ determined entirely by released values, so it acts as a bounded multiplier on the data-dependent factor and cannot increase its sensitivity.
+The claim follows from Proposition~\ref{prop:hd-sensitivity}.
+\end{proof}
+
+Filtering is not free.
+The view stage ranks by $\Use$, which no explanation score enters, so a view of middling usefulness may host the single most interesting explanation and still be dropped; and because the filter itself is private, the retained set is not even the exact top-$\tau$ by $\Use$.
+We do not bound what this costs.
+The one-shot top-$\tau$ mechanism admits a high-probability utility guarantee whose slack grows as $\tau\Delta\log|\views|/\epsilon_P$, which at $\added{\Delta=4/N}$ is $\added{4\tau\log|\views|/(N\epsilon_P)}$ and so vanishes with the database size.
+What that slack must be compared against, however, is not the scale of $\Use$ but the gap between the $\tau$-th and the $(\tau{+}1)$-th best view, and that gap narrows as the view space grows denser.
+The guarantee is therefore informative only under a lower bound on the gap, which we do not assume.
+What the form does say is that the cost of filtering grows linearly in $\tau$, which is an argument for keeping $\tau$ small.
+
+

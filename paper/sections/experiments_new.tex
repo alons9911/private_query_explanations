@@ -1,0 +1,166 @@
+
+% !TEX root = main.tex
+% -----------------------------------------------------------------------------
+% Experiments
+% -----------------------------------------------------------------------------
+
+\section{Experiments}
+\label{sec:experiments}
+
+This section presents the experimental evaluation of our framework for generating
+privacy-preserving explanations for semantic differences between query outputs.
+
+\subsection{Experimental Setup}
+
+\subsubsection{Datasets}
+
+\paragraph{IPUMS-CPS.}
+We use a down-sampled version of the IPUMS-CPS dataset containing
+\textbf{100,000} tuples.
+
+\paragraph{Stack Overflow Developer Survey.}
+We also evaluate the method on the Stack Overflow Developer Survey dataset.
+
+\paragraph{Hospital Dataset.}
+To evaluate the framework in the context of consistent query answering (CQA),
+we use the Hospital dataset commonly used in prior repair and data-cleaning
+work \cite{rekatsinas2017}.
+
+The dataset contains hospital records with attributes such as:
+\[
+\texttt{HospitalName},\ \texttt{City},\ \texttt{State},
+\texttt{ZipCode},\ \texttt{PhoneNumber},\ \texttt{HospitalType}.
+\]
+
+The dataset contains inconsistencies with respect to functional dependencies:
+\[
+\texttt{HospitalName} \rightarrow \texttt{ZipCode},
+\]
+\[
+\texttt{HospitalName} \rightarrow \texttt{PhoneNumber},
+\]
+and:
+\[
+\texttt{ZipCode} \rightarrow \texttt{City}.
+\]
+
+\subsubsection{Query Pairs}
+
+\begin{table*}[t]
+\centering
+\caption{Query pairs used in the experiments. Differences between $Q_1$ and $Q_2$ are highlighted in bold.}
+\label{tab:query-pairs}
+\scriptsize
+\begin{tabular}{p{0.14\linewidth} p{0.30\linewidth} p{0.34\linewidth} p{0.16\linewidth}}
+\toprule
+\textbf{Dataset} & \textbf{$Q_1$} & \textbf{$Q_2$} & \textbf{Semantic difference} \\
+\midrule
+
+IPUMS-CPS &
+\texttt{EMPSTAT = Employed AND UHRSWORK >= 35} &
+\texttt{EMPSTAT = Employed AND \textbf{UHRSWORK < 35}} &
+Full-time vs. part-time employment \\
+
+IPUMS-CPS &
+\texttt{EMPSTAT = Employed AND EDUC >= Bachelor's degree} &
+\texttt{EMPSTAT = Employed AND \textbf{EDUC < Bachelor's degree}} &
+Higher education vs. non-higher education \\
+
+Stack Overflow &
+\texttt{WorkRemote = Fully remote} &
+\texttt{WorkRemote = \textbf{On-site}} &
+Remote vs. on-site developers \\
+
+Hospital &
+\texttt{SELECT * FROM Hospital} \newline
+\texttt{WHERE State='CA'} \newline
+\texttt{AND HospitalType='Acute Care'} &
+\texttt{SELECT * FROM Hospital h} \newline
+\texttt{WHERE State='CA'} \newline
+\texttt{AND HospitalType='Acute Care'} \newline
+\texttt{AND \textbf{NOT EXISTS (... ZipCode conflict ...)}} &
+ZipCode consistency enforcement \\
+
+Hospital &
+\texttt{SELECT * FROM Hospital} \newline
+\texttt{WHERE City='Chicago'} &
+\texttt{SELECT * FROM Hospital h} \newline
+\texttt{WHERE City='Chicago'} \newline
+\texttt{AND \textbf{NOT EXISTS (... Phone conflict ...)}} &
+Phone-number consistency enforcement \\
+
+Hospital &
+\texttt{SELECT * FROM Hospital} \newline
+\texttt{WHERE HospitalType='General'} &
+\texttt{SELECT * FROM Hospital h} \newline
+\texttt{WHERE HospitalType='General'} \newline
+\texttt{AND \textbf{NOT EXISTS (... City conflict ...)}} &
+ZipCode-city consistency enforcement \\
+
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Hospital Repair Case Study}
+
+\paragraph{ZipCode Consistency Query Pair.}
+
+\begin{verbatim}
+Q1:
+SELECT *
+FROM Hospital
+WHERE State = 'CA'
+  AND HospitalType = 'Acute Care';
+
+Q2:
+SELECT *
+FROM Hospital h
+WHERE State = 'CA'
+  AND HospitalType = 'Acute Care'
+  AND NOT EXISTS (
+      SELECT *
+      FROM Hospital h2
+      WHERE h.HospitalName = h2.HospitalName
+        AND h.ZipCode <> h2.ZipCode
+  );
+\end{verbatim}
+
+\paragraph{Phone Number Consistency Query Pair.}
+
+\begin{verbatim}
+Q1:
+SELECT *
+FROM Hospital
+WHERE City = 'Chicago';
+
+Q2:
+SELECT *
+FROM Hospital h
+WHERE City = 'Chicago'
+  AND NOT EXISTS (
+      SELECT *
+      FROM Hospital h2
+      WHERE h.HospitalName = h2.HospitalName
+        AND h.PhoneNumber <> h2.PhoneNumber
+  );
+\end{verbatim}
+
+\paragraph{City Consistency Query Pair.}
+
+\begin{verbatim}
+Q1:
+SELECT *
+FROM Hospital
+WHERE HospitalType = 'General';
+
+Q2:
+SELECT *
+FROM Hospital h
+WHERE HospitalType = 'General'
+  AND NOT EXISTS (
+      SELECT *
+      FROM Hospital h2
+      WHERE h.ZipCode = h2.ZipCode
+        AND h.City <> h2.City
+  );
+\end{verbatim}
