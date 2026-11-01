@@ -56,13 +56,21 @@ releases on them (`pqde run search`, then `pqde run cases`).
 | Dataset | Source | N | Notes |
 |---|---|---|---|
 | Adult | UCI census extract (train + test); falls back to a GitHub mirror when UCI is unreachable | 48,842 | |
+| ACSIncome | folktables ACSIncome as distributed with **Erica** (Li et al., PVLDB 17(2), 2023), with Erica's preprocessing; refinement pairs ACS_* = Erica's queries Q1–Q4 and constraints C1–C8 with Q′ taken from the minimal refinements Erica returned | 1,664,500 | `pqde run erica` decodes and selects the refinements |
 | Tax | Tax benchmark of the data-cleaning literature (BigDaMa/raha copy, clean version) | 200,000 | the paper quotes N = 500,000; set `target_rows: 500000` in `configs/datasets.yaml` to up-sample (E4 does so for its N sweep) |
 | IPUMS-CPS | the extract distributed with DPXPlain (Tao et al., PVLDB 2022), prepared exactly as DPXPlain does (2011–2019, 0 < INCTOT < 200k); used for the **contrast** pairs I1–I17 = DPXPlain's group comparisons | 1,146,552 | replaces the synthetic StackOverflow pairs S1–S3 (still loadable) |
-| Tax (dirty) | the same 200k tuples with injected errors (BigDaMa/raha `dirty.csv`), formatting differences normalised; FDs `Zip→City`, `Zip→State`, `(State, MaritalStatus)→Single/MarriedExemp`, `(State, HasChild)→ChildExemp`, `(State, Salary)→Rate` | 200,000 | used for the CQA case studies C1–C3 |
+| Tax (dirty) | the same 200k tuples with injected errors (BigDaMa/raha `dirty.csv`), formatting normalised; constraints = the published Tax rules of Ni et al. (PVLDB 2024) without `area_code→state` (see notes) | 200,000 | CQA pairs C1–C3 |
 | Hospital | HoloClean hospital benchmark (dirty), FDs `HospitalName→ZipCode`, `HospitalName→PhoneNumber`, `ZipCode→City` | 1,000 | categorical domains declared by the clean file; typos fall into `Other` |
 
 The public schema of every dataset (explanation attributes, reference
 attributes, view attributes, bins) lives in `configs/datasets.yaml`.
+
+## Query pairs and their sources
+
+Every pair in `configs/pairs.yaml` has a `source` field (the paper's Table 2,
+Erica's benchmark, DPXPlain's questions, or this stack's own search);
+`pqde pairs --provenance` writes the table [`docs/PAIRS.md`](docs/PAIRS.md) to cite
+in the paper.
 
 ## Command line
 

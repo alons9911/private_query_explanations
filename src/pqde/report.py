@@ -86,7 +86,7 @@ def build_report(base: Path | None = None) -> Path:
     L.append("")
     e1 = _read(base / "e1" / "summary.csv")
     if e1 is not None:
-        L += ["## The query pairs", ""]
+        L += ["## The query pairs", "", "Sources of every pair: [docs/PAIRS.md](../docs/PAIRS.md).", ""]
         L.append(to_markdown(e1[["pair", "dataset", "synthetic", "Q1", "Q2", "|Q1|", "|Q2|", "|P|", "tau", "gamma"]],
                              floatfmt="{:.1f}"))
     # ---------------------------------------------------------------- accuracy
