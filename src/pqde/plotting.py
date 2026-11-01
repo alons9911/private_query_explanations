@@ -323,7 +323,10 @@ def plot_accuracy_datasets(summary: pd.DataFrame, by_ds: dict, metric: str, labe
         _xscale(ax, sub.value, logx)
         if metric == "ratio":
             ax.axhline(1.0, color=MUTED, linestyle=":", linewidth=1)
-        ax.set_ylim(0, 1.1 if metric == "ratio" else 1.05)
+            top = float(np.nanmax(sub[[f"ratio_{b}_mean" for b in ("B1", "B2", "B3")]].to_numpy()))
+            ax.set_ylim(0, max(1.1, top * 1.05))
+        else:
+            ax.set_ylim(0, 1.05)
         ax.set_title(f"{_ds_title(ds, synthetic)} ({len(pids)} pairs)")
         ax.set_xlabel(xlabel)
         if j == 0:

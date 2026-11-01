@@ -219,13 +219,13 @@ PRIV_EXPL, B1, B2, B3 on the original route; OPT_PRIV_EXPL = PRIV_EXPL with O1 +
 
 ![running time adult](e4/runtime_adult.png)
 
-![running time hospital](e4/runtime_hospital.png)
-
-![running time stackoverflow](e4/runtime_stackoverflow.png)
-
 ![running time tax](e4/runtime_tax.png)
 
 ![running time tax_dirty](e4/runtime_tax_dirty.png)
+
+![running time hospital](e4/runtime_hospital.png)
+
+![running time stackoverflow](e4/runtime_stackoverflow.png)
 
 ## E5 — cost per pair at the defaults, B2 growth, optimisations
 
