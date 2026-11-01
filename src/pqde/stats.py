@@ -32,7 +32,7 @@ is the same whichever is used.
     materialised per view on demand, as in the direct route (``O(tau a N)``).
     ``hist="eager"`` computes them for every view inside the grouped pass.
 
-``rep="closed_form"``  (optimisation O2, only valid at gamma_R = N)
+``rep="closed_form"``  (only valid at gamma_R = N, the setting of earlier drafts; not usable at Eq. (4))
     At ``gamma_R = N`` every summand of Eq. (2) is non-negative, so
     ``Rep_N(p, D) = (2m + N) / (2(m + N))`` (Eq. (10)) for every view: the
     reference-attribute histograms are not needed for the view stage at all.
@@ -49,6 +49,9 @@ from . import timeouts
 from .data.encode import EncodedDataset
 from .measures import coverage, representativeness, smoothed_hd, usefulness
 from .views import View, enumerate_views
+
+# Eq. (4): gamma_R = alpha N with alpha = 1/100 -- a view is read at fidelity 1/2 once it holds 1% of D.
+GAMMA_R_ALPHA = 0.01
 
 STATS_MODES = ("grouped", "direct")
 REP_MODES = ("general", "closed_form")
@@ -183,7 +186,7 @@ def build_cache(
 ) -> StatsCache:
     """Build the statistics cache (exact, non-private) for the pair ``(Q1(D), Q2(D))``.
 
-    ``gamma_R`` defaults to ``N`` as fixed by Algorithm 1 (line 3).  ``mode`` and
+    ``gamma_R`` defaults to ``alpha N`` (Eq. (4), alpha = 1/100) as fixed by Algorithm 1 (line 3).  ``mode`` and
     ``rep`` select the computation route (module docstring); every route returns
     the same statistics.
     """
@@ -203,7 +206,7 @@ def build_cache(
     explain_attrs = list(explain_attrs or ds.explain_attrs)
     ref_attrs = list(ref_attrs or ds.ref_attrs)
     N = ds.N
-    gR = float(N if gamma_R is None else gamma_R)
+    gR = float(GAMMA_R_ALPHA * N if gamma_R is None else gamma_R)
     if rep == "closed_form" and gR != N:
         raise ValueError("the closed form of Rep (Eq. (10)) holds only at gamma_R = N")
     P = len(views)
