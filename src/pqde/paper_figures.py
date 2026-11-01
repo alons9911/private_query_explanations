@@ -30,8 +30,8 @@ DS_ORDER = ["adult", "acsincome", "tax", "tax_dirty", "hospital", "ipums"]
 DS_TITLE = {"adult": "Adult", "acsincome": "ACSIncome", "tax": "Tax", "tax_dirty": "Tax-dirty (CQA)",
             "hospital": "Hospital (CQA)", "ipums": "IPUMS-CPS (contrast)"}
 SURF = "#ffffff"
-# C4 is a copy of H1 kept for the case-study set; it would count H1 twice in the Hospital averages
-EXCLUDE = {"C4"}
+# C4 is a copy of H1 and R6 a copy of T2 (two searches returned the same pair); each is counted once
+EXCLUDE = {"C4", "R6"}
 
 plt.rcParams.update({
     "figure.facecolor": SURF, "axes.facecolor": SURF, "savefig.facecolor": SURF,

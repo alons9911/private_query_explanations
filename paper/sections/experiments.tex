@@ -1,7 +1,7 @@
 \section{Experiments}
 \label{sec:experiments}
 
-We evaluate the algorithm of Section~\ref{sec:solution} on six real datasets and $45$ query pairs that cover the three settings of the paper: query refinement, consistent query answering, and contrasts between two subpopulations.
+We evaluate the algorithm of Section~\ref{sec:solution} on six real datasets and $44$ query pairs that cover the three settings of the paper: query refinement, consistent query answering, and contrasts between two subpopulations.
 Wherever possible the data, the constraints and the queries are those of earlier work on these problems, so that the pairs we explain are pairs that a refinement system, a repair benchmark or a private explanation system has already been run on.
 
 \alon{All numbers in this section were produced with the constants of the previous draft, $\gamma_R=N$ and the view-stage sensitivity $\Delta=7/(4|D|)$. They must be re-run under Eq.~(\ref{eq:gammaR-rule}), $\gamma_R=N/100$, and $\Delta=4/|D|$ of Proposition~\ref{prop:usefulness-sensitivity}. The code for the new constants is ready (commit 70cfa6f of the experiment repository); running times do not depend on the two constants, accuracy does.}
@@ -36,7 +36,7 @@ Dataset & $N$ & $|\Attrs|$ & $|\mathcal{P}|$ & Setting & Pairs & Pairs from \\
 \midrule
 Adult~\cite{adult-uci}            & 48{,}842    & 10 & 1{,}048 & refinement & 7  & Sec.~\ref{sec:introduction}, ours \\
 ACSIncome~\cite{DingHMS21}       & 1{,}664{,}500 & 10 & 914   & refinement & 10 & Erica~\cite{LMSJ23} \\
-Tax~\cite{BohannonFGJK07}        & 200{,}000   & 9  & 1{,}792 & refinement & 5  & draft, ours \\
+Tax~\cite{BohannonFGJK07}        & 200{,}000   & 9  & 1{,}792 & refinement & 4  & draft, ours \\
 Tax-dirty~\cite{MahdaviAFMOST19} & 200{,}000   & 9  & 1{,}977 & CQA        & 3  & rules of~\cite{NiMZWLY24} \\
 Hospital~\cite{rekatsinas2017}   & 1{,}000     & 10 & 502     & CQA        & 3  & draft, rule \\
 IPUMS-CPS~\cite{TaoGMR22}        & 1{,}146{,}552 & 8 & 1{,}070 & contrast  & 17 & DPXPlain~\cite{TaoGMR22} \\
@@ -50,7 +50,7 @@ We use the same extract, the four queries $Q_1$--$Q_4$ and the constraint sets $
 Ten of the twelve (query, constraint set) combinations pass this check.\footnote{For $Q_1C_3$ and $Q_4C_9$ the order of the flags in the stored vectors is ambiguous, and no reading of it gives refinements that satisfy the constraints, so we leave them out.}
 When Erica returned several minimal refinements we keep the one whose effect is least visible from the query and the constraints: the largest change in the distribution of attributes that neither mentions.
 \emph{Adult} contributes the running example of Section~\ref{sec:introduction} (A2) and the occupation-broadening pair of the earlier draft (A1), and five pairs of our own whose $Q'$ we obtained with an Erica-style search for a minimal refinement under a gender, race or age representation constraint.
-\emph{Tax} is the synthetic tax generator of the data-cleaning literature~\cite{BohannonFGJK07}; we use the clean $200{,}000$-tuple file distributed with Raha~\cite{MahdaviAFMOST19}, the marital-status refinement of the earlier draft (T1), and four refinement pairs of our own under constraints on \texttt{HasChild} and on the share of non-zero tax rates.
+\emph{Tax} is the synthetic tax generator of the data-cleaning literature~\cite{BohannonFGJK07}; we use the clean $200{,}000$-tuple file distributed with Raha~\cite{MahdaviAFMOST19}, the marital-status refinement of the earlier draft (T1), and three refinement pairs of our own under constraints on \texttt{HasChild} and on the share of non-zero tax rates.
 
 \paragraph{Consistent query answering.}
 For CQA we need a database that actually violates its constraints.
@@ -68,29 +68,12 @@ We use the IPUMS-CPS extract as prepared by DPXPlain ($1{,}146{,}552$ tuples) an
 The attribute that defines the two groups is removed from the views and from the explanation attributes of its pair: a view on it contains only one of the two outputs, and a histogram over it says only that the groups are different groups.
 
 \paragraph{Where each pair comes from.}
-Of the $45$ pairs, $27$ come from earlier work (ten from Erica, seventeen from DPXPlain), four from the earlier draft of this paper (A1, A2, T1, H1), nine from our own refinement search (A3, R1--R4, T2, T3, R5, R6) and five from our CQA selection rule (C1--C3, H2, H3).
-The repository lists the source of every pair.
+Of the $44$ pairs, $27$ come from earlier work (ten from Erica, seventeen from DPXPlain), four from the earlier draft of this paper (A1, A2, T1, H1), eight from our own refinement search (A3, R1--R4, T2, T3, R5) and five from our CQA selection rule (C1--C3, H2, H3).
+Table~\ref{tab:pairs} lists all of them with their constraints and output sizes.
 
-\subsubsection{Case-study pairs}
-Table~\ref{tab:case-pairs} lists the four pairs of Section~\ref{sec:usecase-results}, one per source of pairs and one per setting.
+The four pairs of the case studies (bold in Table~\ref{tab:pairs}) cover the three settings and the three sources of pairs: the running example A2, Erica's $Q_1C_1$ on ACSIncome, the CQA pair C1 and DPXPlain's default question I1.
 
-\begin{table*}[t]
-\centering
-\footnotesize
-\caption{The four case-study pairs. $|Q_1|\rightarrow|Q_2|$ are output sizes on the real data.}
-\label{tab:case-pairs}
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}llp{4.6cm}p{3.5cm}p{3.6cm}r@{}}
-\toprule
-ID & Data (setting) & $Q_1$ & $Q_2$ & Constraint / source & $|Q_1|\rightarrow|Q_2|$\\
-\midrule
-A2 & Adult (refinement) & \texttt{education IN (Bachelors, Masters) AND hours$\ge$50} & \texttt{education = Masters AND hours$\ge$30} & $\ge25\%$ female ($19.5\%\rightarrow30.6\%$); Sec.~\ref{sec:introduction} & $3{,}055\rightarrow2{,}453$\\
-ACS1 & ACSIncome (refinement) & \texttt{WKHP$\ge$40 AND SCHL$\ge$19 AND COW IN (local, state, federal gov.)} & same, \texttt{COW} also \texttt{private for-profit} & $\ge48{,}884$ married women, $\ge15{,}719$ Black; Erica $Q_1C_1$~\cite{LMSJ23} & $141{,}100\rightarrow587{,}712$\\
-C1 & Tax-dirty (CQA) & \texttt{State IN (AK, CA, HI, OR, WA)} & $Q_\Sigma$ & Tax rules of~\cite{NiMZWLY24} & $18{,}729\rightarrow16{,}404$\\
-I1 & IPUMS-CPS (contrast) & \texttt{SEX = Male} & \texttt{SEX = Female} & DPXPlain default question~\cite{TaoGMR22} & $556{,}230$ / $590{,}322$\\
-\bottomrule
-\end{tabular}
-\end{table*}
+\input{sections/pairs_table}
 
 \subsubsection{Parameters}
 \label{subsubsec:parameters}
@@ -141,7 +124,7 @@ This is the change the introduction describes: a population of long-hour, manage
 \label{fig:case-a2}
 \end{figure}
 
-\paragraph{ACSIncome: a refinement from Erica (ACS1).}
+\paragraph{ACSIncome: a refinement from Erica ($Q_1C_1$).}
 Erica satisfies the constraints on married women and Black workers by adding private-sector employees to a query over full-time government employees with some college education.
 The output grows from $141{,}100$ to $587{,}712$, which is expected; what the queries and the constraints do not say is what kind of workers arrive.
 Among holders of an associate's or bachelor's degree the release shows the occupational mix turning over (Figure~\ref{fig:case-acs}): sales workers grow from $482$ to $31{,}200$, a factor of $65$, against a factor of $4.3$ for office support and $7.7$ for management.
@@ -151,7 +134,7 @@ At this size the noise, about $30$ tuples per bin, is invisible.
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/exp/case_acs.pdf}
-\caption{ACS1 (ACSIncome, Erica's $Q_1C_1$): two released explanations. \texttt{SCHL IN (19, 21]} is an associate's or bachelor's degree; SRO is sales, OASO office support, MBSA management.}
+\caption{$Q_1C_1$ (ACSIncome, from Erica): two released explanations. \texttt{SCHL IN (19, 21]} is an associate's or bachelor's degree; SRO is sales, OASO office support, MBSA management.}
 \label{fig:case-acs}
 \end{figure}
 
@@ -223,9 +206,9 @@ Section~\ref{subsec:quality} shows that the view stage suffers too.
 \toprule
 Dataset & Ratio vs \Bone{} & Ratio & Attr.\ prec. & Prec.@$k$ & Jaccard\\
 \midrule
-Adult      & 1.02 & 0.95 & 0.80 & 0.40 & 0.29\\
+Adult      & 1.02 & 0.94 & 0.80 & 0.40 & 0.29\\
 ACSIncome  & 0.80 & 0.80 & 0.70 & 0.49 & 0.36\\
-Tax        & 0.97 & 0.96 & 0.82 & 0.55 & 0.41\\
+Tax        & 0.96 & 0.96 & 0.82 & 0.54 & 0.41\\
 Tax-dirty  & 0.65 & 0.64 & 0.57 & 0.15 & 0.09\\
 Hospital   & 0.73 & 0.63 & 0.57 & 0.15 & 0.09\\
 IPUMS-CPS  & 0.91 & 0.91 & 0.87 & 0.34 & 0.23\\
@@ -233,14 +216,14 @@ IPUMS-CPS  & 0.91 & 0.91 & 0.87 & 0.34 & 0.23\\
 \end{tabular}
 \end{table}
 
-Figure~\ref{fig:quality} and Table~\ref{tab:quality} summarise the $45$ pairs.
-At the default budget the released set reaches $0.95$ and $0.96$ of the optimum on Adult and Tax, $0.91$ on IPUMS-CPS and $0.80$ on ACSIncome; the two CQA datasets are the hard cases, at $0.63$--$0.64$.
+Figure~\ref{fig:quality} and Table~\ref{tab:quality} summarise the $44$ pairs.
+At the default budget the released set reaches $0.94$ and $0.96$ of the optimum on Adult and Tax, $0.91$ on IPUMS-CPS and $0.80$ on ACSIncome; the two CQA datasets are the hard cases, at $0.63$--$0.64$.
 \Btwo{} and \Bthree{} return sets of exactly the same score on every pair and at every $\epsilon$, so non-private greedy is optimal on the $\tau$-filtered candidates, as Proposition~\ref{prop:greedy-exact} predicts; we report them as one line.
 Several findings deserve comment.
 
 \paragraph{A good set is not the same set.}
 The ApproxRatio and the overlap measures tell different stories.
-On Adult the released set scores $0.95$ of the optimum but contains on average only $40\%$ of the optimum's explanations; on IPUMS-CPS $0.91$ against $34\%$.
+On Adult the released set scores $0.94$ of the optimum but contains on average only $40\%$ of the optimum's explanations; on IPUMS-CPS $0.91$ against $34\%$.
 The reason is that the leading candidates are nearly tied.
 A view and its refinements by one more predicate, such as $\texttt{race}=\texttt{White}$ and $\texttt{race}=\texttt{White}\wedge\texttt{gender}=\texttt{Male}$, explain the same attribute with almost the same histogram distance, and the exponential mechanism has no reason to prefer one of them; on Adult the relative gap between the best and second-best candidate is under $2\%$ for a typical pair.
 Attribute precision, which forgives the choice of view, stays at $0.80$--$0.87$ on these datasets: the release usually explains the right attributes, through a neighbouring view.
@@ -276,20 +259,20 @@ Hospital is the one dataset on which the view stage fails: at the default budget
 With $N=1{,}000$ the noise of the one-shot top-$\tau$ is large against the differences in $\Use$ between views, and the second stage then chooses among the wrong views.
 Tax-dirty has the opposite profile: the view stage is accurate ($0.94$) but the ratio is $0.64$.
 Here the differences themselves are small.
-The conflicts are concentrated in a few states, so inside most views $Q_\Sigma$ is $Q$ minus a thin, even slice, and the best candidate of a typical pair has $\HD_\gamma=0.61$, less than the $2\Delta\ln|C_i|/\epsilon_i\approx0.96$ within which the exponential mechanism guarantees to land; on the other datasets the best candidate scores $3.4$ to $13$, several times that bound.
+The conflicts are concentrated in a few states, so inside most views $Q_\Sigma$ is $Q$ minus a thin, even slice, and the best candidate of a typical pair has $\HD_\gamma=0.61$, less than the $2\Delta\ln|C_i|/\epsilon_i\approx0.96$ within which the exponential mechanism guarantees to land; on the other datasets the best candidate scores $3.4$ to $12.5$, several times that bound.
 The second stage is then close to a uniform choice among reasonable candidates, which is what the ratio of $0.64$ and the precision@k of $0.15$ say.
 The difficulty comes from the size of the difference rather than from its CQA origin: Tax, a refinement dataset on the same schema, is the easiest of the six.
 
 \paragraph{Budget split.}
 We repeated the accuracy experiment with five splits of $\epsilon$ between the three stages.
-The ratio varies little: from $0.84$ to $0.87$ for every split that gives the view stage at least a tenth of the budget, with equal shares at $0.86$; giving it $5\%$ is the one clearly worse choice ($0.81$).
+The ratio varies little: from $0.84$ to $0.86$ for every split that gives the view stage at least a tenth of the budget, with equal shares at $0.86$; giving it $5\%$ is the one clearly worse choice ($0.80$).
 Equal shares is therefore a safe default rather than a tuned one.
 
 \subsubsection{The $\gamma$ Trade-off}
 \label{subsec:gamma-tradeoff}
 
 The bottom row of Figure~\ref{fig:quality} varies $\gamma$ from $0$ to $30$ times the value of Eq.~\eqref{eq:gamma-rule}.
-Without smoothing the algorithm does not work at these budgets: averaged over all pairs the ratio is $0.40$ at $\gamma=0$, against $0.86$ at the default.
+Without smoothing the algorithm does not work at these budgets: averaged over all pairs the ratio is about $0.4$ at $\gamma=0$, against $0.86$ at the default.
 Eq.~\eqref{eq:gamma-rule} lands on the best value on Adult, where the ratio peaks at the default and falls on both sides, and on Hospital the curve is flat around it.
 On the datasets with large bins it is too small: the best value is three times the default on Tax and Tax-dirty and ten times on ACSIncome and IPUMS-CPS, and averaged over all pairs $3\times$ gives $0.91$ against $0.86$.
 The reason is that Eq.~\eqref{eq:gamma-rule} depends on $\tau$, $|\Attrs|$, $k$ and $\epsilon_S$ but not on the data, while what $\gamma$ competes with is the size of a bin.
