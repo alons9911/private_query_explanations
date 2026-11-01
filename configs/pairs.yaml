@@ -168,29 +168,29 @@ R6:  # sanity check: dropping HasChild brings in parents and nothing else
   q2: "MaritalStatus = 'S' AND Salary >= 50000"
   constraints: [{attr: HasChild, value: "Y", min_share: 0.30}]
 
-C1:  # Southern states under repair semantics
-  source: "ours: pair search of this stack; data = raha dirty tax; FDs chosen by us (see docs)"
+C1:  # Pacific division under repair semantics (half of Alaska is removed)
   dataset: tax_dirty
   kind: cqa
   role: surprising
   aggregate: Rate
-  q1: "State IN ('AL', 'AR', 'GA', 'MS', 'TN')"
+  source: "ours: US Census division predicate, selected by the paper's rule (Q_Sigma drops 10-90% of Q, unevenly) and a DP visibility check; Sigma = Tax rules of Ni et al. (PVLDB 2024) without area_code -> state"
+  q1: "State IN ('AK', 'CA', 'HI', 'OR', 'WA')"
 
-C2:  # Northeast under repair semantics
-  source: "ours: pair search of this stack; data = raha dirty tax; FDs chosen by us (see docs)"
+C2:  # East South Central filers without children (40% of Alabama is removed)
   dataset: tax_dirty
   kind: cqa
   role: surprising
   aggregate: Rate
-  q1: "State IN ('NJ', 'NY', 'PA', 'CT', 'MA')"
+  source: "ours: US Census division predicate, selected by the paper's rule (Q_Sigma drops 10-90% of Q, unevenly) and a DP visibility check; Sigma = Tax rules of Ni et al. (PVLDB 2024) without area_code -> state"
+  q1: "State IN ('AL', 'KY', 'MS', 'TN') AND HasChild = 'N'"
 
-C3:  # a query that never mentions geography
-  source: "ours: pair search of this stack; data = raha dirty tax; FDs chosen by us (see docs)"
+C3:  # low-tax filers of the Pacific division (24% of the answer is removed)
   dataset: tax_dirty
   kind: cqa
   role: surprising
   aggregate: Rate
-  q1: "Salary >= 70000"
+  source: "ours: US Census division predicate, selected by the paper's rule (Q_Sigma drops 10-90% of Q, unevenly) and a DP visibility check; Sigma = Tax rules of Ni et al. (PVLDB 2024) without area_code -> state"
+  q1: "State IN ('AK', 'CA', 'HI', 'OR', 'WA') AND Rate <= 3"
 
 C4:  # the paper's H1 on the hospital benchmark
   source: "paper (Table 2, = H1); duplicate of H1 kept for the case-study set"

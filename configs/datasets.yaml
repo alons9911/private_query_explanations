@@ -40,16 +40,20 @@ tax_dirty:
   explain_attrs: [Gender, State, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
   ref_attrs: [Gender, State, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
   view_attrs: [Gender, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp, State]
-  # the conditional functional dependencies of the tax benchmark that hold on the
-  # clean file (area_code -> state is left out: 600 state typos put 82% of the
-  # tuples in conflict through it)
+  # Integrity constraints: the published Tax rules of Ni et al., "Automatic Data Repair:
+  # Are We Ready to Deploy?", PVLDB 17(10), 2024 (configs/benchmarks/ni2024_rules/tax),
+  # WITHOUT area_code -> state.  Deviation: under subset-repair CQA that one rule, with
+  # the file's 600 state typos, puts 82% of the tuples in conflict (whole area-code
+  # groups), which empties every consistent answer; the rules were written for
+  # cell repair.  With the remaining seven rules 3.9% of the tuples are in conflict.
   fds:
     - [Zip, City]
     - [Zip, State]
-    - [[State, MaritalStatus], SingleExemp]
-    - [[State, MaritalStatus], MarriedExemp]
-    - [[State, HasChild], ChildExemp]
-    - [[State, Salary], Rate]
+    - [[Zip, HasChild], ChildExemp]
+    - [[Zip, MaritalStatus], SingleExemp]
+    - [[Zip, MaritalStatus], MarriedExemp]
+    - [FName, Gender]
+    - [[Phone, Zip], AreaCode]
 
 stackoverflow:
   loader: stackoverflow

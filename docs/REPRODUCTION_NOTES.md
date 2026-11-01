@@ -96,3 +96,17 @@ size (e.g. I8, White 899k vs Black 136k) the score of a view grows with the size
 gap in every bin, not only with differences in distribution.  For contrasts a
 size-normalised variant may be the more natural object; refinement and CQA pairs
 are unaffected (their outputs overlap and the count difference is the change).
+
+## Tax CQA constraints (option b)
+
+The CQA pairs on the dirty Tax file use the published Tax rules of Ni et al.
+(PVLDB 17(10), 2024; `configs/benchmarks/ni2024_rules/tax`) **without**
+`area_code -> state`: under subset-repair semantics that rule, together with the
+file's 600 state typos, puts 82% of the tuples in conflict (every area-code group
+containing one typo), which empties the consistent answers; the rules were
+written for cell repair.  With the remaining seven rules 3.9% of the tuples are
+in conflict (Alaska 52%, Alabama 29%, Rhode Island 13%, every other state
+≤ 11%).  The pairs C1–C3 were re-selected under these rules with US Census
+division predicates and the paper's rule (Q_Σ drops 10–90% of Q, unevenly),
+plus a DP visibility check.  The earlier C1–C3 (state sets losing AR / NJ
+entirely) relied on our own FD choice and are superseded.
