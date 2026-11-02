@@ -4,7 +4,7 @@
 # derived constants set by the algorithm's own rules:
 #   tau   = min(3k, |P|)                       (Eq. (11))
 #   gamma = 2 ln(tau |Attrs|) k / eps_S        (Eq. (12))
-#   gamma_R = N,  Delta_Use = 7 / (4 |D|)
+#   gamma_R = N / 100 (Eq. (4)),  Delta_Use = 4 / |D| (Proposition 3.11)
 # When an experiment varies k, eps or tau, the derived constants follow their
 # rules (that is how the algorithm behaves); `gamma_mult` scales the Eq. (12)
 # value when gamma itself is the studied parameter.
@@ -27,24 +27,27 @@ defaults:
   # O3 lazy histograms in one combined pass) appears only as the method
   # OPT_PRIV_EXPL in the running-time experiments; it returns identical outputs.
   stats: {mode: direct, rep: general, hist: lazy}
-  timeout_s: 60            # time limit of every timed run (E4, E5); a run that hits it is a timeout
+  timeout_s: 1800          # time limit of every timed run (E4, E5); a run that hits it is a timeout
+  repeats_min: 10          # every pair is run at least 10 times
+  timeout_repeats: 3       # a timed point that hits the limit is run 3 times, then not again
 
-pairs: [A1, A2, A3, T1, T2, T3, H1, H2, H3, R1, R2, R3, R4, R5, R6, C1, C2, C3, C4,
+# C4 (= H1) and R6 (= T2) are duplicates of other pairs and are not run
+pairs: [A1, A2, A3, T1, T2, T3, H1, H2, H3, R1, R2, R3, R4, R5, C1, C2, C3,
         ACS_Q1C1, ACS_Q1C2, ACS_Q2C1, ACS_Q2C2, ACS_Q2C3, ACS_Q3C4, ACS_Q3C5, ACS_Q3C6, ACS_Q4C7, ACS_Q4C8,
         I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12, I13, I14, I15, I16, I17]
-# running-time experiments (E4, E5) use 3-4 pairs per dataset: running time hardly
-# depends on the pair, and the original route takes 15-25 s per build on the large datasets
-runtime_pairs: [A1, A2, R1, R3, T1, T2, R5, C1, C2, C3, H1, H2, H3,
-                ACS_Q1C1, ACS_Q2C2, ACS_Q4C7, I1, I6, I8]
+# running-time experiments (E4, E5): 4 pairs per dataset (3 on Tax-dirty and Hospital)
+runtime_pairs: [A1, A2, R1, R3, ACS_Q1C1, ACS_Q2C2, ACS_Q3C4, ACS_Q4C7, T1, T2, T3, R5,
+                C1, C2, C3, H1, H2, H3, I1, I6, I8, I12]
 datasets: [adult, acsincome, tax, tax_dirty, hospital, ipums]   # ipums replaces the synthetic stackoverflow (S1-S3)
 
 # E1 -- one released run per pair: view stage, explanations, exact checks
 e1:
   run_seed: 7
+  releases: 10             # releases per pair; the figures show release 1, the text its stability
 
 # E2 -- accuracy vs. the privacy budget
 e2:
-  epsilons: [0.1, 0.2, 0.5, 1.0, 2.0, 5.0]
+  epsilons: [0.1, 0.2, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0]
   table_epsilons: [1.0, 5.0]
 
 # E3 -- what drives accuracy: margins, bins vs gamma, the view stage alone, the budget split
@@ -60,24 +63,25 @@ e3:
 
 # E4 -- end-to-end running time of PRIV_EXPL, OPT_PRIV_EXPL, B1, B2, B3; one parameter at a time
 e4:
-  repeats: 2               # B2 is timed once per point (it is deterministic and slow)
-  repeats_large: 1         # datasets with N >= 500k (builds of 15-25 s: repeat noise is negligible)
-  # reduced to finish the run in time: 2 pairs on the two largest datasets, one repeat on Tax
-  pairs: [A1, A2, R1, R3, T1, T2, R5, C1, C2, C3, H1, H2, H3, ACS_Q1C1, ACS_Q4C7, I1, I6]
-  repeats_by_dataset: {tax: 1, tax_dirty: 1}
+  repeats: 10              # every point, every method (a point that times out: timeout_repeats runs)
+  pairs: [A1, A2, R1, R3, ACS_Q1C1, ACS_Q2C2, ACS_Q3C4, ACS_Q4C7, T1, T2, T3, R5,
+          C1, C2, C3, H1, H2, H3, I1, I6, I8, I12]
   sweeps:
-    k: [1, 2, 3, 5, 7, 10]
-    data_fraction: [0.1, 0.25, 0.5, 0.75, 1.0]
-    epsilon: [0.1, 0.2, 0.5, 1.0, 2.0, 5.0]
-    view_fraction: [0.1, 0.25, 0.5, 0.75, 1.0]
-    tau: [5, 10, 15, 30, 60, 120]
+    k: [1, 2, 3, 4, 5, 6, 7, 8, 10]
+    data_fraction: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+    epsilon: [0.1, 0.2, 0.5, 1.0, 2.0, 5.0, 10.0]
+    view_fraction: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+    tau: [5, 10, 15, 30, 60, 120, 250, 500, 1000, all]   # capped at |P|; "all" = every view
     gamma_mult: [0.0, 0.1, 0.3, 1.0, 3.0, 10.0]
   extra_data_fraction:
     tax: [2.5]             # 500k rows, the size quoted in the paper (re-sampled)
 
 # E5 -- end-to-end cost per pair at the defaults, B2 growth, statistics routes
 e5:
-  repeats: 5
+  repeats: 10
+  identity_runs: 10
+  route_repeats: 10
+  b2_growth_repeats: 10
   b2_pool_sizes: [20, 25, 30, 35, 40, 45, 50]
   routes:                  # original (Section 4.2), O1 alone, O1+O3 (= OPT_PRIV_EXPL)
     - {mode: direct, rep: general, hist: lazy}

@@ -2,9 +2,9 @@
 
 Algorithm 1  Private-Queries-Diff-Top-k-Explanation
     1  eps_P, eps_S, eps_H <- eps/3, eps/3, eps/3
-    3  gamma_R <- N;  tau <- min(3k, |P|);  gamma <- 2 ln(tau |Attrs|) k / eps_S
+    3  gamma_R <- alpha N (alpha = 1/100);  tau <- min(3k, |P|);  gamma <- 2 ln(tau |Attrs|) k / eps_S
     4  u_use(p) <- Use(p, Q1, Q2, D)
-    5  P_hat <- OneShotTop-tau(P, u_use, eps_P, Delta = 7 / (4|D|))         (eps_P-DP)
+    5  P_hat <- OneShotTop-tau(P, u_use, eps_P, Delta = 4 / |D|)             (eps_P-DP)
     6  E_out <- Find-Top-k-Expl(D, Q1, Q2, P_hat, Attrs, k, gamma, lambda, eps_S, eps_H)
 
 Algorithm 2  Find-Top-k-Explanations
@@ -29,9 +29,9 @@ from dataclasses import asdict, dataclass, field, replace
 import numpy as np
 
 from .mechanisms import exponential_mechanism, laplace_mechanism, one_shot_top_k
-from .stats import StatsCache
+from .stats import GAMMA_R_ALPHA, StatsCache  # noqa: F401  (gamma_R = alpha N, Eq. (4))
 
-USE_SENSITIVITY_CONST = 7.0 / 4.0  # Proposition 3.10: GS_N(Use) <= 7 / (4N)
+USE_SENSITIVITY_CONST = 4.0  # Proposition 3.11: GS(Use) <= 4 / N at gamma_R = alpha N, alpha in [0, 1]
 
 
 @dataclass
@@ -128,7 +128,7 @@ class Result:
 
 def select_views(cache: StatsCache, tau: int, eps_P: float, rng: np.random.Generator,
                  N_public: int | None = None) -> tuple[np.ndarray, float]:
-    """Line 5 of Algorithm 1: one-shot top-tau over ``Use`` with Delta = 7/(4 N~)."""
+    """Line 5 of Algorithm 1: one-shot top-tau over ``Use`` with Delta = 4 / N~ (Proposition 3.11)."""
     n_pub = cache.N if N_public is None else int(N_public)
     if n_pub > cache.N:
         raise ValueError("N_public must not exceed |D| (the bound needs N~ <= |D|)")

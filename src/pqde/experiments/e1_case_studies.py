@@ -58,7 +58,13 @@ def run_pair(pair_id: str, cfg: dict, base=None, subdir: str = "e1") -> dict:
     pair = resolve_pair(pair_id)
     cache = default_cache(pair_id, d)
     params = make_params(d, cache.n_views, len(cache.explain_attrs))
-    res = explain(cache, params, rng=np.random.default_rng([cfg["e1"].get("run_seed", 7), stable_key(pair_id)]))
+    n_rel = int(cfg["e1"].get("releases", 10))
+    seed0 = cfg["e1"].get("run_seed", 7)
+    # release 1 (r = 0) is the one shown; releases 2..n measure how stable its explanations are
+    results = [explain(cache, params, rng=np.random.default_rng([seed0, stable_key(pair_id), r])) for r in range(n_rel)]
+    res = results[0]
+    sel_sets = [set((cache.view_label(v), a) for v, a in rr.selections) for rr in results]
+    attr_sets = [Counter(a for _, a in rr.selections) for rr in results]
     ranking = _view_ranking(cache)
     rank_series = pd.Series(ranking["rank"].to_numpy(), index=ranking.index)
     exact_top = exact_top_views(cache, res.tau)
@@ -77,6 +83,8 @@ def run_pair(pair_id: str, cfg: dict, base=None, subdir: str = "e1") -> dict:
         e["noisy_total_q1"], e["noisy_total_q2"] = float(np.sum(e["noisy_h1"])), float(np.sum(e["noisy_h2"]))
         e["exact_total_q1"], e["exact_total_q2"] = int(np.sum(e["exact_h1"])), int(np.sum(e["exact_h2"]))
         e["exact_abs_diff_total"] = int(np.abs(ed).sum())
+        e["share_of_releases_with_this_explanation"] = sum((e["view"], e["attr"]) in ss for ss in sel_sets) / n_rel
+        e["share_of_releases_explaining_this_attr"] = sum(c[e["attr"]] > 0 for c in attr_sets) / n_rel
     report = {
         "pair": pair.summary(),
         "parameters": {"k": k, "lambda": params.lam, "epsilon": params.epsilon, "eps_P": res.eps_P,
@@ -96,6 +104,10 @@ def run_pair(pair_id: str, cfg: dict, base=None, subdir: str = "e1") -> dict:
             "query_attribute_views": _query_attr_views(pair, ranking),
         },
         "explanations": expl,
+        "releases": {"n": n_rel, "selections": [[[cache.view_label(v), a] for v, a in rr.selections] for rr in results],
+                     "retained_overlap_with_exact_top_tau": [
+                         len(set(int(v) for v in rr.retained) & set(int(x) for x in exact_top)) / max(1, rr.tau)
+                         for rr in results]},
         "timings": res.timings,
         "note": "exact_* fields are NOT differentially private; they are reported only to check the text.",
     }
@@ -145,6 +157,9 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
             "|Q1|": p["|Q1|"], "|Q2|": p["|Q2|"], "tau": rep["parameters"]["tau"],
             "gamma": round(rep["parameters"]["gamma"], 2), "|P|": rep["parameters"]["|P|"],
             "view_overlap": rep["view_stage"]["overlap_with_exact_top_tau"],
+            "releases": rep["releases"]["n"],
+            "mean_share_of_releases_per_explanation": float(np.mean(
+                [e["share_of_releases_with_this_explanation"] for e in rep["explanations"]])),
             "explanations": " | ".join(f"{e['view']} :: {e['attr']}" for e in rep["explanations"]),
         })
     df = pd.DataFrame(summary)

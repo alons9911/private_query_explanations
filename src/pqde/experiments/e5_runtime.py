@@ -86,6 +86,7 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
     seed = int(d["seed"])
     timeout_s = float(d["timeout_s"])
     repeats = 1 if quick else int(e["repeats"])
+    timeout_reps = int(d.get("timeout_repeats", 3))
     pairs = pairs or cfg.get("runtime_pairs", cfg["pairs"])
     by_ds = pairs_by_dataset(pairs, cfg.get("datasets"))
     dp_rows, g_rows, r_rows, id_rows = [], [], [], []
@@ -97,37 +98,46 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
             from ..views import enumerate_views
 
             params = make_params(d, len(enumerate_views(ds)), len(ds.explain_attrs))
-            # (a) every method end to end at the defaults
+            # (a) every method end to end at the defaults, every method in every repeat
+            # (a method that hits the time limit: timeout_repeats runs)
+            n_to: dict = {}
             for r in range(repeats):
-                methods = METHODS if r == 0 else tuple(m for m in METHODS if m != "B2")
+                methods = tuple(m for m in METHODS if n_to.get(m, 0) < timeout_reps)
                 for out in time_methods(ds, q1, q2, params, methods=methods, seed=seed, repeat=r,
                                         gamma_eval=float(d["gamma_eval"]), timeout_s=timeout_s):
+                    n_to[out.method] = n_to.get(out.method, 0) + int(out.timeout)
                     dp_rows.append({"dataset": ds_name, "synthetic": syn, "pair": pid, "method": out.method, "repeat": r,
                                     "build_s": out.build_s, "mech_s": out.mech_s, "total_s": out.total_s,
                                     "timeout": out.timeout})
             # (b) identical releases
-            id_rows.append({"dataset": ds_name, "pair": pid, **_identical(ds, q1, q2, params, seed, 2 if quick else 5)})
+            id_rows.append({"dataset": ds_name, "pair": pid,
+                            **_identical(ds, q1, q2, params, seed, 2 if quick else int(e.get("identity_runs", 10)))})
             priv = float(np.median([x["total_s"] for x in dp_rows if x["pair"] == pid and x["method"] == "PRIV_EXPL"]))
             # (c) B2 against its candidate pool, end to end (original route)
             for size in (e["b2_pool_sizes"] if not quick else e["b2_pool_sizes"][:2]):
-                t0 = time.perf_counter()
-                try:
-                    with timeouts.deadline(timeout_s):
-                        cache = build_cache(ds, q1, q2, **ORIGINAL_ROUTE)
-                        cands, scores, aidx = b2_candidates(cache, params, float(d["gamma_eval"]))
-                        if size > len(scores):
-                            continue
-                        keep = np.sort(np.argsort(-scores, kind="stable")[:size])
-                        _, _, n_sub, _ = exhaustive_best(scores[keep], aidx[keep], params.k, params.lam)
-                    total, to = time.perf_counter() - t0, False
-                except timeouts.RunTimeout:
-                    total, to, n_sub = timeout_s, True, None
-                g_rows.append({"dataset": ds_name, "synthetic": syn, "pair": pid, "pool_size": size, "subsets": n_sub,
-                               "b2_total_s": total, "timeout": to, "priv_total_s": priv})
+                n_to_g = 0
+                for r in range(1 if quick else int(e.get("b2_growth_repeats", 10))):
+                    if n_to_g >= timeout_reps:
+                        break
+                    t0 = time.perf_counter()
+                    try:
+                        with timeouts.deadline(timeout_s):
+                            cache = build_cache(ds, q1, q2, **ORIGINAL_ROUTE)
+                            cands, scores, aidx = b2_candidates(cache, params, float(d["gamma_eval"]))
+                            if size > len(scores):
+                                break
+                            keep = np.sort(np.argsort(-scores, kind="stable")[:size])
+                            _, _, n_sub, _ = exhaustive_best(scores[keep], aidx[keep], params.k, params.lam)
+                        total, to = time.perf_counter() - t0, False
+                    except timeouts.RunTimeout:
+                        total, to, n_sub = timeout_s, True, None
+                        n_to_g += 1
+                    g_rows.append({"dataset": ds_name, "synthetic": syn, "pair": pid, "pool_size": size, "repeat": r,
+                                   "subsets": n_sub, "b2_total_s": total, "timeout": to, "priv_total_s": priv})
             # (d) statistics routes, PRIV_EXPL end to end
             for rt in e["routes"]:
                 name = f"{rt['mode']}/{rt['rep']}/{rt['hist']}"
-                for r in range(1 if quick else 3):
+                for r in range(1 if quick else int(e.get("route_repeats", 10))):
                     out = run_method("PRIV_EXPL", ds, q1, q2, params, rng=np.random.default_rng([seed, r]), route=rt,
                                      timeout_s=timeout_s)
                     r_rows.append({"dataset": ds_name, "synthetic": syn, "pair": pid, "route": name, "repeat": r,
