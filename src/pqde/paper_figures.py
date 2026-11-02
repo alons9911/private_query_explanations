@@ -89,8 +89,9 @@ def _quality_row(axes, summ: pd.DataFrame, dss: list[str], xlabel: str, logx: bo
                     markerfacecolor=SURF if ls == ":" else c)
         if logx:
             _logx(ax, sub.value)
-        ax.set_ylim(0, 1.04)
+        ax.set_ylim(0, 1.1)
         ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
+        ax.axhline(1.0, color=P.MUTED, linewidth=0.5, zorder=0)
         if j:
             ax.set_yticklabels([])
         if first_row:
@@ -107,8 +108,8 @@ def fig_quality() -> Path:
     fig, axes = plt.subplots(2, len(dss), figsize=(7.05, 2.75), squeeze=False, sharex="row")
 
     def eps_ticks(ax, v):
-        ax.set_xticks([0.1, 1, 5])
-        ax.set_xticklabels(["0.1", "1", "5"])
+        ax.set_xticks([0.1, 1, 10])
+        ax.set_xticklabels(["0.1", "1", "10"])
 
     def g_ticks(ax, v):
         ax.set_xticks([0, 0.1, 1, 10])
@@ -178,7 +179,13 @@ def _rt_panel(ax, sub: pd.DataFrame, x: str, logx: bool, limit: float):
 
 def fig_runtime_grid(raw_path: Path | None = None) -> Path:
     raw = pd.read_csv(raw_path or RES / "e4" / "raw" / "runtime.csv")
-    pts = e4_scalability.points(_drop(raw))
+    raw = _drop(raw).copy()
+    # tau = "all" is |P| of each pair, which differs between the pairs of a dataset (contrasts drop
+    # the group attribute): put it at one point, the mean |P| of the dataset
+    is_all = (raw.sweep == "tau") & (raw.value == raw.groupby("pair").P.transform("max"))
+    raw.loc[is_all, "value"] = raw.loc[is_all, "dataset"].map(
+        raw[is_all].groupby("dataset").value.mean().round())
+    pts = e4_scalability.points(raw)
     limit = float(json.loads((RES / "e4" / "metadata.json").read_text()).get("timeout_s", 60)) \
         if (RES / "e4" / "metadata.json").exists() else 60.0
     dss = _datasets(pts)
@@ -186,7 +193,7 @@ def fig_runtime_grid(raw_path: Path | None = None) -> Path:
     fig, axes = plt.subplots(len(dss), len(sweeps), figsize=(7.05, 1.12 * len(dss) + 0.35), squeeze=False,
                              sharey="row")
     plain = FuncFormatter(lambda v, _: f"{v:g}")
-    xticks = {"epsilon": [0.1, 1, 5], "tau": [5, 15, 60], "gamma_mult": [0, 0.1, 1, 10]}
+    xticks = {"epsilon": [0.1, 1, 10], "tau": [5, 50, 500], "gamma_mult": [0, 0.1, 1, 10]}
     for i, ds in enumerate(dss):
         for j, (sw, xl, logx) in enumerate(sweeps):
             ax = axes[i, j]
@@ -195,7 +202,6 @@ def fig_runtime_grid(raw_path: Path | None = None) -> Path:
                 sub = sub[sub[sw] <= 1.0]
             _rt_panel(ax, sub, sw, logx, limit)
             ax.axhline(limit, color=P.MUTED, linewidth=0.5, linestyle=":", zorder=0)
-            ax.yaxis.set_major_locator(LogLocator(base=10, subs=(1.0, 3.0)))
             ax.yaxis.set_major_formatter(plain)
             ax.yaxis.set_minor_formatter(NullFormatter())
             if sw in xticks:
@@ -216,6 +222,11 @@ def fig_runtime_grid(raw_path: Path | None = None) -> Path:
             if lab not in labels:
                 handles.append(h)
                 labels.append(lab)
+    for i in range(len(dss)):  # y ticks per row: 1-3-10 steps, or decades when the row spans > 4 decades
+        lo, hi = axes[i, 0].get_ylim()
+        subs = (1.0,) if hi / max(lo, 1e-12) > 1e4 else (1.0, 3.0)
+        axes[i, 0].yaxis.set_major_locator(LogLocator(base=10, subs=subs, numticks=12))
+        axes[i, 0].yaxis.set_major_formatter(plain)
     fig.tight_layout(h_pad=0.25, w_pad=0.3, rect=(0, 0, 1, 0.975))
     fig.legend(handles, labels, loc="upper center", ncol=len(labels), bbox_to_anchor=(0.5, 1.01))
     return _save(fig, "runtime_grid")
@@ -285,12 +296,14 @@ def _bin_label(b: str, n: int = 12) -> str:
     return P._short(str(b), n)
 
 
-def fig_case(pid: str, rounds: list[int], name: str, q_names=("Q", "Q'"), subdir: str = "e1",
-             width: float = 3.33, max_bins: int = 8) -> Path:
-    """Released (noisy) histograms of selected explanations of one released run, exact counts as ticks."""
+def fig_case(pid: str, rounds: list[int] | None, name: str, q_names=("Q", "Q'"), subdir: str = "e1",
+             width: float = 7.05, max_bins: int = 6) -> Path:
+    """Released (noisy) histograms of the explanations of release 1 (all k unless ``rounds``), exact
+    counts as ticks; each panel title says in how many of the releases the explanation appears."""
     rep = json.loads((RES / subdir / pid / "report.json").read_text())
-    expl = [e for e in rep["explanations"] if e["round"] in rounds]
-    fig, axes = plt.subplots(1, len(expl), figsize=(width, 1.45), squeeze=False)
+    expl = [e for e in rep["explanations"] if rounds is None or e["round"] in rounds]
+    n_rel = rep.get("releases", {}).get("n", 1)
+    fig, axes = plt.subplots(1, len(expl), figsize=(width, 1.6), squeeze=False)
     for ax, e in zip(axes[0], expl):
         bins = e["bins"]
         h1, h2 = np.asarray(e["noisy_h1"]), np.asarray(e["noisy_h2"])
@@ -306,8 +319,11 @@ def fig_case(pid: str, rounds: list[int], name: str, q_names=("Q", "Q'"), subdir
         ax.set_xticks(xs)
         ax.set_xticklabels([_bin_label(bins[i]) for i in order], rotation=40, ha="right", fontsize=5.2)
         parts = [P._short(x, 24) for x in str(e["view"]).split(" AND ")]
-        ax.set_title("\n".join(parts[:-1] + [parts[-1] + f" by {e['attr']}"]) if len(parts) > 1
-                     else f"{parts[0]}\nby {e['attr']}", fontsize=5.6)
+        title = ("\n".join(parts[:-1] + [parts[-1] + f" by {e['attr']}"]) if len(parts) > 1
+                 else f"{parts[0]}\nby {e['attr']}")
+        if n_rel > 1 and "share_of_releases_with_this_explanation" in e:
+            title = f"({e['round']}) " + title + f"\nin {round(e['share_of_releases_with_this_explanation'] * n_rel)}/{n_rel} releases"
+        ax.set_title(title, fontsize=5.6)
         ax.grid(axis="x", visible=False)
         ax.axhline(0, color=P.MUTED, linewidth=0.5)
     h, lab = axes[0, 0].get_legend_handles_labels()
