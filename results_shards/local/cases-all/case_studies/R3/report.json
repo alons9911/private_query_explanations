@@ -1,0 +1,1230 @@
+{
+  "pair": {
+    "pair": "R3",
+    "dataset": "adult",
+    "synthetic_data": false,
+    "N": 48842,
+    "kind": "refinement",
+    "Q1": "maritalStatus = 'Married-civ-spouse' AND age >= 40",
+    "Q2": "maritalStatus IN ('Divorced', 'Married-civ-spouse', 'Widowed') AND age >= 61",
+    "|Q1|": 12932,
+    "|Q2|": 3296,
+    "|Q1 & Q2|": 2134,
+    "constraint: >= 30% with gender = 'Female'": {
+      "share_Q1": 0.0891,
+      "share_Q2": 0.3022
+    },
+    "role": "surprising",
+    "aggregate": "income",
+    "AVG_Q1": 0.4999226724404578,
+    "AVG_Q2": 0.24605582524271843
+  },
+  "parameters": {
+    "k": 5,
+    "lambda": 0.5,
+    "epsilon": 1.0,
+    "eps_P": 0.333333333,
+    "eps_S": 0.333333333,
+    "eps_H": 0.333333334,
+    "tau": 15,
+    "gamma": 150.31905897320672,
+    "gamma_R": 488.42,
+    "|P|": 1048,
+    "|Attrs|": 10,
+    "Delta_Use": 8.189672822570739e-05,
+    "laplace_scale_per_bin": 29.999999940000002,
+    "sigma_of_released_difference": 59.999999880000004
+  },
+  "view_stage": {
+    "exact_top_tau": [
+      {
+        "rank": 1,
+        "view": "race='White'",
+        "use": 0.2933764650979384,
+        "coverage": 0.2987387903853241,
+        "representativeness": 0.9820501205067171
+      },
+      {
+        "rank": 2,
+        "view": "gender='Male'",
+        "use": 0.2655203865471016,
+        "coverage": 0.28827648335448997,
+        "representativeness": 0.9210615567992568
+      },
+      {
+        "rank": 3,
+        "view": "race='White' AND gender='Male'",
+        "use": 0.23604168462605113,
+        "coverage": 0.26147577904262725,
+        "representativeness": 0.9027286790780353
+      },
+      {
+        "rank": 4,
+        "view": "workclass='Private'",
+        "use": 0.17735064010907756,
+        "coverage": 0.18398099995905162,
+        "representativeness": 0.9639617142452221
+      },
+      {
+        "rank": 5,
+        "view": "workclass='Private' AND race='White'",
+        "use": 0.1585165040069812,
+        "coverage": 0.16393677572580975,
+        "representativeness": 0.9669368163742944
+      },
+      {
+        "rank": 6,
+        "view": "hoursPerWeek IN (32, 40]",
+        "use": 0.15608828321730575,
+        "coverage": 0.1628311698947627,
+        "representativeness": 0.95858970563305
+      },
+      {
+        "rank": 7,
+        "view": "workclass='Private' AND gender='Male'",
+        "use": 0.14592459805194163,
+        "coverage": 0.15930961058105728,
+        "representativeness": 0.9159811358505249
+      },
+      {
+        "rank": 8,
+        "view": "race='White' AND hoursPerWeek IN (32, 40]",
+        "use": 0.13661967061597846,
+        "coverage": 0.1414765980099095,
+        "representativeness": 0.9656697470659363
+      },
+      {
+        "rank": 9,
+        "view": "gender='Male' AND hoursPerWeek IN (32, 40]",
+        "use": 0.1293953679315532,
+        "coverage": 0.14137422709962738,
+        "representativeness": 0.9152684374385115
+      },
+      {
+        "rank": 10,
+        "view": "education='HS-grad'",
+        "use": 0.09885185713768103,
+        "coverage": 0.10462307030834118,
+        "representativeness": 0.9448380442893575
+      },
+      {
+        "rank": 11,
+        "view": "workclass='Private' AND hoursPerWeek IN (32, 40]",
+        "use": 0.09253057171895021,
+        "coverage": 0.09870603169403383,
+        "representativeness": 0.9374358398458755
+      },
+      {
+        "rank": 12,
+        "view": "education='HS-grad' AND race='White'",
+        "use": 0.08897537031050808,
+        "coverage": 0.0943450309160149,
+        "representativeness": 0.9430848603962317
+      },
+      {
+        "rank": 13,
+        "view": "education='HS-grad' AND gender='Male'",
+        "use": 0.07900038306203179,
+        "coverage": 0.08787518938618402,
+        "representativeness": 0.8990066890763646
+      },
+      {
+        "rank": 14,
+        "view": "hoursPerWeek IN (40, 50]",
+        "use": 0.05871683779817871,
+        "coverage": 0.0665001433192744,
+        "representativeness": 0.8829580639589423
+      },
+      {
+        "rank": 15,
+        "view": "workclass='Private' AND education='HS-grad'",
+        "use": 0.056729877524474136,
+        "coverage": 0.06134064944105483,
+        "representativeness": 0.9248333371329659
+      }
+    ],
+    "retained": [
+      {
+        "noisy_rank": 1,
+        "view": "race='White'",
+        "exact_rank": 1,
+        "use": 0.2933764650979384,
+        "coverage": 0.2987387903853241,
+        "representativeness": 0.9820501205067171
+      },
+      {
+        "noisy_rank": 2,
+        "view": "gender='Male'",
+        "exact_rank": 2,
+        "use": 0.2655203865471016,
+        "coverage": 0.28827648335448997,
+        "representativeness": 0.9210615567992568
+      },
+      {
+        "noisy_rank": 3,
+        "view": "race='White' AND gender='Male'",
+        "exact_rank": 3,
+        "use": 0.23604168462605113,
+        "coverage": 0.26147577904262725,
+        "representativeness": 0.9027286790780353
+      },
+      {
+        "noisy_rank": 4,
+        "view": "workclass='Private'",
+        "exact_rank": 4,
+        "use": 0.17735064010907756,
+        "coverage": 0.18398099995905162,
+        "representativeness": 0.9639617142452221
+      },
+      {
+        "noisy_rank": 5,
+        "view": "workclass='Private' AND race='White'",
+        "exact_rank": 5,
+        "use": 0.1585165040069812,
+        "coverage": 0.16393677572580975,
+        "representativeness": 0.9669368163742944
+      },
+      {
+        "noisy_rank": 6,
+        "view": "hoursPerWeek IN (32, 40]",
+        "exact_rank": 6,
+        "use": 0.15608828321730575,
+        "coverage": 0.1628311698947627,
+        "representativeness": 0.95858970563305
+      },
+      {
+        "noisy_rank": 7,
+        "view": "workclass='Private' AND gender='Male'",
+        "exact_rank": 7,
+        "use": 0.14592459805194163,
+        "coverage": 0.15930961058105728,
+        "representativeness": 0.9159811358505249
+      },
+      {
+        "noisy_rank": 8,
+        "view": "race='White' AND hoursPerWeek IN (32, 40]",
+        "exact_rank": 8,
+        "use": 0.13661967061597846,
+        "coverage": 0.1414765980099095,
+        "representativeness": 0.9656697470659363
+      },
+      {
+        "noisy_rank": 9,
+        "view": "gender='Male' AND hoursPerWeek IN (32, 40]",
+        "exact_rank": 9,
+        "use": 0.1293953679315532,
+        "coverage": 0.14137422709962738,
+        "representativeness": 0.9152684374385115
+      },
+      {
+        "noisy_rank": 10,
+        "view": "education='HS-grad'",
+        "exact_rank": 10,
+        "use": 0.09885185713768103,
+        "coverage": 0.10462307030834118,
+        "representativeness": 0.9448380442893575
+      },
+      {
+        "noisy_rank": 11,
+        "view": "education='HS-grad' AND gender='Male'",
+        "exact_rank": 13,
+        "use": 0.07900038306203179,
+        "coverage": 0.08787518938618402,
+        "representativeness": 0.8990066890763646
+      },
+      {
+        "noisy_rank": 12,
+        "view": "workclass='Private' AND hoursPerWeek IN (32, 40]",
+        "exact_rank": 11,
+        "use": 0.09253057171895021,
+        "coverage": 0.09870603169403383,
+        "representativeness": 0.9374358398458755
+      },
+      {
+        "noisy_rank": 13,
+        "view": "hoursPerWeek IN (40, 50]",
+        "exact_rank": 14,
+        "use": 0.05871683779817871,
+        "coverage": 0.0665001433192744,
+        "representativeness": 0.8829580639589423
+      },
+      {
+        "noisy_rank": 14,
+        "view": "education='HS-grad' AND race='White'",
+        "exact_rank": 12,
+        "use": 0.08897537031050808,
+        "coverage": 0.0943450309160149,
+        "representativeness": 0.9430848603962317
+      },
+      {
+        "noisy_rank": 15,
+        "view": "education='Some-college' AND race='White'",
+        "exact_rank": 21,
+        "use": 0.04926528035696999,
+        "coverage": 0.05317145080054052,
+        "representativeness": 0.9265363200597336
+      }
+    ],
+    "overlap_with_exact_top_tau": 0.9333333333333333,
+    "retained_atom_counts": {
+      "race='White'": 6,
+      "gender='Male'": 5,
+      "workclass='Private'": 4,
+      "hoursPerWeek IN (32, 40]": 4,
+      "education='HS-grad'": 3,
+      "hoursPerWeek IN (40, 50]": 1,
+      "education='Some-college'": 1
+    },
+    "query_attribute_views": []
+  },
+  "explanations": [
+    {
+      "round": 1,
+      "view": "race='White' AND gender='Male'",
+      "attr": "education",
+      "bins": [
+        "HS-grad",
+        "Some-college",
+        "Bachelors",
+        "Masters",
+        "Assoc-voc",
+        "11th",
+        "Assoc-acdm",
+        "10th",
+        "7th-8th",
+        "Prof-school",
+        "9th",
+        "12th",
+        "Doctorate",
+        "5th-6th",
+        "1st-4th",
+        "Preschool"
+      ],
+      "noisy_h1": [
+        3202.878,
+        1904.568,
+        1932.489,
+        937.155,
+        426.388,
+        152.24,
+        285.204,
+        267.324,
+        351.269,
+        355.575,
+        46.17,
+        105.959,
+        282.902,
+        111.629,
+        82.29,
+        45.7
+      ],
+      "noisy_h2": [
+        655.239,
+        362.221,
+        347.659,
+        112.428,
+        58.999,
+        98.275,
+        15.168,
+        49.469,
+        186.185,
+        77.255,
+        45.969,
+        0.366,
+        46.338,
+        82.898,
+        -8.41,
+        26.786
+      ],
+      "exact_n": [
+        9361,
+        5889,
+        4983,
+        1613,
+        1200,
+        991,
+        869,
+        811,
+        636,
+        637,
+        448,
+        356,
+        422,
+        321,
+        154,
+        44
+      ],
+      "exact_h1": [
+        3230,
+        1929,
+        1962,
+        889,
+        436,
+        224,
+        290,
+        274,
+        356,
+        367,
+        153,
+        80,
+        260,
+        133,
+        70,
+        12
+      ],
+      "exact_h2": [
+        665,
+        311,
+        328,
+        120,
+        46,
+        62,
+        30,
+        88,
+        168,
+        90,
+        51,
+        24,
+        63,
+        36,
+        22,
+        2
+      ],
+      "hd_gamma": 3.802534992549679,
+      "utility": 3.802534992549679,
+      "n_candidates": 126,
+      "bins_clearing_2sigma": [
+        "HS-grad",
+        "Some-college",
+        "Bachelors",
+        "Masters",
+        "Assoc-voc",
+        "Assoc-acdm",
+        "10th",
+        "7th-8th",
+        "Prof-school",
+        "Doctorate"
+      ],
+      "exact_share_q1": [
+        0.3029,
+        0.1809,
+        0.184,
+        0.0834,
+        0.0409,
+        0.021,
+        0.0272,
+        0.0257,
+        0.0334,
+        0.0344,
+        0.0143,
+        0.0075,
+        0.0244,
+        0.0125,
+        0.0066,
+        0.0011
+      ],
+      "exact_share_q2": [
+        0.3158,
+        0.1477,
+        0.1557,
+        0.057,
+        0.0218,
+        0.0294,
+        0.0142,
+        0.0418,
+        0.0798,
+        0.0427,
+        0.0242,
+        0.0114,
+        0.0299,
+        0.0171,
+        0.0104,
+        0.0009
+      ],
+      "noisy_total_q1": 10489.74,
+      "noisy_total_q2": 2156.8450000000003,
+      "exact_total_q1": 10665,
+      "exact_total_q2": 2106,
+      "exact_abs_diff_total": 8559,
+      "share_of_releases_with_this_explanation": 0.4,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 2,
+      "view": "race='White' AND gender='Male'",
+      "attr": "occupation",
+      "bins": [
+        "Prof-specialty",
+        "Craft-repair",
+        "Exec-managerial",
+        "Adm-clerical",
+        "Sales",
+        "Other-service",
+        "Machine-op-inspct",
+        "NA",
+        "Transport-moving",
+        "Handlers-cleaners",
+        "Farming-fishing",
+        "Tech-support",
+        "Protective-serv",
+        "Priv-house-serv",
+        "Armed-Forces"
+      ],
+      "noisy_h1": [
+        1603.562,
+        1849.007,
+        1977.962,
+        507.95,
+        1280.689,
+        308.445,
+        539.68,
+        579.337,
+        674.749,
+        239.995,
+        516.393,
+        207.548,
+        207.68,
+        70.15,
+        -45.225
+      ],
+      "noisy_h2": [
+        266.471,
+        221.905,
+        281.647,
+        92.762,
+        272.638,
+        98.303,
+        80.041,
+        400.579,
+        76.167,
+        72.615,
+        142.33,
+        23.624,
+        44.394,
+        200.578,
+        16.372
+      ],
+      "exact_n": [
+        3513,
+        5258,
+        3980,
+        1543,
+        3264,
+        1729,
+        1877,
+        1314,
+        1900,
+        1538,
+        1297,
+        778,
+        717,
+        14,
+        13
+      ],
+      "exact_h1": [
+        1560,
+        1804,
+        1986,
+        475,
+        1302,
+        354,
+        556,
+        569,
+        750,
+        263,
+        518,
+        257,
+        265,
+        3,
+        3
+      ],
+      "exact_h2": [
+        249,
+        199,
+        311,
+        83,
+        269,
+        97,
+        63,
+        426,
+        126,
+        48,
+        162,
+        19,
+        53,
+        1,
+        0
+      ],
+      "hd_gamma": 3.280818183937064,
+      "utility": 3.280818183937064,
+      "n_candidates": 125,
+      "bins_clearing_2sigma": [
+        "Prof-specialty",
+        "Craft-repair",
+        "Exec-managerial",
+        "Adm-clerical",
+        "Sales",
+        "Other-service",
+        "Machine-op-inspct",
+        "NA",
+        "Transport-moving",
+        "Handlers-cleaners",
+        "Farming-fishing",
+        "Tech-support",
+        "Protective-serv",
+        "Priv-house-serv"
+      ],
+      "exact_share_q1": [
+        0.1463,
+        0.1692,
+        0.1862,
+        0.0445,
+        0.1221,
+        0.0332,
+        0.0521,
+        0.0534,
+        0.0703,
+        0.0247,
+        0.0486,
+        0.0241,
+        0.0248,
+        0.0003,
+        0.0003
+      ],
+      "exact_share_q2": [
+        0.1182,
+        0.0945,
+        0.1477,
+        0.0394,
+        0.1277,
+        0.0461,
+        0.0299,
+        0.2023,
+        0.0598,
+        0.0228,
+        0.0769,
+        0.009,
+        0.0252,
+        0.0005,
+        0.0
+      ],
+      "noisy_total_q1": 10517.922,
+      "noisy_total_q2": 2290.4259999999995,
+      "exact_total_q1": 10665,
+      "exact_total_q2": 2106,
+      "exact_abs_diff_total": 8559,
+      "share_of_releases_with_this_explanation": 0.5,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 3,
+      "view": "hoursPerWeek IN (32, 40]",
+      "attr": "education",
+      "bins": [
+        "HS-grad",
+        "Some-college",
+        "Bachelors",
+        "Masters",
+        "Assoc-voc",
+        "11th",
+        "Assoc-acdm",
+        "10th",
+        "7th-8th",
+        "Prof-school",
+        "9th",
+        "12th",
+        "Doctorate",
+        "5th-6th",
+        "1st-4th",
+        "Preschool"
+      ],
+      "noisy_h1": [
+        2212.32,
+        1258.523,
+        1045.222,
+        469.2,
+        295.057,
+        143.028,
+        195.091,
+        210.437,
+        205.779,
+        118.417,
+        141.482,
+        63.733,
+        68.032,
+        199.613,
+        45.774,
+        39.409
+      ],
+      "noisy_h2": [
+        486.774,
+        147.761,
+        181.114,
+        -2.094,
+        61.504,
+        61.15,
+        39.571,
+        59.49,
+        104.568,
+        48.695,
+        70.067,
+        23.137,
+        112.246,
+        -48.444,
+        -22.897,
+        18.716
+      ],
+      "exact_n": [
+        9432,
+        5633,
+        3948,
+        1183,
+        1237,
+        858,
+        833,
+        761,
+        530,
+        256,
+        454,
+        340,
+        203,
+        338,
+        148,
+        50
+      ],
+      "exact_h1": [
+        2222,
+        1197,
+        1049,
+        462,
+        294,
+        156,
+        165,
+        193,
+        227,
+        130,
+        121,
+        71,
+        107,
+        115,
+        56,
+        17
+      ],
+      "exact_h2": [
+        478,
+        218,
+        172,
+        54,
+        37,
+        52,
+        23,
+        60,
+        108,
+        31,
+        39,
+        17,
+        29,
+        27,
+        22,
+        4
+      ],
+      "hd_gamma": 2.6942509767213405,
+      "utility": 1.3471254883606703,
+      "n_candidates": 124,
+      "bins_clearing_2sigma": [
+        "HS-grad",
+        "Some-college",
+        "Bachelors",
+        "Masters",
+        "Assoc-voc",
+        "Assoc-acdm",
+        "10th",
+        "5th-6th"
+      ],
+      "exact_share_q1": [
+        0.3376,
+        0.1819,
+        0.1594,
+        0.0702,
+        0.0447,
+        0.0237,
+        0.0251,
+        0.0293,
+        0.0345,
+        0.0198,
+        0.0184,
+        0.0108,
+        0.0163,
+        0.0175,
+        0.0085,
+        0.0026
+      ],
+      "exact_share_q2": [
+        0.3487,
+        0.159,
+        0.1255,
+        0.0394,
+        0.027,
+        0.0379,
+        0.0168,
+        0.0438,
+        0.0788,
+        0.0226,
+        0.0284,
+        0.0124,
+        0.0212,
+        0.0197,
+        0.016,
+        0.0029
+      ],
+      "noisy_total_q1": 6711.116999999999,
+      "noisy_total_q2": 1341.358,
+      "exact_total_q1": 6582,
+      "exact_total_q2": 1371,
+      "exact_abs_diff_total": 5211,
+      "share_of_releases_with_this_explanation": 0.1,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 4,
+      "view": "race='White' AND gender='Male'",
+      "attr": "workclass",
+      "bins": [
+        "Private",
+        "Self-emp-not-inc",
+        "Local-gov",
+        "NA",
+        "State-gov",
+        "Self-emp-inc",
+        "Federal-gov",
+        "Without-pay",
+        "Never-worked"
+      ],
+      "noisy_h1": [
+        6140.695,
+        1512.682,
+        706.338,
+        569.022,
+        401.622,
+        905.15,
+        430.158,
+        11.005,
+        -0.363
+      ],
+      "noisy_h2": [
+        847.399,
+        527.599,
+        99.829,
+        418.874,
+        15.867,
+        126.598,
+        -7.074,
+        29.674,
+        0.631
+      ],
+      "exact_n": [
+        19602,
+        3010,
+        1583,
+        1308,
+        1038,
+        1397,
+        779,
+        12,
+        6
+      ],
+      "exact_h1": [
+        6136,
+        1556,
+        733,
+        569,
+        438,
+        842,
+        385,
+        6,
+        0
+      ],
+      "exact_h2": [
+        857,
+        440,
+        108,
+        426,
+        60,
+        175,
+        35,
+        5,
+        0
+      ],
+      "hd_gamma": 2.2109717666382296,
+      "utility": 2.2109717666382296,
+      "n_candidates": 123,
+      "bins_clearing_2sigma": [
+        "Private",
+        "Self-emp-not-inc",
+        "Local-gov",
+        "NA",
+        "State-gov",
+        "Self-emp-inc",
+        "Federal-gov"
+      ],
+      "exact_share_q1": [
+        0.5753,
+        0.1459,
+        0.0687,
+        0.0534,
+        0.0411,
+        0.0789,
+        0.0361,
+        0.0006,
+        0.0
+      ],
+      "exact_share_q2": [
+        0.4069,
+        0.2089,
+        0.0513,
+        0.2023,
+        0.0285,
+        0.0831,
+        0.0166,
+        0.0024,
+        0.0
+      ],
+      "noisy_total_q1": 10676.309,
+      "noisy_total_q2": 2059.397,
+      "exact_total_q1": 10665,
+      "exact_total_q2": 2106,
+      "exact_abs_diff_total": 8559,
+      "share_of_releases_with_this_explanation": 0.4,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 5,
+      "view": "gender='Male'",
+      "attr": "age",
+      "bins": [
+        "[17, 24]",
+        "(24, 31]",
+        "(31, 37]",
+        "(37, 44]",
+        "(44, 53]",
+        "(53, 90]"
+      ],
+      "noisy_h1": [
+        -41.763,
+        -107.06,
+        11.213,
+        2981.98,
+        4525.435,
+        4259.046
+      ],
+      "noisy_h2": [
+        51.071,
+        22.407,
+        -19.191,
+        31.955,
+        65.226,
+        2294.697
+      ],
+      "exact_n": [
+        4613,
+        5671,
+        5561,
+        5823,
+        5761,
+        5221
+      ],
+      "exact_h1": [
+        0,
+        0,
+        0,
+        2994,
+        4523,
+        4263
+      ],
+      "exact_h2": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        2300
+      ],
+      "hd_gamma": 1.6318307108606982,
+      "utility": 1.6318307108606982,
+      "n_candidates": 122,
+      "bins_clearing_2sigma": [
+        "(24, 31]",
+        "(37, 44]",
+        "(44, 53]",
+        "(53, 90]"
+      ],
+      "exact_share_q1": [
+        0.0,
+        0.0,
+        0.0,
+        0.2542,
+        0.384,
+        0.3619
+      ],
+      "exact_share_q2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "noisy_total_q1": 11628.851,
+      "noisy_total_q2": 2446.165,
+      "exact_total_q1": 11780,
+      "exact_total_q2": 2300,
+      "exact_abs_diff_total": 9480,
+      "share_of_releases_with_this_explanation": 0.1,
+      "share_of_releases_explaining_this_attr": 0.4
+    }
+  ],
+  "releases": {
+    "n": 10,
+    "selections": [
+      [
+        [
+          "race='White' AND gender='Male'",
+          "education"
+        ],
+        [
+          "race='White' AND gender='Male'",
+          "occupation"
+        ],
+        [
+          "hoursPerWeek IN (32, 40]",
+          "education"
+        ],
+        [
+          "race='White' AND gender='Male'",
+          "workclass"
+        ],
+        [
+          "gender='Male'",
+          "age"
+        ]
+      ],
+      [
+        [
+          "gender='Male' AND hoursPerWeek IN (32, 40]",
+          "education"
+        ],
+        [
+          "gender='Male' AND hoursPerWeek IN (32, 40]",
+          "occupation"
+        ],
+        [
+          "race='White' AND gender='Male'",
+          "workclass"
+        ],
+        [
+          "workclass='Private' AND race='White'",
+          "age"
+        ],
+        [
+          "race='White' AND gender='Male'",
+          "education"
+        ]
+      ],
+      [
+        [
+          "gender='Male'",
+          "education"
+        ],
+        [
+          "gender='Male'",
+          "occupation"
+        ],
+        [
+          "gender='Male' AND hoursPerWeek IN (32, 40]",
+          "occupation"
+        ],
+        [
+          "race='White' AND gender='Male'",
+          "workclass"
+        ],
+        [
+          "hoursPerWeek IN (32, 40]",
+          "race"
+        ]
+      ],
+      [
+        [
+          "race='White' AND gender='Male'",
+          "education"
+        ],
+        [
+          "gender='Male'",
+          "occupation"
+        ],
+        [
+          "gender='Male' AND hoursPerWeek IN (32, 40]",
+          "education"
+        ],
+        [
+          "gender='Male' AND hoursPerWeek IN (32, 40]",
+          "workclass"
+        ],
+        [
+          "race='White' AND gender='Male'",
+          "age"
+        ]
+      ],
+      [
+        [
+          "gender='Male'",
+          "education"
+        ],
+        [
+          "gender='Male'",
+          "occupation"
+        ],
+        [
+          "gender='Male' AND hoursPerWeek IN (40, 50]",
+          "workclass"
+        ],
+        [
+          "race='White' AND gender='Male'",
+          "occupation"
+        ],
+        [
+          "gender='Male' AND hoursPerWeek IN (32, 40]",
+          "age"
+        ]
+      ],
+      [
+        [
+          "gender='Male'",
+          "education"
+        ],
+        [
+          "gender='Male' AND hoursPerWeek IN (32, 40]",
+          "occupation"
+        ],
+        [
+          "gender='Male' AND hoursPerWeek IN (32, 40]",
+          "education"
+        ],
+        [
+          "gender='Male'",
+          "workclass"
+        ],
+        [
+          "gender='Male'",
+          "occupation"
+        ]
+      ],
+      [
+        [
+          "gender='Male'",
+          "education"
+        ],
+        [
+          "race='White' AND gender='Male'",
+          "occupation"
+        ],
+        [
+          "gender='Male'",
+          "workclass"
+        ],
+        [
+          "workclass='Private' AND gender='Male'",
+          "education"
+        ],
+        [
+          "gender='Male'",
+          "occupation"
+        ]
+      ],
+      [
+        [
+          "workclass='Private' AND gender='Male'",
+          "education"
+        ],
+        [
+          "gender='Male' AND hoursPerWeek IN (40, 50]",
+          "occupation"
+        ],
+        [
+          "gender='Male'",
+          "workclass"
+        ],
+        [
+          "race='White' AND gender='Male'",
+          "occupation"
+        ],
+        [
+          "workclass='Private' AND race='White'",
+          "education"
+        ]
+      ],
+      [
+        [
+          "gender='Male'",
+          "education"
+        ],
+        [
+          "gender='Male'",
+          "occupation"
+        ],
+        [
+          "gender='Male'",
+          "workclass"
+        ],
+        [
+          "race='White' AND gender='Male'",
+          "occupation"
+        ],
+        [
+          "race='White' AND gender='Male'",
+          "education"
+        ]
+      ],
+      [
+        [
+          "gender='Male' AND hoursPerWeek IN (32, 40]",
+          "education"
+        ],
+        [
+          "gender='Male' AND hoursPerWeek IN (32, 40]",
+          "occupation"
+        ],
+        [
+          "race='White' AND gender='Male'",
+          "workclass"
+        ],
+        [
+          "gender='Male'",
+          "occupation"
+        ],
+        [
+          "gender='Male' AND hoursPerWeek IN (32, 40]",
+          "workclass"
+        ]
+      ]
+    ],
+    "retained_overlap_with_exact_top_tau": [
+      0.9333333333333333,
+      0.9333333333333333,
+      0.9333333333333333,
+      0.8666666666666667,
+      0.9333333333333333,
+      0.8666666666666667,
+      0.9333333333333333,
+      0.8666666666666667,
+      0.9333333333333333,
+      0.9333333333333333
+    ]
+  },
+  "timings": {
+    "view_stage_ms": 0.14494199967884924,
+    "explanation_stage_ms": 14.350206000017351,
+    "mechanism_ms": 14.4951479996962,
+    "cache_build_s": 0.6132049230000121
+  },
+  "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
+}

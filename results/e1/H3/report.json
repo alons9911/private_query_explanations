@@ -45,10 +45,10 @@
     "eps_H": 0.333333334,
     "tau": 15,
     "gamma": 150.31905897320672,
-    "gamma_R": 1000.0,
+    "gamma_R": 10.0,
     "|P|": 502,
     "|Attrs|": 10,
-    "Delta_Use": 0.00175,
+    "Delta_Use": 0.004,
     "laplace_scale_per_bin": 29.999999940000002,
     "sigma_of_released_difference": 59.999999880000004
   },
@@ -57,141 +57,141 @@
       {
         "rank": 1,
         "view": "State='al'",
-        "use": 0.18230808597748208,
+        "use": 0.24222039649608118,
         "coverage": 0.245,
-        "representativeness": 0.744114636642784
+        "representativeness": 0.9886546795758415
       },
       {
         "rank": 2,
         "view": "EmergencyService='yes'",
-        "use": 0.17806010928961746,
+        "use": 0.23258537037037036,
         "coverage": 0.245,
-        "representativeness": 0.7267759562841529
+        "representativeness": 0.9493280423280424
       },
       {
         "rank": 3,
         "view": "State='al' AND EmergencyService='yes'",
-        "use": 0.17148239239798768,
+        "use": 0.2232906170212766,
         "coverage": 0.238,
-        "representativeness": 0.7205142537730576
+        "representativeness": 0.9381958698372966
       },
       {
         "rank": 4,
         "view": "HospitalOwner='government - hospital district or authority'",
-        "use": 0.1468247078464107,
+        "use": 0.19661923076923077,
         "coverage": 0.252,
-        "representativeness": 0.5826377295492488
+        "representativeness": 0.7802350427350427
       },
       {
         "rank": 5,
         "view": "HospitalOwner='government - hospital district or authority' AND EmergencyService='yes'",
-        "use": 0.14231768650461024,
+        "use": 0.1883915732758621,
         "coverage": 0.245,
-        "representativeness": 0.5808885163453479
+        "representativeness": 0.7689451970443351
       },
       {
         "rank": 6,
         "view": "State='al' AND HospitalOwner='government - hospital district or authority'",
-        "use": 0.14223154362416104,
+        "use": 0.1845056188118812,
         "coverage": 0.245,
-        "representativeness": 0.5805369127516777
+        "representativeness": 0.7530841584158416
       },
       {
         "rank": 7,
         "view": "Condition='surgical infection prevention'",
-        "use": 0.04920708237105465,
+        "use": 0.06946459546925567,
         "coverage": 0.08,
-        "representativeness": 0.6150885296381832
+        "representativeness": 0.8683074433656959
       },
       {
         "rank": 8,
         "view": "State='al' AND Condition='surgical infection prevention'",
-        "use": 0.048236760124610596,
+        "use": 0.06752142091836735,
         "coverage": 0.079,
-        "representativeness": 0.6105919003115265
+        "representativeness": 0.854701530612245
       },
       {
         "rank": 9,
         "view": "EmergencyService='yes' AND Condition='surgical infection prevention'",
-        "use": 0.046249201277955274,
+        "use": 0.0635421927480916,
         "coverage": 0.077,
-        "representativeness": 0.6006389776357828
+        "representativeness": 0.8252232824427481
       },
       {
         "rank": 10,
         "view": "Sample IN (210, 1421]",
-        "use": 0.0425885911840968,
+        "use": 0.055121207584830335,
         "coverage": 0.075,
-        "representativeness": 0.567847882454624
+        "representativeness": 0.7349494344644045
       },
       {
         "rank": 11,
-        "view": "HospitalOwner='government - hospital district or authority' AND Condition='surgical infection prevention'",
-        "use": 0.042370649106302914,
-        "coverage": 0.08,
-        "representativeness": 0.5296331138287864
+        "view": "Sample IN (107, 210]",
+        "use": 0.054466279132791326,
+        "coverage": 0.067,
+        "representativeness": 0.8129295392953929
       },
       {
         "rank": 12,
-        "view": "EmergencyService='yes' AND Sample IN (210, 1421]",
-        "use": 0.041288444830582104,
-        "coverage": 0.073,
-        "representativeness": 0.5655951346655083
+        "view": "Condition='heart attack'",
+        "use": 0.05363090402230187,
+        "coverage": 0.064,
+        "representativeness": 0.8379828753484667
       },
       {
         "rank": 13,
-        "view": "State='al' AND Sample IN (210, 1421]",
-        "use": 0.04123324630113142,
-        "coverage": 0.073,
-        "representativeness": 0.5648389904264578
+        "view": "HospitalOwner='government - hospital district or authority' AND Condition='surgical infection prevention'",
+        "use": 0.053599041095890414,
+        "coverage": 0.08,
+        "representativeness": 0.6699880136986301
       },
       {
         "rank": 14,
-        "view": "HospitalOwner='government - hospital district or authority' AND Sample IN (210, 1421]",
-        "use": 0.039183381088825214,
-        "coverage": 0.075,
-        "representativeness": 0.5224450811843362
+        "view": "State='al' AND Sample IN (107, 210]",
+        "use": 0.05295933883647799,
+        "coverage": 0.067,
+        "representativeness": 0.790437893081761
       },
       {
         "rank": 15,
-        "view": "Condition='heart attack'",
-        "use": 0.0387832939322301,
-        "coverage": 0.064,
-        "representativeness": 0.6059889676910953
+        "view": "EmergencyService='yes' AND Sample IN (210, 1421]",
+        "use": 0.05237387267080745,
+        "coverage": 0.073,
+        "representativeness": 0.7174503105590062
       }
     ],
     "retained": [
       {
         "noisy_rank": 1,
         "view": "State='Other' AND Sample IN (210, 1421]",
-        "exact_rank": 173,
-        "use": 0.0010019960079840318,
+        "exact_rank": 172,
+        "use": 0.0010981666666666668,
         "coverage": 0.002,
-        "representativeness": 0.5009980039920159
+        "representativeness": 0.5490833333333334
       },
       {
         "noisy_rank": 2,
         "view": "EmergencyService='yes' AND Score IN (82, 91]",
-        "exact_rank": 43,
-        "use": 0.022142857142857145,
+        "exact_rank": 40,
+        "use": 0.03281423076923077,
         "coverage": 0.04,
-        "representativeness": 0.5535714285714286
+        "representativeness": 0.8203557692307692
       },
       {
         "noisy_rank": 3,
         "view": "Condition='heart attack' AND Sample IN (107, 210]",
         "exact_rank": 131,
-        "use": 0.0030588235294117644,
+        "use": 0.0038352500000000006,
         "coverage": 0.006,
-        "representativeness": 0.5098039215686274
+        "representativeness": 0.6392083333333334
       },
       {
         "noisy_rank": 4,
         "view": "Score='NA' AND Sample IN (58, 107]",
-        "exact_rank": 166,
-        "use": 0.0010069513406156902,
+        "exact_rank": 163,
+        "use": 0.0012552794117647057,
         "coverage": 0.002,
-        "representativeness": 0.5034756703078451
+        "representativeness": 0.6276397058823528
       },
       {
         "noisy_rank": 5,
@@ -199,7 +199,7 @@
         "exact_rank": 394,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5024875621890548
+        "representativeness": 0.5400416666666666
       },
       {
         "noisy_rank": 6,
@@ -207,7 +207,7 @@
         "exact_rank": 364,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5088408644400786
+        "representativeness": 0.6446785714285714
       },
       {
         "noisy_rank": 7,
@@ -215,7 +215,7 @@
         "exact_rank": 440,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5029821073558649
+        "representativeness": 0.6049375
       },
       {
         "noisy_rank": 8,
@@ -223,15 +223,15 @@
         "exact_rank": 431,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5173745173745175
+        "representativeness": 0.6681793478260869
       },
       {
         "noisy_rank": 9,
         "view": "HospitalOwner='government - hospital district or authority' AND EmergencyService='Other'",
-        "exact_rank": 128,
-        "use": 0.0035174129353233836,
+        "exact_rank": 130,
+        "use": 0.004145166666666667,
         "coverage": 0.007,
-        "representativeness": 0.5024875621890548
+        "representativeness": 0.5921666666666666
       },
       {
         "noisy_rank": 10,
@@ -239,7 +239,7 @@
         "exact_rank": 316,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5044598612487612
+        "representativeness": 0.5872302631578947
       },
       {
         "noisy_rank": 11,
@@ -251,130 +251,131 @@
       },
       {
         "noisy_rank": 12,
-        "view": "Condition='surgical infection prevention' AND Sample IN (210, 1421]",
-        "exact_rank": 42,
-        "use": 0.02219266055045872,
-        "coverage": 0.041,
-        "representativeness": 0.5412844036697249
-      },
-      {
-        "noisy_rank": 13,
-        "view": "EmergencyService='yes'",
-        "exact_rank": 2,
-        "use": 0.17806010928961746,
-        "coverage": 0.245,
-        "representativeness": 0.7267759562841529
-      },
-      {
-        "noisy_rank": 14,
         "view": "State='Other' AND HospitalOwner='Other'",
         "exact_rank": 231,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5014955134596211
+        "representativeness": 0.5684711538461538
       },
       {
-        "noisy_rank": 15,
+        "noisy_rank": 13,
+        "view": "Condition='surgical infection prevention' AND Sample IN (210, 1421]",
+        "exact_rank": 48,
+        "use": 0.028413000000000004,
+        "coverage": 0.041,
+        "representativeness": 0.6930000000000001
+      },
+      {
+        "noisy_rank": 14,
         "view": "HospitalOwner='voluntary non-profit - private' AND Condition='pneumonia'",
         "exact_rank": 329,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5296331138287864
+        "representativeness": 0.6622328767123288
+      },
+      {
+        "noisy_rank": 15,
+        "view": "State='al' AND HospitalOwner='government - local'",
+        "exact_rank": 217,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.5620357142857143
       }
     ],
-    "overlap_with_exact_top_tau": 0.06666666666666667,
+    "overlap_with_exact_top_tau": 0.0,
     "retained_atom_counts": {
       "Sample IN (210, 1421]": 3,
       "State='Other'": 2,
-      "EmergencyService='yes'": 2,
       "Sample IN (58, 107]": 2,
+      "HospitalOwner='government - local'": 2,
       "HospitalOwner='voluntary non-profit - church'": 2,
       "HospitalOwner='Other'": 2,
       "HospitalOwner='voluntary non-profit - private'": 2,
       "HospitalOwner='government - hospital district or authority'": 2,
+      "EmergencyService='yes'": 1,
       "Score IN (82, 91]": 1,
       "Condition='heart attack'": 1,
       "Sample IN (107, 210]": 1,
       "Score='NA'": 1,
-      "HospitalOwner='government - local'": 1,
       "Sample IN (3, 19]": 1,
       "Score IN (91, 96]": 1,
       "EmergencyService='Other'": 1,
       "Condition='heart failure'": 1,
       "State='ak'": 1,
       "Condition='surgical infection prevention'": 1,
-      "Condition='pneumonia'": 1
+      "Condition='pneumonia'": 1,
+      "State='al'": 1
     },
     "query_attribute_views": [
       {
         "view": "HospitalOwner='government - hospital district or authority'",
         "rank": 4,
-        "use": 0.1468247078464107,
+        "use": 0.19661923076923077,
         "coverage": 0.252,
-        "representativeness": 0.5826377295492488
+        "representativeness": 0.7802350427350427
       },
       {
         "view": "HospitalOwner='government - federal'",
         "rank": 198,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5242626070409133
+        "representativeness": 0.6971675774134791
       },
       {
         "view": "HospitalOwner='government - local'",
         "rank": 199,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5121951219512195
+        "representativeness": 0.5948253968253968
       },
       {
         "view": "HospitalOwner='government - state'",
         "rank": 200,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5183044315992293
+        "representativeness": 0.7082777777777778
       },
       {
         "view": "HospitalOwner='proprietary'",
         "rank": 201,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5864350703060381
+        "representativeness": 0.7901958396752917
       },
       {
         "view": "HospitalOwner='voluntary non-profit - church'",
         "rank": 202,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5335820895522387
+        "representativeness": 0.7238536585365853
       },
       {
         "view": "HospitalOwner='voluntary non-profit - other'",
         "rank": 203,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.554367201426025
+        "representativeness": 0.7804107744107743
       },
       {
         "view": "HospitalOwner='voluntary non-profit - private'",
         "rank": 204,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.6025437201907791
+        "representativeness": 0.797207296849088
       },
       {
         "view": "HospitalOwner='Other'",
         "rank": 205,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5131450827653359
+        "representativeness": 0.7635885885885885
       }
     ]
   },
   "explanations": [
     {
       "round": 1,
-      "view": "State='Other' AND HospitalOwner='Other'",
+      "view": "HospitalOwner='voluntary non-profit - private' AND Condition='pneumonia'",
       "attr": "HospitalType",
       "bins": [
         "acute care hospitals",
@@ -389,8 +390,8 @@
         -48.427
       ],
       "exact_n": [
-        3,
-        0
+        62,
+        1
       ],
       "exact_h1": [
         0,
@@ -402,7 +403,7 @@
       ],
       "hd_gamma": 0.0,
       "utility": 0.0,
-      "n_candidates": 121,
+      "n_candidates": 120,
       "bins_clearing_2sigma": [],
       "exact_share_q1": [
         0.0,
@@ -416,59 +417,161 @@
       "noisy_total_q2": -51.506,
       "exact_total_q1": 0,
       "exact_total_q2": 0,
-      "exact_abs_diff_total": 0
+      "exact_abs_diff_total": 0,
+      "share_of_releases_with_this_explanation": 0.1,
+      "share_of_releases_explaining_this_attr": 0.5
     },
     {
       "round": 2,
-      "view": "EmergencyService='yes'",
-      "attr": "HospitalOwner",
+      "view": "Condition='heart attack' AND Sample IN (107, 210]",
+      "attr": "MeasureCode",
       "bins": [
-        "government - federal",
-        "government - hospital district or authority",
-        "government - local",
-        "government - state",
-        "proprietary",
-        "voluntary non-profit - church",
-        "voluntary non-profit - other",
-        "voluntary non-profit - private",
+        "ami-1",
+        "ami-2",
+        "ami-3",
+        "ami-4",
+        "ami-5",
+        "ami-7a",
+        "ami-8a",
+        "cac-1",
+        "cac-2",
+        "cac-3",
+        "hf-1",
+        "hf-2",
+        "hf-3",
+        "hf-4",
+        "pn-2",
+        "pn-3b",
+        "pn-4",
+        "pn-5c",
+        "pn-6",
+        "pn-7",
+        "scip-card-2",
+        "scip-inf-1",
+        "scip-inf-2",
+        "scip-inf-3",
+        "scip-inf-4",
+        "scip-inf-6",
+        "scip-vte-1",
+        "scip-vte-2",
         "Other"
       ],
       "noisy_h1": [
-        15.012,
-        214.816,
+        17.012,
+        21.816,
         61.805,
-        -38.501,
+        -37.501,
         -17.723,
         52.32,
         88.974,
         28.427,
-        46.578
-      ],
-      "noisy_h2": [
+        46.578,
         19.55,
-        47.356,
+        -4.644,
         -24.465,
         2.716,
         -79.327,
         15.664,
         -20.435,
         33.959,
-        20.368
+        20.368,
+        25.282,
+        13.621,
+        -40.758,
+        -2.924,
+        9.378,
+        1.606,
+        28.131,
+        4.594,
+        20.727,
+        38.56,
+        -24.741
+      ],
+      "noisy_h2": [
+        -8.425,
+        5.648,
+        -56.376,
+        10.167,
+        38.863,
+        -10.981,
+        -91.131,
+        -22.795,
+        -13.683,
+        36.287,
+        -58.997,
+        26.573,
+        22.347,
+        -6.924,
+        99.669,
+        1.514,
+        -41.086,
+        24.119,
+        -11.31,
+        -45.131,
+        8.151,
+        -19.976,
+        -0.196,
+        101.045,
+        11.623,
+        57.879,
+        -9.835,
+        43.256,
+        12.765
       ],
       "exact_n": [
-        49,
-        193,
+        8,
+        4,
         0,
-        36,
-        179,
-        70,
-        100,
-        180,
-        23
+        4,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
       ],
       "exact_h1": [
+        2,
         0,
-        193,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
         0,
         0,
         0,
@@ -478,8 +581,28 @@
         0
       ],
       "exact_h2": [
+        2,
         0,
-        52,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
         0,
         0,
         0,
@@ -488,15 +611,35 @@
         0,
         0
       ],
-      "hd_gamma": 0.410696686696336,
-      "utility": 0.410696686696336,
-      "n_candidates": 120,
+      "hd_gamma": 0.0,
+      "utility": 0.0,
+      "n_candidates": 119,
       "bins_clearing_2sigma": [
-        "government - hospital district or authority"
+        "ami-8a"
       ],
       "exact_share_q1": [
+        0.6667,
         0.0,
-        1.0,
+        0.0,
+        0.3333,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
         0.0,
         0.0,
         0.0,
@@ -506,8 +649,28 @@
         0.0
       ],
       "exact_share_q2": [
+        0.6667,
         0.0,
-        1.0,
+        0.0,
+        0.3333,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
         0.0,
         0.0,
         0.0,
@@ -516,15 +679,17 @@
         0.0,
         0.0
       ],
-      "noisy_total_q1": 451.70799999999997,
-      "noisy_total_q2": 15.386000000000013,
-      "exact_total_q1": 193,
-      "exact_total_q2": 52,
-      "exact_abs_diff_total": 141
+      "noisy_total_q1": 298.57000000000005,
+      "noisy_total_q2": 103.05999999999999,
+      "exact_total_q1": 3,
+      "exact_total_q2": 3,
+      "exact_abs_diff_total": 0,
+      "share_of_releases_with_this_explanation": 0.1,
+      "share_of_releases_explaining_this_attr": 0.8
     },
     {
       "round": 3,
-      "view": "EmergencyService='yes'",
+      "view": "EmergencyService='yes' AND Score IN (82, 91]",
       "attr": "Condition",
       "bins": [
         "children s asthma care",
@@ -535,320 +700,192 @@
         "Other"
       ],
       "noisy_h1": [
-        30.335,
-        70.329,
-        85.653,
-        17.956,
-        33.26,
-        16.45
+        -13.424,
+        -8.107,
+        -9.464,
+        11.654,
+        9.422,
+        73.163
       ],
       "noisy_h2": [
-        5.191,
-        32.918,
-        -13.449,
-        -9.296,
-        18.689,
-        2.986
+        4.394,
+        12.133,
+        -11.951,
+        6.702,
+        -147.4,
+        27.862
       ],
       "exact_n": [
-        9,
-        221,
-        128,
-        191,
-        252,
-        29
-      ],
-      "exact_h1": [
-        3,
-        50,
-        29,
-        44,
-        61,
-        6
-      ],
-      "exact_h2": [
-        3,
-        13,
-        8,
-        10,
-        16,
+        0,
+        14,
+        21,
+        37,
+        46,
         2
       ],
-      "hd_gamma": 0.40886940873702954,
-      "utility": 0.40886940873702954,
-      "n_candidates": 119,
-      "bins_clearing_2sigma": [],
+      "exact_h1": [
+        0,
+        4,
+        3,
+        10,
+        15,
+        0
+      ],
+      "exact_h2": [
+        0,
+        1,
+        0,
+        3,
+        4,
+        0
+      ],
+      "hd_gamma": 0.1291689844183525,
+      "utility": 0.1291689844183525,
+      "n_candidates": 118,
+      "bins_clearing_2sigma": [
+        "surgical infection prevention"
+      ],
       "exact_share_q1": [
-        0.0155,
-        0.2591,
-        0.1503,
-        0.228,
-        0.3161,
-        0.0311
+        0.0,
+        0.125,
+        0.0938,
+        0.3125,
+        0.4688,
+        0.0
       ],
       "exact_share_q2": [
-        0.0577,
-        0.25,
-        0.1538,
-        0.1923,
-        0.3077,
-        0.0385
+        0.0,
+        0.125,
+        0.0,
+        0.375,
+        0.5,
+        0.0
       ],
-      "noisy_total_q1": 253.98299999999998,
-      "noisy_total_q2": 37.039,
-      "exact_total_q1": 193,
-      "exact_total_q2": 52,
-      "exact_abs_diff_total": 141
+      "noisy_total_q1": 63.244,
+      "noisy_total_q2": -108.26000000000002,
+      "exact_total_q1": 32,
+      "exact_total_q2": 8,
+      "exact_abs_diff_total": 24,
+      "share_of_releases_with_this_explanation": 0.1,
+      "share_of_releases_explaining_this_attr": 0.7
     },
     {
       "round": 4,
-      "view": "EmergencyService='yes'",
-      "attr": "City",
+      "view": "State='Other' AND Sample IN (210, 1421]",
+      "attr": "Score",
       "bins": [
-        "alabaster",
-        "anchorage",
-        "andalusia",
-        "anniston",
-        "bethel",
-        "birmingham",
-        "boaz",
-        "centre",
-        "clanton",
-        "cullman",
-        "decatur",
-        "dothan",
-        "elba",
-        "enterprise",
-        "fayette",
-        "florence",
-        "fort payne",
-        "gadsden",
-        "georgiana",
-        "guntersville",
-        "hamilton",
-        "hartselle",
-        "huntsville",
-        "luverne",
-        "mobile",
-        "montgomery",
-        "oneonta",
-        "opelika",
-        "opp",
-        "ozark",
-        "prattville",
-        "russellville",
-        "sheffield",
-        "sylacauga",
-        "tallassee",
-        "thomasville",
-        "valley",
-        "wedowee",
-        "winfield",
-        "Other"
+        "[0, 82]",
+        "(82, 91]",
+        "(91, 96]",
+        "(96, 99]",
+        "(99, 100]",
+        "NA"
       ],
       "noisy_h1": [
-        19.187,
-        -21.602,
-        54.998,
-        10.953,
-        22.418,
-        19.046,
-        60.053,
-        16.345,
-        13.113,
-        -6.722,
-        -51.106,
-        22.493,
-        -19.597,
-        -11.066,
-        -45.336,
-        3.43,
-        -16.853,
-        27.436,
-        -18.133,
-        31.762,
-        -52.579,
-        -2.926,
-        9.631,
-        61.579,
-        -46.619,
-        25.899,
-        -48.492,
-        -6.959,
-        21.093,
-        49.803,
-        -95.133,
-        1.136,
-        56.168,
-        6.252,
-        -33.474,
-        7.607,
-        20.56,
-        24.664,
-        113.743,
-        -2.997
-      ],
-      "noisy_h2": [
         60.282,
         14.946,
-        -35.101,
+        -34.101,
         -36.907,
         18.649,
-        -17.538,
+        -17.538
+      ],
+      "noisy_h2": [
         129.695,
         45.89,
-        -32.377,
+        -31.377,
         -44.161,
-        0.019,
-        -87.098,
-        25.432,
-        15.982,
-        2.844,
-        0.008,
-        -3.442,
-        -3.865,
-        38.744,
-        -19.558,
-        3.313,
-        93.829,
-        19.367,
-        -7.66,
-        -1.955,
-        23.819,
-        61.694,
-        -16.527,
-        17.343,
-        99.508,
-        -55.208,
-        -15.282,
-        102.167,
-        -18.977,
-        43.647,
-        -71.998,
-        -27.219,
-        111.186,
-        71.19,
-        19.119
+        -0.981,
+        -88.098
       ],
       "exact_n": [
-        25,
-        17,
-        0,
-        24,
-        0,
-        73,
-        23,
-        24,
-        25,
-        24,
         1,
-        39,
-        24,
-        23,
-        23,
-        22,
-        24,
-        49,
         0,
-        24,
-        23,
-        24,
-        27,
-        25,
-        12,
-        46,
-        19,
-        24,
-        0,
-        23,
-        19,
-        2,
-        24,
+        1,
         0,
         0,
-        25,
-        21,
-        0,
-        23,
-        29
+        0
       ],
       "exact_h1": [
         0,
         0,
-        0,
-        0,
-        0,
-        0,
-        23,
-        0,
-        0,
-        24,
         1,
-        19,
         0,
         0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        24,
-        0,
-        0,
-        26,
-        0,
-        0,
-        0,
-        0,
-        24,
-        0,
-        23,
-        0,
-        0,
-        23,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        6
+        0
       ],
       "exact_h2": [
         0,
         0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
         1,
         0,
         0,
+        0
+      ],
+      "hd_gamma": 0.0,
+      "utility": 0.0,
+      "n_candidates": 117,
+      "bins_clearing_2sigma": [],
+      "exact_share_q1": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exact_share_q2": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "noisy_total_q1": 5.3309999999999995,
+      "noisy_total_q2": 10.967999999999975,
+      "exact_total_q1": 1,
+      "exact_total_q2": 1,
+      "exact_abs_diff_total": 0,
+      "share_of_releases_with_this_explanation": 0.1,
+      "share_of_releases_explaining_this_attr": 0.4
+    },
+    {
+      "round": 5,
+      "view": "State='al' AND HospitalOwner='government - local'",
+      "attr": "Score",
+      "bins": [
+        "[0, 82]",
+        "(82, 91]",
+        "(91, 96]",
+        "(96, 99]",
+        "(99, 100]",
+        "NA"
+      ],
+      "noisy_h1": [
+        0.893,
+        -34.672,
+        50.126,
+        -84.927,
+        26.979,
+        10.4
+      ],
+      "noisy_h2": [
+        -2.5,
+        -15.14,
+        23.592,
+        85.808,
+        1.456,
+        -2.61
+      ],
+      "exact_n": [
+        9,
+        1,
+        1,
         0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        26,
-        0,
-        0,
-        0,
-        0,
-        24,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
+        2,
+        12
+      ],
+      "exact_h1": [
         0,
         0,
         0,
@@ -856,87 +893,21 @@
         0,
         0
       ],
-      "hd_gamma": 0.801243099134237,
-      "utility": 0.801243099134237,
-      "n_candidates": 118,
-      "bins_clearing_2sigma": [],
-      "exact_share_q1": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.1192,
-        0.0,
-        0.0,
-        0.1244,
-        0.0052,
-        0.0984,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.1244,
-        0.0,
-        0.0,
-        0.1347,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.1244,
-        0.0,
-        0.1192,
-        0.0,
-        0.0,
-        0.1192,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0311
+      "exact_h2": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
       ],
-      "exact_share_q2": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0192,
-        0.0192,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.5,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.4615,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
+      "hd_gamma": 0.0,
+      "utility": 0.0,
+      "n_candidates": 116,
+      "bins_clearing_2sigma": [
+        "(96, 99]"
+      ],
+      "exact_share_q1": [
         0.0,
         0.0,
         0.0,
@@ -944,323 +915,265 @@
         0.0,
         0.0
       ],
-      "noisy_total_q1": 219.77499999999998,
-      "noisy_total_q2": 523.8,
-      "exact_total_q1": 193,
-      "exact_total_q2": 52,
-      "exact_abs_diff_total": 141
-    },
-    {
-      "round": 5,
-      "view": "EmergencyService='yes'",
-      "attr": "CountyName",
-      "bins": [
-        "anchorage",
-        "autauga",
-        "bethel",
-        "blount",
-        "butler",
-        "calhoun",
-        "chambers",
-        "cherokee",
-        "chilton",
-        "clarke",
-        "coffee",
-        "covington",
-        "crenshaw",
-        "cullman",
-        "dale",
-        "de kalb",
-        "elmore",
-        "etowah",
-        "fayette",
-        "franklin",
-        "houston",
-        "jefferson",
-        "lauderdale",
-        "lee",
-        "madison",
-        "marion",
-        "marshall",
-        "mobile",
-        "montgomery",
-        "morgan",
-        "randolph",
-        "shelby",
-        "talladega",
-        "Other"
-      ],
-      "noisy_h1": [
-        -5.615,
-        94.77,
-        -17.413,
-        92.079,
-        -13.992,
-        2.8,
-        -18.889,
-        11.98,
-        2.356,
-        0.948,
-        8.625,
-        -1.613,
-        -52.572,
-        68.799,
-        65.372,
-        21.262,
-        -6.433,
-        58.978,
-        17.396,
-        2.219,
-        28.43,
-        79.764,
-        95.09,
-        -30.768,
-        95.087,
-        -7.771,
-        61.97,
-        30.906,
-        -45.077,
-        -27.718,
-        19.559,
-        -39.595,
-        29.844,
-        20.503
-      ],
-      "noisy_h2": [
-        81.328,
-        -6.547,
-        6.926,
-        5.949,
-        -0.316,
-        -43.341,
-        53.994,
-        -22.484,
-        3.912,
-        -8.356,
-        2.334,
-        -14.358,
-        42.752,
-        -5.627,
-        31.317,
-        -184.533,
-        14.556,
-        -40.526,
-        61.896,
-        -62.671,
-        59.061,
-        48.836,
-        -77.584,
-        5.591,
-        67.575,
-        16.251,
-        57.694,
-        -9.735,
-        -122.197,
-        8.946,
-        28.245,
-        18.531,
-        -13.225,
-        12.525
-      ],
-      "exact_n": [
-        18,
-        19,
-        0,
-        20,
-        0,
-        24,
-        21,
-        22,
-        25,
-        24,
-        48,
-        0,
-        24,
-        23,
-        25,
-        21,
-        0,
-        49,
-        23,
-        2,
-        38,
-        97,
-        23,
-        23,
-        25,
-        48,
-        48,
-        12,
-        44,
-        25,
-        0,
-        25,
-        0,
-        34
-      ],
-      "exact_h1": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        23,
-        25,
-        0,
-        0,
-        0,
-        0,
-        0,
-        19,
-        22,
-        0,
-        23,
-        24,
-        0,
-        48,
-        0,
-        0,
-        1,
-        0,
-        0,
-        0,
-        8
-      ],
-      "exact_h2": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        0,
-        0,
-        23,
-        24,
-        0,
-        0,
-        0,
-        0,
-        1,
-        0,
-        0,
-        0,
-        3
-      ],
-      "hd_gamma": 0.7289978841297038,
-      "utility": 0.7289978841297038,
-      "n_candidates": 117,
-      "bins_clearing_2sigma": [
-        "de kalb",
-        "lauderdale"
-      ],
-      "exact_share_q1": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.1192,
-        0.1295,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0984,
-        0.114,
-        0.0,
-        0.1192,
-        0.1244,
-        0.0,
-        0.2487,
-        0.0,
-        0.0,
-        0.0052,
-        0.0,
-        0.0,
-        0.0,
-        0.0415
-      ],
       "exact_share_q2": [
         0.0,
         0.0,
         0.0,
         0.0,
         0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0192,
-        0.0,
-        0.0,
-        0.4423,
-        0.4615,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0192,
-        0.0,
-        0.0,
-        0.0,
-        0.0577
+        0.0
       ],
-      "noisy_total_q1": 641.2810000000001,
-      "noisy_total_q2": 16.71900000000007,
-      "exact_total_q1": 193,
-      "exact_total_q2": 52,
-      "exact_abs_diff_total": 141
+      "noisy_total_q1": -31.201000000000015,
+      "noisy_total_q2": 90.60600000000001,
+      "exact_total_q1": 0,
+      "exact_total_q2": 0,
+      "exact_abs_diff_total": 0,
+      "share_of_releases_with_this_explanation": 0.1,
+      "share_of_releases_explaining_this_attr": 0.4
     }
   ],
+  "releases": {
+    "n": 10,
+    "selections": [
+      [
+        [
+          "HospitalOwner='voluntary non-profit - private' AND Condition='pneumonia'",
+          "HospitalType"
+        ],
+        [
+          "Condition='heart attack' AND Sample IN (107, 210]",
+          "MeasureCode"
+        ],
+        [
+          "EmergencyService='yes' AND Score IN (82, 91]",
+          "Condition"
+        ],
+        [
+          "State='Other' AND Sample IN (210, 1421]",
+          "Score"
+        ],
+        [
+          "State='al' AND HospitalOwner='government - local'",
+          "Score"
+        ]
+      ],
+      [
+        [
+          "State='al' AND Sample IN (3, 19]",
+          "MeasureCode"
+        ],
+        [
+          "HospitalOwner='government - hospital district or authority' AND EmergencyService='no'",
+          "Sample"
+        ],
+        [
+          "HospitalOwner='government - hospital district or authority' AND Score IN (96, 99]",
+          "Sample"
+        ],
+        [
+          "EmergencyService='Other' AND Score IN (99, 100]",
+          "CountyName"
+        ],
+        [
+          "Sample='NA'",
+          "Condition"
+        ]
+      ],
+      [
+        [
+          "EmergencyService='Other'",
+          "State"
+        ],
+        [
+          "EmergencyService='Other' AND Sample='NA'",
+          "CountyName"
+        ],
+        [
+          "EmergencyService='Other'",
+          "CountyName"
+        ],
+        [
+          "HospitalOwner='voluntary non-profit - private'",
+          "Condition"
+        ],
+        [
+          "HospitalOwner='voluntary non-profit - private'",
+          "CountyName"
+        ]
+      ],
+      [
+        [
+          "State='Other' AND Condition='surgical infection prevention'",
+          "HospitalType"
+        ],
+        [
+          "State='ak' AND Sample IN (19, 58]",
+          "City"
+        ],
+        [
+          "State='ak' AND Sample IN (19, 58]",
+          "Condition"
+        ],
+        [
+          "Score IN (99, 100] AND Sample IN [0, 3]",
+          "MeasureCode"
+        ],
+        [
+          "HospitalOwner='government - local' AND Sample IN (3, 19]",
+          "MeasureCode"
+        ]
+      ],
+      [
+        [
+          "Condition='children s asthma care' AND Sample IN (210, 1421]",
+          "City"
+        ],
+        [
+          "HospitalOwner='voluntary non-profit - church' AND Sample IN (58, 107]",
+          "CountyName"
+        ],
+        [
+          "HospitalOwner='voluntary non-profit - church' AND Sample IN (58, 107]",
+          "MeasureCode"
+        ],
+        [
+          "HospitalOwner='Other' AND Sample IN [0, 3]",
+          "HospitalType"
+        ],
+        [
+          "HospitalOwner='proprietary' AND Score IN (91, 96]",
+          "State"
+        ]
+      ],
+      [
+        [
+          "HospitalOwner='government - hospital district or authority' AND Score='NA'",
+          "State"
+        ],
+        [
+          "HospitalOwner='Other' AND Sample='NA'",
+          "Score"
+        ],
+        [
+          "HospitalOwner='government - local' AND Sample IN (19, 58]",
+          "CountyName"
+        ],
+        [
+          "HospitalOwner='government - hospital district or authority' AND EmergencyService='yes'",
+          "Score"
+        ],
+        [
+          "HospitalOwner='government - hospital district or authority' AND EmergencyService='yes'",
+          "MeasureCode"
+        ]
+      ],
+      [
+        [
+          "Score IN (96, 99] AND Sample='NA'",
+          "State"
+        ],
+        [
+          "HospitalOwner='voluntary non-profit - other' AND Sample IN (107, 210]",
+          "Score"
+        ],
+        [
+          "HospitalOwner='government - hospital district or authority' AND Condition='heart attack'",
+          "HospitalType"
+        ],
+        [
+          "HospitalOwner='government - federal' AND EmergencyService='yes'",
+          "Condition"
+        ],
+        [
+          "EmergencyService='Other' AND Condition='Other'",
+          "HospitalOwner"
+        ]
+      ],
+      [
+        [
+          "HospitalOwner='proprietary' AND Score IN (99, 100]",
+          "City"
+        ],
+        [
+          "EmergencyService='Other' AND Score IN (96, 99]",
+          "Condition"
+        ],
+        [
+          "HospitalOwner='government - federal' AND Condition='surgical infection prevention'",
+          "City"
+        ],
+        [
+          "Condition='heart attack' AND Sample IN (19, 58]",
+          "MeasureCode"
+        ],
+        [
+          "EmergencyService='no' AND Score IN [0, 82]",
+          "State"
+        ]
+      ],
+      [
+        [
+          "Condition='heart attack' AND Sample IN (210, 1421]",
+          "CountyName"
+        ],
+        [
+          "HospitalOwner='government - hospital district or authority'",
+          "Sample"
+        ],
+        [
+          "HospitalOwner='government - hospital district or authority'",
+          "City"
+        ],
+        [
+          "HospitalOwner='government - hospital district or authority'",
+          "MeasureCode"
+        ],
+        [
+          "HospitalOwner='voluntary non-profit - private' AND Condition='heart failure'",
+          "HospitalType"
+        ]
+      ],
+      [
+        [
+          "HospitalOwner='government - federal' AND Sample IN (210, 1421]",
+          "City"
+        ],
+        [
+          "Condition='heart failure'",
+          "Score"
+        ],
+        [
+          "State='al' AND EmergencyService='yes'",
+          "Condition"
+        ],
+        [
+          "State='al' AND EmergencyService='yes'",
+          "CountyName"
+        ],
+        [
+          "State='al' AND EmergencyService='yes'",
+          "MeasureCode"
+        ]
+      ]
+    ],
+    "retained_overlap_with_exact_top_tau": [
+      0.0,
+      0.0,
+      0.06666666666666667,
+      0.0,
+      0.0,
+      0.06666666666666667,
+      0.0,
+      0.0,
+      0.06666666666666667,
+      0.06666666666666667
+    ]
+  },
   "timings": {
-    "view_stage_ms": 0.13345500019568135,
-    "explanation_stage_ms": 2.1586829998341273,
-    "mechanism_ms": 2.2921380000298086,
-    "cache_build_s": 0.11046396000028835
+    "view_stage_ms": 0.09842700001172489,
+    "explanation_stage_ms": 1.560905000587809,
+    "mechanism_ms": 1.6593320005995338,
+    "cache_build_s": 0.07905015899996215
   },
   "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
 }

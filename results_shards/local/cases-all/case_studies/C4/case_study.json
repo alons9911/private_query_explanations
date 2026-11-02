@@ -1,0 +1,547 @@
+{
+  "pair": {
+    "pair": "C4",
+    "dataset": "hospital",
+    "synthetic_data": false,
+    "N": 1000,
+    "kind": "cqa",
+    "Q1": "HospitalType = 'acute care hospitals'",
+    "Q2": "Q_Sigma(HospitalType = 'acute care hospitals')",
+    "|Q1|": 968,
+    "|Q2|": 93,
+    "|Q1 & Q2|": 93,
+    "conflicts": {
+      "tuples_in_conflict": 902,
+      "edges": 2170,
+      "HospitalName->ZipCode": {
+        "tuples": 477,
+        "edges": 644
+      },
+      "HospitalName->PhoneNumber": {
+        "tuples": 517,
+        "edges": 721
+      },
+      "ZipCode->City": {
+        "tuples": 603,
+        "edges": 805
+      }
+    },
+    "role": "small-data",
+    "aggregate": "Score",
+    "AVG_Q1": 89.50508905852418,
+    "AVG_Q2": 92.60714285714286
+  },
+  "motivation": {
+    "drop": 0.9039256198347108,
+    "unevenness": 0.08143683589138134,
+    "unevenness_attr": "City",
+    "hidden_drift": 0.7662067893006309,
+    "hidden_drift_attr": "City",
+    "hidden": [
+      "City",
+      "CountyName",
+      "State",
+      "HospitalOwner",
+      "EmergencyService",
+      "Condition",
+      "MeasureCode",
+      "Score",
+      "Sample"
+    ],
+    "largest_losses": [
+      {
+        "value": "birmingham",
+        "|Q|": 73,
+        "|Q_Sigma|": 5,
+        "kept": 0.068
+      },
+      {
+        "value": "montgomery",
+        "|Q|": 48,
+        "|Q_Sigma|": 1,
+        "kept": 0.021
+      },
+      {
+        "value": "gadsden",
+        "|Q|": 49,
+        "|Q_Sigma|": 3,
+        "kept": 0.061
+      },
+      {
+        "value": "dothan",
+        "|Q|": 41,
+        "|Q_Sigma|": 2,
+        "kept": 0.049
+      },
+      {
+        "value": "Other",
+        "|Q|": 32,
+        "|Q_Sigma|": 0,
+        "kept": 0.0
+      },
+      {
+        "value": "anniston",
+        "|Q|": 26,
+        "|Q_Sigma|": 0,
+        "kept": 0.0
+      }
+    ]
+  },
+  "stability": {
+    "trials": 40,
+    "top_explanations": [
+      {
+        "view": "EmergencyService='yes'",
+        "attr": "City",
+        "share_of_runs": 0.175
+      },
+      {
+        "view": "State='al'",
+        "attr": "MeasureCode",
+        "share_of_runs": 0.175
+      },
+      {
+        "view": "State='al'",
+        "attr": "CountyName",
+        "share_of_runs": 0.175
+      },
+      {
+        "view": "EmergencyService='yes'",
+        "attr": "MeasureCode",
+        "share_of_runs": 0.15
+      },
+      {
+        "view": "EmergencyService='yes'",
+        "attr": "CountyName",
+        "share_of_runs": 0.15
+      },
+      {
+        "view": "EmergencyService='yes'",
+        "attr": "Sample",
+        "share_of_runs": 0.15
+      },
+      {
+        "view": "State='al'",
+        "attr": "City",
+        "share_of_runs": 0.15
+      },
+      {
+        "view": "State='al' AND EmergencyService='yes'",
+        "attr": "MeasureCode",
+        "share_of_runs": 0.15
+      },
+      {
+        "view": "State='al' AND EmergencyService='yes'",
+        "attr": "City",
+        "share_of_runs": 0.15
+      },
+      {
+        "view": "State='al' AND EmergencyService='yes'",
+        "attr": "CountyName",
+        "share_of_runs": 0.15
+      }
+    ],
+    "attribute_share_of_runs": {
+      "MeasureCode": 0.925,
+      "CountyName": 0.925,
+      "City": 0.85,
+      "Sample": 0.65,
+      "HospitalOwner": 0.525,
+      "Score": 0.425,
+      "Condition": 0.275,
+      "HospitalType": 0.25,
+      "State": 0.125,
+      "EmergencyService": 0.05
+    }
+  },
+  "accuracy": [
+    {
+      "pair": "C4",
+      "dataset": "hospital",
+      "synthetic": false,
+      "sweep": "epsilon",
+      "epsilon": 0.5,
+      "ratio_B1_mean": 0.5388368877983161,
+      "jaccard_B1_mean": 0.044047619047619044,
+      "precision_at_k_B1_mean": 0.05500000000000001,
+      "attr_precision_B1_mean": 0.585,
+      "view_jaccard_B1_mean": 0.0625,
+      "ratio_B2_mean": 0.45227506939105444,
+      "jaccard_B2_mean": 0.014583333333333332,
+      "precision_at_k_B2_mean": 0.025,
+      "attr_precision_B2_mean": 0.465,
+      "view_jaccard_B2_mean": 0.03148809523809524,
+      "ratio_B3_mean": 0.45227506939105444,
+      "jaccard_B3_mean": 0.014583333333333332,
+      "precision_at_k_B3_mean": 0.025,
+      "attr_precision_B3_mean": 0.465,
+      "view_jaccard_B3_mean": 0.03148809523809524,
+      "hist_rel_l1_mean": 18.01510254011581,
+      "diff_sign_acc_mean": 0.5672824397843774,
+      "F_mean": 52.22068147566157,
+      "F_B1_mean": 96.91370924703193,
+      "F_B2_mean": 115.46221538580885,
+      "F_B3_mean": 115.46221538580885,
+      "gamma_mean": 300.63811794641344,
+      "tau_mean": 15.0,
+      "mechanism_ms_mean": 0.7376323500011495,
+      "ratio_B1_std": 0.27855600272176645,
+      "jaccard_B1_std": 0.15972369158805086,
+      "precision_at_k_B1_std": 0.19735429549092148,
+      "attr_precision_B1_std": 0.20945594971686737,
+      "view_jaccard_B1_std": 0.2317021739990746,
+      "ratio_B2_std": 0.2338071841648615,
+      "jaccard_B2_std": 0.04831257536368358,
+      "precision_at_k_B2_std": 0.080860754006264,
+      "attr_precision_B2_std": 0.1657152330401115,
+      "view_jaccard_B2_std": 0.08850182959409604,
+      "ratio_B3_std": 0.2338071841648615,
+      "jaccard_B3_std": 0.04831257536368358,
+      "precision_at_k_B3_std": 0.080860754006264,
+      "attr_precision_B3_std": 0.1657152330401115,
+      "view_jaccard_B3_std": 0.08850182959409604,
+      "hist_rel_l1_std": 14.457068248023486,
+      "diff_sign_acc_std": 0.08987370025367244,
+      "trials": 40
+    },
+    {
+      "pair": "C4",
+      "dataset": "hospital",
+      "synthetic": false,
+      "sweep": "epsilon",
+      "epsilon": 1.0,
+      "ratio_B1_mean": 0.8736102866798019,
+      "jaccard_B1_mean": 0.3630952380952381,
+      "precision_at_k_B1_mean": 0.385,
+      "attr_precision_B1_mean": 0.8699999999999999,
+      "view_jaccard_B1_mean": 0.4,
+      "ratio_B2_mean": 0.7332685678652625,
+      "jaccard_B2_mean": 0.05347222222222222,
+      "precision_at_k_B2_mean": 0.095,
+      "attr_precision_B2_mean": 0.58,
+      "view_jaccard_B2_mean": 0.14583333333333331,
+      "ratio_B3_mean": 0.7332685678652625,
+      "jaccard_B3_mean": 0.05347222222222222,
+      "precision_at_k_B3_mean": 0.095,
+      "attr_precision_B3_mean": 0.58,
+      "view_jaccard_B3_mean": 0.14583333333333331,
+      "hist_rel_l1_mean": 2.7716868535316914,
+      "diff_sign_acc_mean": 0.7017118720908975,
+      "F_mean": 84.66481331850254,
+      "F_B1_mean": 96.91370924703193,
+      "F_B2_mean": 115.46221538580885,
+      "F_B3_mean": 115.46221538580885,
+      "gamma_mean": 150.31905897320672,
+      "tau_mean": 15.0,
+      "mechanism_ms_mean": 0.4895485750239459,
+      "ratio_B1_std": 0.1573318849529217,
+      "jaccard_B1_std": 0.44926146345991913,
+      "precision_at_k_B1_std": 0.4627398892771242,
+      "attr_precision_B1_std": 0.16671794083082897,
+      "view_jaccard_B1_std": 0.4830458915396479,
+      "ratio_B2_std": 0.13205719726289764,
+      "jaccard_B2_std": 0.06365077017975587,
+      "precision_at_k_B2_std": 0.11082441645256376,
+      "attr_precision_B2_std": 0.06076436202501999,
+      "view_jaccard_B2_std": 0.16424523045280714,
+      "ratio_B3_std": 0.13205719726289764,
+      "jaccard_B3_std": 0.06365077017975587,
+      "precision_at_k_B3_std": 0.11082441645256376,
+      "attr_precision_B3_std": 0.06076436202501999,
+      "view_jaccard_B3_std": 0.16424523045280714,
+      "hist_rel_l1_std": 2.5637450833901028,
+      "diff_sign_acc_std": 0.07272200678890285,
+      "trials": 40
+    },
+    {
+      "pair": "C4",
+      "dataset": "hospital",
+      "synthetic": false,
+      "sweep": "epsilon",
+      "epsilon": 2.0,
+      "ratio_B1_mean": 1.004576038859405,
+      "jaccard_B1_mean": 0.8130952380952381,
+      "precision_at_k_B1_mean": 0.885,
+      "attr_precision_B1_mean": 0.9349999999999999,
+      "view_jaccard_B1_mean": 0.7875,
+      "ratio_B2_mean": 0.8431952376909038,
+      "jaccard_B2_mean": 0.11111111111111112,
+      "precision_at_k_B2_mean": 0.2,
+      "attr_precision_B2_mean": 0.61,
+      "view_jaccard_B2_mean": 0.29791666666666666,
+      "ratio_B3_mean": 0.8431952376909038,
+      "jaccard_B3_mean": 0.11111111111111112,
+      "precision_at_k_B3_mean": 0.2,
+      "attr_precision_B3_mean": 0.61,
+      "view_jaccard_B3_mean": 0.29791666666666666,
+      "hist_rel_l1_mean": 0.7367990414445836,
+      "diff_sign_acc_mean": 0.8536991283230966,
+      "F_mean": 97.35719014655542,
+      "F_B1_mean": 96.91370924703193,
+      "F_B2_mean": 115.46221538580885,
+      "F_B3_mean": 115.46221538580885,
+      "gamma_mean": 75.15952948660336,
+      "tau_mean": 15.0,
+      "mechanism_ms_mean": 0.51302255005794,
+      "ratio_B1_std": 0.024242816431578267,
+      "jaccard_B1_std": 0.18720869574189516,
+      "precision_at_k_B1_std": 0.11886212655091245,
+      "attr_precision_B1_std": 0.09486832980505136,
+      "view_jaccard_B1_std": 0.25032030762656154,
+      "ratio_B2_std": 0.020348312693711842,
+      "jaccard_B2_std": 0.0,
+      "precision_at_k_B2_std": 0.0,
+      "attr_precision_B2_std": 0.044144285572630476,
+      "view_jaccard_B2_std": 0.04172005127109358,
+      "ratio_B3_std": 0.020348312693711842,
+      "jaccard_B3_std": 0.0,
+      "precision_at_k_B3_std": 0.0,
+      "attr_precision_B3_std": 0.044144285572630476,
+      "view_jaccard_B3_std": 0.04172005127109358,
+      "hist_rel_l1_std": 0.07438037091050273,
+      "diff_sign_acc_std": 0.03343689773035231,
+      "trials": 40
+    },
+    {
+      "pair": "C4",
+      "dataset": "hospital",
+      "synthetic": false,
+      "sweep": "epsilon",
+      "epsilon": 5.0,
+      "ratio_B1_mean": 0.9949368900146333,
+      "jaccard_B1_mean": 0.7976190476190477,
+      "precision_at_k_B1_mean": 0.8699999999999999,
+      "attr_precision_B1_mean": 0.9650000000000001,
+      "view_jaccard_B1_mean": 0.8083333333333333,
+      "ratio_B2_mean": 0.9300354090232738,
+      "jaccard_B2_mean": 0.11111111111111112,
+      "precision_at_k_B2_mean": 0.2,
+      "attr_precision_B2_mean": 0.8150000000000001,
+      "view_jaccard_B2_mean": 0.23625,
+      "ratio_B3_mean": 0.9300354090232738,
+      "jaccard_B3_mean": 0.11111111111111112,
+      "precision_at_k_B3_mean": 0.2,
+      "attr_precision_B3_mean": 0.8150000000000001,
+      "view_jaccard_B3_mean": 0.23625,
+      "hist_rel_l1_mean": 0.42854914378418174,
+      "diff_sign_acc_mean": 0.9556042690311916,
+      "F_mean": 107.38394871307405,
+      "F_B1_mean": 107.9304122611181,
+      "F_B2_mean": 115.46221538580885,
+      "F_B3_mean": 115.46221538580885,
+      "gamma_mean": 30.06381179464134,
+      "tau_mean": 15.0,
+      "mechanism_ms_mean": 0.4787741750533314,
+      "ratio_B1_std": 0.012490027194321905,
+      "jaccard_B1_std": 0.21934735557780655,
+      "precision_at_k_B1_std": 0.14710889042143455,
+      "attr_precision_B1_std": 0.07696152885095851,
+      "view_jaccard_B1_std": 0.24907235301622108,
+      "ratio_B2_std": 0.011675280781087637,
+      "jaccard_B2_std": 0.0,
+      "precision_at_k_B2_std": 0.0,
+      "attr_precision_B2_std": 0.06998168258505862,
+      "view_jaccard_B2_std": 0.02261012933881512,
+      "ratio_B3_std": 0.011675280781087637,
+      "jaccard_B3_std": 0.0,
+      "precision_at_k_B3_std": 0.0,
+      "attr_precision_B3_std": 0.06998168258505862,
+      "view_jaccard_B3_std": 0.02261012933881512,
+      "hist_rel_l1_std": 0.025989002178144732,
+      "diff_sign_acc_std": 0.015016100212757956,
+      "trials": 40
+    }
+  ],
+  "explanations_key_bins": [
+    {
+      "view": "State='al'",
+      "attr": "MeasureCode",
+      "bins": [
+        {
+          "bin": "ami-7a",
+          "noisy_Q1": -86,
+          "noisy_Q2": 46,
+          "exact_Q1": 37,
+          "exact_Q2": 3,
+          "clears_2sd": true
+        },
+        {
+          "bin": "ami-5",
+          "noisy_Q1": 35,
+          "noisy_Q2": -89,
+          "exact_Q1": 37,
+          "exact_Q2": 4,
+          "clears_2sd": true
+        },
+        {
+          "bin": "scip-inf-3",
+          "noisy_Q1": 108,
+          "noisy_Q2": -8,
+          "exact_Q1": 33,
+          "exact_Q2": 3,
+          "clears_2sd": false
+        },
+        {
+          "bin": "pn-5c",
+          "noisy_Q1": -12,
+          "noisy_Q2": -124,
+          "exact_Q1": 34,
+          "exact_Q2": 3,
+          "clears_2sd": false
+        }
+      ]
+    },
+    {
+      "view": "State='al'",
+      "attr": "City",
+      "bins": [
+        {
+          "bin": "oneonta",
+          "noisy_Q1": 156,
+          "noisy_Q2": -22,
+          "exact_Q1": 19,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "thomasville",
+          "noisy_Q1": -29,
+          "noisy_Q2": 143,
+          "exact_Q1": 24,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "fort payne",
+          "noisy_Q1": -89,
+          "noisy_Q2": 49,
+          "exact_Q1": 24,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "winfield",
+          "noisy_Q1": 94,
+          "noisy_Q2": -35,
+          "exact_Q1": 23,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "State='al'",
+      "attr": "CountyName",
+      "bins": [
+        {
+          "bin": "fayette",
+          "noisy_Q1": 150,
+          "noisy_Q2": -93,
+          "exact_Q1": 21,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "dale",
+          "noisy_Q1": 145,
+          "noisy_Q2": -8,
+          "exact_Q1": 22,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "lee",
+          "noisy_Q1": 26,
+          "noisy_Q2": -121,
+          "exact_Q1": 23,
+          "exact_Q2": 23,
+          "clears_2sd": true
+        },
+        {
+          "bin": "clarke",
+          "noisy_Q1": 18,
+          "noisy_Q2": -113,
+          "exact_Q1": 23,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "State='al'",
+      "attr": "HospitalOwner",
+      "bins": [
+        {
+          "bin": "government - hospital district or authority",
+          "noisy_Q1": 240,
+          "noisy_Q2": -46,
+          "exact_Q1": 184,
+          "exact_Q2": 50,
+          "clears_2sd": true
+        },
+        {
+          "bin": "proprietary",
+          "noisy_Q1": 194,
+          "noisy_Q2": 16,
+          "exact_Q1": 182,
+          "exact_Q2": 4,
+          "clears_2sd": true
+        },
+        {
+          "bin": "voluntary non-profit - private",
+          "noisy_Q1": 204,
+          "noisy_Q2": 52,
+          "exact_Q1": 244,
+          "exact_Q2": 25,
+          "clears_2sd": true
+        },
+        {
+          "bin": "voluntary non-profit - other",
+          "noisy_Q1": 158,
+          "noisy_Q2": 8,
+          "exact_Q1": 116,
+          "exact_Q2": 5,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "State='al'",
+      "attr": "Sample",
+      "bins": [
+        {
+          "bin": "(107, 210]",
+          "noisy_Q1": 83,
+          "noisy_Q2": -82,
+          "exact_Q1": 143,
+          "exact_Q2": 18,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(19, 58]",
+          "noisy_Q1": 128,
+          "noisy_Q2": -23,
+          "exact_Q1": 143,
+          "exact_Q2": 10,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(3, 19]",
+          "noisy_Q1": 98,
+          "noisy_Q2": -12,
+          "exact_Q1": 134,
+          "exact_Q2": 12,
+          "clears_2sd": false
+        },
+        {
+          "bin": "[0, 3]",
+          "noisy_Q1": 129,
+          "noisy_Q2": 25,
+          "exact_Q1": 156,
+          "exact_Q2": 12,
+          "clears_2sd": false
+        }
+      ]
+    }
+  ]
+}

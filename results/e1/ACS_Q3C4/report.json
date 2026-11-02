@@ -31,10 +31,10 @@
     "eps_H": 0.333333334,
     "tau": 15,
     "gamma": 150.31905897320672,
-    "gamma_R": 1664500.0,
+    "gamma_R": 16645.0,
     "|P|": 914,
     "|Attrs|": 10,
-    "Delta_Use": 1.0513667768098528e-06,
+    "Delta_Use": 2.4031240612796634e-06,
     "laplace_scale_per_bin": 29.999999940000002,
     "sigma_of_released_difference": 59.999999880000004
   },
@@ -43,107 +43,107 @@
       {
         "rank": 1,
         "view": "SCHL IN [1, 16]",
-        "use": 0.006452769648404135,
+        "use": 0.009428358075663347,
         "coverage": 0.010540102132772605,
-        "representativeness": 0.6122113018564
+        "representativeness": 0.8945224587860032
       },
       {
         "rank": 2,
-        "view": "RAC1P='White'",
-        "use": 0.005863264448773168,
-        "coverage": 0.008153799939921899,
-        "representativeness": 0.7190836777912568
+        "view": "WKHP IN (50, 99]",
+        "use": 0.009251242298358907,
+        "coverage": 0.010540102132772605,
+        "representativeness": 0.8777184681725034
       },
       {
         "rank": 3,
-        "view": "SEX='M'",
-        "use": 0.005753153205680608,
-        "coverage": 0.00857134274556924,
-        "representativeness": 0.671207928145747
+        "view": "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+        "use": 0.008569947019361143,
+        "coverage": 0.010540102132772605,
+        "representativeness": 0.8130800737418276
       },
       {
         "rank": 4,
-        "view": "WKHP IN (50, 99]",
-        "use": 0.005687768620583689,
-        "coverage": 0.010540102132772605,
-        "representativeness": 0.5396312624807085
+        "view": "SEX='M'",
+        "use": 0.00810308505829076,
+        "coverage": 0.00857134274556924,
+        "representativeness": 0.9453693894669498
       },
       {
         "rank": 5,
-        "view": "WKHP IN (50, 99] AND SCHL IN [1, 16]",
-        "use": 0.005384117734739072,
-        "coverage": 0.010540102132772605,
-        "representativeness": 0.5108221596826942
+        "view": "RAC1P='White'",
+        "use": 0.007994235822762505,
+        "coverage": 0.008153799939921899,
+        "representativeness": 0.9804307049062915
       },
       {
         "rank": 6,
         "view": "SEX='M' AND SCHL IN [1, 16]",
-        "use": 0.004902935683262117,
+        "use": 0.0075316587533162125,
         "coverage": 0.00857134274556924,
-        "representativeness": 0.5720148906420266
+        "representativeness": 0.8787023196814212
       },
       {
         "rank": 7,
-        "view": "RAC1P='White' AND SCHL IN [1, 16]",
-        "use": 0.004800951970776401,
-        "coverage": 0.008153799939921899,
-        "representativeness": 0.5887993335807042
+        "view": "SEX='M' AND WKHP IN (50, 99]",
+        "use": 0.007447995676282086,
+        "coverage": 0.00857134274556924,
+        "representativeness": 0.8689415296258172
       },
       {
         "rank": 8,
-        "view": "COW='private'",
-        "use": 0.004575914100816914,
-        "coverage": 0.0065521177530790025,
-        "representativeness": 0.6983870365679217
+        "view": "RAC1P='White' AND SCHL IN [1, 16]",
+        "use": 0.007309323442965193,
+        "coverage": 0.008153799939921899,
+        "representativeness": 0.8964315407320633
       },
       {
         "rank": 9,
-        "view": "SEX='M' AND WKHP IN (50, 99]",
-        "use": 0.0045378147330889665,
-        "coverage": 0.00857134274556924,
-        "representativeness": 0.5294170199219588
+        "view": "RAC1P='White' AND WKHP IN (50, 99]",
+        "use": 0.007003911881215356,
+        "coverage": 0.008153799939921899,
+        "representativeness": 0.8589751935074388
       },
       {
         "rank": 10,
         "view": "SEX='M' AND RAC1P='White'",
-        "use": 0.004437946403385264,
+        "use": 0.0063889679878465335,
         "coverage": 0.006873535596275158,
-        "representativeness": 0.6456570044956536
+        "representativeness": 0.9295024224954598
       },
       {
         "rank": 11,
-        "view": "RAC1P='White' AND WKHP IN (50, 99]",
-        "use": 0.004345302377057276,
-        "coverage": 0.008153799939921899,
-        "representativeness": 0.5329174629098021
+        "view": "COW='private'",
+        "use": 0.0062738229757603806,
+        "coverage": 0.0065521177530790025,
+        "representativeness": 0.9575259804835095
       },
       {
         "rank": 12,
-        "view": "MAR='married'",
-        "use": 0.004151285579089117,
-        "coverage": 0.006135776509462301,
-        "representativeness": 0.6765705323013644
+        "view": "COW='private' AND SCHL IN [1, 16]",
+        "use": 0.00573844932039582,
+        "coverage": 0.0065521177530790025,
+        "representativeness": 0.8758159631211115
       },
       {
         "rank": 13,
-        "view": "COW='private' AND SCHL IN [1, 16]",
-        "use": 0.0038618847837386797,
+        "view": "COW='private' AND WKHP IN (50, 99]",
+        "use": 0.005675128745355288,
         "coverage": 0.0065521177530790025,
-        "representativeness": 0.5894101616113179
+        "representativeness": 0.8661518243759285
       },
       {
         "rank": 14,
-        "view": "MAR='married' AND SCHL IN [1, 16]",
-        "use": 0.0034415525899877553,
+        "view": "MAR='married'",
+        "use": 0.0056090735160979465,
         "coverage": 0.006135776509462301,
-        "representativeness": 0.560899274065859
+        "representativeness": 0.9141587063100981
       },
       {
         "rank": 15,
-        "view": "COW='private' AND WKHP IN (50, 99]",
-        "use": 0.0034390262699789276,
-        "coverage": 0.0065521177530790025,
-        "representativeness": 0.524872476286441
+        "view": "MAR='married' AND SCHL IN [1, 16]",
+        "use": 0.005356122362446793,
+        "coverage": 0.006135776509462301,
+        "representativeness": 0.8729330923619589
       }
     ],
     "retained": [
@@ -151,128 +151,128 @@
         "noisy_rank": 1,
         "view": "SCHL IN [1, 16]",
         "exact_rank": 1,
-        "use": 0.006452769648404135,
+        "use": 0.009428358075663347,
         "coverage": 0.010540102132772605,
-        "representativeness": 0.6122113018564
+        "representativeness": 0.8945224587860032
       },
       {
         "noisy_rank": 2,
-        "view": "SEX='M'",
-        "exact_rank": 3,
-        "use": 0.005753153205680608,
-        "coverage": 0.00857134274556924,
-        "representativeness": 0.671207928145747
+        "view": "WKHP IN (50, 99]",
+        "exact_rank": 2,
+        "use": 0.009251242298358907,
+        "coverage": 0.010540102132772605,
+        "representativeness": 0.8777184681725034
       },
       {
         "noisy_rank": 3,
-        "view": "RAC1P='White'",
-        "exact_rank": 2,
-        "use": 0.005863264448773168,
-        "coverage": 0.008153799939921899,
-        "representativeness": 0.7190836777912568
+        "view": "SEX='M'",
+        "exact_rank": 4,
+        "use": 0.00810308505829076,
+        "coverage": 0.00857134274556924,
+        "representativeness": 0.9453693894669498
       },
       {
         "noisy_rank": 4,
-        "view": "WKHP IN (50, 99]",
-        "exact_rank": 4,
-        "use": 0.005687768620583689,
+        "view": "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+        "exact_rank": 3,
+        "use": 0.008569947019361143,
         "coverage": 0.010540102132772605,
-        "representativeness": 0.5396312624807085
+        "representativeness": 0.8130800737418276
       },
       {
         "noisy_rank": 5,
-        "view": "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+        "view": "RAC1P='White'",
         "exact_rank": 5,
-        "use": 0.005384117734739072,
-        "coverage": 0.010540102132772605,
-        "representativeness": 0.5108221596826942
+        "use": 0.007994235822762505,
+        "coverage": 0.008153799939921899,
+        "representativeness": 0.9804307049062915
       },
       {
         "noisy_rank": 6,
-        "view": "RAC1P='White' AND SCHL IN [1, 16]",
-        "exact_rank": 7,
-        "use": 0.004800951970776401,
+        "view": "RAC1P='White' AND WKHP IN (50, 99]",
+        "exact_rank": 9,
+        "use": 0.007003911881215356,
         "coverage": 0.008153799939921899,
-        "representativeness": 0.5887993335807042
+        "representativeness": 0.8589751935074388
       },
       {
         "noisy_rank": 7,
-        "view": "SEX='M' AND SCHL IN [1, 16]",
-        "exact_rank": 6,
-        "use": 0.004902935683262117,
-        "coverage": 0.00857134274556924,
-        "representativeness": 0.5720148906420266
+        "view": "RAC1P='White' AND SCHL IN [1, 16]",
+        "exact_rank": 8,
+        "use": 0.007309323442965193,
+        "coverage": 0.008153799939921899,
+        "representativeness": 0.8964315407320633
       },
       {
         "noisy_rank": 8,
-        "view": "COW='private'",
-        "exact_rank": 8,
-        "use": 0.004575914100816914,
-        "coverage": 0.0065521177530790025,
-        "representativeness": 0.6983870365679217
+        "view": "SEX='M' AND SCHL IN [1, 16]",
+        "exact_rank": 6,
+        "use": 0.0075316587533162125,
+        "coverage": 0.00857134274556924,
+        "representativeness": 0.8787023196814212
       },
       {
         "noisy_rank": 9,
-        "view": "RAC1P='White' AND WKHP IN (50, 99]",
-        "exact_rank": 11,
-        "use": 0.004345302377057276,
-        "coverage": 0.008153799939921899,
-        "representativeness": 0.5329174629098021
+        "view": "SEX='M' AND WKHP IN (50, 99]",
+        "exact_rank": 7,
+        "use": 0.007447995676282086,
+        "coverage": 0.00857134274556924,
+        "representativeness": 0.8689415296258172
       },
       {
         "noisy_rank": 10,
         "view": "SEX='M' AND RAC1P='White'",
         "exact_rank": 10,
-        "use": 0.004437946403385264,
+        "use": 0.0063889679878465335,
         "coverage": 0.006873535596275158,
-        "representativeness": 0.6456570044956536
+        "representativeness": 0.9295024224954598
       },
       {
         "noisy_rank": 11,
-        "view": "SEX='M' AND WKHP IN (50, 99]",
-        "exact_rank": 9,
-        "use": 0.0045378147330889665,
-        "coverage": 0.00857134274556924,
-        "representativeness": 0.5294170199219588
+        "view": "COW='private'",
+        "exact_rank": 11,
+        "use": 0.0062738229757603806,
+        "coverage": 0.0065521177530790025,
+        "representativeness": 0.9575259804835095
       },
       {
         "noisy_rank": 12,
-        "view": "MAR='married'",
-        "exact_rank": 12,
-        "use": 0.004151285579089117,
-        "coverage": 0.006135776509462301,
-        "representativeness": 0.6765705323013644
+        "view": "COW='private' AND WKHP IN (50, 99]",
+        "exact_rank": 13,
+        "use": 0.005675128745355288,
+        "coverage": 0.0065521177530790025,
+        "representativeness": 0.8661518243759285
       },
       {
         "noisy_rank": 13,
         "view": "COW='private' AND SCHL IN [1, 16]",
-        "exact_rank": 13,
-        "use": 0.0038618847837386797,
+        "exact_rank": 12,
+        "use": 0.00573844932039582,
         "coverage": 0.0065521177530790025,
-        "representativeness": 0.5894101616113179
+        "representativeness": 0.8758159631211115
       },
       {
         "noisy_rank": 14,
-        "view": "COW='private' AND RAC1P='White'",
-        "exact_rank": 17,
-        "use": 0.003338720643371826,
-        "coverage": 0.00499729648543106,
-        "representativeness": 0.668105375197452
+        "view": "MAR='married'",
+        "exact_rank": 14,
+        "use": 0.0056090735160979465,
+        "coverage": 0.006135776509462301,
+        "representativeness": 0.9141587063100981
       },
       {
         "noisy_rank": 15,
-        "view": "COW='private' AND WKHP IN (50, 99]",
-        "exact_rank": 15,
-        "use": 0.0034390262699789276,
-        "coverage": 0.0065521177530790025,
-        "representativeness": 0.524872476286441
+        "view": "COW='private' AND RAC1P='White'",
+        "exact_rank": 18,
+        "use": 0.004805532198392339,
+        "coverage": 0.00499729648543106,
+        "representativeness": 0.9616263938716096
       }
     ],
     "overlap_with_exact_top_tau": 0.9333333333333333,
     "retained_atom_counts": {
       "SCHL IN [1, 16]": 5,
-      "RAC1P='White'": 5,
       "WKHP IN (50, 99]": 5,
+      "RAC1P='White'": 5,
       "SEX='M'": 4,
       "COW='private'": 4,
       "MAR='married'": 1
@@ -281,65 +281,65 @@
       {
         "view": "SCHL IN [1, 16]",
         "rank": 1,
-        "use": 0.006452769648404135,
+        "use": 0.009428358075663347,
         "coverage": 0.010540102132772605,
-        "representativeness": 0.6122113018564
+        "representativeness": 0.8945224587860032
       },
       {
         "view": "WKHP IN (50, 99]",
-        "rank": 4,
-        "use": 0.005687768620583689,
+        "rank": 2,
+        "use": 0.009251242298358907,
         "coverage": 0.010540102132772605,
-        "representativeness": 0.5396312624807085
+        "representativeness": 0.8777184681725034
       },
       {
         "view": "WKHP IN [1, 25]",
         "rank": 626,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5723260938380013
+        "representativeness": 0.8184656567518483
       },
       {
         "view": "WKHP IN (25, 40]",
         "rank": 627,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.6807339379152664
+        "representativeness": 0.9675913238964999
       },
       {
         "view": "WKHP IN (40, 50]",
         "rank": 628,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5758064137968295
+        "representativeness": 0.8938082782107379
       },
       {
         "view": "SCHL IN (16, 18]",
         "rank": 629,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5480903048333838
+        "representativeness": 0.9272869996793445
       },
       {
         "view": "SCHL IN (18, 19]",
         "rank": 630,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5665402962577935
+        "representativeness": 0.9196463587283902
       },
       {
         "view": "SCHL IN (19, 21]",
         "rank": 631,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.6191356151789273
+        "representativeness": 0.9311206453977403
       },
       {
         "view": "SCHL IN (21, 24]",
         "rank": 632,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.5605976610965919
+        "representativeness": 0.8186885640393352
       }
     ]
   },
@@ -584,10 +584,90 @@
       "noisy_total_q2": 13167.856,
       "exact_total_q1": 4367,
       "exact_total_q2": 13177,
-      "exact_abs_diff_total": 8810
+      "exact_abs_diff_total": 8810,
+      "share_of_releases_with_this_explanation": 1.0,
+      "share_of_releases_explaining_this_attr": 1.0
     },
     {
       "round": 2,
+      "view": "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+      "attr": "MAR",
+      "bins": [
+        "married",
+        "never-married",
+        "divorced",
+        "widowed",
+        "separated"
+      ],
+      "noisy_h1": [
+        1814.921,
+        1828.157,
+        445.226,
+        -5.82,
+        69.885
+      ],
+      "noisy_h2": [
+        8307.912,
+        2870.418,
+        1513.557,
+        197.625,
+        217.367
+      ],
+      "exact_n": [
+        22077,
+        8823,
+        4455,
+        658,
+        811
+      ],
+      "exact_h1": [
+        1888,
+        1879,
+        425,
+        75,
+        100
+      ],
+      "exact_h2": [
+        8325,
+        2904,
+        1496,
+        201,
+        251
+      ],
+      "hd_gamma": 0.9493381601092444,
+      "utility": 0.9493381601092444,
+      "n_candidates": 125,
+      "bins_clearing_2sigma": [
+        "married",
+        "never-married",
+        "divorced",
+        "widowed",
+        "separated"
+      ],
+      "exact_share_q1": [
+        0.4323,
+        0.4303,
+        0.0973,
+        0.0172,
+        0.0229
+      ],
+      "exact_share_q2": [
+        0.6318,
+        0.2204,
+        0.1135,
+        0.0153,
+        0.019
+      ],
+      "noisy_total_q1": 4152.369,
+      "noisy_total_q2": 13106.879,
+      "exact_total_q1": 4367,
+      "exact_total_q2": 13177,
+      "exact_abs_diff_total": 8810,
+      "share_of_releases_with_this_explanation": 0.4,
+      "share_of_releases_explaining_this_attr": 0.4
+    },
+    {
+      "round": 3,
       "view": "WKHP IN (50, 99] AND SCHL IN [1, 16]",
       "attr": "COW",
       "bins": [
@@ -601,24 +681,24 @@
         "unpaid-family"
       ],
       "noisy_h1": [
-        2388.921,
-        104.157,
-        104.226,
-        890.18,
-        12.885,
-        275.912,
-        254.418,
-        88.557
+        2433.396,
+        131.433,
+        52.086,
+        983.129,
+        -35.096,
+        387.852,
+        268.858,
+        75.396
       ],
       "noisy_h2": [
-        8440.625,
-        260.367,
-        258.26,
-        2141.769,
-        233.73,
-        1337.247,
-        490.886,
-        119.971
+        8405.843,
+        356.878,
+        264.732,
+        2160.854,
+        142.972,
+        1261.463,
+        452.218,
+        79.979
       ],
       "exact_n": [
         25156,
@@ -652,7 +732,7 @@
       ],
       "hd_gamma": 1.5012671682607537,
       "utility": 1.5012671682607537,
-      "n_candidates": 125,
+      "n_candidates": 124,
       "bins_clearing_2sigma": [
         "private",
         "non-profit",
@@ -682,185 +762,16 @@
         0.0348,
         0.0087
       ],
-      "noisy_total_q1": 4119.255999999999,
-      "noisy_total_q2": 13282.855,
+      "noisy_total_q1": 4297.054,
+      "noisy_total_q2": 13124.939,
       "exact_total_q1": 4367,
       "exact_total_q2": 13177,
-      "exact_abs_diff_total": 8810
-    },
-    {
-      "round": 3,
-      "view": "SCHL IN [1, 16]",
-      "attr": "WKHP",
-      "bins": [
-        "[1, 25]",
-        "(25, 40]",
-        "(40, 50]",
-        "(50, 99]"
-      ],
-      "noisy_h1": [
-        -19.142,
-        4.396,
-        -38.157,
-        4429.878
-      ],
-      "noisy_h2": [
-        -11.268,
-        31.854,
-        7.972,
-        13112.463
-      ],
-      "exact_n": [
-        95830,
-        282995,
-        65994,
-        36824
-      ],
-      "exact_h1": [
-        0,
-        0,
-        0,
-        4367
-      ],
-      "exact_h2": [
-        0,
-        0,
-        0,
-        13177
-      ],
-      "hd_gamma": 0.23827348884906438,
-      "utility": 0.23827348884906438,
-      "n_candidates": 124,
-      "bins_clearing_2sigma": [
-        "(50, 99]"
-      ],
-      "exact_share_q1": [
-        0.0,
-        0.0,
-        0.0,
-        1.0
-      ],
-      "exact_share_q2": [
-        0.0,
-        0.0,
-        0.0,
-        1.0
-      ],
-      "noisy_total_q1": 4376.974999999999,
-      "noisy_total_q2": 13141.021,
-      "exact_total_q1": 4367,
-      "exact_total_q2": 13177,
-      "exact_abs_diff_total": 8810
+      "exact_abs_diff_total": 8810,
+      "share_of_releases_with_this_explanation": 1.0,
+      "share_of_releases_explaining_this_attr": 1.0
     },
     {
       "round": 4,
-      "view": "WKHP IN (50, 99] AND SCHL IN [1, 16]",
-      "attr": "RELP",
-      "bins": [
-        "reference-person",
-        "spouse",
-        "biological-child",
-        "Other",
-        "unmarried-partner",
-        "noninst-group-quarters",
-        "housemate-roommate",
-        "sibling",
-        "other-nonrelative"
-      ],
-      "noisy_h1": [
-        1645.778,
-        815.691,
-        645.839,
-        538.395,
-        211.178,
-        489.259,
-        44.756,
-        87.944,
-        50.188
-      ],
-      "noisy_h2": [
-        6589.462,
-        3655.87,
-        752.933,
-        786.068,
-        397.973,
-        524.39,
-        124.852,
-        74.763,
-        151.83
-      ],
-      "exact_n": [
-        18920,
-        9756,
-        2138,
-        2054,
-        1408,
-        1193,
-        576,
-        403,
-        376
-      ],
-      "exact_h1": [
-        1570,
-        817,
-        557,
-        541,
-        208,
-        462,
-        81,
-        67,
-        64
-      ],
-      "exact_h2": [
-        6595,
-        3745,
-        767,
-        741,
-        458,
-        492,
-        151,
-        122,
-        106
-      ],
-      "hd_gamma": 1.199906836726884,
-      "utility": 1.199906836726884,
-      "n_candidates": 123,
-      "bins_clearing_2sigma": [
-        "reference-person",
-        "spouse",
-        "Other",
-        "unmarried-partner"
-      ],
-      "exact_share_q1": [
-        0.3595,
-        0.1871,
-        0.1275,
-        0.1239,
-        0.0476,
-        0.1058,
-        0.0185,
-        0.0153,
-        0.0147
-      ],
-      "exact_share_q2": [
-        0.5005,
-        0.2842,
-        0.0582,
-        0.0562,
-        0.0348,
-        0.0373,
-        0.0115,
-        0.0093,
-        0.008
-      ],
-      "noisy_total_q1": 4529.028,
-      "noisy_total_q2": 13058.141000000001,
-      "exact_total_q1": 4367,
-      "exact_total_q2": 13177,
-      "exact_abs_diff_total": 8810
-    },
-    {
-      "round": 5,
       "view": "WKHP IN (50, 99] AND SCHL IN [1, 16]",
       "attr": "AGEP",
       "bins": [
@@ -872,20 +783,20 @@
         "(60, 96]"
       ],
       "noisy_h1": [
-        1267.051,
-        720.843,
-        621.0,
-        854.391,
-        665.165,
-        320.365
+        1352.839,
+        673.395,
+        608.178,
+        785.259,
+        642.756,
+        405.944
       ],
       "noisy_h2": [
-        1588.221,
-        1745.886,
-        2095.043,
-        3031.924,
-        3051.438,
-        1776.988
+        1573.188,
+        1738.462,
+        1990.87,
+        2972.933,
+        3048.068,
+        1715.973
       ],
       "exact_n": [
         4743,
@@ -913,7 +824,7 @@
       ],
       "hd_gamma": 1.3505265815450012,
       "utility": 1.3505265815450012,
-      "n_candidates": 122,
+      "n_candidates": 123,
       "bins_clearing_2sigma": [
         "[17, 26]",
         "(26, 35]",
@@ -938,18 +849,343 @@
         0.2279,
         0.1348
       ],
-      "noisy_total_q1": 4448.815,
-      "noisy_total_q2": 13289.5,
+      "noisy_total_q1": 4468.371,
+      "noisy_total_q2": 13039.494,
       "exact_total_q1": 4367,
       "exact_total_q2": 13177,
-      "exact_abs_diff_total": 8810
+      "exact_abs_diff_total": 8810,
+      "share_of_releases_with_this_explanation": 1.0,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 5,
+      "view": "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+      "attr": "RAC1P",
+      "bins": [
+        "White",
+        "Black",
+        "Asian",
+        "other-race",
+        "two-or-more",
+        "Other"
+      ],
+      "noisy_h1": [
+        2996.394,
+        466.866,
+        282.961,
+        374.302,
+        126.051,
+        161.843
+      ],
+      "noisy_h2": [
+        10610.0,
+        1053.391,
+        469.165,
+        588.365,
+        286.221,
+        206.886
+      ],
+      "exact_n": [
+        28976,
+        2848,
+        1482,
+        2233,
+        776,
+        509
+      ],
+      "exact_h1": [
+        2978,
+        496,
+        292,
+        361,
+        123,
+        117
+      ],
+      "exact_h2": [
+        10594,
+        957,
+        483,
+        653,
+        285,
+        205
+      ],
+      "hd_gamma": 0.9631209760088391,
+      "utility": 0.9631209760088391,
+      "n_candidates": 122,
+      "bins_clearing_2sigma": [
+        "White",
+        "Black",
+        "Asian",
+        "other-race",
+        "two-or-more"
+      ],
+      "exact_share_q1": [
+        0.6819,
+        0.1136,
+        0.0669,
+        0.0827,
+        0.0282,
+        0.0268
+      ],
+      "exact_share_q2": [
+        0.804,
+        0.0726,
+        0.0367,
+        0.0496,
+        0.0216,
+        0.0156
+      ],
+      "noisy_total_q1": 4408.4169999999995,
+      "noisy_total_q2": 13214.028,
+      "exact_total_q1": 4367,
+      "exact_total_q2": 13177,
+      "exact_abs_diff_total": 8810,
+      "share_of_releases_with_this_explanation": 0.2,
+      "share_of_releases_explaining_this_attr": 0.2
     }
   ],
+  "releases": {
+    "n": 10,
+    "selections": [
+      [
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "OCCP_bucket"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "MAR"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "COW"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "AGEP"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "RAC1P"
+        ]
+      ],
+      [
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "OCCP_bucket"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "AGEP"
+        ],
+        [
+          "MAR='married' AND WKHP IN (50, 99]",
+          "AGEP"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "COW"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "SEX"
+        ]
+      ],
+      [
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "OCCP_bucket"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "COW"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "RELP"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "AGEP"
+        ],
+        [
+          "COW='private' AND WKHP IN (50, 99]",
+          "OCCP_bucket"
+        ]
+      ],
+      [
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "OCCP_bucket"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "COW"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "RELP"
+        ],
+        [
+          "WKHP IN (50, 99]",
+          "OCCP_bucket"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "AGEP"
+        ]
+      ],
+      [
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "OCCP_bucket"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "COW"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "AGEP"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "RELP"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "MAR"
+        ]
+      ],
+      [
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "OCCP_bucket"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "AGEP"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "RELP"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "COW"
+        ],
+        [
+          "RAC1P='White' AND WKHP IN (50, 99]",
+          "OCCP_bucket"
+        ]
+      ],
+      [
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "OCCP_bucket"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "MAR"
+        ],
+        [
+          "SEX='M' AND WKHP IN (50, 99]",
+          "OCCP_bucket"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "COW"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "AGEP"
+        ]
+      ],
+      [
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "OCCP_bucket"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "COW"
+        ],
+        [
+          "WKHP IN (50, 99]",
+          "OCCP_bucket"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "AGEP"
+        ],
+        [
+          "COW='private' AND WKHP IN (50, 99]",
+          "SCHL"
+        ]
+      ],
+      [
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "OCCP_bucket"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "COW"
+        ],
+        [
+          "SEX='M' AND WKHP IN (50, 99]",
+          "OCCP_bucket"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "RELP"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "AGEP"
+        ]
+      ],
+      [
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "OCCP_bucket"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "AGEP"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "MAR"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "COW"
+        ],
+        [
+          "WKHP IN (50, 99] AND SCHL IN [1, 16]",
+          "RAC1P"
+        ]
+      ]
+    ],
+    "retained_overlap_with_exact_top_tau": [
+      0.9333333333333333,
+      0.9333333333333333,
+      0.9333333333333333,
+      1.0,
+      0.9333333333333333,
+      0.9333333333333333,
+      1.0,
+      0.9333333333333333,
+      1.0,
+      1.0
+    ]
+  },
   "timings": {
-    "view_stage_ms": 0.2109800002472184,
-    "explanation_stage_ms": 573.3689230000891,
-    "mechanism_ms": 573.5799030003363,
-    "cache_build_s": 23.818879402999755
+    "view_stage_ms": 0.162633000400092,
+    "explanation_stage_ms": 574.8149649998595,
+    "mechanism_ms": 574.9775980002596,
+    "cache_build_s": 21.63681111799997
   },
   "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
 }
