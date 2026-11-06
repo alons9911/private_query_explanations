@@ -278,6 +278,60 @@ def fig_runtime_methods() -> Path:
     return _save(fig, "runtime_methods")
 
 
+# ----------------------------------------------------------------------------- E7: |Attrs|
+
+def fig_attrs() -> Path:
+    """Top: end-to-end time against |Attrs| (median of the 10 runs, one per attribute order, mean over
+    the runtime pairs). Bottom: accuracy against |Attrs| (40 runs per point, mean over all pairs)."""
+    rt = _drop(pd.read_csv(RES / "e7" / "raw" / "runtime.csv"))
+    acc = _drop(pd.read_csv(RES / "e7" / "raw" / "trials.csv"))
+    limit = 1800.0
+    per = rt.groupby(["dataset", "pair", "value", "method"], as_index=False).agg(
+        total_s=("total_s", "median"), timeout=("timeout", "max"))
+    pts = per.groupby(["dataset", "value", "method"], as_index=False).agg(total_s=("total_s", "mean"),
+                                                                       timeout=("timeout", "max"))
+    asum = acc.groupby(["dataset", "pair", "value"], as_index=False).mean(numeric_only=True)
+    dss = [d for d in DS_ORDER if d in set(pts.dataset) | set(asum.dataset)]
+    fig, axes = plt.subplots(2, len(dss), figsize=(7.05, 2.9), squeeze=False)
+    plain = FuncFormatter(lambda v, _: f"{v:g}")
+    for j, ds in enumerate(dss):
+        ax = axes[0, j]
+        sub = pts[pts.dataset == ds].rename(columns={"value": "n"})
+        _rt_panel(ax, sub, "n", False, limit)
+        ax.yaxis.set_major_formatter(plain)
+        ax.yaxis.set_minor_formatter(NullFormatter())
+        ax.set_title(f"{DS_TITLE[ds]}")
+        if j == 0:
+            ax.set_ylabel("time (s)")
+        ax = axes[1, j]
+        sub = asum[asum.dataset == ds].groupby("value", as_index=False).mean(numeric_only=True).sort_values("value")
+        for col, lab, c, mk, ls in QUALITY_SERIES:
+            if col == "ratio_B1_mean":
+                continue
+            ax.plot(sub.value, sub[col.replace("_mean", "")], color=c, marker=mk, linestyle=ls, label=lab)
+        ax.set_ylim(0, 1.1)
+        ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
+        ax.axhline(1.0, color=P.MUTED, linewidth=0.5, zorder=0)
+        if j:
+            ax.set_yticklabels([])
+        ax.set_xlabel(r"$|\mathit{Attrs}|$")
+        for a in axes[:, j]:
+            a.xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(integer=True, nbins=5))
+    def legend_of(axs):
+        hs, ls = [], []
+        for ax in axs:
+            for h, lab in zip(*ax.get_legend_handles_labels()):
+                if lab not in ls:
+                    hs.append(h)
+                    ls.append(lab)
+        return hs, ls
+
+    fig.tight_layout(h_pad=1.6, w_pad=0.3, rect=(0, 0.04, 1, 0.95))
+    fig.legend(*legend_of(axes[0]), loc="upper center", ncol=5, bbox_to_anchor=(0.5, 1.02), fontsize=6)
+    fig.legend(*legend_of(axes[1]), loc="lower center", ncol=3, bbox_to_anchor=(0.5, -0.04), fontsize=6)
+    return _save(fig, "attrs")
+
+
 # ----------------------------------------------------------------------------- case studies
 
 def _bin_label(b: str, n: int = 12) -> str:
