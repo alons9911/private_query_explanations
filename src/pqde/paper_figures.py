@@ -298,6 +298,12 @@ def fig_attrs() -> Path:
         ax = axes[0, j]
         sub = pts[pts.dataset == ds].rename(columns={"value": "n"})
         _rt_panel(ax, sub, "n", False, limit)
+        lo, hi = float(sub.total_s.min()) / 1.5, float(sub.total_s.max()) * 1.5
+        if hi / lo < 10:  # at least one decade, so that run-to-run noise does not read as a trend
+            mid = (lo * hi) ** 0.5
+            lo, hi = mid / 10 ** 0.5, mid * 10 ** 0.5
+        ax.set_ylim(lo, hi)
+        ax.yaxis.set_major_locator(LogLocator(base=10, subs=(1.0, 2.0, 5.0), numticks=10))
         ax.yaxis.set_major_formatter(plain)
         ax.yaxis.set_minor_formatter(NullFormatter())
         ax.set_title(f"{DS_TITLE[ds]}")

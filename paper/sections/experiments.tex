@@ -9,8 +9,8 @@ Wherever possible the data, the constraints and the queries are those of earlier
 
 \begin{description}
   \item[RQ1 -- Use cases.] Do the released explanations tell an analyst something about the difference between $Q_1$ and $Q_2$ that the two queries and the constraint do not already say?
-  \item[RQ2 -- Quality.] How close is the private algorithm to non-private references, how does that depend on $\epsilon$ and $\gamma$, and which of the two stages limits it?
-  \item[RQ3 -- Scalability.] How does the end-to-end running time depend on $k$, $N$, $\epsilon$, $|\mathcal{P}|$, $\tau$ and $\gamma$, and what does privacy cost in time compared with the non-private baselines?
+  \item[RQ2 -- Quality.] How close is the private algorithm to non-private references, how does that depend on $\epsilon$, $\gamma$ and the number of explanation attributes, and which of the two stages limits it?
+  \item[RQ3 -- Scalability.] How does the end-to-end running time depend on $k$, $N$, $\epsilon$, $|\mathcal{P}|$, $\tau$, $\gamma$ and $|\Attrs|$, and what does privacy cost in time compared with the non-private baselines?
 \end{description}
 
 \subsection{Experimental Setup}
@@ -79,6 +79,9 @@ The four pairs of the case studies (bold in Table~\ref{tab:pairs}) cover the thr
 Every experiment fixes the parameters it does not study to one default, chosen to be the realistic deployment rather than the favourable one: the whole dataset, every public view, $k=5$, $\lambda=0.5$, $\epsilon=1$ split equally between the three stages, and $\tau$ and $\gamma$ from Eqs.~\eqref{eq:tau-rule} and~\eqref{eq:gamma-rule}, which give $\tau=15$ and $\gamma\approx150$ on every dataset.
 When an experiment varies $k$, $\epsilon$ or $\tau$, the two derived constants follow their rules, because that is what the algorithm does; only the $\gamma$ experiment overrides Eq.~\eqref{eq:gamma-rule}, by a multiplier.
 Every pair is run at least ten times.
+The experiment on the number of explanation attributes varies $|\Attrs|$ from $2$ to every usable attribute of the dataset, adding those it does not use by default: \texttt{capitalGain}, \texttt{capitalLoss} and \texttt{nativeCountry} on Adult (the two capital attributes are $0$ for $92\%$ and $95\%$ of the tuples, so they get one bin for $0$ and five quantile bins of the positive values), the state and the place of birth on ACSIncome, and \texttt{AreaCode} on Tax and Tax-dirty; Hospital and IPUMS-CPS have none to add.
+Views and reference attributes stay fixed, so $|\mathcal{P}|$ and the $\Use$ pass do not change.
+Which attributes are kept matters, so each of the ten runs of a point uses its own random order of the attributes and keeps the first $|\Attrs|$ of it.
 Accuracy figures average $40$ private runs per point: the run-to-run standard deviation of the set score is often comparable to its mean, and fewer runs do not separate neighbouring configurations.
 Every timed run is end to end, from the raw data to the released histograms, and every method is timed ten times at every point; a run is stopped after $30$ minutes and reported as a timeout, and a method that times out at a point is run three times there and then no more.
 The running-time experiments use four pairs per dataset (three on Tax-dirty and Hospital, $22$ in total), since running time hardly depends on the pair.
@@ -202,6 +205,13 @@ Section~\ref{subsec:quality} quantifies both failures.
 \label{fig:quality}
 \end{figure*}
 
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/exp/attrs.pdf}
+\caption{The number of explanation attributes, from $2$ to every usable attribute of the dataset; views and reference attributes fixed. Top: end-to-end running time (median of ten runs, each with its own random order of the attributes, mean over the runtime pairs). Bottom: quality against \Btwo{}/\Bthree{} on all pairs ($40$ runs per point).}
+\label{fig:attrs}
+\end{figure*}
+
 \begin{table}[t]
 \centering
 \small
@@ -293,6 +303,19 @@ On Tax it is therefore almost no smoothing at all, and the exponential mechanism
 A rule that also scales with a public proxy for the bin size, such as $N/b$, would fix the large datasets without hurting the small ones; we leave its analysis to future work.
 Precision@k shows the same optimum, so the gain is not an artefact of the ratio.
 
+\subsubsection{The Number of Attributes}
+\label{subsec:attrs}
+
+Adding explanation attributes gives the second stage more candidates per round, and one would expect accuracy to fall.
+It falls only on Adult (bottom row of Figure~\ref{fig:attrs}): from $0.92$ with two attributes to $0.71$ with all thirteen.
+On ACSIncome it rises, from $0.87$ to $1.01$, on Tax from $0.89$ to $0.98$, and on the other three datasets it stays flat.
+The candidates themselves explain little of this, since the exponential mechanism pays only $\ln|C_i|$ for a larger pool.
+The smoothing explains more.
+Eq.~\eqref{eq:gamma-rule} grows with $\ln(\tau|\Attrs|)$, from $\gamma\approx102$ with two attributes to $158$ with thirteen, so every added attribute also adds smoothing, and Section~\ref{subsec:gamma-tradeoff} found that ACSIncome and Tax gain from more smoothing while Adult is at its best at the default and loses beyond it.
+The two experiments agree, but this one does not separate the two effects; a run with $\gamma$ held fixed would.
+\alon{TODO: decide whether to run E7 with fixed $\gamma$ to separate the effect of the pool from that of the smoothing.}
+Attribute precision falls as attributes are added on every dataset but Tax; with two or three attributes, five explanations share most of their attributes with any other five, so its high values there say little.
+
 \subsection{Scalability}
 \label{subsec:scalability}
 
@@ -308,6 +331,15 @@ Up to $k=4$ it is as fast as the others; at $k=5$ it adds one to two seconds, at
 With ten explanation attributes its pool grows from $50$ candidates at $k=5$ to $80$ at $k=8$, and the number of subsets from $2.1\times10^{6}$ to $2.9\times10^{10}$; over the same range the private algorithm does not change.
 Since \Bthree{} returns the same sets as \Btwo{} wherever both finish, the exhaustive search buys nothing; the case for greedy selection is not only that it is fast but that, by Proposition~\ref{prop:greedy-exact}, it loses nothing.
 
+\paragraph{What the exhaustive search depends on.}
+\Btwo{} is made of the same $\Use$ pass as the others and an enumeration whose size is fixed by $k$ and $|\Attrs|$ alone.
+It always searches the candidates of $\tau=15$ views, at most $k$ per attribute, so its pool has $k|\Attrs|$ candidates whatever $|\mathcal{P}|$ is.
+Across the $|\mathcal{P}|$ sweep \Btwo{} is therefore the private algorithm plus a constant (Figure~\ref{fig:scalability}): $1.4$\,s on Adult, $1.2$\,s on Hospital, $0.45$\,s on IPUMS-CPS, invisible next to the $\Use$ pass on the large datasets.
+Figure~\ref{fig:attrs} varies the other factor.
+The extra time of \Btwo{} is proportional to the number of subsets $\binom{k|\Attrs|}{k}$, at $0.4$--$0.55\,\mu$s per subset on every dataset, so at $k=5$ it grows as $|\Attrs|^5$: on Adult from nothing at $5$ attributes to $1.1$\,s at $10$ and $3.9$\,s at $13$.
+With the real attributes this stays within seconds; at the same cost per subset, $20$ attributes would take about $40$\,s and $40$ attributes about $20$ minutes, which is where $k=7$ already is with ten.
+Over the same range the private algorithm does not move (within $9\%$, except for noise on Tax-dirty), because $|\Attrs|$ enters it only through the explanation histograms of the $\tau$ retained views; \textsf{OptPrivExpl}, for which those histograms are a larger share of the cost, grows by $12$--$36\%$.
+
 \paragraph{The cost is the statistics, and it can be cut.}
 Since the private algorithm spends almost all its time computing statistics, that is where an optimisation pays.
 \textsf{OptPrivExpl} computes the same statistics in grouped passes and is $5.9$--$11.5\times$ faster end to end (median $9.4\times$; Figure~\ref{fig:runtime-methods}), from $22.8$\,s to $3.0$\,s on ACSIncome and from $11.5$\,s to $1.9$\,s on IPUMS-CPS.
@@ -322,4 +354,5 @@ The released explanations exposed, in every setting, a change that neither the q
 Against the non-private optimum the released sets reach $0.89$--$0.96$ of its score on the four non-CQA datasets at $\epsilon=1$, while containing only a third to a half of its explanations, because the best candidates are near-ties; attribute precision, and the stability of the explained attributes across ten releases, show that the right attributes are explained nonetheless.
 The view stage scales with $N$ and is accurate everywhere but on the $1{,}000$-tuple Hospital file; the explanation stage does not scale with $N$ and is limited by the margin between candidates, which is why the two CQA datasets, whose differences are small or whose data is small, are the hard cases.
 The $\gamma$ of Eq.~\eqref{eq:gamma-rule} is near-optimal on data with small bins and too small, by a factor of three to ten, on data with large bins, and because it shrinks with $\epsilon$ it can turn extra budget into a loss.
-Privacy costs nothing in running time, greedy selection costs nothing in quality, and the exhaustive alternative takes minutes at $k=7$ and is stopped at $30$ minutes from $k=8$; computing the statistics in grouped passes makes the whole pipeline about nine times faster with identical output.
+Privacy costs nothing in running time, greedy selection costs nothing in quality, and the exhaustive alternative takes minutes at $k=7$ and is stopped at $30$ minutes from $k=8$; its search depends only on $k$ and $|\Attrs|$, growing as $|\Attrs|^5$ at $k=5$, while the private algorithm is flat in both.
+Computing the statistics in grouped passes makes the whole pipeline about nine times faster with identical output.
