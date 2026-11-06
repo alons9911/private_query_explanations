@@ -153,7 +153,7 @@ def main(argv: list[str] | None = None) -> int:
     for name, fn in (("run", _cmd_run), ("all", _cmd_all)):
         r = sub.add_parser(name)
         if name == "run":
-            r.add_argument("experiments", nargs="+", choices=["e1", "e2", "e3", "e4", "e5", "e6", "search", "cases", "erica"])
+            r.add_argument("experiments", nargs="+", choices=["e1", "e2", "e3", "e4", "e5", "e6", "e7t", "e7a", "search", "cases", "erica"])
             r.add_argument("--pairs", nargs="*")
         r.add_argument("--quick", action="store_true", help="few trials / repeats (smoke run)")
         r.add_argument("--trials", type=int)

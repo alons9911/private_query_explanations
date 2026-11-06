@@ -21,7 +21,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SHARDS = ROOT / "results_shards"
 RESULTS = ROOT / "results"
 WHOLE = {"e1": "e1", "e2": "e2", "e3": "e3", "e6": "e6", "cases": "case_studies"}
-PER_PAIR = ("e4", "e5")
+PER_PAIR = ("e4", "e5", "e7t", "e7a")
+SUBDIR = {"e7t": "e7", "e7a": "e7"}  # both parts of E7 write into results/e7/raw
 
 
 def job_dirs(exp: str) -> list[Path]:
@@ -43,31 +44,33 @@ def merge_whole(exp: str) -> None:
 
 
 def merge_per_pair(exp: str) -> None:
-    dirs = [d / exp for d in job_dirs(exp) if (d / exp / "raw").is_dir()]
+    sub = SUBDIR.get(exp, exp)
+    dirs = [d / sub for d in job_dirs(exp) if (d / sub / "raw").is_dir()]
     if not dirs:
         return
     names = sorted({f.name for d in dirs for f in (d / "raw").glob("*.csv")})
-    dst = RESULTS / exp
-    if dst.exists():
+    dst = RESULTS / sub
+    if dst.exists() and sub == exp:
         shutil.rmtree(dst)
-    (dst / "raw").mkdir(parents=True)
+    (dst / "raw").mkdir(parents=True, exist_ok=True)
     for name in names:
         parts = [pd.read_csv(d / "raw" / name) for d in dirs if (d / "raw" / name).exists()]
         df = pd.concat(parts, ignore_index=True)
         df.to_csv(dst / "raw" / name, index=False)
         print(f"{exp}: {name}: {len(parts)} jobs, {len(df)} rows")
-    meta = next((d / "metadata.json" for d in dirs if (d / "metadata.json").exists()), None)
-    if meta:
-        m = json.loads(meta.read_text())
-        m["merged_from"] = [str(d.parent.relative_to(ROOT)) for d in dirs]
-        (dst / "metadata.json").write_text(json.dumps(m, indent=2))
+    for meta_name in ("metadata.json", "metadata_runtime.json", "metadata_accuracy.json"):
+        meta = next((d / meta_name for d in dirs if (d / meta_name).exists()), None)
+        if meta:
+            m = json.loads(meta.read_text())
+            m["merged_from"] = [str(d.parent.relative_to(ROOT)) for d in dirs]
+            (dst / meta_name).write_text(json.dumps(m, indent=2))
 
 
 def main(argv: list[str]) -> None:
     exps = argv or list(WHOLE) + list(PER_PAIR)
     for exp in exps:
         (merge_per_pair if exp in PER_PAIR else merge_whole)(exp)
-    plot = [e for e in exps if e in PER_PAIR and (RESULTS / e / "raw").is_dir()]
+    plot = [e for e in exps if e in ("e4", "e5") and (RESULTS / e / "raw").is_dir()]
     if plot:
         from pqde.cli import main as cli
 

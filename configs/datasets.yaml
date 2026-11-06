@@ -8,8 +8,12 @@ adult:
   loader: adult
   n_bins: 6
   max_view_atoms: 2
-  numeric: [age, hoursPerWeek]
-  categorical: [workclass, education, maritalStatus, occupation, relationship, race, gender, income]
+  numeric: [age, hoursPerWeek, capitalGain, capitalLoss]
+  categorical: [workclass, education, maritalStatus, occupation, relationship, race, gender, income, nativeCountry]
+  # usable attributes beyond explain_attrs: encoded, used only by the |Attrs| experiment (E7)
+  extra_explain_attrs: [capitalGain, capitalLoss, nativeCountry]
+  # mostly 0 (92% / 95%): one bin for 0, five quantile bins of the positive values
+  zero_bins: [capitalGain, capitalLoss]
   explain_attrs: [age, workclass, education, maritalStatus, occupation, relationship, race, gender, hoursPerWeek, income]
   ref_attrs: [age, workclass, education, maritalStatus, occupation, relationship, race, gender, hoursPerWeek, income]
   # |P| = 1,048 public views (the paper reports 1,052)
@@ -24,7 +28,9 @@ tax:
   n_bins: 6
   max_view_atoms: 2
   numeric: [Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
-  categorical: [Gender, State, MaritalStatus, HasChild]
+  categorical: [Gender, State, MaritalStatus, HasChild, AreaCode]
+  # usable attributes beyond explain_attrs: encoded, used only by the |Attrs| experiment (E7)
+  extra_explain_attrs: [AreaCode]
   explain_attrs: [Gender, State, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
   ref_attrs: [Gender, State, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
   view_attrs: [Gender, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp, State]
@@ -36,7 +42,9 @@ tax_dirty:
   n_bins: 6
   max_view_atoms: 2
   numeric: [Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
-  categorical: [Gender, State, MaritalStatus, HasChild]
+  categorical: [Gender, State, MaritalStatus, HasChild, AreaCode]
+  # usable attributes beyond explain_attrs: encoded, used only by the |Attrs| experiment (E7)
+  extra_explain_attrs: [AreaCode]
   explain_attrs: [Gender, State, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
   ref_attrs: [Gender, State, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
   view_attrs: [Gender, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp, State]
@@ -74,7 +82,9 @@ acsincome:
   n_bins: 6
   max_view_atoms: 2
   numeric: [AGEP, WKHP, SCHL]
-  categorical: [COW, MAR, SEX, RAC1P, RELP, OCCP_bucket, PINCP_bucket]
+  categorical: [COW, MAR, SEX, RAC1P, RELP, OCCP_bucket, PINCP_bucket, ST, POBP]
+  # usable attributes beyond explain_attrs: encoded, used only by the |Attrs| experiment (E7)
+  extra_explain_attrs: [ST, POBP]
   top_values: {RAC1P: 5, RELP: 8}
   explain_attrs: [AGEP, COW, SCHL, MAR, OCCP_bucket, RELP, WKHP, SEX, RAC1P, PINCP_bucket]
   ref_attrs: [AGEP, COW, SCHL, MAR, OCCP_bucket, RELP, WKHP, SEX, RAC1P, PINCP_bucket]

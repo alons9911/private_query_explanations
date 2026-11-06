@@ -96,6 +96,16 @@ def quantile_edges(x: np.ndarray, n_bins: int) -> list[float]:
     return edges
 
 
+def zero_bin_edges(x: np.ndarray, n_bins: int) -> list[float]:
+    """Edges for a non-negative attribute that is mostly 0 (e.g. capital gains): one bin for
+    exactly 0, then ``n_bins - 1`` quantile bins of the positive values."""
+    x = x[~np.isnan(x)]
+    pos = x[x > 0]
+    if len(pos) == 0:
+        return [0.0, 0.0]
+    return [0.0, 0.0] + quantile_edges(pos, n_bins - 1)[1:]
+
+
 def bucketize(x: np.ndarray, edges: list[float]) -> tuple[np.ndarray, list[str]]:
     """Map values to right-closed bins ``(e_{i}, e_{i+1}]``; the first bin is closed.
 
@@ -144,6 +154,7 @@ def encode(
     top_values: dict[str, int] | None = None,
     declared_domains: dict[str, list[str]] | None = None,
     value_labels: dict[str, dict] | None = None,
+    zero_bins: list[str] | None = None,
     meta: dict | None = None,
 ) -> EncodedDataset:
     """Build an :class:`EncodedDataset`.
@@ -156,9 +167,10 @@ def encode(
     top_values = top_values or {}
     declared_domains = declared_domains or {}
     codes, domains, edges = {}, {}, {}
+    zero_bins = set(zero_bins or [])
     for a in numeric:
         x = pd.to_numeric(raw[a], errors="coerce").to_numpy(dtype=float)
-        e = quantile_edges(x, n_bins)
+        e = zero_bin_edges(x, n_bins) if a in zero_bins else quantile_edges(x, n_bins)
         codes[a], domains[a] = bucketize(x, e)
         edges[a] = e
     for a in categorical:

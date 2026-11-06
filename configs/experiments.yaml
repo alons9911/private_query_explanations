@@ -91,3 +91,10 @@ e5:
 # E6 -- accuracy vs. the smoothing constant gamma
 e6:
   gamma_mults: [0.0, 0.03, 0.1, 0.3, 1.0, 3.0, 10.0, 30.0]
+
+# E7 -- the number of explanation attributes (views and reference attributes fixed);
+# |Attrs| from min_attrs to all usable attributes of the dataset (extra_explain_attrs)
+e7:
+  orders: 10               # random nested orders per pair; run r of a point uses order r
+  trials_per_order: 4      # accuracy: 10 orders x 4 = 40 private runs per point
+  min_attrs: 2
