@@ -2,6 +2,18 @@
 
 Keeps the state of the work outside the chat context.
 
+## Running now: E7, |Attrs| (started 2026-11-06 ~20:57 IST)
+Explanation attributes only (views, reference attributes fixed); 2 .. all usable attributes
+(extra_explain_attrs); 10 random nested orders per pair (user's decisions).
+* Runtime (e7t) in 6 cloud sessions, one dataset each, branch `...-e7-<name>`, dir
+  `results_shards/e7-<name>`; check with `scripts/shards_status.sh e7`.
+  acs session_01U646masakNHqcuvtD3XmYL (~1.5 h), ipums session_01U646mZwW6yoEUvYuc4qmiY,
+  tax session_01U646mcYcXjShf6JNguuRjw, taxdirty session_01U646maG8J3kBq2VU5mYXJu,
+  adult session_01U646mYrPFcKGomH1cjVWKW, hospital session_01U646mbyH5CbdQRy8NNV1QP.
+* Accuracy (e7a) locally: `scripts/run_shard.sh e7-local 4` -> `results_shards/e7-local`.
+* When done: fetch the 6 branches, `python scripts/merge_shards.py e7t e7a`, add a figure
+  (runtime row + accuracy row per dataset) and a paragraph to the chapter.
+
 ## Re-run under paper v21: complete (2026-11-02)
 Constants gamma_R = N/100, Delta_Use = 4/N; 10 runs per pair; time limit 30 min (3 runs per timed-out
 point); dense sweeps; 22 runtime pairs; eps up to 20; E1 with 10 releases.
