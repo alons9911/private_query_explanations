@@ -1,0 +1,197 @@
+\input{macros}
+\section{Model and Problem Statement}\label{sec:model}
+
+\subsection{Private Query-Difference Setting}
+\label{subsec:private-query-difference-setting}
+
+We consider a trusted server that holds a private database $D$ and receives, or derives, two related queries $Q_1$ and $Q_2$ over the same database.
+The goal is to explain the semantic difference between the corresponding query outputs $Q_1(D)$ and $Q_2(D)$ while preserving the privacy of individuals in $D$.
+
+In the query-refinement setting, $Q_1=Q$ is the original user query and $Q_2=Q'$ is a refined query produced by a refinement mechanism so that $Q'(D)$ satisfies a set of output constraints.
+In the consistent-query answering setting, the two outputs correspond to evaluating a query directly on the original database and evaluating it under repair semantics.
+In both settings, our framework treats the mechanism that produces the related output as a black box and focuses only on explaining the difference between the two resulting outputs.
+
+Concretely, the workflow is the following (Figure~\ref{fig:framework}).
+An analyst submits a query $Q_1$ to a trusted server holding the private database $D$; the server obtains the related query $Q_2$, either because the analyst supplies it or because an external mechanism --- a refinement algorithm, a repair procedure --- derives it.
+The server then evaluates both queries, privately selects a small set of predicate views and, within them, the explanation candidates that best characterise the difference, and finally releases noisy histograms for the selected candidates.
+Only this last object leaves the server; the analyst never observes $D$, the exact query outputs, or the exact scores that drove the selection.
+The mechanism producing $Q_2$ is treated as a black box throughout, and its own privacy cost, if any, is outside the scope of the analysis here.
+\alon{Done: trusted-server workflow described above and depicted in Figure~\ref{fig:framework}.}
+
+\subsection{Explanation Candidates}
+\label{subsec:explanation-candidates}
+
+An explanation in our framework compares the distribution of one attribute across the two query outputs, restricted to the same semantic region of the database.
+The semantic region is represented by a predicate view $p(D)$, and the compared distribution is represented by the one-way marginal of an attribute $A$.
+
+\begin{definition}[Histogram Explanation Candidate]
+Given a database $D$, two related queries $Q_1,Q_2$, a predicate view $p$, and an attribute $A \in \Attr(D)$, a \emph{histogram explanation candidate} is a pair
+\[
+    e=(p,A).
+\]
+The candidate induces the two histograms
+\[
+    H_{Q_1(p(D)),A}
+    \qquad\text{and}\qquad
+    H_{Q_2(p(D)),A}.
+\]
+\end{definition}
+
+The predicate view $p(D)$ localizes the explanation to a semantic region of the data, while the attribute $A$ determines the distribution being compared.
+A candidate is informative when the two induced histograms differ substantially, since such a difference indicates that the change from $Q_1$ to $Q_2$ affected the selected population with respect to attribute $A$.
+
+\begin{example}[Explanation candidate]
+\label{ex:candidate}
+Continuing Example~\ref{ex:running}, take the view $p=(\texttt{education}=\texttt{Masters})$ and the attribute $A=\texttt{occupation}$.
+The candidate $e=(p,A)$ induces two histograms over occupations: $\hist{\Qone(\pD)}{A}$, counting Master's-degree holders working at least $50$ hours who are selected by the original query, and $\hist{\Qtwo(\pD)}{A}$, counting those selected by the refined query.
+The candidate is informative to the extent that these two occupational profiles differ; if the refinement shifts the population from managerial towards professional-specialty roles, that shift is visible as a difference between the two histograms, and is invisible in the aggregate value alone.
+\end{example}
+\alon{Done: running example added as Example~\ref{ex:candidate}.}
+
+\subsection{Ideal Explanation Quality}
+\label{sec:explanation-quality}
+
+We evaluate explanation candidates according to four desiderata: \emph{interestingness}, \emph{representativeness}, \emph{coverage}, and \emph{diversity}.
+Similar families of criteria are commonly used in explanation and data-exploration systems: interestingness captures whether an explanation highlights a meaningful deviation, while diversity encourages a set of explanations to cover complementary aspects of the data rather than repeatedly showing the same phenomenon \cite{FEDEX}.
+Histogram-based explanations and distributional summaries are also used in private explanation frameworks such as DPXPlain \cite{TaoGMR22}.
+The closest analogue is the recent work on differentially private explanations for clustering results~\cite{DPClustX}, which likewise proceeds by showing that the natural quality measures are too sensitive for direct private use and then constructing low-sensitivity replacements.
+Our setting differs in what is being explained --- the difference between two \emph{query outputs} over the same database, rather than the deviation of a cluster from the full dataset --- but the design pressure is the same, and we adopt the same overall strategy.
+\alon{Done: cited~\cite{DPClustX}; representativeness and coverage follow the exploration measures of~\cite{FEDEX,ICDE23} already cited above.}
+
+For an attribute $A$, let $\Dom(D[A])$ denote the finite set of values, or buckets, used in the histogram of $A$.
+For a candidate $e=(p,A)$, the \emph{interestingness} component measures how much the distribution of $A$ changes between $Q_1(p(D))$ and $Q_2(p(D))$:
+\begin{multline*}
+I(p,A) = \sum_{v\in\Dom(D[A])} \Big|
+\Pr(t[A]=v \mid t \in Q_1(p(D)))\\
+-
+\Pr(t[A]=v \mid t \in Q_2(p(D)))
+\Big|.
+\end{multline*}
+Intuitively, an explanation is interesting if it highlights an attribute whose distribution is substantially affected by the query change.
+When either $Q_1(p(D))$ or $Q_2(p(D))$ is empty the conditional distributions above are undefined; we assign such candidates $I(p,A)=0$ rather than discarding them, so that the domain of the objective does not itself depend on the data.
+The same convention applies to the proxy of Definition~\ref{def:hd}, where it arises automatically: an empty query output contributes zero to every bin.
+\alon{Done: empty outputs are scored $0$, not discarded, so that the candidate set is data-independent.}
+
+The \emph{representativeness} component favors predicate views that are not overly exceptional or idiosyncratic relative to the underlying database.
+We measure how close the distribution of $A$ inside the view $p(D)$ is to its distribution in the full database:
+\begin{align}
+R(p,A)
+&= 1-\TVD\!\left(P_{D,A},\,P_{p(D),A}\right)\\
+&= 1-\frac{1}{2}\!\!\sum_{v \in \Dom(D[A])}\!\!
+\Big| \Pr(t[A]{=}v \mid t \in D) \nonumber\\[-2pt]
+&\hphantom{{}= 1-\frac{1}{2}\!\!\sum_{v \in \Dom(D[A])}\!\!\Big|}
+- \Pr(t[A]{=}v \mid t \in p(D)) \Big|.
+\label{eq:ideal-representativeness}
+\end{align}
+This prevents explanations from focusing on small or unusual regions that may exhibit large changes but are not representative of the data.
+The factor of $\frac{1}{2}$ is the one carried by $\TVD$ (Definition~\ref{def:tvd}) and is required for $R$ to be well defined as a quality score: without it the sum ranges over $[0,2]$ and $R$ can be as low as $-1$, so a maximally unrepresentative view would be rewarded with a large negative multiplier in $U^*$ below rather than penalised.
+\alon{Done: normalisation fixed to $1-\TVD$; the unnormalised form could range below $0$. The low-sensitivity counterpart used by the algorithm is Eq.~\eqref{eq:representativeness-proxy}, which additionally smooths the view-side denominator.}
+
+The \emph{coverage} component favors views that contain sufficient evidence from the compared query outputs.
+High coverage makes the explanation statistically more reliable and less likely to be driven by a few tuples:
+\[
+C(p)
+=
+|p(D)| \cdot |Q_1(p(D))| \cdot |Q_2(p(D))|.
+\]
+The product form is deliberate: it vanishes whenever \emph{either} query output is empty inside the view, which is the case in which no comparison between $Q_1$ and $Q_2$ is possible at all, and it grows with the evidence available on both sides.
+A sum would not have this property, as it would reward a view that is large on one side and empty on the other.
+\alon{Done: kept the product, with the justification that it vanishes when either side is empty; the algorithm's normalised proxy (Eq.~\eqref{eq:coverage-proxy}) is the low-sensitivity counterpart, related by dividing by $|D|$ and dropping the $|p(D)|$ factor.}
+
+For a single candidate, the ideal quality is
+\[
+U^*(p,A)
+=
+I(p,A) \cdot R(p,A) \cdot C(p).
+\]
+When releasing several explanations, the selected set should also be diverse.
+Diversity encourages the explanations to expose different semantic aspects of the change from $Q_1(D)$ to $Q_2(D)$, rather than repeatedly reporting the same phenomenon.
+We therefore state the ideal quality of a \emph{set} $E$ of candidates, which is what Definition~\ref{def:query-difference-explanation} asks to maximise.
+For an attribute $A$, let $U^*_{(1)}(A)\ge U^*_{(2)}(A)\ge\cdots$ be the ideal scores of the candidates of $E$ that use $A$, in decreasing order, and let $w_1\ge w_2\ge\cdots\ge0$ with $w_1=1$ be a non-increasing weight profile.
+Then
+\begin{equation}
+U^*_w(E)=\sum_{A}\;\sum_{j\ge1} w_j\,U^*_{(j)}(A).
+\label{eq:ideal-set-utility}
+\end{equation}
+Within each attribute group the strongest candidate contributes in full and every further candidate is discounted by its rank, so repeatedly explaining the same attribute yields diminishing returns.
+We use the graded profile $w_j=\lambda^{\,j-1}$ for $0\le\lambda\le1$, which is the form the algorithm's diversity term takes in Equation~\eqref{eq:diversity-score}; $\lambda=1$ removes the diversity requirement entirely and $\lambda=0$ admits at most one explanation per attribute.
+A flat profile $w=(1,\lambda,\lambda,\dots)$, charging every repeat the same $\lambda$, is also admissible and coincides with the graded one on the first two members of a group; the two differ from the third onwards, which matters once $k$ is large enough for an attribute to be used three or more times.
+Section~\ref{subsubsec:set-objective} shows that the proxy counterpart of Eq.~\eqref{eq:ideal-set-utility}, obtained by replacing $U^*$ with $\HD_\gamma$, is order-independent and monotone submodular for any such $w$, and Theorem~\ref{thm:non-private-hardness} shows that it is in fact maximised \emph{exactly} by the greedy selection of Algorithm~\ref{alg:topk}.
+\alon{Done: set-level utility stated in Eq.~\eqref{eq:ideal-set-utility}. It was previously written as $\lambda\sum_e U^*(e)+(1-\lambda)\sum_A\max U^*$, which expands to the \emph{flat} weights $(1,\lambda,\lambda,\dots)$ and therefore disagreed with the graded profile $\lambda^{j-1}$ used by Eq.~\eqref{eq:diversity-score} and Definition~\ref{def:setobj} from the third member of a group onwards --- so the proxy was not in fact a counterpart of the ideal. Both are now stated in the same general weighted form.}
+
+The ideal objective above captures the explanations we would like to select in the absence of privacy and computational constraints.
+However, directly optimizing it is problematic for differentially private selection.
+In particular, the score contains conditional distributions and coverage terms that may change significantly when a single tuple is added or removed, especially for small predicate views or small query outputs.
+This motivates the low-sensitivity proxy measures introduced in Section~\ref{sec:solution}.
+
+\begin{proposition}[Sensitivity of the ideal quality function]
+\label{prop:ideal-utility-sensitivity}
+The global sensitivity of $U^*$ is not bounded by any constant.
+Specifically, there exist neighbouring databases $D\sim D'$, a view $p$ and an attribute $A$ for which
+$|U^*(p,A;D)-U^*(p,A;D')| = \Omega(|D|^2)$.
+\end{proposition}
+
+\begin{proof}
+We give an explicit family of instances, then note a second, independent source of instability.
+
+\emph{The $\Omega(|D|^2)$ construction.}
+Let $D$ consist of $n$ tuples, all satisfying $p$, so that $p(D)=D$ and $|D|=n$.
+Give $n-1$ of them $A$-value $a$ and let each satisfy $Q_1$ but not $Q_2$; give the remaining tuple $A$-value $b\ne a$ and let it satisfy $Q_2$ but not $Q_1$.
+Then
+\[
+C(p)=|p(D)|\cdot|Q_1(p(D))|\cdot|Q_2(p(D))| = n(n-1)\cdot 1 ,
+\]
+the two conditional distributions are point masses on $a$ and on $b$ respectively, so $I(p,A)=2$, its maximum; and $p(D)=D$ gives $\TVD(P_{D,A},P_{p(D),A})=0$, so $R(p,A)=1$.
+Hence $U^*(p,A;D)=2n(n-1)$.
+
+Let $D'=D\setminus\{t\}$ where $t$ is the single $Q_2$ tuple.
+Now $Q_2(p(D'))=\emptyset$, so $C(p)=0$ and, by the convention fixed above, $I(p,A)=0$; therefore $U^*(p,A;D')=0$.
+The two databases are neighbours and
+\[
+|U^*(p,A;D)-U^*(p,A;D')| = 2n(n-1)=\Omega(|D|^2),
+\]
+which is the claim.
+Note that the three factors are large \emph{simultaneously} here, which is what makes the bound a statement about $U^*$ rather than about $C$ alone.
+This is the price of the product form for $C$: exactly the property that makes it vanish when either side is empty makes it enormous when one side is nearly empty.
+
+\emph{A second source: interestingness.}
+Even holding $C$ fixed, $I$ is a difference of two \emph{conditional} distributions, so its stability depends on $|Q_1(p(D))|$ and $|Q_2(p(D))|$ rather than on $|D|$.
+Let $Q_1(p(D))=\{t\}$ with $t[A]=a$ and let $Q_2(p(D))$ be large with all its mass on a single value $b\neq a$, so $I(p,A)=2$.
+Adding to $Q_1(p(D))$ one tuple with $A$-value $b$ moves $I$ to $1$: a change of $1$, independent of $|D|$.
+(The added value must lie in the support of $Q_2(p(D))$; adding a value fresh to both outputs leaves $I$ unchanged, so it is the overlap that drives the change.)
+Consequently no sensitivity bound for $I$ that decays with $|D|$ is available, and in particular the $1/|D|$-type bounds that the proxies of Section~\ref{sec:solution} enjoy cannot hold for $U^*$.
+
+Both failures share a cause: the quantities are \emph{ratios or products of counts} that can be driven by a handful of tuples.
+This is precisely the difficulty that the low-sensitivity proxies of Section~\ref{sec:solution} are designed to remove --- $\Cov$ replaces the product by a sum normalised by the public $|D|$ (Eq.~\eqref{eq:coverage-proxy}), and $\HD_\gamma$ replaces the conditional distributions by counts with a smoothed denominator (Definition~\ref{def:hd}).
+\end{proof}
+\alon{Done: proof added, showing the $\Omega(|D|^2)$ blow-up of the coverage factor and the $|D|$-independent instability of the interestingness factor.}
+
+\subsection{Problem Definition}
+\label{subsec:problem-definition}
+
+We can now state the explanation task using the candidate and quality notions above.
+The non-private version asks for high-quality explanations of the difference between two related query outputs.
+The private version adds the requirement that the released explanations and histograms satisfy differential privacy with respect to the private database $D$.
+
+\begin{definition}[Query-Difference Explanation Problem]
+\label{def:query-difference-explanation}
+Given a database $D$, two related queries $Q_1,Q_2$, a set of predicate views $\mathcal{P}$, an attribute set $\Attr(D)$, and an integer $k$, return a set $E$ of $k$ histogram explanation candidates $(p,A)$ that maximizes the ideal explanation quality for the semantic difference between $Q_1(D)$ and $Q_2(D)$.
+\end{definition}
+
+\begin{definition}[Differentially Private Query-Difference Explanation Problem]
+\label{def:problem}
+Given a private database $D$, two related queries $Q_1,Q_2$, a set of predicate views $\mathcal{P}$, an attribute set $\Attr(D)$, a privacy budget $\epsilon>0$, and an integer $k$, output $k$ histogram-based explanations for the difference between $Q_1(D)$ and $Q_2(D)$ while satisfying $\epsilon$-differential privacy with respect to $D$.
+\end{definition}
+
+The released object is the noisy \emph{difference} histogram $\nhist_{p,A}$ for each selected candidate.
+Releasing the two histograms $\hat H_{Q_1(p(D)),A}$ and $\hat H_{Q_2(p(D)),A}$ separately is also possible, and is strictly more informative, since the difference is recoverable from the pair by post-processing, but it is not free: each histogram must then be noised independently, so under a fixed budget $\epsilon_H$ each carries roughly twice the noise of a single difference release.
+We define the problem in terms of the difference histogram and note the paired variant where the distinction matters.
+\alon{Done: the released object is fixed to be the noisy difference histogram, with the paired alternative and its cost noted.}
+
+\subsection{Challenges}
+\label{subsec:model-challenges}
+
+The ideal problem above is difficult for two reasons.
+First, the space of possible predicate views is combinatorial in the number of attributes and values, so enumerating all possible semantic regions is infeasible.
+Second, the ideal utility function may have high sensitivity, which would require adding large amounts of noise or would make private selection ineffective.
+Therefore, the algorithm in the next section restricts the candidate space to predicate-based views and replaces the ideal utility components with low-sensitivity proxy measures.

@@ -1,0 +1,299 @@
+\documentclass[main.tex]{subfile}
+
+\begin{document}
+\settopmatter{printacmref=false}
+\setcopyright{none}
+\renewcommand\footnotetextcopyrightpermission[1]{}
+\pagestyle{plain}
+\pagenumbering{gobble}
+
+\title{Query Refinement for Diverse Top-$k$ Selection -- Revision Letter}
+
+\renewcommand{\shortauthors}{}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We greatly appreciate and thank the reviewers for all their feedback, as well as the opportunity to revise our submission in order to address their comments and concerns. In this letter, we first summarize the changes we have made, and afterwards respond individually to the comments of each reviewer.
+
+\section*{Summary of Changes}
+\subsection*{Comparison with Erica \cite{ERICA}}
+Erica served as an inspiration and a starting point for our work. While Erica solves a problem similar to ours, 
+there are a few key points that make our framework substantially different. 
+% make it difficult to extend it to answer instances of our problem.
+First, Erica only considers the presence of tuples in the output, not their order. In particular, the provenance model used in~\cite{ERICA} is insufficiently expressive to make their method rank-aware. 
+Second, since satisfying the constraints in our setting is more challenging, we focus on finding approximate solutions that are close to satisfying the constraints, while Erica finds solutions that satisfy the constraints exactly. Finally, our framework allows the user to define the distance measure between queries, which may be based on the predicate distance, the output distance, or a combination thereof, whereas Erica uses a single distance measure based on the predicate distance.
+% uses inequalities constructed from the provenance information it collects to quickly evaluate whether a refinement satisfies some set of constraints, but the provenance model on which these inequalities are based is insufficiently expressive to make them rank-aware. 
+% Furthermore, Erica uses the assumption that distance from predicates is the measure being minimized as a basis for its searching algorithm, making it non-trivial to extend Erica to minimize other distance measures (such as the output-based measures in our work) efficiently. Erica does not have a notion of approximating constraints, as we introduce in our framework. \\ 
+
+We added a detailed discussion of the differences to  \Cref{sec:introduction,sec:experiments,sec:related}. We also added a case study in \Cref{sec:erica_comparison}, showing the differences in the results and performance of the two solutions.
+
+
+% \indent That being said, we acknowledge that there is some overlap in which both systems may be used to refine the same input. We have now present in \Cref{sec:experiments} a use case comparing our framework with Erica. It showcases a particular input, and then shows the results obtained, along with the runtime performance and briefly noting that our system is able to provide a refinement with a closer predicate distance to the input query.
+% \indent Our framework and Erica could be used to refine the same input in two cases: 
+% \begin{enumerate}
+%     \item The constraint set input to our framework has constraints only over the top-$|\widetilde{Q}(D)|$ where $|\widetilde{Q}(D)|$ is the size of the output of the refinement that returns the maximum possible number of tuples.
+%     \item The constraint set input to our framework has constraints with only one $k$ value, such that we may require that Erica find a refinement satisfying the constraint set (ignoring the top-$k$ requirement), and returning exactly $k$ values.
+% \end{enumerate}
+% Case (1) essentially makes the {\tt ORDER BY} of the input query irrelevant to our system, while Case (2) makes the {\tt ORDER BY} of the input query irrelevant to Erica by having it return exactly $k$ results, all of which must necessarily be in the top-$k$ of any {\tt ORDER BY}. In both cases, $\varepsilon$ must be $0$, as Erica has no notion of approximately satisfying a set of constraints. \\
+
+
+\subsection*{Support of SPJ Queries}
+We define the problem and model our solution through MILP program, assuming the input query is an SPJ query. In particular, the correctness of our solution, as stated in \Cref{thm:bounded-deviation}, relies on three properties: (1) every possible refinement may be represented as an assignment to the variables of the program, (2) the tuples in the output of any potential refinement are in the same relative order, and (3) every tuple in the output satisfies all the predicates of the corresponding refinement. These properties hold for MILP programs that are generated based on given SPJ queries, but they may not hold for other classes of queries. We discuss the scope of our model at the end of Section~\ref{sec:search}, and consider the extension of our model as an intriguing direction for future work (see Section~\ref{sec:conclusion}). We also clarified in \Cref{sec:cardinality-constraints} that our problem definition only refines the selection predicates and not the join conditions. Refining the query can be done using the information from $\widetilde{Q}$, which can be generated in the computation process of any SPJ query.
+% -- provides the necessary information for refining them.
+%\julia{Something on how we use SPJ query processing to compute annotations.}
+
+% We assume that the result of $\widetilde{Q}$ has every tuple that may be in the output of some possible refinement, and use it to compute the lineage annotations used in our MILP model. However, If $Q$ has a subquery, then $\widetilde{Q}$ cannot be guaranteed to return every such tuple. Furthermore, we then use the annotations generated by processing $\widetilde{Q}$ to formulate a MILP instance which builds on the two further assumptions: the assumption that the order between tuples in any refinement is the same as they are in $\widetilde{Q}$, and the assumption that a tuple much match all predicates of the refinement to be in its output. We now explain in \Cref{sec:query_class_lims} that other classes of queries may break these assumptions. Thus we limit the discussion in this paper to SPJ queries. However, extending our solution to support a richer class of queries is an intriguing direction for future work. In particular, we added a discussion on possible directions and challenges in Section~\ref{sec:conclusion}.
+
+
+
+
+% Some classes of queries break this assumption, as well as the assumptions that follow. We have added a subsection to \Cref{sec:search} explicitly stating these assumptions, and describe how richer classes of queries may break these assumptions which is the basis for restricting ourselves to SPJ queries. Furthermore, we now mention in the future work section that our model may be extended to union queries and that extending our model to richer classes of queries presents interesting directions with their own challenges. For example, extending our model to support subqueries requires treating the possibility that refinements may now change the relative order of tuples.
+
+\subsection*{Additional Experiments}
+We have performed additional sets of experiments in order to present an expanded understanding of the scalability of our solution. Specifically, we ran experiments to address (1) scalability over real-life datasets and how growth in the number of lineage classes affects performance and (2) implementing a provenance-based baseline. %(2) implementing a provenance-based evaluation method for the na\"{i}ve method. 
+We addressed (1) by using Synthetic Data Vault (SDV) \cite{SDV} to build scaled-up versions of our real-life datasets. The system fits a synthesizer to the dataset in order to generate synthetic data that will match the distribution of the input dataset. This way, we are able to not only scale the input data size, but the number of lineage classes as well, as we saw an increase in the number of lineage classes in each scaled-up synthesized dataset. 
+
+For (1), we find that increasing the data size for more complicated input queries like Q5 of TPC-H has a large impact on the MILP problem setup time, while the number of lineage classes that has the largest impact on the solving time. For (2), % we added an additional method of evaluation for the na\"{i}ve method. 
+while the most basic na\"{i}ve method queries the database with each possible refinement, the provenance-based baseline %captures the lineage of the tuples and 
+caches the lineage of the tuples, so that all tuples of a given class can be accessed quickly. We find that using provenance-based evaluation speeds up the na\"{i}ve baseline significantly, but still has trouble scaling with the space of possible refinements and its combinatorial blowup. In the case that there are very few possible refinements, its performance is comparable to our optimized MILP solution, but we see that it quickly lags behind as this space grows.  
+
+\subsection*{Presentation Issues}
+We have addressed the presentation issues pointed out by the reviewers. We fixed the various typos in our submission, worked to make the figures more readable, and added clarification where needed.% to \felix{...} \\
+\indent To enhance the readability of our graphs, we have removed the annotations denoting the deviation of the output refinement, %\felix{except where none was found?} 
+as they were not subject to much discussion and are anyway guaranteed to be below $\varepsilon$ if such a refinement exists.  We detail specific changes below.
+
+\section*{Changes by Reviewer}
+We have opted to color code our responses to individual reviewers in the remainder of the letter and the paper. We use the following scheme to distinguish the reviewers:
+\begin{itemize}
+    \item \reva{Reviewer 1's comments are in blue}
+    \item \revb{Reviewer 2's comments are in orange}
+    \item \revc{Reviewer 3's comments are in green}
+    \item \revmulti{Comments made by multiple reviewers are in purple}
+\end{itemize}
+
+\subsection*{\reva{Reviewer 1}}
+\paragraph*{{\bf O1}} 
+{\it While the authors may technically be correct that no previous work had solved the exact same problem, I find the discussion of and comparison to related work too superficial. Reference [25] in particular proposes almost the same idea. They aim at essentially the same query class, consider very similar modifications of the WHERE clause, and also use provenance expressions for their solution. [25] looks at the entire query output, not the top-k in a sorted output, but is that really a fundamental difference? The authors should discuss in more detail why it is not easy to extend the techniques from [25] to top-k queries. [25] is a short demo paper, but more details should be available in a technical report or possibly a full publication.}
+
+\paragraph*{Response}
+\reva{As mentioned at the beginning of this letter, while we are inspired by Erica, our framework is substantially different from their work. We use the same type of intervention as noted, but making such an intervention required new techniques to be developed in order to accommodate the challenges brought by adding ranking to queries. We have addressed the request to discuss why Erica is not easily extended in \Cref{sec:related}, and additionally compare in \Cref{sec:erica_comparison} our solution's performance and results directly to Erica for a use case where they overlap.}
+
+%%%
+
+\paragraph*{{\bf O2}} 
+{\it The claim of supporting SPJ queries is misleading and should be removed. The proposed solution is equivalent to a selection-only query over a single table, because the authors seem to assume that the output of the join is fully materialized. At least I cannot tell how the authors would avoid materializing the entire join output before applying their MILP construction.}
+
+\paragraph*{Response}
+\reva{Thank you for this comment; we would like to clarify that in our problem definition, we allow only refining the selection predicates and not the join conditions. Our claim of supporting SPJ queries is specifically about the fact that our model can refine any input SPJ query, so long as a sufficiently satisfactory refinement exists. This is done through $\widetilde{Q}$ which may be generated in the computation process of any SPJ query. We now clarify this point in the paragraph regarding refinements in \Cref{sec:cardinality-constraints}.}
+
+
+% explain how those annotations are generated, but in fact, we do not need to compute $\widetilde{Q}(D)$. We only need the lineage annotation (which can be generated in the computation process \yuval{verify!}). We now clarify this point in \yuval{complete}.}
+% \reva{The lineages are generated as a product of the SPJ query processing. Evaluating $\widetilde{Q}$ over the database gives us all the possible tuples that may be selected by all the possible refinements over $Q$ so long as $Q$ is an SPJ query, as well as letting us generate the annotations we use \yuval{we don't really need $\widetilde{Q}$, just the annotations it generates, right?}. Furthermore, by assuming $Q$ is SPJ, we may use a few more assumptions about it than in our model as is detailed at the beginning of this letter.}
+
+%%%
+
+\paragraph*{{\bf O3}} 
+{\it The paper needs to explore scalability in dataset size on real data. TPC-H is a synthetic benchmark with a very simple data distribution. Does the number of lineage equivalence classes actually increase for a larger scaling factor? What happens if the dataset size and the number of lineage equivalence classes increase?}
+
+\paragraph*{Response}
+\reva{As mentioned in the beginning of this letter, we have scaled up our real-life datasets using a tool which learns their distribution and then synthesized additional data. This way we now demonstrate the effect of increasing dataset sizes with a simultaneous increase in lineage classes according to the distribution.}
+
+%%%
+
+\paragraph*{{\bf M1}} 
+{\it How would a user set the epsilon parameter in practice?}
+
+\paragraph*{Response}
+\reva{The user may consider the worst-case scenario that would still be acceptable for each constraint, and then use \Cref{def:mospe} to calculate the deviation of this output assuming the other constraints are perfectly satisfied, using the minimum to set $\varepsilon$. This way, any refinement generated is not worse than the worst-case scenario for any single constraint.}
+
+%%%
+
+\paragraph*{{\bf M2}} 
+{\it The problem is defined for a combination of dataset and query. Hence theorem 2.5 should also include a quantification over queries.}
+
+\paragraph*{Response}
+\reva{This is true. We have amended the theorem to include this quantification.}
+
+%%%
+
+\paragraph*{{\bf M3}} 
+{\it The mapping from non-linear distance functions to linear approximations is not clear in section 3. This needs some more details, at least for those functions used in the experiments.}
+
+\paragraph*{Response}
+\reva{We have added a brief explanation of how the three distance measures tested were linearized at the end of Section~\ref{sec:benchmark} and refer the readers to~\cite{Extended, impl} for more details. In summary, we use the Charnes-Cooper transformation \cite{CC62} for the Jaccard distance computed by the predicate distance for categorical predicates. However, this transformation is unnecessary for the Jaccard distance over the output as we assume there are at least $k^*$ in the tuples, meaning we can simply maximize the number of original tuples in the refinement as any increase in the amount of original tuples (i.e. the intersection) is concomitant with a decrease in the size of the union. The Kendall's $\tau$ for top-$k$ is computed by producing binary variables for each tuple for the relevant cases (Cases 2 and 3) defined in \cite{FKS03}. The binary variable is equal to the sum of this case (assuming optimistically that the tuple was selected) if the tuple is selected, and zero otherwise).}
+
+%%%
+
+\paragraph*{{\bf M4}} 
+{\it I initially thought that (7) was incorrect, because it can double-count projected tuples like person $t_8$ in the example. While this could be fixed by adding {\tt DISTINCT} and projections to the join, there is some potential for confusion for a user. It seems that when ranking tuples that have a natural notion of a unique identifier, one should always enforce the corresponding {\tt UNIQUE} constraint.}
+
+\paragraph*{Response} 
+\reva{% We originally implemented support for selections with {\tt DISTINCT} in order to handle the situation you are describing. 
+In the interest of keeping our solution general, we allow the user to decide whether or not they want individuals to be repeated in the resulting query output. E.g., in \Cref{ex:running} if students could receive multiple scholarships for participating in more than one extracurricular activity, we would not use {\tt DISTINCT}. We now explicitly state that we support selections with {\tt DISTINCT} and when it should be applied.}
+%\felix{(\ref{eq:tuples_to_satisfy_inline}) does not count individuals (i.e. tuples sharing a combination of {\tt DISTINCT} attributes) more than once, as we define and use $S(t)$ to treat making $\alpha(r_t) = 0$ the only feasible assignment if another tuple belonging to that individual was already selected (by ranking better than this tuple). This makes its $l_{t, k}$ values have to be assigned $0$, meaning it does not contribute to (\ref{eq:tuples_to_satisfy_inline}). We do already use {\tt DISTINCT} in the example. That being said, we don't (and can't) enforce {\tt DISTINCT} or {\tt UNIQUE} on $\widetilde{Q}$ since we need all possible lineages for that individual -- perhaps this is the confusing point? Instead, we treat this separately. Should we treat this comment by just clarifying this? Also, we have commented out somewhere that we assume {\tt DISTINCT} if there is some natural notion of an individual. }
+
+%%%
+
+\paragraph*{{\bf M5}} 
+{\it Fix typos in formulas. In (8), the factor should be $\frac{1}{|\mathcal{C}|}$. In example 3.5, the instances of (7) are missing parentheses around the sum of $l_{t,k}$ terms.}
+
+\paragraph*{Response}
+\reva{We have fixed the typos in the formulas throughout the paper. Thank you for noticing these instances.}
+
+%%%
+
+\paragraph*{{\bf M6}} 
+{\it It is not clear what "...resulting in the dominance of tuple count over the running time" means.}
+
+\paragraph*{Response}
+\reva{We meant that increasing the number of constraints has a relatively insignificant effect compared to varying the number of tuples for realistic increases. This is because the number of expressions generated is linear in the number of predicates, constraints, and tuples, and there are significantly fewer constraints than tuples. We have clarified this point in the paper (see "Number of constraints" paragraph is \Cref{sec:results}).}
+
+%%%
+
+\paragraph*{{\bf M7}} 
+{\it The discussion of the experiment for the "effect of constraints type" references several incorrect figure numbers.}
+
+\paragraph*{Response}
+\reva{Thank you for pointing this out. We have updated the figure references to match.}
+
+%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{\revb{Reviewer 2}}
+
+\paragraph*{{\bf O1}} 
+{\it In general the figures used in the evaluation are difficult to read. Various notations are not explicitly defined as well. For example, the different acronyms used for the distance metrics.}
+
+\paragraph*{Response}
+\revb{We have polished the figures to make them easier to read and clarified how to interpret the graphs. We now introduce the different acronyms used for the distance metrics in the Parameters setting paragraph in Section~\ref{sec:benchmark}.}
+% (abbreviations, setup/total split, etc.).}
+
+%%%
+
+\paragraph*{{\bf O2}} 
+{\it You have provided well sounding reasonings for the experiments on different numbers on various components. However, you have not included any comparison between the distance metrics. Although they are quite similar to each other, it is also evident that they follow a pattern. An explanation on that would be welcome.}
+
+\paragraph*{Response}
+\revb{We now discuss the trends in the runtime efficiency of our various selected distance measures at the end of \Cref{sec:results}. We can see from the experimental results that Kendall's $\tau$ is typically the hardest to compute. This is because additional binary variables are needed in order to linearize it, which accounts for the extra cost. We also observed that when the refinements search space is large (for instance, in the Astronauts dataset), $DIS_{pred}$ takes longer to prove optimality.}
+
+
+% for top-$k$ takes more time in particular as its linearization requires the creation of additional binary variables in order to linearize it, which accounts for the extra cost. The predicate distance is faster than the output distances as it does not need the positions of the tuples originally in the top-$k^*$, and so the expressions and variables for these are not created as is now detailed in an addition to \Cref{sec:experiments} in which we describe the implementation of the distance measures.}
+
+%%%
+
+\paragraph*{{\bf O3}} 
+{\it Some more explanations about the SPJ queries are needed. Which is the reason that makes the solution working only for them or why for them.}
+
+\paragraph*{Response}
+ \revb{We have clarified why only SPJ queries are supported by our model. Please see ``Support of SPJ Queries'' in the summary of the main changes.} 
+% The changes we made are those that were described at the beginning of this letter.}
+
+%%%
+
+\paragraph*{{\bf M1}}
+{\it In the Section 5, subsection ‘Effect of constraints type’ you reference the wrong figure.}
+
+\paragraph*{Response}
+\revb{Thank you for noticing this. We have updated the figure references accordingly.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{\revc{Reviewer 3}}
+
+\paragraph*{{\bf O1}} 
+{\it The authors should compare with Erica [25] as a baseline. (I also see that the full paper has been published in VLDB.) Cardinality constraints on the output are supported by that work as far as I can tell, so the top-k queries can be expressed by simply asking for $\leq k$ answers irrespective of the order. The authors should demonstrate some tangible improvement over that approach.}
+
+\paragraph*{Response}
+\revc{We now discuss in more detail the differences between the problem solved by Erica and the problem we present in the paper and present a use case in \Cref{sec:erica_comparison} comparing our framework to Erica. Note that imposing an additional constraint that limits Erica's output size also restricts the possible refinements, and consequently, the refinements generated by Erica may be sub-optimal. We explain why Erica can not be used to solve our problem and thus can not be used as a baseline.}
+
+% explaining why Erica can not be used to solve the our problem, and thus can not be used as a baseline. We also present a use case in \Cref{sec:erica_comparison} comparing our framework to Erica. We 
+% Your observation is correct, and we use this fact to compare the cases. That being said, we do not use Erica as a baseline for all experiments as it supports only one distance measure, and provides a different type of answer.}
+
+%%%
+
+\paragraph*{{\bf O2}} 
+{\it I did not find the example in the Introduction very realistic and needed to look at related works to see convincing examples. I was very confused by this because the eligibility criteria for a scholarship are fixed/announced a priori and cannot change depending on what we want the outcome to be. Please use some better examples or be more specific about which part of the process this is intended to be used for.}
+
+\paragraph*{Response}
+\revc{While it is true that selection criteria may be specified before data is collected, there are many pipelines where this criteria is either specified approximately, or no precondition at all is required for simply being considered. In the context of our example, approximate criteria may take the form of "strong grades" or "participation in relevant extracurricular activities" without specifying concretely what this means. Where no precondition is being made, there is simply a large pool of data from which an analyst would like some subset of items that fit some desiderata formulated after data collection. We modified \Cref{ex:running} in \Cref{sec:introduction} to demonstrate this.}
+% In the context of our example, this could take the form of the foundation receiving the data from a scholarship matching agency which collects data about all kinds of students. We have adjusted our example in \Cref{sec:introduction} to be an instance of the latter.}
+
+%%%
+
+\paragraph*{{\bf O3}} 
+{\it I am also perplexed about the procedural fairness claim. Why is the proposed MILP approach that chooses the selection conditions procedurally fair? Is it not part of the "process" that "procedural fairness" refers to? Imagine a candidate who asks why they were not picked in the context of a transparent mechanism. Isn't (at least part of) the answer that the MILP chose certain selection conditions to exclude the candidate based on their characteristics? Maybe I am missing something here, but in any case I would like to see a more thoughtful discussion in the paper.}
+
+\paragraph*{Response}
+\revc{We claim our methodology is procedurally fair as it creates a query with new requirements, and then test all individuals against these same requirements. Post-processing algorithms, on the other hand, will include or exclude individuals directly based on the group they belong to and therefore treating individuals differently. We have clarified this point in \Cref{sec:introduction} where we discuss the differences between in-processing and post-processing methods.}
+
+%%%
+
+\paragraph*{{\bf O4}} 
+{\it The authors mention that they handle SPJ queries, but do not really discuss them anywhere, and always seem to assume a single table. This leads me to the conclusion that joins and projections are done before the process starts and their complexity is not even considered. If that is the case, what is the meaning of the claim? And why SPJ queries instead of, say, recusive queries or any SQL query that would be evaluated upfront?}
+
+\paragraph*{Response}
+\revc{As mentioned in the main changes, we have added a discussion clarifying the support of our solution in SPJ queries at the end of \Cref{sec:search}.  
+% clarified in the paper the assumptions that limiting ourselves to SPJ queries allows us to make and therefore take advantage of in modeling our solution.
+We also include a brief example of why extended classes of queries may break these assumptions and would therefore require additional constructions in the model.}
+
+%%%
+
+\paragraph*{{\bf O5}} 
+{\it The presentation needs improvement in some places:
+\begin{enumerate}
+    \item What is a "prefix" (first time mentioned above Def 2.7)? I could not tell what the definition of k* is.
+    \item Section 3 is quite dense in general and it would help to elaborate on some parts.
+    \item Please clearly indicate which variables are binary, what are their possible values, etc.
+    \item Unclear what "magnitude" means in page 6.
+    \item Table 1 does not seem to cover everything.
+    \item I would like to see an intuitive figure which connects the examples to show how the expressions are generated from the table.
+\end{enumerate}
+}
+
+\paragraph*{Response}
+\revc{Thank you for pointing out these issues in our presentation.
+\begin{enumerate}
+    \item A prefix referred to a collection of top-$k$ tuples for some value of $k$. The quantity $k^*$ refers to the largest value of $k$ with a constraint in the set of constraints. We no longer use the term prefix as it is redundant and confusing. We have made the definition of $k^*$ more clear, right above \Cref{def:best-approx-refinement}. 
+    \item[(2+6)] Thank you for this comment, we have added \Cref{fig:example_summary} in order to make the process the section describes more intuitive and provide continuity between the examples. We have also elaborated throughout the section in order to provide a more clear explanation.
+    \item[(3)] We have clarified this with an additional column in \Cref{tab:variables}. We also further discuss tighter bounds for some variables in \Cref{sec:search}.
+    \item[(4)] We mean the largest absolute value. We have replaced this where it occurred.
+    \item[(5)] Please note that \Cref{tab:variables} is meant to depict only the decision  variables of the problems, i.e., those being solved for by the MILP solver -- the other variables involved in the expressions are constants in the generated program.
+\end{enumerate}}
+
+%%%
+
+\paragraph*{{\bf O6}} 
+{\it There are some details in the experiments that also need to be refined:
+\begin{enumerate}
+    \item Why does Naive have to "evaluate each possible refinement during this search"? Isn't it straightforward to use provenance to avoid evaluating the query each time?
+    \item Fig. 3b: Is Naive faster than MILP here? Why?
+    \item Effect of dataset size: This is important so please provide more data and ideally a plot.
+\end{enumerate}
+}
+
+\paragraph*{Response}
+\revc{\begin{enumerate}
+    \item We have implemented a provenance-based evaluation method for the na\"{i}ve search. We found that for cases with a very small space of refinements (see: TPC-H), it has comparable performance to our optimized MILP algorithm. That being said, we did find that it has the issue of the combinatorial blowup in the space of possible refinements making it rather slow for datasets with an even modest amount of refinements (e.g. Law Students).
+    \item TPC-H is a large dataset and the unoptimized MILP method struggles to scale, highlighting the importance of our applied optimizations. 
+    \item We have added additional data and plotted it as noted in the beginning of this letter.
+\end{enumerate}}
+% This breaks the main layout so we will split and combine the letter and revision to have the balanced revision letter layout and the correct paper layout.
+% \balance 
+%%%
+
+\paragraph*{{\bf M1}}
+{\it Typos:
+\begin{itemize}
+    \item page 9 "Table 5 summarize"
+    \item page 12 "is aims"
+\end{itemize}
+}
+
+\paragraph*{Response}
+\revc{Thank you for finding and pointing out these typos. We have fixed them.}
+    
+\end{document}

@@ -1,0 +1,184 @@
+
+\section{Use Cases}
+\label{sec:usecases}
+
+In this section, we discuss two representative use cases:
+(1) private explanations for query refinement, and
+(2) private explanations for consistent query answering (CQA).
+
+\subsection{Query Refinement under Diversity Constraints}
+
+One of the primary motivations for this work is the growing need to enforce fairness,
+representation, and diversity constraints in data-driven systems.
+Recent works demonstrated that ranking, filtering, and query-processing systems
+may unintentionally underrepresent protected demographic groups
+or amplify existing societal biases \cite{barocas-hardt-narayanan,impossibilityfairness,SYJ18}.
+
+To address these concerns, several works proposed mechanisms for enforcing fairness
+and diversity constraints directly during query processing and ranking generation
+\cite{SYJ18,ERICA}.
+In particular, the \textsc{ERICA} framework \cite{ERICA}
+studied the problem of refining SQL queries in order to satisfy
+cardinality constraints over demographic groups while minimizing
+semantic deviation from the original query intent.
+
+Consider the following hiring query:
+
+\begin{verbatim}
+Q:
+SELECT *
+FROM Candidates
+WHERE Experience >= 5
+AND SalaryExpectation <= 20000
+AND Degree = 'CS'
+\end{verbatim}
+
+Suppose the result of this query contains very few women candidates,
+violating a diversity constraint requiring that at least $30\%$
+of the returned candidates belong to the group
+\texttt{Gender = Female}.
+
+A query refinement algorithm such as \textsc{ERICA} may generate
+the following refined query:
+
+\begin{verbatim}
+Q':
+SELECT *
+FROM Candidates
+WHERE Experience >= 4
+AND SalaryExpectation <= 24000
+AND Degree IN ('CS', 'Software Engineering')
+\end{verbatim}
+
+The refined query satisfies the diversity constraints,
+but it also changes the semantic meaning of the result set.
+Existing query-refinement systems mainly focus on generating the refined query itself,
+with relatively limited support for explaining the semantic impact
+of the refinement process \cite{MK09,ERICA}.
+
+Our framework naturally complements these systems by generating
+privacy-preserving explanations for the differences between $Q$
+and $Q'$.
+For example, our algorithm may identify that the refinement
+primarily changes the distributions of:
+\begin{itemize}
+    \item education level,
+    \item years of experience,
+    \item expected salary,
+    \item and employment history.
+\end{itemize}
+
+The algorithm may then release noisy histograms showing that:
+\begin{itemize}
+    \item the refined query includes substantially more candidates
+    with $4$--$5$ years of experience,
+    \item candidates from additional engineering disciplines now appear,
+    \item and the salary distribution shifted toward higher salary expectations.
+\end{itemize}
+
+Importantly, these explanations are generated under differential privacy,
+ensuring that no individual candidate can be inferred from the explanation outputs.
+
+Such explanations provide several practical benefits:
+\begin{enumerate}
+    \item helping users understand the semantic consequences of the refinement,
+    \item enabling analysts to evaluate whether the refined query still aligns
+    with the original intent,
+    \item identifying unintended side effects,
+    \item and improving transparency in fairness-aware systems.
+\end{enumerate}
+
+More generally, our framework can serve as an interpretability layer
+on top of existing query-refinement mechanisms.
+Because the framework operates over arbitrary query pairs $(Q,Q')$,
+it can be integrated with many refinement strategies,
+including interactive query refinement systems \cite{MK09},
+fairness-aware ranking systems \cite{SYJ18},
+and provenance-based bias mitigation frameworks \cite{MLJ22}.
+
+\subsection{Consistent Query Answering}
+
+Another important application domain for our framework is
+\emph{consistent query answering} (CQA).
+The goal of CQA is to provide meaningful answers to queries
+over databases that may violate integrity constraints
+\cite{bertossi2011,bertossi2006}.
+Instead of querying the inconsistent database directly,
+CQA systems construct repairs or consistent versions of the data
+and evaluate the query with respect to those repaired instances.
+
+The CQA literature studied many forms of integrity constraints,
+including functional dependencies, denial constraints,
+key constraints, and inclusion dependencies
+\cite{bertossi2011,arenas1999}.
+Different repair strategies may lead to substantially different query answers,
+raising important interpretability and transparency questions.
+
+Consider the following example involving employee records:
+
+\begin{verbatim}
+Employees(EmpID, Department, Salary)
+\end{verbatim}
+
+Suppose the database violates a key constraint because multiple tuples
+exist with the same \texttt{EmpID} but different salary values.
+A repair algorithm may remove conflicting tuples or choose a canonical tuple.
+
+Now consider the following query:
+
+\begin{verbatim}
+Q:
+SELECT Department, AVG(Salary)
+FROM Employees
+GROUP BY Department
+\end{verbatim}
+
+Let $Q'$ denote the same query evaluated over the repaired database instance.
+The repaired answer may differ significantly from the original answer,
+especially if the inconsistencies are concentrated in specific departments.
+
+Our framework can provide private explanations for the differences
+between $Q$ and $Q'$.
+For example, the algorithm may identify that:
+\begin{itemize}
+    \item the Finance department experienced the largest salary changes,
+    \item duplicate tuples were concentrated among senior employees,
+    \item and the repaired database substantially altered the salary distribution
+    of employees with more than ten years of experience.
+\end{itemize}
+
+The explanation mechanism may release noisy histograms comparing
+the salary distributions before and after the repair process.
+These explanations help analysts understand the semantic effects
+of the repair strategy without revealing information about specific employees.
+
+This capability is particularly important because traditional explanation methods
+for CQA may inadvertently leak sensitive information.
+When repairs are small or localized,
+revealing exact changes may expose individual tuples or conflicting records.
+By contrast, our framework provides formal differential privacy guarantees
+\cite{TheAlgFoundDP2014}, ensuring that the explanations themselves
+preserve privacy.
+
+Our approach also enables comparison between different repair algorithms.
+For example, two repair mechanisms may both satisfy the integrity constraints,
+yet one may disproportionately affect records associated with a particular region,
+demographic group, or salary range.
+Our explanation framework enables analysts to compare these semantic effects
+through differentially private summaries.
+
+More broadly, the generalized formulation of our framework
+as a mechanism for privately explaining differences between query outputs
+makes it applicable to a wide variety of data-management tasks,
+including:
+\begin{itemize}
+    \item fairness-aware query processing,
+    \item data cleaning,
+    \item provenance analysis,
+    \item query debugging,
+    \item and consistent query answering.
+\end{itemize}
+
+This generalization extends the original query-refinement motivation
+into a broader framework for interpretable and privacy-preserving
+data analytics.

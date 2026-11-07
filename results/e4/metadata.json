@@ -1,0 +1,344 @@
+{
+  "timestamp_utc": "2026-11-02T12:58:51+00:00",
+  "python": "3.13.18",
+  "numpy": "2.5.3",
+  "pandas": "3.0.5",
+  "machine": "x86_64",
+  "config": {
+    "defaults": {
+      "k": 5,
+      "lam": 0.5,
+      "epsilon": 1.0,
+      "split": [
+        0.333333333,
+        0.333333333,
+        0.333333334
+      ],
+      "tau_factor": 3,
+      "gamma_mult": 1.0,
+      "release": "pair",
+      "gamma_eval": 0.0,
+      "data_fraction": 1.0,
+      "view_fraction": 1.0,
+      "trials": 40,
+      "seed": 20261031,
+      "stats": {
+        "mode": "direct",
+        "rep": "general",
+        "hist": "lazy"
+      },
+      "timeout_s": 1800,
+      "repeats_min": 10,
+      "timeout_repeats": 3
+    },
+    "pairs": [
+      "A1",
+      "A2",
+      "A3",
+      "T1",
+      "T2",
+      "T3",
+      "H1",
+      "H2",
+      "H3",
+      "R1",
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "C1",
+      "C2",
+      "C3",
+      "ACS_Q1C1",
+      "ACS_Q1C2",
+      "ACS_Q2C1",
+      "ACS_Q2C2",
+      "ACS_Q2C3",
+      "ACS_Q3C4",
+      "ACS_Q3C5",
+      "ACS_Q3C6",
+      "ACS_Q4C7",
+      "ACS_Q4C8",
+      "I1",
+      "I2",
+      "I3",
+      "I4",
+      "I5",
+      "I6",
+      "I7",
+      "I8",
+      "I9",
+      "I10",
+      "I11",
+      "I12",
+      "I13",
+      "I14",
+      "I15",
+      "I16",
+      "I17"
+    ],
+    "runtime_pairs": [
+      "A1",
+      "A2",
+      "R1",
+      "R3",
+      "ACS_Q1C1",
+      "ACS_Q2C2",
+      "ACS_Q3C4",
+      "ACS_Q4C7",
+      "T1",
+      "T2",
+      "T3",
+      "R5",
+      "C1",
+      "C2",
+      "C3",
+      "H1",
+      "H2",
+      "H3",
+      "I1",
+      "I6",
+      "I8",
+      "I12"
+    ],
+    "datasets": [
+      "adult",
+      "acsincome",
+      "tax",
+      "tax_dirty",
+      "hospital",
+      "ipums"
+    ],
+    "e1": {
+      "run_seed": 7,
+      "releases": 10
+    },
+    "e2": {
+      "epsilons": [
+        0.1,
+        0.2,
+        0.5,
+        1.0,
+        2.0,
+        5.0,
+        10.0,
+        20.0
+      ],
+      "table_epsilons": [
+        1.0,
+        5.0
+      ]
+    },
+    "e3": {
+      "view_stage_eps_P": [
+        0.01,
+        0.0333,
+        0.1,
+        0.3333,
+        1.0,
+        3.0,
+        10.0
+      ],
+      "splits": [
+        [
+          0.3333,
+          0.3333,
+          0.3334
+        ],
+        [
+          0.1,
+          0.55,
+          0.35
+        ],
+        [
+          0.2,
+          0.4,
+          0.4
+        ],
+        [
+          0.5,
+          0.25,
+          0.25
+        ],
+        [
+          0.05,
+          0.6,
+          0.35
+        ]
+      ],
+      "bin_stat_gamma_percent": [
+        0.5,
+        5.0
+      ]
+    },
+    "e4": {
+      "repeats": 10,
+      "pairs": [
+        "A1",
+        "A2",
+        "R1",
+        "R3",
+        "ACS_Q1C1",
+        "ACS_Q2C2",
+        "ACS_Q3C4",
+        "ACS_Q4C7",
+        "T1",
+        "T2",
+        "T3",
+        "R5",
+        "C1",
+        "C2",
+        "C3",
+        "H1",
+        "H2",
+        "H3",
+        "I1",
+        "I6",
+        "I8",
+        "I12"
+      ],
+      "sweeps": {
+        "k": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10
+        ],
+        "data_fraction": [
+          0.1,
+          0.2,
+          0.3,
+          0.4,
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.9,
+          1.0
+        ],
+        "epsilon": [
+          0.1,
+          0.2,
+          0.5,
+          1.0,
+          2.0,
+          5.0,
+          10.0
+        ],
+        "view_fraction": [
+          0.1,
+          0.2,
+          0.3,
+          0.4,
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.9,
+          1.0
+        ],
+        "tau": [
+          5,
+          10,
+          15,
+          30,
+          60,
+          120,
+          250,
+          500,
+          1000,
+          "all"
+        ],
+        "gamma_mult": [
+          0.0,
+          0.1,
+          0.3,
+          1.0,
+          3.0,
+          10.0
+        ]
+      },
+      "extra_data_fraction": {
+        "tax": [
+          2.5
+        ]
+      }
+    },
+    "e5": {
+      "repeats": 10,
+      "identity_runs": 10,
+      "route_repeats": 10,
+      "b2_growth_repeats": 10,
+      "b2_pool_sizes": [
+        20,
+        25,
+        30,
+        35,
+        40,
+        45,
+        50
+      ],
+      "routes": [
+        {
+          "mode": "direct",
+          "rep": "general",
+          "hist": "lazy"
+        },
+        {
+          "mode": "grouped",
+          "rep": "general",
+          "hist": "eager"
+        },
+        {
+          "mode": "grouped",
+          "rep": "general",
+          "hist": "lazy"
+        }
+      ]
+    },
+    "e6": {
+      "gamma_mults": [
+        0.0,
+        0.03,
+        0.1,
+        0.3,
+        1.0,
+        3.0,
+        10.0,
+        30.0
+      ]
+    }
+  },
+  "experiment": "e4",
+  "repeats": 10,
+  "timeout_s": 1800.0,
+  "merged_from": [
+    "results_shards/acs/e4-ACS_Q1C1",
+    "results_shards/acs/e4-ACS_Q2C2",
+    "results_shards/acs/e4-ACS_Q3C4",
+    "results_shards/acs/e4-ACS_Q4C7",
+    "results_shards/adult/e4-A1",
+    "results_shards/adult/e4-A2",
+    "results_shards/adult/e4-R1",
+    "results_shards/adult/e4-R3",
+    "results_shards/hospital/e4-H1",
+    "results_shards/hospital/e4-H2",
+    "results_shards/hospital/e4-H3",
+    "results_shards/ipums/e4-I1",
+    "results_shards/ipums/e4-I12",
+    "results_shards/ipums/e4-I6",
+    "results_shards/ipums/e4-I8",
+    "results_shards/tax/e4-R5",
+    "results_shards/tax/e4-T1",
+    "results_shards/tax/e4-T2",
+    "results_shards/tax/e4-T3",
+    "results_shards/taxdirty/e4-C1",
+    "results_shards/taxdirty/e4-C2",
+    "results_shards/taxdirty/e4-C3"
+  ]
+}

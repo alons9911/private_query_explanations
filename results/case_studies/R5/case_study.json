@@ -1,0 +1,484 @@
+{
+  "pair": {
+    "pair": "R5",
+    "dataset": "tax",
+    "synthetic_data": false,
+    "N": 200000,
+    "kind": "refinement",
+    "Q1": "Salary <= 30000 AND Rate <= 2",
+    "Q2": "Salary <= 30000 AND Rate <= 3.2016153",
+    "|Q1|": 16774,
+    "|Q2|": 25621,
+    "|Q1 & Q2|": 16774,
+    "constraint: >= 50% with Rate > 0": {
+      "share_Q1": 0.2368,
+      "share_Q2": 0.5003
+    },
+    "role": "surprising",
+    "aggregate": "Salary",
+    "AVG_Q1": 16294.861094551092,
+    "AVG_Q2": 15311.463252800437
+  },
+  "motivation": {
+    "Q1": "Salary <= 30000 AND Rate <= 2",
+    "Q2": "Salary <= 30000 AND Rate <= 3.2016153",
+    "constraint": ">= 50% with Rate > 0",
+    "|Q1|": 16774,
+    "|Q2|": 25621,
+    "share_Q1": 0.23679503994276857,
+    "share_Q2": 0.5003317591038601,
+    "output_jaccard": 0.34530268139416886,
+    "hidden_drift": 0.31794383237560353,
+    "hidden_drift_attr": "State",
+    "group_drift": 0.6198611436149465,
+    "group_drift_attr": "State",
+    "nongroup_drift": 0.0,
+    "nongroup_drift_attr": null,
+    "hidden_attrs": "Gender,State,MaritalStatus,HasChild,SingleExemp,MarriedExemp,ChildExemp",
+    "hidden": [
+      "Gender",
+      "State",
+      "MaritalStatus",
+      "HasChild",
+      "SingleExemp",
+      "MarriedExemp",
+      "ChildExemp"
+    ]
+  },
+  "stability": {
+    "trials": 40,
+    "top_explanations": [
+      {
+        "view": "Salary IN [5000, 20000] AND Rate IN [0, 3.07]",
+        "attr": "State",
+        "share_of_runs": 1.0
+      },
+      {
+        "view": "Rate IN [0, 3.07]",
+        "attr": "State",
+        "share_of_runs": 0.95
+      },
+      {
+        "view": "Salary IN [5000, 20000] AND Rate IN [0, 3.07]",
+        "attr": "ChildExemp",
+        "share_of_runs": 0.675
+      },
+      {
+        "view": "Salary IN [5000, 20000] AND Rate IN [0, 3.07]",
+        "attr": "SingleExemp",
+        "share_of_runs": 0.55
+      },
+      {
+        "view": "Rate IN [0, 3.07] AND ChildExemp IN [0, 103]",
+        "attr": "State",
+        "share_of_runs": 0.475
+      },
+      {
+        "view": "Salary IN [5000, 20000] AND Rate IN [0, 3.07]",
+        "attr": "MarriedExemp",
+        "share_of_runs": 0.45
+      },
+      {
+        "view": "Rate IN [0, 3.07] AND MarriedExemp IN [0, 174]",
+        "attr": "State",
+        "share_of_runs": 0.25
+      },
+      {
+        "view": "Rate IN [0, 3.07] AND SingleExemp IN [0, 87]",
+        "attr": "State",
+        "share_of_runs": 0.175
+      },
+      {
+        "view": "Salary IN [5000, 20000] AND ChildExemp IN [0, 103]",
+        "attr": "State",
+        "share_of_runs": 0.175
+      },
+      {
+        "view": "Salary IN [5000, 20000]",
+        "attr": "State",
+        "share_of_runs": 0.125
+      }
+    ],
+    "attribute_share_of_runs": {
+      "State": 3.175,
+      "ChildExemp": 0.675,
+      "SingleExemp": 0.625,
+      "MarriedExemp": 0.475,
+      "MaritalStatus": 0.05
+    }
+  },
+  "accuracy": [
+    {
+      "pair": "R5",
+      "dataset": "tax",
+      "synthetic": false,
+      "sweep": "epsilon",
+      "epsilon": 0.5,
+      "ratio_B1_mean": 1.0026541610188127,
+      "jaccard_B1_mean": 0.5360119047619047,
+      "precision_at_k_B1_mean": 0.6799999999999999,
+      "attr_precision_B1_mean": 0.8200000000000001,
+      "view_jaccard_B1_mean": 0.67375,
+      "ratio_B2_mean": 0.9533173976388791,
+      "jaccard_B2_mean": 0.41517857142857145,
+      "precision_at_k_B2_mean": 0.575,
+      "attr_precision_B2_mean": 0.74,
+      "view_jaccard_B2_mean": 0.47630952380952385,
+      "ratio_B3_mean": 0.9533173976388791,
+      "jaccard_B3_mean": 0.41517857142857145,
+      "precision_at_k_B3_mean": 0.575,
+      "attr_precision_B3_mean": 0.74,
+      "view_jaccard_B3_mean": 0.47630952380952385,
+      "hist_rel_l1_mean": 0.11679530439395021,
+      "diff_sign_acc_mean": 0.9492030352777304,
+      "F_mean": 30.310795529170104,
+      "F_B1_mean": 30.230558758536272,
+      "F_B2_mean": 31.79507224376909,
+      "F_B3_mean": 31.79507224376909,
+      "gamma_mean": 294.31648700062226,
+      "tau_mean": 15.0,
+      "mechanism_ms_mean": 1.3688778249388633,
+      "ratio_B1_std": 0.03186953860942516,
+      "jaccard_B1_std": 0.18358820865299622,
+      "precision_at_k_B1_std": 0.15557997366347703,
+      "attr_precision_B1_std": 0.11810469062961873,
+      "view_jaccard_B1_std": 0.24832451369642128,
+      "ratio_B2_std": 0.030301360920117856,
+      "jaccard_B2_std": 0.1324063883777418,
+      "precision_at_k_B2_std": 0.1295950299775103,
+      "attr_precision_B2_std": 0.10327955589886446,
+      "view_jaccard_B2_std": 0.17744000541216684,
+      "ratio_B3_std": 0.030301360920117856,
+      "jaccard_B3_std": 0.1324063883777418,
+      "precision_at_k_B3_std": 0.1295950299775103,
+      "attr_precision_B3_std": 0.10327955589886446,
+      "view_jaccard_B3_std": 0.17744000541216684,
+      "hist_rel_l1_std": 0.011391448931133821,
+      "diff_sign_acc_std": 0.03060365152711863,
+      "trials": 40
+    },
+    {
+      "pair": "R5",
+      "dataset": "tax",
+      "synthetic": false,
+      "sweep": "epsilon",
+      "epsilon": 1.0,
+      "ratio_B1_mean": 0.9831034569618753,
+      "jaccard_B1_mean": 0.5919642857142857,
+      "precision_at_k_B1_mean": 0.7150000000000001,
+      "attr_precision_B1_mean": 0.85,
+      "view_jaccard_B1_mean": 0.6608333333333334,
+      "ratio_B2_mean": 0.9772879587913907,
+      "jaccard_B2_mean": 0.519345238095238,
+      "precision_at_k_B2_mean": 0.67,
+      "attr_precision_B2_mean": 0.77,
+      "view_jaccard_B2_mean": 0.5879761904761904,
+      "ratio_B3_mean": 0.9772879587913907,
+      "jaccard_B3_mean": 0.519345238095238,
+      "precision_at_k_B3_mean": 0.67,
+      "attr_precision_B3_mean": 0.77,
+      "view_jaccard_B3_mean": 0.5879761904761904,
+      "hist_rel_l1_mean": 0.059022259142960755,
+      "diff_sign_acc_mean": 0.9912019406296515,
+      "F_mean": 31.072941252737895,
+      "F_B1_mean": 31.606990121633665,
+      "F_B2_mean": 31.79507224376909,
+      "F_B3_mean": 31.79507224376909,
+      "gamma_mean": 147.15824350031113,
+      "tau_mean": 15.0,
+      "mechanism_ms_mean": 0.6868619999750081,
+      "ratio_B1_std": 0.021273200525299418,
+      "jaccard_B1_std": 0.24724464950787886,
+      "precision_at_k_B1_std": 0.1915523627948966,
+      "attr_precision_B1_std": 0.12608503439122304,
+      "view_jaccard_B1_std": 0.24195164452964207,
+      "ratio_B2_std": 0.02114735999665604,
+      "jaccard_B2_std": 0.15249555700636203,
+      "precision_at_k_B2_std": 0.1399633651701173,
+      "attr_precision_B2_std": 0.09660917830792962,
+      "view_jaccard_B2_std": 0.16710995470483267,
+      "ratio_B3_std": 0.02114735999665604,
+      "jaccard_B3_std": 0.15249555700636203,
+      "precision_at_k_B3_std": 0.1399633651701173,
+      "attr_precision_B3_std": 0.09660917830792962,
+      "view_jaccard_B3_std": 0.16710995470483267,
+      "hist_rel_l1_std": 0.005831179460803614,
+      "diff_sign_acc_std": 0.011633283131681264,
+      "trials": 40
+    },
+    {
+      "pair": "R5",
+      "dataset": "tax",
+      "synthetic": false,
+      "sweep": "epsilon",
+      "epsilon": 2.0,
+      "ratio_B1_mean": 0.9932433455188537,
+      "jaccard_B1_mean": 0.5916666666666666,
+      "precision_at_k_B1_mean": 0.72,
+      "attr_precision_B1_mean": 0.825,
+      "view_jaccard_B1_mean": 0.6958333333333333,
+      "ratio_B2_mean": 0.9873678653567136,
+      "jaccard_B2_mean": 0.5663690476190476,
+      "precision_at_k_B2_mean": 0.7100000000000001,
+      "attr_precision_B2_mean": 0.8,
+      "view_jaccard_B2_mean": 0.6370833333333333,
+      "ratio_B3_mean": 0.9873678653567136,
+      "jaccard_B3_mean": 0.5663690476190476,
+      "precision_at_k_B3_mean": 0.7100000000000001,
+      "attr_precision_B3_mean": 0.8,
+      "view_jaccard_B3_mean": 0.6370833333333333,
+      "hist_rel_l1_mean": 0.030581320130422567,
+      "diff_sign_acc_mean": 1.0,
+      "F_mean": 31.393432610192782,
+      "F_B1_mean": 31.606990121633665,
+      "F_B2_mean": 31.79507224376909,
+      "F_B3_mean": 31.79507224376909,
+      "gamma_mean": 73.57912175015556,
+      "tau_mean": 15.0,
+      "mechanism_ms_mean": 0.6440173499868251,
+      "ratio_B1_std": 0.015319932357773344,
+      "jaccard_B1_std": 0.22244341860588834,
+      "precision_at_k_B1_std": 0.17423826892785166,
+      "attr_precision_B1_std": 0.1295950299775103,
+      "view_jaccard_B1_std": 0.24903660527968727,
+      "ratio_B2_std": 0.015229308082202322,
+      "jaccard_B2_std": 0.15742490274989626,
+      "precision_at_k_B2_std": 0.13549529275577937,
+      "attr_precision_B2_std": 0.09058216273156769,
+      "view_jaccard_B2_std": 0.17048980469304756,
+      "ratio_B3_std": 0.015229308082202322,
+      "jaccard_B3_std": 0.15742490274989626,
+      "precision_at_k_B3_std": 0.13549529275577937,
+      "attr_precision_B3_std": 0.09058216273156769,
+      "view_jaccard_B3_std": 0.17048980469304756,
+      "hist_rel_l1_std": 0.0039224418840162045,
+      "diff_sign_acc_std": 0.0,
+      "trials": 40
+    },
+    {
+      "pair": "R5",
+      "dataset": "tax",
+      "synthetic": false,
+      "sweep": "epsilon",
+      "epsilon": 5.0,
+      "ratio_B1_mean": 0.9990671411635038,
+      "jaccard_B1_mean": 0.6032738095238095,
+      "precision_at_k_B1_mean": 0.7350000000000001,
+      "attr_precision_B1_mean": 0.825,
+      "view_jaccard_B1_mean": 0.71,
+      "ratio_B2_mean": 0.9931572106363722,
+      "jaccard_B2_mean": 0.5875,
+      "precision_at_k_B2_mean": 0.725,
+      "attr_precision_B2_mean": 0.825,
+      "view_jaccard_B2_mean": 0.6708333333333333,
+      "ratio_B3_mean": 0.9931572106363722,
+      "jaccard_B3_mean": 0.5875,
+      "precision_at_k_B3_mean": 0.725,
+      "attr_precision_B3_mean": 0.825,
+      "view_jaccard_B3_mean": 0.6708333333333333,
+      "hist_rel_l1_mean": 0.01269012513266179,
+      "diff_sign_acc_mean": 1.0,
+      "F_mean": 31.577505261603648,
+      "F_B1_mean": 31.606990121633665,
+      "F_B2_mean": 31.79507224376909,
+      "F_B3_mean": 31.79507224376909,
+      "gamma_mean": 29.43164870006222,
+      "tau_mean": 15.0,
+      "mechanism_ms_mean": 0.6460456500462897,
+      "ratio_B1_std": 0.007521564304893908,
+      "jaccard_B1_std": 0.19135913147449832,
+      "precision_at_k_B1_std": 0.1528364300779574,
+      "attr_precision_B1_std": 0.11266014242982163,
+      "view_jaccard_B1_std": 0.23593784492248518,
+      "ratio_B2_std": 0.007477070876308607,
+      "jaccard_B2_std": 0.17712170991185727,
+      "precision_at_k_B2_std": 0.14096735392208679,
+      "attr_precision_B2_std": 0.11266014242982161,
+      "view_jaccard_B2_std": 0.17212224834712211,
+      "ratio_B3_std": 0.007477070876308607,
+      "jaccard_B3_std": 0.17712170991185727,
+      "precision_at_k_B3_std": 0.14096735392208679,
+      "attr_precision_B3_std": 0.11266014242982161,
+      "view_jaccard_B3_std": 0.17212224834712211,
+      "hist_rel_l1_std": 0.0017436395861292855,
+      "diff_sign_acc_std": 0.0,
+      "trials": 40
+    }
+  ],
+  "explanations_key_bins": [
+    {
+      "view": "Salary IN [5000, 20000] AND Rate IN [0, 3.07]",
+      "attr": "State",
+      "bins": [
+        {
+          "bin": "KY",
+          "noisy_Q1": 45,
+          "noisy_Q2": 818,
+          "exact_Q1": 0,
+          "exact_Q2": 811,
+          "clears_2sd": true
+        },
+        {
+          "bin": "AZ",
+          "noisy_Q1": -2,
+          "noisy_Q2": 758,
+          "exact_Q1": 0,
+          "exact_Q2": 779,
+          "clears_2sd": true
+        },
+        {
+          "bin": "ND",
+          "noisy_Q1": 4,
+          "noisy_Q2": 751,
+          "exact_Q1": 0,
+          "exact_Q2": 750,
+          "clears_2sd": true
+        },
+        {
+          "bin": "PA",
+          "noisy_Q1": -1,
+          "noisy_Q2": 722,
+          "exact_Q1": 0,
+          "exact_Q2": 766,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "Rate IN [0, 3.07]",
+      "attr": "State",
+      "bins": [
+        {
+          "bin": "PA",
+          "noisy_Q1": -123,
+          "noisy_Q2": 1108,
+          "exact_Q1": 0,
+          "exact_Q2": 1146,
+          "clears_2sd": true
+        },
+        {
+          "bin": "ND",
+          "noisy_Q1": -6,
+          "noisy_Q2": 1159,
+          "exact_Q1": 0,
+          "exact_Q2": 1156,
+          "clears_2sd": true
+        },
+        {
+          "bin": "IL",
+          "noisy_Q1": -5,
+          "noisy_Q2": 1056,
+          "exact_Q1": 0,
+          "exact_Q2": 1136,
+          "clears_2sd": true
+        },
+        {
+          "bin": "KY",
+          "noisy_Q1": -23,
+          "noisy_Q2": 784,
+          "exact_Q1": 0,
+          "exact_Q2": 811,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "Salary IN [5000, 20000] AND ChildExemp IN [0, 103]",
+      "attr": "State",
+      "bins": [
+        {
+          "bin": "KY",
+          "noisy_Q1": -39,
+          "noisy_Q2": 826,
+          "exact_Q1": 0,
+          "exact_Q2": 811,
+          "clears_2sd": true
+        },
+        {
+          "bin": "PA",
+          "noisy_Q1": 9,
+          "noisy_Q2": 743,
+          "exact_Q1": 0,
+          "exact_Q2": 766,
+          "clears_2sd": true
+        },
+        {
+          "bin": "AZ",
+          "noisy_Q1": 42,
+          "noisy_Q2": 386,
+          "exact_Q1": 0,
+          "exact_Q2": 397,
+          "clears_2sd": true
+        },
+        {
+          "bin": "ND",
+          "noisy_Q1": 34,
+          "noisy_Q2": 348,
+          "exact_Q1": 0,
+          "exact_Q2": 365,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "Salary IN [5000, 20000] AND Rate IN [0, 3.07]",
+      "attr": "MarriedExemp",
+      "bins": [
+        {
+          "bin": "[0, 174]",
+          "noisy_Q1": 10548,
+          "noisy_Q2": 15275,
+          "exact_Q1": 10566,
+          "exact_Q2": 15314,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(174, 4200]",
+          "noisy_Q1": 863,
+          "noisy_Q2": 2596,
+          "exact_Q1": 857,
+          "exact_Q2": 2542,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(4200, 24500]",
+          "noisy_Q1": 310,
+          "noisy_Q2": 1201,
+          "exact_Q1": 333,
+          "exact_Q2": 1196,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "Salary IN [5000, 20000] AND Rate IN [0, 3.07]",
+      "attr": "SingleExemp",
+      "bins": [
+        {
+          "bin": "[0, 87]",
+          "noisy_Q1": 10634,
+          "noisy_Q2": 15270,
+          "exact_Q1": 10634,
+          "exact_Q2": 15295,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(87, 2100]",
+          "noisy_Q1": 860,
+          "noisy_Q2": 2635,
+          "exact_Q1": 837,
+          "exact_Q2": 2613,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(2100, 12750]",
+          "noisy_Q1": 285,
+          "noisy_Q2": 1101,
+          "exact_Q1": 285,
+          "exact_Q2": 1144,
+          "clears_2sd": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+\section{Model}\label{sec:model}
+
+\subsection{Private query refinement model}
+\ag{define the framework: user sends a query to the trusted server, the server refines it,....}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\linewidth]{figures/private query refinement framework.png}
+\caption{An illustration of the framework}
+\label{fig:query-refinement}
+\end{figure}
+\alon{I think I should remove the "Views generation" block from this scheme and reveal it during the Algorithm section}
+
+We expect to get the following arguments from the user:
+
+\begin{enumerate}
+    \item A private database $D$;
+    \item A SP aggregate \ag{Need to define this abbrev. in the prelim or just state verbatim} query $Q$;
+    \item A set of {\it cardinality constraints} $\mathcal{C}$ \ag{Need to define this. Does this include `consistent query answering'?};
+    \item A refinement mechanism $\mathcal{M}(Q,\mathcal{C})$ \ag{What is a refinement mechanism?}
+    \item A differential privacy budget $\epsilon > 0$;
+    \item The number of explanations to release $k \in \mathbb{N}$ \ag{What is an explanation? Why would we want several and not just one? Need to motivate this}.
+\end{enumerate}
+
+We aim to reveal a privacy-preserving explanation for the query refinement that satisfies the diversity constraints, while providing differentially private explanations for how and why the query was modified.
+To achieve this, we give some differentially private histograms that highlight changes in the data distribution caused by the refinement, offering insight into the impact of the modified query predicates.
+
+\subsection{Query difference explanation}
+\ag{Define our model for explanations for query difference: COH, QOH, Overall quality function for a histogram explanation.}
+
+\begin{definition}[Noisy Histogram]
+    Given $\epsilon <1$, we say that $\hat{H_{D,A}}$ is a {\it noisy histogram} iff $\hat{H_{D,A}}(v)=H_{D,A}(v) + Laplace(1/\epsilon)$.
+\end{definition} 
+\begin{definition}[Constraint Oriented Histogram (COH)]
+    Given a database $D$ and a set of cardinality constraints $\constraints$, a {\it constraint oriented histogram} is an histogram $H_{D,A}$ such that $A$ appears in one or more groups in the constraints in $\constraints$.
+\end{definition} 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\linewidth,height=0.3\linewidth]{figures/placeholder.png}
+\caption{Example Placeholder}
+\label{fig:placeholder2}
+\end{figure}
+
+\begin{definition}[Query Oriented Histogram (QOH)]
+    Given a database $D$ and a SPJ query $Q$, a {\it query oriented histogram} is an histogram $H_{Q(D),A}$.
+\end{definition} 
+\begin{definition}[Refinement Predicate Explanation Candidates]
+    Given a database $D$, a SPJ query $Q$, set of cardinality constraints $\constraints$, $Q'$ a refinement of $Q$ which satisfies the constraints and an attribute $A \in Attr(D)$, we say that {\it the group of refinement predicate explanation candidates} for $Q'$ and $A$ is the following set of histograms:\\
+    $H_{D,Q}(Q',A) = \{ ( H_{Q'(D'),A}, H_{Q(D'), A}) | D'\subseteq D\}$
+\end{definition}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\linewidth,height=0.3\linewidth]{figures/placeholder.png}
+\caption{Example Placeholder}
+\label{fig:placeholder3}
+\end{figure}
+
+\alon{Find different symbol}\alon{Convert to definition of single candidate}
+\begin{definition}[DP-Preserving Predicate Explanation Candidate]
+    Given the same setup, the group of {\it DP-preserving predicate explanation candidates} is the set of noisy histograms which is defined as follows:\\
+    $\hat{H_q}(Q',A) = \{ ( \hat{H}_{Q'(D'),A}, \hat{H}_{Q(D'), A}) | D'\subseteq D\}$
+\end{definition}
+%\begin{definition}
+%    score function -\\
+%    Given a database $D=\{t_{1},t_{2},...,t_{n}\}$, $P(D)$ the power set of $D$, and an attribute A, a {\it score function} is a function $f:P(D) \times D \times A \rightarrow \mathbb{R}$.
+%\end{definition}
+\alon{Add the definition of the specific utility, without context}
+\begin{definition}[Best \alon{Change to optimal} DP-Preserving Predicate Explanation]
+    Given a database $D$, a SPJ query $Q$, a refinement $Q'$, an attribute $A \in Attr(D)$ and a utility function $U(Q,A)$, the {\it best DP-preserving predicate explanation} is the DP-preserving predicate explanation candidate 
+   \[ 
+       (H_1, H_2)= \arg \max_{A'\in Attr(D)}{U(D,Q,Q',A')}.
+   \]\\
+\end{definition}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\linewidth,height=0.3\linewidth]{figures/placeholder.png}
+\caption{Example Placeholder}
+\label{fig:placeholder4}
+\end{figure}
+
+
+\subsection{Problem definition}
+\ag{Give an intuitive explanation and motivation for the problem definition and formally define it using the definitions from the previous sections.}
+
+Let:
+
+\begin{enumerate}
+    \item $D$ be a private database;
+    \item $Q$ be a user-submitted SPJ aggregate query;
+    \item $\mathcal{C}$ be a set of {\it cardinality constraints} over groups defined by values of one or more sensitive attributes;
+    \item $Q'$ be a refinement of $Q$ which satisfies the constraints $\mathcal{C}$.
+    \item $\epsilon > 0$ be the differential privacy budget;
+    \item $k \in \mathbb{N}$ be the number of explanations to release.
+\end{enumerate}
+
+
+We aim to compute:
+
+\begin{enumerate}
+    \item A set of {\it noisy constraint-oriented histograms}:
+    $$
+    \hat{H}_{Q',A}(v) = H_{Q',A}(v) + \text{Lap}(1/\epsilon), \quad \forall A \in \text{attrs}(\mathcal{C}), \ v \in \text{Dom}(A)
+    $$
+    \item A set of $k$ {\it differentially private explanation candidates}, selected to maximize histogram divergence between $Q$ and $Q'$.
+    $$
+    k\text{-ArgMax} \left\{ Utility \right\}, \quad A \in \text{attrs}(D)
+    $$
+\end{enumerate}
+
+To evaluate and select meaningful explanations for query refinements, we define a utility function that incorporates three key components: \textit{interestingness}, \textit{representativeness}, and \textit{coverage}. Each explanation is based on a view predicate $p$ over a subset of attributes $A_1, \dots, A_m$, \alon{Formal definition} applied to a private dataset $D$, and compared between the original query $Q$ and its refined version $Q'$. For a chosen attribute $A$, we define:
+\alon{Add references to previous works, and extend the explanations for the chosen metrics}
+\begin{enumerate}
+    \item the \textbf{interestingness} score quantifies the absolute difference in the conditional distributions of $A$ between $Q(p(D))$ and $Q'(p(D))$, aggregated over discrete buckets of $A$.
+    \[
+\sum_{V \in \text{buckets}(D[A])} \left| \Pr(t[A] = V \mid t \in Q(p(D))) - \Pr(t[A] = V \mid t \in Q'(p(D))) \right|
+\]
+
+    \item The \textbf{representativeness} score measures how closely the distribution of $A$ within the view $p(D)$ matches its distribution in the full dataset $D$, encouraging views that generalize well. 
+    \[
+1 - \sum_{V \in \text{buckets}(D[A])} \left| \Pr(t[A] = V \mid t \in D) - \Pr(t[A] = V \mid t \in p(D)) \right|
+\]
+
+    \item The \textbf{Coverage} is defined as the product of the sizes of $p(D)$, $Q(p(D))$, and $Q'(p(D))$, promoting views that are statistically robust.
+    \[
+    |p(D)| \times |Q(p(D))| \times |Q'(p(D))|
+\]
+
+\end{enumerate}
+  The final utility score is computed as the product of Interestingness, Representativeness and Coverage:
+  \[
+\text{Utility} = \text{Interestingness} \times \text{Representativeness} \times \text{Coverage}
+\]
+
+
+\alon{Add the connection between the theoretical metrics to the metrics we choose}

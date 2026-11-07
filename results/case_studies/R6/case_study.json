@@ -1,0 +1,502 @@
+{
+  "pair": {
+    "pair": "R6",
+    "dataset": "tax",
+    "synthetic_data": false,
+    "N": 200000,
+    "kind": "refinement",
+    "Q1": "MaritalStatus = 'S' AND HasChild = 'N' AND Salary >= 50000",
+    "Q2": "MaritalStatus = 'S' AND Salary >= 50000",
+    "|Q1|": 27694,
+    "|Q2|": 55195,
+    "|Q1 & Q2|": 27694,
+    "constraint: >= 30% with HasChild = 'Y'": {
+      "share_Q1": 0.0,
+      "share_Q2": 0.4983
+    },
+    "role": "sanity",
+    "aggregate": "Rate",
+    "AVG_Q1": 4.6373260524120745,
+    "AVG_Q2": 4.624463336347495
+  },
+  "motivation": {
+    "Q1": "MaritalStatus = 'S' AND HasChild = 'N' AND Salary >= 50000",
+    "Q2": "MaritalStatus = 'S' AND Salary >= 50000",
+    "constraint": ">= 30% with HasChild = 'Y'",
+    "|Q1|": 27694,
+    "|Q2|": 55195,
+    "share_Q1": 0.0,
+    "share_Q2": 0.4982516532294592,
+    "output_jaccard": 0.4982516532294592,
+    "hidden_drift": 0.01143898691269246,
+    "hidden_drift_attr": "State",
+    "group_drift": 0.0,
+    "group_drift_attr": null,
+    "nongroup_drift": 0.0,
+    "nongroup_drift_attr": null,
+    "hidden_attrs": "Gender,State,Rate",
+    "agg": "Rate",
+    "agg_Q1": 4.6373260524120745,
+    "agg_Q2": 4.624463336347495,
+    "agg_counterfactual": NaN,
+    "agg_change": -0.012862716064579338,
+    "agg_unexplained": NaN,
+    "hidden": [
+      "Gender",
+      "State",
+      "Rate"
+    ]
+  },
+  "stability": {
+    "trials": 40,
+    "top_explanations": [
+      {
+        "view": "MaritalStatus='S' AND MarriedExemp IN [0, 174]",
+        "attr": "State",
+        "share_of_runs": 1.0
+      },
+      {
+        "view": "MaritalStatus='S'",
+        "attr": "State",
+        "share_of_runs": 0.975
+      },
+      {
+        "view": "Gender='F' AND MaritalStatus='S'",
+        "attr": "State",
+        "share_of_runs": 0.55
+      },
+      {
+        "view": "Gender='M' AND MaritalStatus='S'",
+        "attr": "State",
+        "share_of_runs": 0.35
+      },
+      {
+        "view": "MarriedExemp IN [0, 174]",
+        "attr": "State",
+        "share_of_runs": 0.325
+      },
+      {
+        "view": "Gender='F' AND MaritalStatus='S'",
+        "attr": "Salary",
+        "share_of_runs": 0.25
+      },
+      {
+        "view": "MaritalStatus='S'",
+        "attr": "Salary",
+        "share_of_runs": 0.2
+      },
+      {
+        "view": "MaritalStatus='S'",
+        "attr": "Rate",
+        "share_of_runs": 0.175
+      },
+      {
+        "view": "MaritalStatus='S' AND MarriedExemp IN [0, 174]",
+        "attr": "Salary",
+        "share_of_runs": 0.175
+      },
+      {
+        "view": "Gender='F' AND MaritalStatus='S'",
+        "attr": "Rate",
+        "share_of_runs": 0.15
+      }
+    ],
+    "attribute_share_of_runs": {
+      "State": 3.325,
+      "Salary": 0.8,
+      "Rate": 0.575,
+      "ChildExemp": 0.275,
+      "SingleExemp": 0.025
+    }
+  },
+  "accuracy": [
+    {
+      "pair": "R6",
+      "dataset": "tax",
+      "synthetic": false,
+      "sweep": "epsilon",
+      "epsilon": 0.5,
+      "ratio_B1_mean": 0.9850089896187624,
+      "jaccard_B1_mean": 0.39226190476190476,
+      "precision_at_k_B1_mean": 0.545,
+      "attr_precision_B1_mean": 0.8950000000000001,
+      "view_jaccard_B1_mean": 0.5741666666666666,
+      "ratio_B2_mean": 0.9725994506812817,
+      "jaccard_B2_mean": 0.41220238095238093,
+      "precision_at_k_B2_mean": 0.5700000000000001,
+      "attr_precision_B2_mean": 0.835,
+      "view_jaccard_B2_mean": 0.6533928571428571,
+      "ratio_B3_mean": 0.9725994506812817,
+      "jaccard_B3_mean": 0.41220238095238093,
+      "precision_at_k_B3_mean": 0.5700000000000001,
+      "attr_precision_B3_mean": 0.835,
+      "view_jaccard_B3_mean": 0.6533928571428571,
+      "hist_rel_l1_mean": 0.0633508375355947,
+      "diff_sign_acc_mean": 0.9944579032596634,
+      "F_mean": 27.61893356965691,
+      "F_B1_mean": 28.03927056579102,
+      "F_B2_mean": 28.39702772843491,
+      "F_B3_mean": 28.39702772843491,
+      "gamma_mean": 294.31648700062226,
+      "tau_mean": 15.0,
+      "mechanism_ms_mean": 0.499057149932014,
+      "ratio_B1_std": 0.018722222675631096,
+      "jaccard_B1_std": 0.17031055008416005,
+      "precision_at_k_B1_std": 0.15681117176318654,
+      "attr_precision_B1_std": 0.11082441645256377,
+      "view_jaccard_B1_std": 0.17581515481029691,
+      "ratio_B2_std": 0.01848635259349169,
+      "jaccard_B2_std": 0.1432810027626134,
+      "precision_at_k_B2_std": 0.13996336517011726,
+      "attr_precision_B2_std": 0.1001281230506246,
+      "view_jaccard_B2_std": 0.21871284040613814,
+      "ratio_B3_std": 0.01848635259349169,
+      "jaccard_B3_std": 0.1432810027626134,
+      "precision_at_k_B3_std": 0.13996336517011726,
+      "attr_precision_B3_std": 0.1001281230506246,
+      "view_jaccard_B3_std": 0.21871284040613814,
+      "hist_rel_l1_std": 0.012631822154140555,
+      "diff_sign_acc_std": 0.007270357783331483,
+      "trials": 40
+    },
+    {
+      "pair": "R6",
+      "dataset": "tax",
+      "synthetic": false,
+      "sweep": "epsilon",
+      "epsilon": 1.0,
+      "ratio_B1_mean": 0.9752122549074415,
+      "jaccard_B1_mean": 0.4726190476190476,
+      "precision_at_k_B1_mean": 0.625,
+      "attr_precision_B1_mean": 0.8400000000000001,
+      "view_jaccard_B1_mean": 0.6795833333333333,
+      "ratio_B2_mean": 0.9750718529000613,
+      "jaccard_B2_mean": 0.4458333333333333,
+      "precision_at_k_B2_mean": 0.6,
+      "attr_precision_B2_mean": 0.8400000000000001,
+      "view_jaccard_B2_mean": 0.6795833333333333,
+      "ratio_B3_mean": 0.9750718529000613,
+      "jaccard_B3_mean": 0.4458333333333333,
+      "precision_at_k_B3_mean": 0.6,
+      "attr_precision_B3_mean": 0.8400000000000001,
+      "view_jaccard_B3_mean": 0.6795833333333333,
+      "hist_rel_l1_mean": 0.0321842596655678,
+      "diff_sign_acc_mean": 1.0,
+      "F_mean": 27.689142444019446,
+      "F_B1_mean": 28.392939387997593,
+      "F_B2_mean": 28.39702772843491,
+      "F_B3_mean": 28.39702772843491,
+      "gamma_mean": 147.15824350031113,
+      "tau_mean": 15.0,
+      "mechanism_ms_mean": 0.5008647749264128,
+      "ratio_B1_std": 0.014970686692176863,
+      "jaccard_B1_std": 0.1700382845089084,
+      "precision_at_k_B1_std": 0.15148834261657876,
+      "attr_precision_B1_std": 0.11277388313766941,
+      "view_jaccard_B1_std": 0.19776124126584702,
+      "ratio_B2_std": 0.014968531351682642,
+      "jaccard_B2_std": 0.16694878442772987,
+      "precision_at_k_B2_std": 0.15021352323976217,
+      "attr_precision_B2_std": 0.11277388313766941,
+      "view_jaccard_B2_std": 0.19776124126584702,
+      "ratio_B3_std": 0.014968531351682642,
+      "jaccard_B3_std": 0.16694878442772987,
+      "precision_at_k_B3_std": 0.15021352323976217,
+      "attr_precision_B3_std": 0.11277388313766941,
+      "view_jaccard_B3_std": 0.19776124126584702,
+      "hist_rel_l1_std": 0.0067636496214663645,
+      "diff_sign_acc_std": 0.0,
+      "trials": 40
+    },
+    {
+      "pair": "R6",
+      "dataset": "tax",
+      "synthetic": false,
+      "sweep": "epsilon",
+      "epsilon": 2.0,
+      "ratio_B1_mean": 0.9780452900580622,
+      "jaccard_B1_mean": 0.4919642857142857,
+      "precision_at_k_B1_mean": 0.645,
+      "attr_precision_B1_mean": 0.8450000000000001,
+      "view_jaccard_B1_mean": 0.7166666666666667,
+      "ratio_B2_mean": 0.9779044801765808,
+      "jaccard_B2_mean": 0.46964285714285714,
+      "precision_at_k_B2_mean": 0.625,
+      "attr_precision_B2_mean": 0.8450000000000001,
+      "view_jaccard_B2_mean": 0.7166666666666667,
+      "ratio_B3_mean": 0.9779044801765808,
+      "jaccard_B3_mean": 0.46964285714285714,
+      "precision_at_k_B3_mean": 0.625,
+      "attr_precision_B3_mean": 0.8450000000000001,
+      "view_jaccard_B3_mean": 0.7166666666666667,
+      "hist_rel_l1_mean": 0.016625042026710148,
+      "diff_sign_acc_mean": 1.0,
+      "F_mean": 27.76958063933509,
+      "F_B1_mean": 28.392939387997593,
+      "F_B2_mean": 28.39702772843491,
+      "F_B3_mean": 28.39702772843491,
+      "gamma_mean": 73.57912175015556,
+      "tau_mean": 15.0,
+      "mechanism_ms_mean": 0.49577832503473473,
+      "ratio_B1_std": 0.014337097121477595,
+      "jaccard_B1_std": 0.1605675289785843,
+      "precision_at_k_B1_std": 0.13950461806527573,
+      "attr_precision_B1_std": 0.10609623111312794,
+      "view_jaccard_B1_std": 0.1953155092360772,
+      "ratio_B2_std": 0.014335032999328054,
+      "jaccard_B2_std": 0.156940845845544,
+      "precision_at_k_B2_std": 0.13728129459672883,
+      "attr_precision_B2_std": 0.10609623111312794,
+      "view_jaccard_B2_std": 0.1953155092360772,
+      "ratio_B3_std": 0.014335032999328054,
+      "jaccard_B3_std": 0.156940845845544,
+      "precision_at_k_B3_std": 0.13728129459672883,
+      "attr_precision_B3_std": 0.10609623111312794,
+      "view_jaccard_B3_std": 0.1953155092360772,
+      "hist_rel_l1_std": 0.003331906776626645,
+      "diff_sign_acc_std": 0.0,
+      "trials": 40
+    },
+    {
+      "pair": "R6",
+      "dataset": "tax",
+      "synthetic": false,
+      "sweep": "epsilon",
+      "epsilon": 5.0,
+      "ratio_B1_mean": 0.9847135573857834,
+      "jaccard_B1_mean": 0.5449404761904761,
+      "precision_at_k_B1_mean": 0.6900000000000001,
+      "attr_precision_B1_mean": 0.885,
+      "view_jaccard_B1_mean": 0.79375,
+      "ratio_B2_mean": 0.9847135573857834,
+      "jaccard_B2_mean": 0.5449404761904761,
+      "precision_at_k_B2_mean": 0.6900000000000001,
+      "attr_precision_B2_mean": 0.885,
+      "view_jaccard_B2_mean": 0.79375,
+      "ratio_B3_mean": 0.9847135573857834,
+      "jaccard_B3_mean": 0.5449404761904761,
+      "precision_at_k_B3_mean": 0.6900000000000001,
+      "attr_precision_B3_mean": 0.885,
+      "view_jaccard_B3_mean": 0.79375,
+      "hist_rel_l1_mean": 0.007312236370295976,
+      "diff_sign_acc_mean": 1.0,
+      "F_mean": 27.962938193649865,
+      "F_B1_mean": 28.39702772843491,
+      "F_B2_mean": 28.39702772843491,
+      "F_B3_mean": 28.39702772843491,
+      "gamma_mean": 29.43164870006222,
+      "tau_mean": 15.0,
+      "mechanism_ms_mean": 0.5023411250022036,
+      "ratio_B1_std": 0.012035344867805655,
+      "jaccard_B1_std": 0.1732622956681004,
+      "precision_at_k_B1_std": 0.1428644686766322,
+      "attr_precision_B1_std": 0.1001281230506246,
+      "view_jaccard_B1_std": 0.1840385620126725,
+      "ratio_B2_std": 0.012035344867805655,
+      "jaccard_B2_std": 0.1732622956681004,
+      "precision_at_k_B2_std": 0.1428644686766322,
+      "attr_precision_B2_std": 0.1001281230506246,
+      "view_jaccard_B2_std": 0.1840385620126725,
+      "ratio_B3_std": 0.012035344867805655,
+      "jaccard_B3_std": 0.1732622956681004,
+      "precision_at_k_B3_std": 0.1428644686766322,
+      "attr_precision_B3_std": 0.1001281230506246,
+      "view_jaccard_B3_std": 0.1840385620126725,
+      "hist_rel_l1_std": 0.001306057841471272,
+      "diff_sign_acc_std": 0.0,
+      "trials": 40
+    }
+  ],
+  "explanations_key_bins": [
+    {
+      "view": "MaritalStatus='S' AND MarriedExemp IN [0, 174]",
+      "attr": "State",
+      "bins": [
+        {
+          "bin": "LA",
+          "noisy_Q1": 379,
+          "noisy_Q2": 1017,
+          "exact_Q1": 507,
+          "exact_Q2": 1039,
+          "clears_2sd": true
+        },
+        {
+          "bin": "NY",
+          "noisy_Q1": 424,
+          "noisy_Q2": 1059,
+          "exact_Q1": 547,
+          "exact_Q2": 1059,
+          "clears_2sd": true
+        },
+        {
+          "bin": "VT",
+          "noisy_Q1": 490,
+          "noisy_Q2": 1120,
+          "exact_Q1": 546,
+          "exact_Q2": 1107,
+          "clears_2sd": true
+        },
+        {
+          "bin": "UT",
+          "noisy_Q1": 545,
+          "noisy_Q2": 1171,
+          "exact_Q1": 550,
+          "exact_Q2": 1125,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "Gender='M' AND MaritalStatus='S'",
+      "attr": "State",
+      "bins": [
+        {
+          "bin": "VA",
+          "noisy_Q1": 198,
+          "noisy_Q2": 648,
+          "exact_Q1": 290,
+          "exact_Q2": 550,
+          "clears_2sd": true
+        },
+        {
+          "bin": "KS",
+          "noisy_Q1": 280,
+          "noisy_Q2": 667,
+          "exact_Q1": 284,
+          "exact_Q2": 539,
+          "clears_2sd": true
+        },
+        {
+          "bin": "TN",
+          "noisy_Q1": 175,
+          "noisy_Q2": 559,
+          "exact_Q1": 247,
+          "exact_Q2": 530,
+          "clears_2sd": true
+        },
+        {
+          "bin": "MD",
+          "noisy_Q1": 168,
+          "noisy_Q2": 546,
+          "exact_Q1": 244,
+          "exact_Q2": 512,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "MaritalStatus='S'",
+      "attr": "State",
+      "bins": [
+        {
+          "bin": "AK",
+          "noisy_Q1": 462,
+          "noisy_Q2": 1109,
+          "exact_Q1": 505,
+          "exact_Q2": 1072,
+          "clears_2sd": true
+        },
+        {
+          "bin": "OK",
+          "noisy_Q1": 532,
+          "noisy_Q2": 1171,
+          "exact_Q1": 557,
+          "exact_Q2": 1131,
+          "clears_2sd": true
+        },
+        {
+          "bin": "UT",
+          "noisy_Q1": 536,
+          "noisy_Q2": 1161,
+          "exact_Q1": 550,
+          "exact_Q2": 1125,
+          "clears_2sd": true
+        },
+        {
+          "bin": "NM",
+          "noisy_Q1": 540,
+          "noisy_Q2": 1161,
+          "exact_Q1": 515,
+          "exact_Q2": 1073,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "MaritalStatus='S' AND MarriedExemp IN [0, 174]",
+      "attr": "Salary",
+      "bins": [
+        {
+          "bin": "(50000, 70000]",
+          "noisy_Q1": 10048,
+          "noisy_Q2": 19900,
+          "exact_Q1": 10038,
+          "exact_Q2": 19932,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(85000, 100000]",
+          "noisy_Q1": 7531,
+          "noisy_Q2": 15087,
+          "exact_Q1": 7512,
+          "exact_Q2": 15145,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(70000, 85000]",
+          "noisy_Q1": 7538,
+          "noisy_Q2": 15066,
+          "exact_Q1": 7524,
+          "exact_Q2": 15085,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(35000, 50000]",
+          "noisy_Q1": 2625,
+          "noisy_Q2": 4940,
+          "exact_Q1": 2620,
+          "exact_Q2": 5033,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "MaritalStatus='S'",
+      "attr": "Rate",
+      "bins": [
+        {
+          "bin": "[0, 3.07]",
+          "noisy_Q1": 8123,
+          "noisy_Q2": 16402,
+          "exact_Q1": 8169,
+          "exact_Q2": 16381,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(5.95, 7]",
+          "noisy_Q1": 6443,
+          "noisy_Q2": 12987,
+          "exact_Q1": 6465,
+          "exact_Q2": 12998,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(7, 9.3]",
+          "noisy_Q1": 4657,
+          "noisy_Q2": 9134,
+          "exact_Q1": 4669,
+          "exact_Q2": 9123,
+          "clears_2sd": true
+        },
+        {
+          "bin": "(4.75, 5.95]",
+          "noisy_Q1": 4539,
+          "noisy_Q2": 8982,
+          "exact_Q1": 4533,
+          "exact_Q2": 8983,
+          "clears_2sd": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+# Every experiment starts from `defaults` and changes only the parameter it
+# studies.  The defaults are the realistic deployment of Section 5.1: the whole
+# dataset, every public view, k = 5, lambda = 0.5, eps = 1 split equally, and the
+# derived constants set by the algorithm's own rules:
+#   tau   = min(3k, |P|)                       (Eq. (11))
+#   gamma = 2 ln(tau |Attrs|) k / eps_S        (Eq. (12))
+#   gamma_R = N / 100 (Eq. (4)),  Delta_Use = 4 / |D| (Proposition 3.11)
+# When an experiment varies k, eps or tau, the derived constants follow their
+# rules (that is how the algorithm behaves); `gamma_mult` scales the Eq. (12)
+# value when gamma itself is the studied parameter.
+
+defaults:
+  k: 5
+  lam: 0.5
+  epsilon: 1.0
+  split: [0.333333333, 0.333333333, 0.333333334]   # eps_P, eps_S, eps_H
+  tau_factor: 3
+  gamma_mult: 1.0          # gamma = gamma_mult * Eq. (12)
+  release: pair            # noisy (H1, H2); "diff" releases H1 - H2
+  gamma_eval: 0.0          # the metric scores with the unsmoothed HD
+  data_fraction: 1.0       # N = the whole dataset
+  view_fraction: 1.0       # |P| = every public view
+  trials: 40               # private runs per accuracy point
+  seed: 20261031
+  # Every experiment uses the original route of Section 4.2 (one pass per view,
+  # histograms only for the views scored).  The optimised route (O1 grouped pass +
+  # O3 lazy histograms in one combined pass) appears only as the method
+  # OPT_PRIV_EXPL in the running-time experiments; it returns identical outputs.
+  stats: {mode: direct, rep: general, hist: lazy}
+  timeout_s: 1800          # time limit of every timed run (E4, E5); a run that hits it is a timeout
+  repeats_min: 10          # every pair is run at least 10 times
+  timeout_repeats: 3       # a timed point that hits the limit is run 3 times, then not again
+
+# C4 (= H1) and R6 (= T2) are duplicates of other pairs and are not run
+pairs: [A1, A2, A3, T1, T2, T3, H1, H2, H3, R1, R2, R3, R4, R5, C1, C2, C3,
+        ACS_Q1C1, ACS_Q1C2, ACS_Q2C1, ACS_Q2C2, ACS_Q2C3, ACS_Q3C4, ACS_Q3C5, ACS_Q3C6, ACS_Q4C7, ACS_Q4C8,
+        I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12, I13, I14, I15, I16, I17]
+# running-time experiments (E4, E5): 4 pairs per dataset (3 on Tax-dirty and Hospital)
+runtime_pairs: [A1, A2, R1, R3, ACS_Q1C1, ACS_Q2C2, ACS_Q3C4, ACS_Q4C7, T1, T2, T3, R5,
+                C1, C2, C3, H1, H2, H3, I1, I6, I8, I12]
+datasets: [adult, acsincome, tax, tax_dirty, hospital, ipums]   # ipums replaces the synthetic stackoverflow (S1-S3)
+
+# E1 -- one released run per pair: view stage, explanations, exact checks
+e1:
+  run_seed: 7
+  releases: 10             # releases per pair; the figures show release 1, the text its stability
+
+# E2 -- accuracy vs. the privacy budget
+e2:
+  epsilons: [0.1, 0.2, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0]
+  table_epsilons: [1.0, 5.0]
+
+# E3 -- what drives accuracy: margins, bins vs gamma, the view stage alone, the budget split
+e3:
+  view_stage_eps_P: [0.01, 0.0333, 0.1, 0.3333, 1.0, 3.0, 10.0]
+  splits:
+    - [0.3333, 0.3333, 0.3334]
+    - [0.10, 0.55, 0.35]
+    - [0.20, 0.40, 0.40]
+    - [0.50, 0.25, 0.25]
+    - [0.05, 0.60, 0.35]
+  bin_stat_gamma_percent: [0.5, 5.0]
+
+# E4 -- end-to-end running time of PRIV_EXPL, OPT_PRIV_EXPL, B1, B2, B3; one parameter at a time
+e4:
+  repeats: 10              # every point, every method (a point that times out: timeout_repeats runs)
+  pairs: [A1, A2, R1, R3, ACS_Q1C1, ACS_Q2C2, ACS_Q3C4, ACS_Q4C7, T1, T2, T3, R5,
+          C1, C2, C3, H1, H2, H3, I1, I6, I8, I12]
+  sweeps:
+    k: [1, 2, 3, 4, 5, 6, 7, 8, 10]
+    data_fraction: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+    epsilon: [0.1, 0.2, 0.5, 1.0, 2.0, 5.0, 10.0]
+    view_fraction: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+    tau: [5, 10, 15, 30, 60, 120, 250, 500, 1000, all]   # capped at |P|; "all" = every view
+    gamma_mult: [0.0, 0.1, 0.3, 1.0, 3.0, 10.0]
+  extra_data_fraction:
+    tax: [2.5]             # 500k rows, the size quoted in the paper (re-sampled)
+
+# E5 -- end-to-end cost per pair at the defaults, B2 growth, statistics routes
+e5:
+  repeats: 10
+  identity_runs: 10
+  route_repeats: 10
+  b2_growth_repeats: 10
+  b2_pool_sizes: [20, 25, 30, 35, 40, 45, 50]
+  routes:                  # original (Section 4.2), O1 alone, O1+O3 (= OPT_PRIV_EXPL)
+    - {mode: direct, rep: general, hist: lazy}
+    - {mode: grouped, rep: general, hist: eager}
+    - {mode: grouped, rep: general, hist: lazy}
+
+# E6 -- accuracy vs. the smoothing constant gamma
+e6:
+  gamma_mults: [0.0, 0.03, 0.1, 0.3, 1.0, 3.0, 10.0, 30.0]
+
+# E7 -- the number of explanation attributes (views and reference attributes fixed);
+# |Attrs| from min_attrs to all usable attributes of the dataset (extra_explain_attrs)
+e7:
+  orders: 10               # random nested orders per pair; run r of a point uses order r
+  trials_per_order: 4      # accuracy: 10 orders x 4 = 40 private runs per point
+  min_attrs: 2

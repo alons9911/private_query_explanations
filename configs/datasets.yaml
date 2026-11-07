@@ -1,0 +1,130 @@
+# Public schema of every dataset: which attributes are bucketed, which are
+# explanation attributes (Attrs), reference attributes (A_R) and view attributes.
+# Views are conjunctions of at most `max_view_atoms` (= l) atomic conditions
+# `A = bin` over the view attributes.  Numeric attributes are bucketed into
+# `n_bins` quantile bins (Section 5.1).
+
+adult:
+  loader: adult
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [age, hoursPerWeek, capitalGain, capitalLoss]
+  categorical: [workclass, education, maritalStatus, occupation, relationship, race, gender, income, nativeCountry]
+  # usable attributes beyond explain_attrs: encoded, used only by the |Attrs| experiment (E7)
+  extra_explain_attrs: [capitalGain, capitalLoss, nativeCountry]
+  # mostly 0 (92% / 95%): one bin for 0, five quantile bins of the positive values
+  zero_bins: [capitalGain, capitalLoss]
+  explain_attrs: [age, workclass, education, maritalStatus, occupation, relationship, race, gender, hoursPerWeek, income]
+  ref_attrs: [age, workclass, education, maritalStatus, occupation, relationship, race, gender, hoursPerWeek, income]
+  # |P| = 1,048 public views (the paper reports 1,052)
+  view_attrs: [workclass, education, occupation, race, gender, hoursPerWeek]
+
+tax:
+  loader: tax
+  # The benchmark file has 200,000 rows; set to 500000 to up-sample to the size
+  # quoted in the paper (rows are re-sampled with replacement, seed below).
+  target_rows: null
+  resample_seed: 0
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
+  categorical: [Gender, State, MaritalStatus, HasChild, AreaCode]
+  # usable attributes beyond explain_attrs: encoded, used only by the |Attrs| experiment (E7)
+  extra_explain_attrs: [AreaCode]
+  explain_attrs: [Gender, State, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
+  ref_attrs: [Gender, State, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
+  view_attrs: [Gender, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp, State]
+
+tax_dirty:
+  # The same 200k tuples with injected errors; used for consistent query answering.
+  loader: tax_dirty
+  declared_domains: true
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
+  categorical: [Gender, State, MaritalStatus, HasChild, AreaCode]
+  # usable attributes beyond explain_attrs: encoded, used only by the |Attrs| experiment (E7)
+  extra_explain_attrs: [AreaCode]
+  explain_attrs: [Gender, State, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
+  ref_attrs: [Gender, State, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp]
+  view_attrs: [Gender, MaritalStatus, HasChild, Salary, Rate, SingleExemp, MarriedExemp, ChildExemp, State]
+  # Integrity constraints: the published Tax rules of Ni et al., "Automatic Data Repair:
+  # Are We Ready to Deploy?", PVLDB 17(10), 2024 (configs/benchmarks/ni2024_rules/tax),
+  # WITHOUT area_code -> state.  Deviation: under subset-repair CQA that one rule, with
+  # the file's 600 state typos, puts 82% of the tuples in conflict (whole area-code
+  # groups), which empties every consistent answer; the rules were written for
+  # cell repair.  With the remaining seven rules 3.9% of the tuples are in conflict.
+  fds:
+    - [Zip, City]
+    - [Zip, State]
+    - [[Zip, HasChild], ChildExemp]
+    - [[Zip, MaritalStatus], SingleExemp]
+    - [[Zip, MaritalStatus], MarriedExemp]
+    - [FName, Gender]
+    - [[Phone, Zip], AreaCode]
+
+stackoverflow:
+  loader: stackoverflow
+  allow_synthetic: true
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [YearsCodePro, JobSat, CompYearly]
+  categorical: [WorkRemote, UsingAI, OrgSize, Country, Age, EdLevel, DevType, UsesPython]
+  top_values: {Country: 10, DevType: 8}
+  explain_attrs: [YearsCodePro, WorkRemote, OrgSize, Country, Age, EdLevel, DevType, UsesPython, UsingAI, JobSat]
+  ref_attrs: [YearsCodePro, WorkRemote, OrgSize, Country, Age, EdLevel, DevType, UsesPython, UsingAI, JobSat]
+  view_attrs: [WorkRemote, OrgSize, Age, EdLevel, UsingAI, UsesPython, JobSat, YearsCodePro, Country]
+
+acsincome:
+  # ACSIncome (folktables) as distributed with Erica (Li et al., PVLDB 17(2), 2023): 1,664,500 rows,
+  # with Erica's preprocessing (SEX M/F, age/income buckets, occupation groups).
+  loader: acsincome
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [AGEP, WKHP, SCHL]
+  categorical: [COW, MAR, SEX, RAC1P, RELP, OCCP_bucket, PINCP_bucket, ST, POBP]
+  # usable attributes beyond explain_attrs: encoded, used only by the |Attrs| experiment (E7)
+  extra_explain_attrs: [ST, POBP]
+  top_values: {RAC1P: 5, RELP: 8}
+  explain_attrs: [AGEP, COW, SCHL, MAR, OCCP_bucket, RELP, WKHP, SEX, RAC1P, PINCP_bucket]
+  ref_attrs: [AGEP, COW, SCHL, MAR, OCCP_bucket, RELP, WKHP, SEX, RAC1P, PINCP_bucket]
+  view_attrs: [COW, MAR, SEX, RAC1P, RELP, AGEP, WKHP, SCHL]
+  value_labels:          # ACS codes -> short display names (queries keep the codes)
+    COW: {"1": private, "2": non-profit, "3": local-gov, "4": state-gov, "5": federal-gov,
+          "6": self-emp-not-inc, "7": self-emp-inc, "8": unpaid-family}
+    MAR: {"1": married, "2": widowed, "3": divorced, "4": separated, "5": never-married}
+    RAC1P: {"1": White, "2": Black, "6": Asian, "8": other-race, "9": two-or-more}
+    RELP: {"0": reference-person, "1": spouse, "2": biological-child, "3": adopted-child, "4": stepchild,
+           "5": sibling, "6": parent, "7": grandchild, "8": parent-in-law, "9": child-in-law,
+           "10": other-relative, "11": roomer-boarder, "12": housemate-roommate, "13": unmarried-partner,
+           "14": foster-child, "15": other-nonrelative, "16": inst-group-quarters, "17": noninst-group-quarters}
+
+ipums:
+  # IPUMS-CPS as prepared by DPXPlain (Tao et al., PVLDB 16(1), 2022): 1,146,552 rows.
+  loader: ipums
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [INCTOT]
+  categorical: [RELATE, SEX, MARST, RACE, CITIZEN, CLASSWKR, AGE, EDUC]
+  top_values: {RACE: 5, RELATE: 8}     # rare detailed codes fall into "Other"
+  explain_attrs: [RELATE, SEX, MARST, RACE, CITIZEN, CLASSWKR, AGE, EDUC, INCTOT]
+  ref_attrs: [RELATE, SEX, MARST, RACE, CITIZEN, CLASSWKR, AGE, EDUC, INCTOT]
+  view_attrs: [RELATE, SEX, MARST, RACE, CITIZEN, CLASSWKR, AGE, INCTOT]
+
+hospital:
+  loader: hospital
+  # Dom(A) of the categorical attributes is the domain declared by the clean
+  # ground truth; typo values of the dirty relation fall into an "Other" bin.
+  declared_domains: true
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [Score, Sample]
+  categorical: [City, State, CountyName, HospitalType, HospitalOwner, EmergencyService, Condition, MeasureCode]
+  explain_attrs: [City, CountyName, State, HospitalType, HospitalOwner, EmergencyService, Condition, MeasureCode, Score, Sample]
+  ref_attrs: [City, CountyName, State, HospitalType, HospitalOwner, EmergencyService, Condition, MeasureCode, Score, Sample]
+  view_attrs: [State, HospitalOwner, EmergencyService, Condition, Score, Sample]
+  # integrity constraints used for consistent query answering (Section 5.1)
+  fds:
+    - [HospitalName, ZipCode]
+    - [HospitalName, PhoneNumber]
+    - [ZipCode, City]

@@ -1,0 +1,23 @@
+{
+  "all_sensitive_attributes": ["RAC1P", "age_bucket"],
+  "number_fairness_constraints": 1,
+  "fairness_constraints": [
+    {
+      "sensitive_attributes":
+      {
+        "RAC1P": 1
+      },
+      "symbol": "<=",
+      "number": 2829
+    },
+    {
+      "sensitive_attributes":
+      {
+        "age_bucket": "30-60"
+      },
+      "symbol": "<=",
+      "number": 2280
+    }
+  ]
+}
+

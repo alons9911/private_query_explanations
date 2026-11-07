@@ -1,0 +1,57 @@
+% Guard: macros.tex is \input both by main.tex (after the packages it needs,
+% e.g. amsmath for \DeclareMathOperator) and by individual section files so
+% they remain compilable on their own. Loading it twice would redefine every
+% \newcommand and abort, so the second and later loads are no-ops.
+\ifdefined\PQRmacrosloaded\endinput\fi
+\let\PQRmacrosloaded\relax
+
+% --- 0. revision marking ---
+% Text added to Section 2 during the current revision is wrapped in \added{...}
+% so the advisors can see at a glance what is new. Redefine to \relax to print
+% the paper without the marking.
+\newcommand{\added}[1]{\textcolor{blue}{#1}}
+\long\def\added#1{\begingroup\color{blue}#1\endgroup}  % \long: may span paragraphs
+
+
+% --- A. operator-style score and function names ---
+\newcommand{\HD}{\mathit{HD}}                        % histogram distance; use \HD_\gamma
+\newcommand{\Attr}{\mathit{Attr}}                    % attribute set of a schema
+\newcommand{\Attrs}{\mathit{Attrs}}                  % attribute set argument
+% Abbreviated in MATH only; the prose still spells the names out in full.
+% Spelling them out inside formulas makes displayed equations far too wide
+% for a two-column layout (the product-rule step below overflowed by 200pt).
+\newcommand{\Use}{\mathit{Use}}
+\newcommand{\Cov}{\mathit{Cov}}
+\newcommand{\Rep}{\mathit{Rep}}
+\newcommand{\DivS}{\mathit{Div}}
+\newcommand{\TVD}{\mathit{TVD}}
+\newcommand{\GS}{\mathit{GS}}                        % global sensitivity
+\DeclareMathOperator{\Dom}{Dom}
+\DeclareMathOperator{\Lap}{Laplace}
+
+% --- B. core objects ---
+\newcommand{\Qone}{Q_1}
+\newcommand{\Qtwo}{Q_2}
+\newcommand{\pD}{p(D)}
+\newcommand{\views}{\mathcal{P}}
+\newcommand{\hist}[2]{H_{#1,#2}}                     % \hist{\Qone(\pD)}{A}
+\newcommand{\dhist}{\Delta H}
+\newcommand{\nhist}{\widetilde{\Delta H}}            % the released noisy object
+
+% --- C. privacy budget and parameters ---
+\newcommand{\eps}{\epsilon}
+\newcommand{\epsP}{\epsilon_P}
+\newcommand{\epsS}{\epsilon_S}
+\newcommand{\epsH}{\epsilon_H}
+\newcommand{\gammaref}{\gamma_{\mathrm{ref}}}
+\newcommand{\gammaeval}{\gamma_{\mathrm{eval}}}
+\newcommand{\taumax}{\tau_{\max}}
+
+% --- D. mechanisms ---
+\newcommand{\ExpMech}{\textsc{ExpMech}}
+\newcommand{\OneShotTop}[1]{\textsc{OneShotTop-}#1}
+\newcommand{\AdaptiveTau}{\textsc{AdaptiveTau}}
+% --- E. experiment baselines (used in sections/experiments.tex) ---
+\newcommand{\Bone}{\ensuremath{\mathsf{B1}}}
+\newcommand{\Btwo}{\ensuremath{\mathsf{B2}}}
+\newcommand{\Bthree}{\ensuremath{\mathsf{B3}}}
