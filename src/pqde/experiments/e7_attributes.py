@@ -120,18 +120,24 @@ def _labels(cache, sel):
     return [(cache.view_label(v), a) for v, a in sel]
 
 
-def accuracy_rows(pair_id: str, cfg: dict, n_orders: int, trials_per_order: int) -> list[dict]:
+def accuracy_rows(pair_id: str, cfg: dict, n_orders: int, trials_per_order: int,
+                  fixed_gamma: bool = False) -> list[dict]:
+    """With ``fixed_gamma``, gamma stays at its Eq. (14) value for the dataset's default number of
+    explanation attributes (the gamma of every other experiment) instead of following |Attrs|."""
     d, e = cfg["defaults"], cfg[EXP]
     seed, lam, ge = int(d["seed"]), float(d["lam"]), float(d.get("gamma_eval", 0.0))
     pair = resolve_pair(pair_id)
     pool = attribute_pool(pair)
     full = build_cache(replace(pair.dataset, explain_attrs=pool), pair.q1, pair.q2, **stats_route(d))
     full.ensure_histograms(np.arange(full.n_views))  # every view, so that restricted copies never build any
+    over = {}
+    if fixed_gamma:
+        over["gamma"] = make_params(d, full.n_views, len(pair.dataset.explain_attrs)).gamma
     rows = []
     for r, order in enumerate(attribute_orders(pair_id, pool, n_orders, seed)):
         for m in sizes(pool, e):
             c = _restrict(full, order[:m])
-            params = make_params(d, c.n_views, m)
+            params = make_params(d, c.n_views, m, **over)
             ref = {"B1": b1(c, params).selections, "B2": b2(c, params, ge), "B3": b3(c, params, ge)}
             ref_F = {b: objective(c, s, lam, ge) for b, s in ref.items()}
             ref_lab = {b: _labels(c, s) for b, s in ref.items()}
@@ -140,7 +146,8 @@ def accuracy_rows(pair_id: str, cfg: dict, n_orders: int, trials_per_order: int)
                 F = objective(c, res.selections, lam, ge)
                 lab = _labels(c, res.selections)
                 row = {"pair": pair_id, "dataset": pair.dataset.name,
-                       "synthetic": bool(pair.dataset.meta.get("synthetic", False)), "sweep": "n_attrs", "value": m,
+                       "synthetic": bool(pair.dataset.meta.get("synthetic", False)),
+                       "sweep": "n_attrs_fixed_gamma" if fixed_gamma else "n_attrs", "value": m,
                        "order": r, "trial": t, "attrs": json.dumps(order[:m]), "epsilon": params.epsilon,
                        "gamma": res.gamma, "tau": res.tau, "k": params.k, "F": F}
                 for bname in BASELINES:
@@ -155,20 +162,29 @@ def accuracy_rows(pair_id: str, cfg: dict, n_orders: int, trials_per_order: int)
     return rows
 
 
-def run_accuracy(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = False) -> dict:
+def run_accuracy(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = False,
+                 fixed_gamma: bool = False) -> dict:
     e = cfg[EXP]
     n_orders = 2 if quick else int(e["orders"])
     tpo = 1 if quick else int(e["trials_per_order"])
+    name = "trials_fixed_gamma" if fixed_gamma else "trials"
     rows = []
     for pid in pairs or cfg["pairs"]:
-        rows += accuracy_rows(pid, cfg, n_orders, tpo)
-        print(f"  E7a {pid}: done", flush=True)
-        write_raw(pd.DataFrame(rows), EXP, "trials", base)
-    write_csv(summarise(pd.DataFrame(rows)), out_dir(EXP, base) / "accuracy_summary.csv")
-    write_json(run_metadata(cfg, experiment="e7a", orders=n_orders, trials_per_order=tpo),
-               out_dir(EXP, base) / "metadata_accuracy.json")
+        rows += accuracy_rows(pid, cfg, n_orders, tpo, fixed_gamma=fixed_gamma)
+        print(f"  E7{'g' if fixed_gamma else 'a'} {pid}: done", flush=True)
+        write_raw(pd.DataFrame(rows), EXP, name, base)
+    write_csv(summarise(pd.DataFrame(rows)), out_dir(EXP, base) / f"accuracy_summary{'_fixed_gamma' if fixed_gamma else ''}.csv")
+    write_json(run_metadata(cfg, experiment="e7g" if fixed_gamma else "e7a", orders=n_orders, trials_per_order=tpo),
+               out_dir(EXP, base) / f"metadata_accuracy{'_fixed_gamma' if fixed_gamma else ''}.json")
     return {}
+
+
+def run_accuracy_fixed_gamma(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = False) -> dict:
+    return run_accuracy(cfg, pairs, base, quick, fixed_gamma=True)
 
 
 RUNTIME = SimpleNamespace(run=run_runtime, __doc__="E7t -- running time against the number of explanation attributes.")
 ACCURACY = SimpleNamespace(run=run_accuracy, __doc__="E7a -- accuracy against the number of explanation attributes.")
+ACCURACY_FIXED_GAMMA = SimpleNamespace(
+    run=run_accuracy_fixed_gamma,
+    __doc__="E7g -- accuracy against the number of explanation attributes, gamma fixed at its default.")
