@@ -106,6 +106,22 @@ def zero_bin_edges(x: np.ndarray, n_bins: int) -> list[float]:
     return [0.0, 0.0] + quantile_edges(pos, n_bins - 1)[1:]
 
 
+def fixed_bins(x: np.ndarray, cuts: list[float], labels: list[str]) -> tuple[np.ndarray, list[str]]:
+    """Left-closed bins given by their cut points: ``x < c_1``, ``c_1 <= x < c_2``, ..., ``x >= c_n``,
+    labelled by ``labels`` (one more label than cuts).  Missing values get a trailing ``NA`` bin."""
+    if len(labels) != len(cuts) + 1:
+        raise ValueError(f"{len(cuts)} cut points need {len(cuts) + 1} labels, got {len(labels)}")
+    x = np.asarray(x, dtype=float)
+    codes = np.searchsorted(np.asarray(cuts, dtype=float), x, side="right")
+    labels = [str(v) for v in labels]
+    nan = np.isnan(x)
+    if nan.any():
+        codes = codes.copy()
+        codes[nan] = len(labels)
+        labels.append(MISSING)
+    return codes.astype(np.int64), labels
+
+
 def bucketize(x: np.ndarray, edges: list[float]) -> tuple[np.ndarray, list[str]]:
     """Map values to right-closed bins ``(e_{i}, e_{i+1}]``; the first bin is closed.
 
@@ -155,6 +171,8 @@ def encode(
     declared_domains: dict[str, list[str]] | None = None,
     value_labels: dict[str, dict] | None = None,
     zero_bins: list[str] | None = None,
+    bins: dict[str, dict] | None = None,
+    category_order: dict[str, list] | None = None,
     meta: dict | None = None,
 ) -> EncodedDataset:
     """Build an :class:`EncodedDataset`.
@@ -168,8 +186,14 @@ def encode(
     declared_domains = declared_domains or {}
     codes, domains, edges = {}, {}, {}
     zero_bins = set(zero_bins or [])
+    bins = bins or {}
+    category_order = category_order or {}
     for a in numeric:
         x = pd.to_numeric(raw[a], errors="coerce").to_numpy(dtype=float)
+        if a in bins:  # explicit equal-width bins with round edges (configs/datasets.yaml)
+            codes[a], domains[a] = fixed_bins(x, bins[a]["cuts"], bins[a]["labels"])
+            edges[a] = [float(c) for c in bins[a]["cuts"]]
+            continue
         e = zero_bin_edges(x, n_bins) if a in zero_bins else quantile_edges(x, n_bins)
         codes[a], domains[a] = bucketize(x, e)
         edges[a] = e
@@ -179,6 +203,11 @@ def encode(
             dom = [str(v) for v in declared_domains[a]]
             col = col.where(col.isin(dom) | col.isna(), OTHER)
             codes[a], domains[a] = categorical_codes(col, order=dom)
+            continue
+        if a in category_order:  # a fixed display order (e.g. age brackets in increasing order)
+            dom = [str(v) for v in category_order[a]]
+            rest = [v for v in col.dropna().unique().tolist() if v not in dom]
+            codes[a], domains[a] = categorical_codes(col, order=dom + sorted(rest))
             continue
         if a in top_values:
             keep = list(col.value_counts().index[: top_values[a]])

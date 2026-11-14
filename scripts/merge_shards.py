@@ -25,8 +25,12 @@ PER_PAIR = ("e4", "e5", "e7t", "e7t7", "e7a", "e7g")
 SUBDIR = {"e7t": "e7", "e7t7": "e7", "e7a": "e7", "e7g": "e7"}  # both parts of E7 write into results/e7/raw
 
 
+ONLY_SHARDS: list[str] = []  # --shard NAME (repeatable): merge only from these shards
+
+
 def job_dirs(exp: str) -> list[Path]:
-    return sorted(p for p in SHARDS.glob(f"*/{exp}-*") if p.is_dir())
+    shards = ONLY_SHARDS or ["*"]
+    return sorted(p for sh in shards for p in SHARDS.glob(f"{sh}/{exp}-*") if p.is_dir())
 
 
 def merge_whole(exp: str) -> None:
@@ -68,6 +72,10 @@ def merge_per_pair(exp: str) -> None:
 
 
 def main(argv: list[str]) -> None:
+    while "--shard" in argv:
+        i = argv.index("--shard")
+        ONLY_SHARDS.append(argv[i + 1])
+        del argv[i:i + 2]
     exps = argv or list(WHOLE) + list(PER_PAIR)
     for exp in exps:
         (merge_per_pair if exp in PER_PAIR else merge_whole)(exp)
