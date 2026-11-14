@@ -21,8 +21,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SHARDS = ROOT / "results_shards"
 RESULTS = ROOT / "results"
 WHOLE = {"e1": "e1", "e2": "e2", "e3": "e3", "e6": "e6", "cases": "case_studies"}
-PER_PAIR = ("e4", "e5", "e7t", "e7a", "e7g")
-SUBDIR = {"e7t": "e7", "e7a": "e7", "e7g": "e7"}  # both parts of E7 write into results/e7/raw
+PER_PAIR = ("e4", "e5", "e7t", "e7t7", "e7a", "e7g")
+SUBDIR = {"e7t": "e7", "e7t7": "e7", "e7a": "e7", "e7g": "e7"}  # both parts of E7 write into results/e7/raw
 
 
 def job_dirs(exp: str) -> list[Path]:
@@ -58,7 +58,8 @@ def merge_per_pair(exp: str) -> None:
         df = pd.concat(parts, ignore_index=True)
         df.to_csv(dst / "raw" / name, index=False)
         print(f"{exp}: {name}: {len(parts)} jobs, {len(df)} rows")
-    for meta_name in ("metadata.json", "metadata_runtime.json", "metadata_accuracy.json"):
+    for meta_name in ("metadata.json", "metadata_runtime.json", "metadata_runtime_k7.json", "metadata_accuracy.json",
+                      "metadata_accuracy_fixed_gamma.json"):
         meta = next((d / meta_name for d in dirs if (d / meta_name).exists()), None)
         if meta:
             m = json.loads(meta.read_text())

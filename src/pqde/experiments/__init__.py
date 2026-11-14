@@ -2,7 +2,7 @@
 produces figures from raw data, ``plot(cfg, base)``."""
 
 from . import case_studies, e1_case_studies, erica_select, e2_accuracy, e3_drivers, e4_scalability, e5_runtime, e6_gamma, pair_search
-from .e7_attributes import ACCURACY as _e7a, ACCURACY_FIXED_GAMMA as _e7g, RUNTIME as _e7t
+from .e7_attributes import ACCURACY as _e7a, ACCURACY_FIXED_GAMMA as _e7g, RUNTIME as _e7t, RUNTIME_K7 as _e7t7
 
 EXPERIMENTS = {
     "e1": e1_case_studies,
@@ -12,6 +12,7 @@ EXPERIMENTS = {
     "e5": e5_runtime,
     "e6": e6_gamma,
     "e7t": _e7t,
+    "e7t7": _e7t7,
     "e7a": _e7a,
     "e7g": _e7g,
     "search": pair_search,

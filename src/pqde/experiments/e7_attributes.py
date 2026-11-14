@@ -64,8 +64,13 @@ def sizes(pool: list[str], e: dict) -> list[int]:
 
 # ----------------------------------------------------------------------------- running time
 
-def run_runtime(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = False) -> dict:
+def run_runtime(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = False,
+                k: int | None = None) -> dict:
+    """``k`` overrides the default k (tau and gamma then follow their rules); the raw data go to
+    ``runtime_k<k>.csv`` instead of ``runtime.csv``."""
     d, e = cfg["defaults"], cfg[EXP]
+    over = {"k": int(k)} if k is not None else {}
+    raw_name = f"runtime_k{int(k)}" if k is not None else "runtime"
     seed, timeout_s = int(d["seed"]), float(d["timeout_s"])
     timeout_reps = int(d.get("timeout_repeats", 3))
     n_orders = 2 if quick else int(e["orders"])
@@ -86,7 +91,7 @@ def run_runtime(cfg: dict, pairs: list[str] | None = None, base=None, quick: boo
                     if not methods:
                         break
                     ds_m = replace(pair.dataset, explain_attrs=order[:m])
-                    params = make_params(d, n_views, m)
+                    params = make_params(d, n_views, m, **over)
                     for out in time_methods(ds_m, pair.q1, pair.q2, params, methods=methods, seed=seed, repeat=r,
                                             gamma_eval=float(d["gamma_eval"]), timeout_s=timeout_s):
                         n_to[out.method] = n_to.get(out.method, 0) + int(out.timeout)
@@ -99,10 +104,14 @@ def run_runtime(cfg: dict, pairs: list[str] | None = None, base=None, quick: boo
                 print(f"    |Attrs|={m}: " + "  ".join(
                     f"{x} {np.median([w['total_s'] for w in rows if w['pair'] == pid and w['value'] == m and w['method'] == x]):.3g}s"
                     for x in METHODS), flush=True)
-                write_raw(pd.DataFrame(rows), EXP, "runtime", base)
-    write_json(run_metadata(cfg, experiment="e7t", orders=n_orders, timeout_s=timeout_s),
-               out_dir(EXP, base) / "metadata_runtime.json")
+                write_raw(pd.DataFrame(rows), EXP, raw_name, base)
+    write_json(run_metadata(cfg, experiment="e7t" if k is None else f"e7t-k{k}", orders=n_orders, timeout_s=timeout_s),
+               out_dir(EXP, base) / f"metadata_{raw_name}.json")
     return {}
+
+
+def run_runtime_k7(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = False) -> dict:
+    return run_runtime(cfg, pairs, base, quick, k=7)
 
 
 # ----------------------------------------------------------------------------- accuracy
@@ -184,6 +193,8 @@ def run_accuracy_fixed_gamma(cfg: dict, pairs: list[str] | None = None, base=Non
 
 
 RUNTIME = SimpleNamespace(run=run_runtime, __doc__="E7t -- running time against the number of explanation attributes.")
+RUNTIME_K7 = SimpleNamespace(run=run_runtime_k7,
+                             __doc__="E7t7 -- running time against the number of explanation attributes at k = 7.")
 ACCURACY = SimpleNamespace(run=run_accuracy, __doc__="E7a -- accuracy against the number of explanation attributes.")
 ACCURACY_FIXED_GAMMA = SimpleNamespace(
     run=run_accuracy_fixed_gamma,
