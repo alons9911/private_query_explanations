@@ -2,6 +2,18 @@
 
 Keeps the state of the work outside the chat context.
 
+## Running now: E7 at k = 7 (started 2026-11-15 ~01:05 IST)
+Running time against |Attrs| at k = 7 (tau = 21) on all 22 runtime pairs, same rules (10 runs,
+30-min limit, 3 runs on timeout), to show B2 crossing the limit (expected at 11 attributes on Adult
+and ACSIncome).  6 cloud sessions, branch `...-e7k7-<name>`, dir `results_shards/e7k7-<name>`,
+check with `scripts/shards_status.sh e7k7`:
+acs session_01U646magbT82u5c5AmUY89f (~11 h), ipums session_01U646mbTRhyP3Ax7ttttXVi,
+tax session_01U646mbUyEcKxcAQFxmHpRM, taxdirty session_01U646mbScqieXtGXLWG7STj,
+adult session_01U646mabfHFHHxRNd8HHb5M (~10 h), hospital session_01U646magz2ErFugt8fjmtMU.
+When done: fetch the 6 branches into results_shards/, `python scripts/merge_shards.py e7t7`
+(-> results/e7/raw/runtime_k7.csv), add k = 7 to the attrs figure, update the paragraph on
+exhaustive search in the chapter, compile, commit; ask the user before archiving the sessions.
+
 ## E7, |Attrs|: complete (2026-11-06)
 Merged into results/e7 (runtime 22 pairs, accuracy 44 pairs); figure paper/figures/exp/attrs.pdf;
 chapter: paragraph "What the exhaustive search depends on" (Scalability) and subsection "The Number
