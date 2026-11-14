@@ -5,7 +5,7 @@ Keeps the state of the work outside the chat context.
 ## E7, |Attrs|: complete (2026-11-06)
 Merged into results/e7 (runtime 22 pairs, accuracy 44 pairs); figure paper/figures/exp/attrs.pdf;
 chapter: paragraph "What the exhaustive search depends on" (Scalability) and subsection "The Number
-of Attributes" (Quality).  Worker sessions (idle; archive only after the user agrees):
+of Attributes" (Quality).  Worker sessions (archived 2026-11-14):
 acs session_01U646masakNHqcuvtD3XmYL, ipums session_01U646mZwW6yoEUvYuc4qmiY,
 tax session_01U646mcYcXjShf6JNguuRjw, taxdirty session_01U646maG8J3kBq2VU5mYXJu,
 adult session_01U646mYrPFcKGomH1cjVWKW, hospital session_01U646mbyH5CbdQRy8NNV1QP.
@@ -20,7 +20,7 @@ point); dense sweeps; 22 runtime pairs; eps up to 20; E1 with 10 releases.
 * Raw outputs per shard in `results_shards/` (local: E1, E2, E3, E6, cases, E5; one E4 shard per
   dataset, each run in its own cloud session); `scripts/merge_shards.py` assembled `results/`.
 * Chapter updated (`paper/sections/experiments.tex`, figures `paper/figures/exp/`, Table 3 generated).
-* Worker sessions (idle, results merged; archive only after the user agrees):
+* Worker sessions (archived 2026-11-14):
   acs session_01U646mbkQvS45WsTNyuCADG, ipums session_01U646mYnRNxbxCHf39gWQDL,
   tax session_01U646maADqDsytAW6NFEGAW, taxdirty session_01U646mYqG3EeSV2N3cSiiue,
   adult session_01U646mYoRALdiAgsPZcxVDk, hospital session_01U646mbkoEZuZ7sF2YatrzP.
@@ -33,7 +33,7 @@ point); dense sweeps; 22 runtime pairs; eps up to 20; E1 with 10 releases.
 * ACSIncome: ratio vs B2/B3 > 1 at large gamma -> views outside the exact top-tau (TODO in chapter).
 * Wide attributes dominate HD (TODO in chapter).
 * Absolute times differ between machines (up to 1.7x, Tax); compare methods within a machine only.
-* Worker sessions (12, idle): archive only after the user agrees.
+* The 12 worker sessions were archived on 2026-11-14 (user agreed); their results are in results_shards/.
 
 ## Decisions already taken by the user
 * All experiments on the original route; optimisations only as OPT_PRIV_EXPL (O1 + O3).
