@@ -217,7 +217,7 @@ Section~\ref{subsec:quality} quantifies both failures.
 \begin{table}[t]
 \centering
 \small
-\caption{Quality at the defaults ($\epsilon=1$), averaged over the pairs of each dataset. $F(\Bone)/F(\Bthree)$ is the cost of the smoothing alone; the overlap measures are against \Btwo{}/\Bthree{}.}
+\caption{Quality at the defaults ($\epsilon=1$), averaged over the pairs of each dataset. $F(\Bone)/F(\Bthree)$ is the cost of the smoothing alone; the overlap measures are against \Btwo{}/\Bthree{}, with the chance level of attribute precision in parentheses (a random set of $k$ candidates of the exact top-$\tau$ views).}
 \label{tab:quality}
 \setlength{\tabcolsep}{3.5pt}
 \begin{tabular}{@{}lccccc@{}}
@@ -226,12 +226,12 @@ Section~\ref{subsec:quality} quantifies both failures.
 \cmidrule(lr){2-3}
 Dataset & \Bone{} & \Btwo{}/\Bthree{} & $\frac{F(\Bone)}{F(\Bthree)}$ & Attr.\ prec. & Prec.@$k$\\
 \midrule
-Adult      & 1.01 & 0.96 & 0.79 & 0.80 & 0.39\\
-ACSIncome  & 0.89 & 0.89 & 0.98 & 0.71 & 0.47\\
-Tax        & 0.97 & 0.96 & 0.94 & 0.83 & 0.55\\
-Tax-dirty  & 0.68 & 0.67 & 0.86 & 0.58 & 0.16\\
-Hospital   & 0.60 & 0.52 & 0.86 & 0.52 & 0.07\\
-IPUMS-CPS  & 0.91 & 0.91 & 0.98 & 0.87 & 0.34\\
+Adult      & 1.01 & 0.96 & 0.79 & 0.80 (0.34) & 0.39\\
+ACSIncome  & 0.89 & 0.89 & 0.98 & 0.71 (0.39) & 0.47\\
+Tax        & 0.97 & 0.96 & 0.94 & 0.83 (0.27) & 0.55\\
+Tax-dirty  & 0.68 & 0.67 & 0.86 & 0.58 (0.29) & 0.16\\
+Hospital   & 0.60 & 0.52 & 0.86 & 0.52 (0.34) & 0.07\\
+IPUMS-CPS  & 0.91 & 0.91 & 0.98 & 0.87 (0.46) & 0.34\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -247,7 +247,8 @@ The ApproxRatio and the overlap measures tell different stories.
 On Adult the released set scores $0.96$ of the optimum but contains on average only $39\%$ of the optimum's explanations; on IPUMS-CPS $0.91$ against $34\%$.
 The reason is that the leading candidates are nearly tied.
 A view and its refinements by one more predicate, such as $\texttt{race}=\texttt{White}$ and $\texttt{race}=\texttt{White}\wedge\texttt{gender}=\texttt{Male}$, explain the same attribute with almost the same histogram distance, and the exponential mechanism has no reason to prefer one of them; on Adult the relative gap between the best and second-best candidate is about $2\%$ for a typical pair.
-Attribute precision, which forgives the choice of view, stays at $0.80$--$0.87$ on these datasets: the release usually explains the right attributes, through a neighbouring view.
+Attribute precision, which forgives the choice of view, stays at $0.80$--$0.87$ on these datasets, against $0.34$--$0.46$ for a random set of candidates from the same views: the release usually explains the right attributes, through a neighbouring view.
+The measure must be read against that chance level, which is high because ten attributes are shared among five explanations; on Hospital, at $0.52$ against $0.34$, it says little.
 The case studies show the same thing from the analyst's side: on C1 every one of the ten releases explains the state, but no two of them through the same view.
 For an analyst this is the relevant guarantee, but it has a practical consequence that ApproxRatio hides: two runs on the same pair return different, equally valid, explanation sets, and a user who compares runs should be told so.
 It also suggests that ApproxRatio alone, the measure used by earlier private explanation work, flatters any method whose candidate space contains many near-duplicates.
@@ -315,11 +316,17 @@ Precision@k shows the same optimum, so the gain is not an artefact of the ratio.
 Adding explanation attributes gives the second stage more candidates per round, and one would expect accuracy to fall.
 It falls only on Adult (bottom row of Figure~\ref{fig:attrs}): from $0.92$ with two attributes to $0.71$ with all thirteen.
 On ACSIncome it rises, from $0.87$ to $1.01$, on Tax from $0.89$ to $0.98$, and on the other three datasets it stays flat.
-The candidates themselves explain little of this, since the exponential mechanism pays only $\ln|C_i|$ for a larger pool.
-The smoothing explains more.
-Eq.~\eqref{eq:gamma-rule} grows with $\ln(\tau|\Attrs|)$, from $\gamma\approx102$ with two attributes to $158$ with thirteen, so every added attribute also adds smoothing, and Section~\ref{subsec:gamma-tradeoff} found that ACSIncome and Tax gain from more smoothing while Adult is at its best at the default and loses beyond it.
-The two experiments agree, but this one does not separate the two effects; a run with $\gamma$ held fixed would.
-\alon{TODO: decide whether to run E7 with fixed $\gamma$ to separate the effect of the pool from that of the smoothing.}
+The size of the pool is not what moves it.
+The exponential mechanism pays only $\ln|C_i|$ for a larger pool, and Eq.~\eqref{eq:gamma-rule}, which grows with $\ln(\tau|\Attrs|)$, adds smoothing with every attribute ($\gamma\approx102$ with two attributes, $158$ with thirteen); but repeating the experiment with $\gamma$ held at its default changes none of the curves by more than $0.04$.
+What moves them is which attributes are added.
+$\HD_\gamma$ sums over the bins of an attribute, so an attribute with many values can accumulate a large distance, and the three that do so here pull in opposite directions.
+In the run with fixed $\gamma$, over sets of six or more attributes: on ACSIncome the place of birth ($224$ values) and the state ($51$) have large bins, the candidates on them stand well ahead of the rest, and they take $75\%$ of the released explanations once available; the mechanism finds them reliably, and the ratio is $0.86$ without the place of birth and $1.01$ with it.
+On Adult the added \texttt{nativeCountry} has $42$ values, most of them a handful of tuples, and there the unsmoothed optimum leans on relative changes in tiny bins that the smoothing discounts: with it in the set the ratio against \Bthree{} falls from $0.99$ to $0.75$, while the ratio against \Bone{} stays at or above $1$ ($1.07$ without it, $1.00$ with it).
+That is the smoothing gap of the paragraph above, not a cost of noise.
+Two consequences follow.
+The number of attributes is not, by itself, a scalability concern for accuracy.
+And because $\HD_\gamma$ is not normalised by the size of the domain, wide attributes dominate the explanations whenever they are allowed, whether or not a histogram over $224$ places of birth is what an analyst wants to read; grouping the values, as Erica's occupation groups do for the $529$ occupation codes, or capping the domain to its most frequent values are the simplest guards.
+\alon{Decide whether wide attributes should be capped in the datasets of the paper, or whether $\HD_\gamma$ should be normalised by the number of bins.}
 Attribute precision falls as attributes are added on every dataset but Tax; with two or three attributes, five explanations share most of their attributes with any other five, so its high values there say little.
 
 \subsection{Scalability}

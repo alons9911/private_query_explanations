@@ -9,7 +9,10 @@ of Attributes" (Quality).  Worker sessions (idle; archive only after the user ag
 acs session_01U646masakNHqcuvtD3XmYL, ipums session_01U646mZwW6yoEUvYuc4qmiY,
 tax session_01U646mcYcXjShf6JNguuRjw, taxdirty session_01U646maG8J3kBq2VU5mYXJu,
 adult session_01U646mYrPFcKGomH1cjVWKW, hospital session_01U646mbyH5CbdQRy8NNV1QP.
-Open: E7 with gamma fixed would separate the pool effect from the smoothing effect (TODO in chapter).
+E7g (gamma fixed at its default) done: curves change by <= 0.04, so gamma is not the cause; the effect
+is which attributes are added (HD sums over bins: wide attributes with large bins -- ACS POBP/ST --
+raise accuracy; nativeCountry on Adult, many tiny bins, widens the smoothing gap). Open: cap wide
+attributes or normalise HD by the number of bins (TODO in chapter).
 
 ## Re-run under paper v21: complete (2026-11-02)
 Constants gamma_R = N/100, Delta_Use = 4/N; 10 runs per pair; time limit 30 min (3 runs per timed-out
@@ -22,14 +25,15 @@ point); dense sweeps; 22 runtime pairs; eps up to 20; E1 with 10 releases.
   tax session_01U646maADqDsytAW6NFEGAW, taxdirty session_01U646mYqG3EeSV2N3cSiiue,
   adult session_01U646mYoRALdiAgsPZcxVDk, hospital session_01U646mbkoEZuZ7sF2YatrzP.
 
-## Open points (ask the user before changing)
-* Chapter fixes discussed, not approved: column "Ratio vs B2/B3"; B1 vs B3 differ only in the gamma
-  they select with; F(B1)/F(B3) as the cost of smoothing (Adult 0.79); "optimum over the exact top-tau
-  candidates"; rename "Noise sometimes helps"; attribute precision (chance ~0.5) and Jaccard
-  (= p/(2-p), redundant).
-* ACSIncome: ratio vs B2/B3 > 1 at gamma >= 3x -> views outside the exact top-tau hold better
-  explanations; which views, and why Use ranks them below tau (TODO in the chapter).
+## Open points
+* Chapter fixes applied 2026-11-14 (user approved): "Ratio vs B2/B3", B1 vs B3 differ only in gamma,
+  F(B1)/F(B3) column (cost of smoothing), "optimum over the exact top-tau views", "Smoothing moves the
+  target", Jaccard dropped (= p/(2-p)), attribute precision kept with its chance level
+  (results/e2/attr_precision_chance.csv, scripts/attr_precision_chance.py).
+* ACSIncome: ratio vs B2/B3 > 1 at large gamma -> views outside the exact top-tau (TODO in chapter).
+* Wide attributes dominate HD (TODO in chapter).
 * Absolute times differ between machines (up to 1.7x, Tax); compare methods within a machine only.
+* Worker sessions (12, idle): archive only after the user agrees.
 
 ## Decisions already taken by the user
 * All experiments on the original route; optimisations only as OPT_PRIV_EXPL (O1 + O3).
