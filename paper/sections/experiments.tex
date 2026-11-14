@@ -94,16 +94,18 @@ The sweeps of Figure~\ref{fig:scalability} ran one dataset per machine and the p
 No earlier system explains the difference between two query outputs privately, so, as in DPXPlain, we compare against references that each remove one ingredient of the algorithm.
 
 \begin{description}
-  \item[\Bone{} --- no noise.] The same algorithm with every mechanism made deterministic ($\epsilon\rightarrow\infty$ in the mechanisms, while $\tau$ and $\gamma$ keep their values). The gap to \Bone{} is the cost of the noise alone.
-  \item[\Btwo{} --- exhaustive optimum.] Takes the exact top-$\tau$ views by $\Use$, scores every size-$k$ subset of their candidates with $F_\lambda$, and returns the best. The full space is too large ($\binom{150}{5}\approx6\times10^{8}$ subsets on Adult), but the optimum lies within the top $k$ candidates of each attribute: a set that used a candidate outside the top $k$ of its attribute could swap in an unused higher-scoring candidate of the same attribute without lowering $F_\lambda$. The pool therefore has $k\,|\Attrs|$ candidates, and \Btwo{} enumerates $\binom{k|\Attrs|}{k}$ subsets.
-  \item[\Bthree{} --- non-private greedy.] The exact top-$\tau$ views by $\Use$, then $k$ greedy rounds with no noise.
+  \item[\Bone{} --- no noise.] The same algorithm with every mechanism made deterministic ($\epsilon\rightarrow\infty$ in the mechanisms, while $\tau$ and $\gamma$ keep their values): the exact top-$\tau$ views by $\Use$, then $k$ greedy rounds by $\HD_\gamma$ with the $\gamma$ of Eq.~\eqref{eq:gamma-rule}. The gap to \Bone{} is the cost of the noise alone.
+  \item[\Btwo{} --- exhaustive optimum over the exact top-$\tau$ views.] Takes the exact top-$\tau$ views by $\Use$, scores every size-$k$ subset of their candidates with $F_\lambda$, and returns the best. The full space is too large ($\binom{150}{5}\approx6\times10^{8}$ subsets on Adult), but the optimum lies within the top $k$ candidates of each attribute: a set that used a candidate outside the top $k$ of its attribute could swap in an unused higher-scoring candidate of the same attribute without lowering $F_\lambda$. The pool therefore has $k\,|\Attrs|$ candidates, and \Btwo{} enumerates $\binom{k|\Attrs|}{k}$ subsets.
+  \item[\Bthree{} --- non-private greedy.] The exact top-$\tau$ views by $\Use$, then $k$ greedy rounds with no noise by the unsmoothed $\HD$ of the metric. By Proposition~\ref{prop:greedy-exact} this is the same optimum as \Btwo{}.
+\Bone{} and \Bthree{} differ only in the $\gamma$ they select with, so $F_\lambda(\Bone)/F_\lambda(\Bthree)$ is the cost of the smoothing alone, and the gap to \Bthree{} is the cost of the noise and the smoothing together.
   \item[\textsf{OptPrivExpl}.] The private algorithm with a different computation of the statistics, used only in the running-time experiments: the counts of all views that constrain the same set of attributes are computed in one grouped pass, and the explanation histograms of the retained views in one combined pass. It releases exactly what the private algorithm releases with the same randomness, so it does not change the privacy analysis. Every other experiment uses the direct route of Section~\ref{subsec:complexity-analysis}.
 \end{description}
 
 \paragraph{Metrics.}
 All methods are scored on their output set with one yardstick, $F_\lambda$ of Definition~\ref{def:setobj} with the unsmoothed $\HD$ ($\gammaeval=0$): smoothing is a device of the mechanism, and letting it define the metric too would make the comparison circular.
 The ApproxRatio is $F_\lambda$ of the released set divided by $F_\lambda$ of the baseline's set.
-A ratio says how good the released set is, not whether it is the same set, so we also report three set-overlap measures against the baseline's $k$ explanations: \emph{precision@k}, the share of the baseline's (view, attribute) pairs that the released set contains; the Jaccard index of the two sets; and \emph{attribute precision}, the overlap of the two multisets of explained attributes, which gives credit for explaining the right attribute inside a different view.
+A ratio says how good the released set is, not whether it is the same set, so we also report two set-overlap measures against the baseline's $k$ explanations: \emph{precision@k}, the share of the baseline's (view, attribute) pairs that the released set contains, and \emph{attribute precision}, the overlap of the two multisets of explained attributes, which gives credit for explaining the right attribute inside a different view.
+We do not report the Jaccard index: for two sets of $k$ explanations it equals $p/(2-p)$, where $p$ is precision@k, so it carries no further information.
 
 \subsection{Use Case Results}
 \label{sec:usecase-results}
@@ -215,19 +217,21 @@ Section~\ref{subsec:quality} quantifies both failures.
 \begin{table}[t]
 \centering
 \small
-\caption{Quality at the defaults ($\epsilon=1$), averaged over the pairs of each dataset, against \Btwo{}/\Bthree{} unless marked.}
+\caption{Quality at the defaults ($\epsilon=1$), averaged over the pairs of each dataset. $F(\Bone)/F(\Bthree)$ is the cost of the smoothing alone; the overlap measures are against \Btwo{}/\Bthree{}.}
 \label{tab:quality}
 \setlength{\tabcolsep}{3.5pt}
 \begin{tabular}{@{}lccccc@{}}
 \toprule
-Dataset & Ratio vs \Bone{} & Ratio & Attr.\ prec. & Prec.@$k$ & Jaccard\\
+ & \multicolumn{2}{c}{Ratio vs} & & & \\
+\cmidrule(lr){2-3}
+Dataset & \Bone{} & \Btwo{}/\Bthree{} & $\frac{F(\Bone)}{F(\Bthree)}$ & Attr.\ prec. & Prec.@$k$\\
 \midrule
-Adult      & 1.01 & 0.96 & 0.80 & 0.39 & 0.28\\
-ACSIncome  & 0.89 & 0.89 & 0.71 & 0.47 & 0.35\\
-Tax        & 0.97 & 0.96 & 0.83 & 0.55 & 0.42\\
-Tax-dirty  & 0.68 & 0.67 & 0.58 & 0.16 & 0.09\\
-Hospital   & 0.60 & 0.52 & 0.52 & 0.07 & 0.04\\
-IPUMS-CPS  & 0.91 & 0.91 & 0.87 & 0.34 & 0.23\\
+Adult      & 1.01 & 0.96 & 0.79 & 0.80 & 0.39\\
+ACSIncome  & 0.89 & 0.89 & 0.98 & 0.71 & 0.47\\
+Tax        & 0.97 & 0.96 & 0.94 & 0.83 & 0.55\\
+Tax-dirty  & 0.68 & 0.67 & 0.86 & 0.58 & 0.16\\
+Hospital   & 0.60 & 0.52 & 0.86 & 0.52 & 0.07\\
+IPUMS-CPS  & 0.91 & 0.91 & 0.98 & 0.87 & 0.34\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -235,6 +239,7 @@ IPUMS-CPS  & 0.91 & 0.91 & 0.87 & 0.34 & 0.23\\
 Figure~\ref{fig:quality} and Table~\ref{tab:quality} summarise the $44$ pairs.
 At the default budget the released set reaches $0.96$ of the optimum on Adult and Tax, $0.91$ on IPUMS-CPS and $0.89$ on ACSIncome; the two CQA datasets are the hard cases, at $0.67$ on Tax-dirty and $0.52$ on Hospital.
 \Btwo{} and \Bthree{} return sets of exactly the same score on every pair and at every $\epsilon$, so non-private greedy is optimal on the $\tau$-filtered candidates, as Proposition~\ref{prop:greedy-exact} predicts; we report them as one line.
+Below, \emph{the optimum} means this optimum over the candidates of the exact top-$\tau$ views; it is not an upper bound on the private algorithm, whose noisy view stage can retain other views (Section~\ref{subsec:gamma-tradeoff}).
 Several findings deserve comment.
 
 \paragraph{A good set is not the same set.}
@@ -247,12 +252,13 @@ The case studies show the same thing from the analyst's side: on C1 every one of
 For an analyst this is the relevant guarantee, but it has a practical consequence that ApproxRatio hides: two runs on the same pair return different, equally valid, explanation sets, and a user who compares runs should be told so.
 It also suggests that ApproxRatio alone, the measure used by earlier private explanation work, flatters any method whose candidate space contains many near-duplicates.
 
-\paragraph{Noise sometimes helps.}
+\paragraph{Smoothing moves the target.}
 On Adult the ratio against \Bone{} reaches $1.01$ at $\epsilon=1$: the noisy algorithm finds sets at least as good, by the paper's own unsmoothed measure, as the same algorithm without noise.
-The two objectives differ.
+The two objectives differ, and the fourth column of Table~\ref{tab:quality} prices the difference: smoothing alone costs \Bone{} $21\%$ of the optimum on Adult, $14\%$ on the two CQA datasets and $2$--$6\%$ on the others.
 \Bone{} maximises $\HD_\gamma$ with $\gamma\approx150$, and on Adult that $\gamma$ exceeds the count of $79\%$ of the non-empty bins, so the smoothed score favours candidates with large bins over candidates with sharp changes in small ones.
 Noise occasionally lands on the latter, and the unsmoothed yardstick rewards it.
-The effect is a measure of how far smoothing moves the target on a dataset with small bins, and it disappears on the large datasets, where \Bone{} and the optimum coincide.
+The effect is a measure of how far smoothing moves the target on a dataset with small bins, and it disappears on the large datasets, where \Bone{} and the optimum nearly coincide.
+It also qualifies the yardstick: the unsmoothed measure rewards relative changes in bins of a few tuples, which is exactly what smoothing is there to discount, so part of what it counts as a better set is a set that rests on less evidence.
 
 \paragraph{More data does not help the second stage, and more budget can hurt.}
 On ACSIncome and IPUMS-CPS the curves stop rising early.
@@ -351,7 +357,7 @@ At $10\%$ of the views it is no faster than the direct route on ACSIncome, since
 \label{subsec:experiments-summary}
 
 The released explanations exposed, in every setting, a change that neither the queries nor the constraint states: a refinement on Adult that makes the population more professional and more public-sector, an Erica refinement that turns a public-sector query into one dominated, for one education group, by salespeople, a consistent answer whose average tax rate rises because the repair removes the one state without income tax, and an income gap between married men and women that is not an education gap.
-Against the non-private optimum the released sets reach $0.89$--$0.96$ of its score on the four non-CQA datasets at $\epsilon=1$, while containing only a third to a half of its explanations, because the best candidates are near-ties; attribute precision, and the stability of the explained attributes across ten releases, show that the right attributes are explained nonetheless.
+Against the optimum over the exact top-$\tau$ views the released sets reach $0.89$--$0.96$ of its score on the four non-CQA datasets at $\epsilon=1$, while containing only a third to a half of its explanations, because the best candidates are near-ties; attribute precision, and the stability of the explained attributes across ten releases, show that the right attributes are explained nonetheless.
 The view stage scales with $N$ and is accurate everywhere but on the $1{,}000$-tuple Hospital file; the explanation stage does not scale with $N$ and is limited by the margin between candidates, which is why the two CQA datasets, whose differences are small or whose data is small, are the hard cases.
 The $\gamma$ of Eq.~\eqref{eq:gamma-rule} is near-optimal on data with small bins and too small, by a factor of three to ten, on data with large bins, and because it shrinks with $\epsilon$ it can turn extra budget into a loss.
 Privacy costs nothing in running time, greedy selection costs nothing in quality, and the exhaustive alternative takes minutes at $k=7$ and is stopped at $30$ minutes from $k=8$; its search depends only on $k$ and $|\Attrs|$, growing as $|\Attrs|^5$ at $k=5$, while the private algorithm is flat in both.
