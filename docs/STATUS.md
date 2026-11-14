@@ -2,6 +2,24 @@
 
 Keeps the state of the work outside the chat context.
 
+## Running now: equal-width bins (approved 2026-11-15)
+Bins in configs/datasets.yaml (`bins:`); |P| Adult 1144, ACSIncome 1084, Tax 2106, Tax-dirty 2300,
+Hospital 502, IPUMS 1124.  User: draft the chapter now with case studies + accuracy on the new bins
+and the running time measured on the old (quantile) bins, stated in the text; update later.
+* Local: `rebin-local` (E1, cases, E2, E3, E6, E7a, E7g) -> merge with
+  `python scripts/merge_shards.py --shard rebin-local e1 e2 e3 e6 cases e7a e7g`; then
+  `scripts/after_rebin_e5.sh` runs `eqbins-e5-local` (E5); then rerun scripts/attr_precision_chance.py.
+* Cloud (tag pqde-eqbins), check with `scripts/shards_status.sh eqbins-e4` / `eqbins-e7`:
+  eqbins-e4-acs session_01U646maVpJNHCSbrJKT49E7, -ipums session_01U646mc7pXtzv8j1tgVp3CB,
+  -tax session_01U646mbfQHgeiV8dBqKrPut, -taxdirty session_01U646mbmZdLL5USTwe5VmrD,
+  -adult session_01U646mbrneQVwXJbDu9Zyep, -hospital session_01U646mZukSAysns7c5R6c15;
+  eqbins-e7-acs session_01U646maZtsX9u6FYPhN7bVS, -ipums session_01U646mZMQWz99MJN9mR7Dx6,
+  -tax session_01U646md5nGZtisbQepW6zZ8, -taxdirty session_01U646mbrTZQTJNa9MvuNtTa,
+  -adult session_01U646mZehZsGGhrhEdvcFmJ, -hospital session_01U646maTaci4DvpodofDRej.
+* The old-bin k=7 run (e7k7-*) keeps running (user: do not stop it).
+* When all done: merge running time from the eqbins shards (`--shard 'eqbins-*'`), redraw, update
+  the chapter so everything is on the new bins.
+
 ## Running now: E7 at k = 7 (started 2026-11-15 ~01:05 IST)
 Running time against |Attrs| at k = 7 (tau = 21) on all 22 runtime pairs, same rules (10 runs,
 30-min limit, 3 runs on timeout), to show B2 crossing the limit (expected at 11 attributes on Adult
