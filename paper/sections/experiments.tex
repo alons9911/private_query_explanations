@@ -58,7 +58,7 @@ Of the $44$ pairs, $27$ come from Erica and DPXPlain and $17$ are ours.
 We score a set $E$ of $k$ candidates by $F^0_\lambda(E)$, the objective $F_w$ of Definition~\ref{def:setobj} with $w_j=\lambda^{j-1}$ and the unsmoothed $\HD$ ($\gamma=0$), on exact histograms: smoothing is a device of the mechanism, not part of what an analyst wants explained.
 For a reference set $E_B$, the \emph{ApproxRatio} is $F^0_\lambda(E)/F^0_\lambda(E_B)$, \emph{precision@k} is $|E\cap E_B|/k$, and \emph{attribute precision} is the overlap of the two multisets of explained attributes divided by $k$.
 We read attribute precision against its chance level, the mean over random sets of $k$ candidates drawn from the candidates of the exact top-$\tau$ views.
-These three measures evaluate the selection; the released histograms are evaluated in Section~\ref{subsec:quality}.
+These measures evaluate the selection on exact histograms; the Laplace noise added to the released histograms, of scale $2k/\epsilon_H$, does not enter them.
 
 \paragraph{References and competitors.}
 No earlier system explains the difference of two query outputs privately, so we compare with non-private references, each removing one more ingredient of the algorithm.
@@ -67,7 +67,9 @@ No earlier system explains the difference of two query outputs privately, so we 
 \Btwo{}, exhaustive search over the same candidates ($\binom{k|\Attrs|}{k}$ subsets of the top $k$ candidates of each attribute), returned a set of the same score as \Bthree{} on every pair and setting, as the proposition guarantees (the same set up to ties).
 The optimum is not an upper bound on the private algorithm, whose noisy view stage can retain other views; Section~\ref{subsec:quality} also compares with the maximum of $F^0_\lambda$ over the candidates of all views.
 Since \Bone{} and \Bthree{} differ only in $\gamma$, $F^0_\lambda(\Bone)/F^0_\lambda(\Bthree)$ isolates the cost of smoothing, and the ratio to \Bone{} the effect of noise at fixed smoothing, which can exceed $1$ because \Bone{} does not maximise the unsmoothed score.
-\alon{[E8 running] Private competitors at the same $\epsilon$: \textsf{SingleStage}, one private selection over the candidates of all views ($\epsilon_P+\epsilon_S$ for the selection, $\gamma$ by Eq.~\eqref{eq:gamma-rule} with $|\mathcal{P}||\Attrs|$ candidates, $\epsilon_H$ for the release), and \textsf{Random}, $k$ candidates drawn uniformly (the whole $\epsilon$ for the release).}
+We also compare with two private competitors at the same $\epsilon$.
+\textsf{SingleStage} is one private selection over the candidates of all views, Algorithm~\ref{alg:topk} without the view stage: it selects by $\HD_\gamma\cdot\DivS$ alone, ignoring the representativeness and coverage that the view stage accounts for (Section~\ref{subsec:two-stages}), with $\epsilon_P+\epsilon_S$ for the selection, $\gamma$ by Eq.~\eqref{eq:gamma-rule} with $|\mathcal{P}||\Attrs|$ candidates, and $\epsilon_H$ for the release.
+\textsf{Random} draws $k$ candidates uniformly and spends nothing on the selection.
 For running time we add \textsf{OptPrivExpl}, the private algorithm with its statistics computed in grouped passes: one pass per set of view attributes groups the data by those attributes and by the reference attribute, and yields the statistics of every view on that set at once, instead of one pass per view; the explanation histograms are built only for the retained views.
 It releases exactly what the private algorithm releases with the same randomness.
 
@@ -212,6 +214,39 @@ Tax-dirty shows it: its view stage is accurate ($0.92$), but its best candidate 
 Tax, on the same schema, is the easiest dataset: what makes CQA hard here is the size of the difference, $0.9$k--$2.3$k tuples in the symmetric difference of the Tax-dirty pairs against $8.8$k--$58$k on Tax.
 On Hospital ($N=1{,}000$) both stages fail: at most four of the fifteen retained views belong to the exact top-$\tau$ in any release, and Laplace noise of scale $30$ per bin swamps bins of a handful of tuples, down to negative released counts (clamping them at zero is free post-processing but does not restore them).
 
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{The private algorithm (Alg.) against the private competitors at $\epsilon=1$, relative to the optimum: score $F^0_\lambda$, score under the smoothing of the mechanism ($F^\gamma_\lambda$, the pair's default $\gamma$), and coverage of the explained views; mean over the pairs of each dataset.}
+\label{tab:competitors}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+ & \multicolumn{3}{c}{$F^0_\lambda$} & \multicolumn{2}{c}{$F^\gamma_\lambda$} & \multicolumn{2}{c}{Coverage} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-6}\cmidrule(l){7-8}
+Dataset & Alg. & Single & Random & Alg. & Single & Alg. & Single \\
+\midrule
+Adult      & 0.96 & 1.26 & 0.15 & 1.06 & 1.34 & 1.12 & 0.89 \\
+ACSIncome  & 0.80 & 1.88 & 0.15 & 0.78 & 1.53 & 1.02 & 0.41 \\
+Tax        & 0.96 & 1.89 & 0.04 & 0.96 & 1.69 & 1.07 & 0.38 \\
+Tax-dirty  & 0.64 & 2.24 & 0.05 & 0.66 & 2.54 & 0.93 & 0.19 \\
+Hospital   & 0.55 & 0.76 & 0.11 & 0.79 & 1.35 & 0.86 & 1.54 \\
+IPUMS-CPS  & 0.91 & 1.73 & 0.68 & 0.91 & 1.51 & 1.12 & 0.36 \\
+\midrule
+All $44$ pairs & 0.85 & 1.67 & 0.34 & 0.89 & 1.57 & 1.06 & 0.52 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{The view stage trades score for coverage, and $\tau$ sets the trade.}
+A single private selection over all candidates scores higher than the algorithm on all $44$ pairs: $1.67$ of the optimum against $0.85$ at $\epsilon=1$, and already $1.20$ at $\epsilon=0.1$ (Table~\ref{tab:competitors}); the gap holds under the smoothed score too ($1.57$ against $0.89$).
+It gets there by explaining views that the view stage drops (median rank $68$ by $\Use$), which cover on average half as much of the two outputs ($0.52$ of the optimum's coverage, against $1.06$ for the algorithm), and a third of which hold tuples of only one output, such as the workers a refinement adds; it covers as much as the algorithm on only $5$ of the $44$ pairs.
+Only on Hospital, where the view stage fails, is the single stage better on both counts.
+\textsf{Random} reaches $0.34$.
+The maximum of $F^0_\lambda$ over the candidates of all views is no better target: its score ($2.34$ of the optimum) comes from small and one-sided views (coverage $0.23$) and nearly vanishes under smoothing ($1.08$).
+Raising $\tau$ moves the algorithm toward the single stage: measured against the optimum at the default $\tau$, its score grows from $0.86$ at $\tau=15$ to $1.08$ at $30$ and $1.54$ when every view is retained (mean over all $44$ pairs; Hospital stays at $0.52$--$0.62$).
+This is the cost Section~\ref{subsec:two-stages} leaves unbounded: at the default $\tau=3k$ the explanations stay on views that cover much of the outputs, and the price is about half of the difference score a single stage would find.
+
 \paragraph{More budget helps until Eq.~\eqref{eq:gamma-rule} takes the smoothing away.}
 With $\gamma$ following Eq.~\eqref{eq:gamma-rule}, IPUMS-CPS stays at $0.89$--$0.92$ from $\epsilon=0.1$ to $20$ and ACSIncome rises only from $0.80$ to $0.87$ (Figure~\ref{fig:quality}), because a larger $\epsilon$ also lowers $\gamma$ ($150$, $30$, $7.5$ at $\epsilon=1,5,20$).
 With $\gamma$ fixed at its default value instead, both reach $0.97$--$1.00$ from $\epsilon=5$, Tax-dirty $0.94$--$0.98$ and Hospital $0.74$--$0.81$ (mean over all $44$ pairs $0.98$ at $\epsilon=20$, against $0.92$ with the rule); below $\epsilon=1$ the fixed value is too small for the noise and the rule wins ($0.66$ against $0.49$ at $\epsilon=0.1$).
@@ -257,5 +292,6 @@ It is nearly flat in $|\mathcal{P}|$ (ACSIncome $4.7\rightarrow5.7$\,s from $10\
   \item At $\epsilon=1$ they reach $0.91$--$0.96$ of the optimum on three of six datasets, through near-tied sets: outside CQA the explained attributes are mostly right, while the exact explanations vary between runs.
   \item View selection improves with $N$; explanation selection depends on whether the best candidates score above what the mechanism can resolve, not on $N$, which makes small differences (Tax-dirty) and small data (Hospital) hard.
   \item Eq.~\eqref{eq:gamma-rule} under-smooths data with large bins and at large budgets, $\lambda$ sets the diversity of a release at no cost in score, and wide attributes dominate $\HD_\gamma$.
+  \item A single private selection over all candidates finds twice the difference score but on views that cover half as much of the outputs; the view stage, through $\tau$, sets that trade.
   \item Privacy costs nothing in time, without noise exact greedy matches exhaustive search, which is infeasible from $k=8$, and grouped statistics make the pipeline nine times faster.
 \end{itemize}
