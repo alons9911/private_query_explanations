@@ -72,7 +72,7 @@ def _logx(ax, xs):
 # ----------------------------------------------------------------------------- quality (E2 + E6)
 
 QUALITY_SERIES = [  # (column, label, colour, marker, linestyle)
-    ("ratio_B3_mean", "ApproxRatio vs B2/B3", P.BLUE, "o", "-"),
+    ("ratio_B3_mean", "ApproxRatio vs optimum", P.BLUE, "o", "-"),
     ("ratio_B1_mean", "ApproxRatio vs B1", P.BLUE, "o", ":"),
     ("attr_precision_B3_mean", "attribute precision", P.ORANGE, "s", "-"),
     ("precision_at_k_B3_mean", "precision@k", P.AQUA, "^", "-"),
@@ -89,7 +89,8 @@ def _quality_row(axes, summ: pd.DataFrame, dss: list[str], xlabel: str, logx: bo
                     markerfacecolor=SURF if ls == ":" else c)
         if logx:
             _logx(ax, sub.value)
-        ax.set_ylim(0, 1.1)
+        top = float(np.nanmax(sub[[c for c, *_ in QUALITY_SERIES]].to_numpy()))
+        ax.set_ylim(0, max(1.1, top + 0.08))  # keep every point (ratios to B1 can exceed 1) inside the frame
         ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
         ax.axhline(1.0, color=P.MUTED, linewidth=0.5, zorder=0)
         if j:
@@ -117,10 +118,13 @@ def fig_quality() -> Path:
 
     _quality_row(axes[0], e2, dss, r"privacy budget $\epsilon$", True, True, eps_ticks)
     _quality_row(axes[1], e6, dss, r"$\gamma$ / Eq. (14) value", True, False, g_ticks)
-    for ax in axes[1]:
-        ax.axvline(1.0, color=P.MUTED, linewidth=0.6, linestyle="--", zorder=0)
-    for ax in axes[0]:
-        ax.axvline(1.0, color=P.MUTED, linewidth=0.6, linestyle="--", zorder=0)
+    for ax in axes.ravel():  # the default: a shaded band, not a line that the grid could hide
+        ax.axvspan(0.85, 1.18, color=P.MUTED, alpha=0.18, linewidth=0, zorder=0)
+    for row in axes:  # one scale per row, high enough for ratios to B1 above 1
+        top = max(ax.get_ylim()[1] for ax in row)
+        for ax in row:
+            ax.set_ylim(0, top)
+        row[0].set_ylabel("score")
     h, l = axes[0, 0].get_legend_handles_labels()
     fig.legend(h, l, loc="upper center", ncol=4, bbox_to_anchor=(0.5, 1.06))
     fig.tight_layout(h_pad=0.6, w_pad=0.4)
@@ -315,7 +319,8 @@ def fig_attrs() -> Path:
             if col == "ratio_B1_mean":
                 continue
             ax.plot(sub.value, sub[col.replace("_mean", "")], color=c, marker=mk, linestyle=ls, label=lab)
-        ax.set_ylim(0, 1.1)
+        top = float(np.nanmax(sub[[c for c, *_ in QUALITY_SERIES]].to_numpy()))
+        ax.set_ylim(0, max(1.1, top + 0.08))  # keep every point (ratios to B1 can exceed 1) inside the frame
         ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
         ax.axhline(1.0, color=P.MUTED, linewidth=0.5, zorder=0)
         if j:
@@ -340,9 +345,27 @@ def fig_attrs() -> Path:
 
 # ----------------------------------------------------------------------------- case studies
 
-def _bin_label(b: str, n: int = 12) -> str:
+# long category names of the case-study panels, shortened so that every tick label is distinct
+LABEL_ABBREV = {
+    "Associate's degree, academic program": "Assoc. (academic)",
+    "Associate's degree, occupational/vocational program": "Assoc. (vocational)",
+    "High school diploma or equivalent": "High school",
+    "Some college but no degree": "Some college",
+    "Wage/salary, private": "Private wage/salary",
+    "Self-employed, not incorporated": "Self-empl. (not inc.)",
+    "Self-employed, incorporated": "Self-empl. (inc.)",
+    "Local government employee": "Local government",
+    "State government employee": "State government",
+    "Federal government employee": "Federal government",
+}
+
+
+def _bin_label(b: str, n: int = 20) -> str:
     """Interval bins with large endpoints in k-notation, e.g. (66685, 199999] -> (66.7k, 200k]."""
     import re
+
+    if str(b) in LABEL_ABBREV:
+        return LABEL_ABBREV[str(b)]
 
     m = re.fullmatch(r"([\[(])\s*([-\d.]+),\s*([-\d.]+)([\])])", str(b))
     if m:
@@ -363,7 +386,8 @@ def fig_case(pid: str, rounds: list[int] | None, name: str, q_names=("Q", "Q'"),
     rep = json.loads((RES / subdir / pid / "report.json").read_text())
     expl = [e for e in rep["explanations"] if rounds is None or e["round"] in rounds]
     n_rel = rep.get("releases", {}).get("n", 1)
-    fig, axes = plt.subplots(1, len(expl), figsize=(width, 1.6), squeeze=False)
+    fig, axes = plt.subplots(1, len(expl), figsize=(width, 1.75), squeeze=False)
+    axes[0, 0].set_ylabel("count", fontsize=6)
     for ax, e in zip(axes[0], expl):
         bins = e["bins"]
         h1, h2 = np.asarray(e["noisy_h1"]), np.asarray(e["noisy_h2"])
@@ -392,8 +416,17 @@ def fig_case(pid: str, rounds: list[int] | None, name: str, q_names=("Q", "Q'"),
     return _save(fig, name)
 
 
+CASES = [("A2", "case_a2", ("$Q_1$", "$Q_2$")), ("ACS_Q1C1", "case_acs", ("$Q_1$", "$Q_2$")),
+         ("C1", "case_c1", ("$Q_1$", r"$Q_2=Q_\Sigma$")), ("I1", "case_i1", ("$Q_1$ (men)", "$Q_2$ (women)"))]
+
+
+def fig_cases() -> list[Path]:
+    """The four case-study figures: all explanations of the first of the ten releases."""
+    return [fig_case(pid, None, name, q_names=q) for pid, name, q in CASES]
+
+
 def main() -> None:
-    for fn in (fig_quality, fig_view_stage, fig_runtime_methods, fig_runtime_grid):
+    for fn in (fig_quality, fig_view_stage, fig_runtime_methods, fig_runtime_grid, fig_cases):
         try:
             print(fn())
         except FileNotFoundError as e:
