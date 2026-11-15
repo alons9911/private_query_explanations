@@ -163,12 +163,12 @@ With $N=1{,}000$, at most two of the fifteen retained views belong to the exact 
 \cmidrule(lr){2-3}
 Dataset & \Bone{} & \Btwo{}/\Bthree{} & $\frac{F(\Bone)}{F(\Bthree)}$ & Attr.\ prec. & Prec.@$k$\\
 \midrule
-Adult      & 1.00 & 0.96 & 0.81 & 0.79 (0.34) & 0.39\\
-ACSIncome  & 0.80 & 0.80 & 0.99 & 0.72 (0.40) & 0.50\\
-Tax        & 0.96 & 0.96 & 0.99 & 0.84 (0.32) & 0.52\\
-Tax-dirty  & 0.66 & 0.64 & 0.85 & 0.56 (0.28) & 0.14\\
+Adult      & 1.00 & 0.96 & 0.95 & 0.79 (0.34) & 0.39\\
+ACSIncome  & 0.80 & 0.80 & 1.00 & 0.72 (0.40) & 0.50\\
+Tax        & 0.96 & 0.96 & 1.00 & 0.84 (0.32) & 0.52\\
+Tax-dirty  & 0.66 & 0.64 & 0.98 & 0.56 (0.28) & 0.14\\
 Hospital   & 0.67 & 0.55 & 0.80 & 0.52 (0.35) & 0.05\\
-IPUMS-CPS  & 0.91 & 0.91 & 0.99 & 0.87 (0.46) & 0.35\\
+IPUMS-CPS  & 0.91 & 0.91 & 1.00 & 0.87 (0.46) & 0.35\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -186,7 +186,7 @@ Attribute precision, $0.79$--$0.87$ against a chance level of $0.32$--$0.46$, sh
 Two runs on the same pair therefore return different, equally valid sets, and ApproxRatio alone, the measure of earlier private explanation work, flatters methods with many near-duplicate candidates.
 
 \paragraph{Smoothing moves the target.}
-On data with small bins the gap to the optimum is the smoothing, not the noise: smoothing alone costs \Bone{} $19\%$ on Adult, where $\gamma\approx150$ exceeds $82\%$ of the non-empty bins, $15$--$20\%$ on CQA and $1\%$ elsewhere, and the private algorithm matches \Bone{} on Adult ($1.00$).
+Only on data with small bins does smoothing cost anything: alone it costs \Bone{} $5\%$ on Adult, where $\gamma\approx150$ exceeds $82\%$ of the non-empty bins, and $20\%$ on Hospital ($99\%$), against at most $2\%$ elsewhere. On Adult the private algorithm matches \Bone{} ($1.00$), so its whole gap to the optimum is the smoothing, not the noise.
 The yardstick is partly to blame: the unsmoothed measure rewards relative changes in bins of a few tuples, exactly what smoothing discounts.
 
 \begin{figure}[t]
