@@ -212,10 +212,10 @@ Tax-dirty shows it: its view stage is accurate ($0.92$), but its best candidate 
 Tax, on the same schema, is the easiest dataset: what makes CQA hard here is the size of the difference, $0.9$k--$2.3$k tuples in the symmetric difference of the Tax-dirty pairs against $8.8$k--$58$k on Tax.
 On Hospital ($N=1{,}000$) both stages fail: at most four of the fifteen retained views belong to the exact top-$\tau$ in any release, and Laplace noise of scale $30$ per bin swamps bins of a handful of tuples, down to negative released counts (clamping them at zero is free post-processing but does not restore them).
 
-\paragraph{On IPUMS-CPS and ACSIncome, more budget buys little.}
-IPUMS-CPS stays at $0.89$--$0.92$ from $\epsilon=0.1$ to $20$, and ACSIncome rises from $0.80$ only to $0.87$, while Adult, Tax-dirty and Hospital gain throughout (Figure~\ref{fig:quality}).
-Both view stages are already near-exact ($0.91$), and a larger $\epsilon$ also lowers $\gamma$ through Eq.~\eqref{eq:gamma-rule} ($150$, $30$, $7.5$ at $\epsilon=1,5,20$), on datasets that gain from more smoothing.
-\alon{[E8 running] separate the two effects with the $\epsilon$ sweep at fixed $\gamma$.}
+\paragraph{More budget helps until Eq.~\eqref{eq:gamma-rule} takes the smoothing away.}
+With $\gamma$ following Eq.~\eqref{eq:gamma-rule}, IPUMS-CPS stays at $0.89$--$0.92$ from $\epsilon=0.1$ to $20$ and ACSIncome rises only from $0.80$ to $0.87$ (Figure~\ref{fig:quality}), because a larger $\epsilon$ also lowers $\gamma$ ($150$, $30$, $7.5$ at $\epsilon=1,5,20$).
+With $\gamma$ fixed at its default value instead, both reach $0.97$--$1.00$ from $\epsilon=5$, Tax-dirty $0.94$--$0.98$ and Hospital $0.74$--$0.81$ (mean over all $44$ pairs $0.98$ at $\epsilon=20$, against $0.92$ with the rule); below $\epsilon=1$ the fixed value is too small for the noise and the rule wins ($0.66$ against $0.49$ at $\epsilon=0.1$).
+The rule is right at small budgets and smooths too little at large ones.
 
 \paragraph{Eq.~\eqref{eq:gamma-rule} sits at the floor of the range of Remark~\ref{rem:gamma-window}; data with large bins want more smoothing.}
 Smoothing is indispensable (ApproxRatio $0.39$ at $\gamma=0$ and $0.85$ at the default, mean over all $44$ pairs), and the default is the best of the multiples tried on Adult ($0.95$), but the best $\gamma$ is $3\times$ the default on Tax and Tax-dirty and $10\times$ on ACSIncome and IPUMS-CPS (mean $0.90$--$0.91$ at $3$--$10\times$; bottom row of Figure~\ref{fig:quality}).
@@ -229,6 +229,9 @@ The added attributes do.
 $\HD_\gamma$ sums over bins, so a wide attribute accumulates distance: on ACSIncome the place of birth ($224$ values) and the state ($51$), with large bins, take $74\%$ of the released explanations and are found reliably (ratio $0.81$ over the attribute sets without the place of birth, $0.94$ over those with it), while on Adult \texttt{nativeCountry} ($42$ values, mostly tiny bins) widens the smoothing gap (ratio against \Bthree{} $0.94$ without it, $0.76$ with it; above $1$ against \Bone{}).
 Accuracy depends on which attributes are added, not on how many; and since the maximum of the unsmoothed score also grows with the number of bins, a higher ratio on a wide attribute does not mean a more readable explanation: a $224$-bin histogram of the place of birth is hard to read, and grouping its values, as Erica does for occupation codes, is the simplest guard.
 \alon{Decide whether wide attributes should be capped in the datasets of the paper, or $\HD_\gamma$ normalised by the number of bins.}
+
+\paragraph{$\lambda$ sets the diversity of a release at no cost in score.}
+From $\lambda=0$ to $1$ the number of distinct attributes in a release falls from $4.8$ to $2.1$ (mean over all $44$ pairs; $4.1$ at the default), while the ApproxRatio against the optimum at the same $\lambda$ stays at $0.85$--$0.88$.
 
 \paragraph{Equal budget shares are among the best of five splits.}
 The ApproxRatio with $(\epsilon_P,\epsilon_S,\epsilon_H)$ equal to $(1/3,1/3,1/3)$, $(0.2,0.4,0.4)$ or $(0.5,0.25,0.25)$ is $0.86$ (mean over all $44$ pairs); $(0.1,0.55,0.35)$ gives $0.83$ and $(0.05,0.6,0.35)$ gives $0.79$: only a view stage of $10\%$ or less of the budget hurts.
@@ -253,6 +256,6 @@ It is nearly flat in $|\mathcal{P}|$ (ACSIncome $4.7\rightarrow5.7$\,s from $10\
   \item In each case study the released explanations expose what a refinement, a repair or a contrast does to the population, which neither the queries nor the constraint state.
   \item At $\epsilon=1$ they reach $0.91$--$0.96$ of the optimum on three of six datasets, through near-tied sets: outside CQA the explained attributes are mostly right, while the exact explanations vary between runs.
   \item View selection improves with $N$; explanation selection depends on whether the best candidates score above what the mechanism can resolve, not on $N$, which makes small differences (Tax-dirty) and small data (Hospital) hard.
-  \item Eq.~\eqref{eq:gamma-rule} under-smooths data with large bins, and wide attributes dominate $\HD_\gamma$.
+  \item Eq.~\eqref{eq:gamma-rule} under-smooths data with large bins and at large budgets, $\lambda$ sets the diversity of a release at no cost in score, and wide attributes dominate $\HD_\gamma$.
   \item Privacy costs nothing in time, without noise exact greedy matches exhaustive search, which is infeasible from $k=8$, and grouped statistics make the pipeline nine times faster.
 \end{itemize}
