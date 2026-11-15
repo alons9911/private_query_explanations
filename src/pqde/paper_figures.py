@@ -298,16 +298,37 @@ def fig_attrs() -> Path:
     dss = [d for d in DS_ORDER if d in set(pts.dataset) | set(asum.dataset)]
     fig, axes = plt.subplots(2, len(dss), figsize=(7.05, 2.9), squeeze=False)
     plain = FuncFormatter(lambda v, _: f"{v:g}")
+    k7_path = RES / "e7" / "raw" / "runtime_k7.csv"
+    k7 = None
+    if k7_path.exists():  # B2 at k = 7, where its search grows fastest with |Attrs|
+        r7 = _drop(pd.read_csv(k7_path))
+        r7 = r7[r7.method == "B2"].groupby(["dataset", "pair", "value"], as_index=False).agg(
+            total_s=("total_s", "median"), timeout=("timeout", "max"))
+        k7 = r7.groupby(["dataset", "value"], as_index=False).agg(total_s=("total_s", "mean"), timeout=("timeout", "max"))
     for j, ds in enumerate(dss):
         ax = axes[0, j]
         sub = pts[pts.dataset == ds].rename(columns={"value": "n"})
         _rt_panel(ax, sub, "n", False, limit)
-        lo, hi = float(sub.total_s.min()) / 1.5, float(sub.total_s.max()) * 1.5
+        allt = list(sub.total_s)
+        if k7 is not None and (k7.dataset == ds).any():
+            d7 = k7[k7.dataset == ds].sort_values("value")
+            to = d7.timeout.astype(bool)
+            c = P.METHOD_COLORS["B2"]
+            ax.plot(d7.value[~to], d7.total_s[~to], color=c, linestyle="--", marker="^", markerfacecolor=SURF,
+                    linewidth=1.0, label="B2, $k=7$")
+            if to.any():
+                ax.plot(list(d7.value[~to].tail(1)) + list(d7.value[to]), list(d7.total_s[~to].tail(1)) + [limit] * int(to.sum()),
+                        color=c, linestyle=":", linewidth=1.0)
+                ax.plot(d7.value[to], [limit] * int(to.sum()), linestyle="none", marker="x", color=c, markersize=5,
+                        markeredgewidth=1.4, label="B2 timeout")
+            allt += list(d7.total_s)
+        lo, hi = float(min(allt)) / 1.5, float(max(allt)) * 1.5
         if hi / lo < 10:  # at least one decade, so that run-to-run noise does not read as a trend
             mid = (lo * hi) ** 0.5
             lo, hi = mid / 10 ** 0.5, mid * 10 ** 0.5
         ax.set_ylim(lo, hi)
-        ax.yaxis.set_major_locator(LogLocator(base=10, subs=(1.0, 2.0, 5.0), numticks=10))
+        wide = np.log10(hi / lo) > 2.5  # over several decades, label the decades only
+        ax.yaxis.set_major_locator(LogLocator(base=10, subs=(1.0,) if wide else (1.0, 2.0, 5.0), numticks=10))
         ax.yaxis.set_major_formatter(plain)
         ax.yaxis.set_minor_formatter(NullFormatter())
         ax.set_title(f"{DS_TITLE[ds]}")

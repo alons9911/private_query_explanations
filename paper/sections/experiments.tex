@@ -86,7 +86,6 @@ Unless stated otherwise: the whole dataset, every view, $k=5$, $\lambda=0.5$, $\
   \item \emph{Accuracy}: a point of a pair averages $40$ private runs, and a point of a dataset averages its pairs; a mean over all $44$ pairs weights each dataset by its number of pairs ($17$ on IPUMS-CPS). Each experiment draws its own runs, so the default point can differ between experiments in the second decimal.
   \item \emph{Running time}: measured end to end, ten times per point, on $22$ pairs (A1, A2, A4, A6, S1, S4, S6, S9, T1--T4, D1--D3, H1--H3, I1, I6, I8, I12). A run is stopped at $30$ minutes, and a point that reaches the limit is run three times.
 \end{itemize}
-\alon{Running-time experiments with the new bins are running; replace Figures~\ref{fig:scalability} and~\ref{fig:attrs} (top row) and the numbers of Section~\ref{subsec:scalability} when they finish.}
 
 % ---------------------------------------------------------------
 \subsection{Case Studies}
@@ -174,7 +173,7 @@ Among them, women are more often outside the labour force ($52\%$ against $46\%$
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/exp/attrs.pdf}
-\caption{The number of explanation attributes, from $2$ to every attribute of Table~\ref{tab:attributes}; views and reference attributes fixed. Each run draws its own random order of the attributes and keeps a prefix, so a point averages over random attribute sets of that size, not the default set. Top: running time (median of ten runs). Bottom: quality as in Figure~\ref{fig:quality} ($40$ runs per pair and point).}
+\caption{The number of explanation attributes, from $2$ to every attribute of Table~\ref{tab:attributes}; views and reference attributes fixed. Each run draws its own random order of the attributes and keeps a prefix, so a point averages over random attribute sets of that size, not the default set. Top: running time (median of ten runs; dashed: \Btwo{} at $k=7$, $\tau=21$). Bottom: quality as in Figure~\ref{fig:quality} ($40$ runs per pair and point).}
 \label{fig:attrs}
 \end{figure*}
 
@@ -300,14 +299,15 @@ Our measures do not depend on $\epsilon_H$, so this compares only how the budget
 \label{subsec:scalability}
 
 \paragraph{Privacy adds no measurable running time.}
-At the defaults \textsf{PrivExpl}, \Bone{} and \Bthree{} are within $0.5\%$ of one another on every pair: $96$--$99\%$ of the time is the $\Use$ pass they share.
-As Section~\ref{subsec:complexity-analysis} predicts, the time grows linearly with $N$ and $|\mathcal{P}|$ and is flat in $k$, $\epsilon$, $\gamma$ and $|\Attrs|$ (Figures~\ref{fig:scalability} and~\ref{fig:attrs}).
-Exhaustive search (\Btwo{}) is exponential in $k$: it takes $21$--$80$\,s at $k=6$ and $3$--$23$ minutes at $k=7$, and exceeds the $30$-minute limit from $k=8$ on all $22$ pairs ($2.9\times10^{10}$ subsets).
+At the defaults \textsf{PrivExpl}, \Bone{} and \Bthree{} are within $1\%$ of one another on every pair: $96$--$99\%$ of the time is the $\Use$ pass they share.
+As Section~\ref{subsec:complexity-analysis} predicts, the time grows linearly with $N$ ($11$--$12\times$ from $10\%$ to all of ACSIncome and IPUMS-CPS) and with $|\mathcal{P}|$, is flat in $k$, $\epsilon$ and $\gamma$, and grows by at most $18\%$ over the range of $|\Attrs|$ and by $18$--$41\%$ when every view is retained (Figures~\ref{fig:scalability} and~\ref{fig:attrs}).
+Exhaustive search (\Btwo{}) is exponential in $k$: it takes $15$--$59$\,s at $k=6$ and $2.4$--$17$ minutes at $k=7$, and exceeds the $30$-minute limit from $k=8$ on all $22$ pairs ($2.9\times10^{10}$ subsets).
+At $k=7$ its time roughly doubles with every added attribute and reaches the limit at $11$ attributes on ACSIncome and $12$ on Adult (Figure~\ref{fig:attrs}).
 
 \paragraph{Grouped passes make the pipeline about $9\times$ faster with identical output.}
 \textsf{OptPrivExpl} computes the same statistics in grouped passes: one pass per set of view attributes yields the statistics of every view on that set, and the explanation histograms are built only for the retained views.
-With the same randomness it released exactly what \textsf{PrivExpl} released in all $220$ runs compared, and it is $5.9$--$11.5\times$ faster end to end (median $9.4\times$; ACSIncome $22.8\rightarrow3.0$\,s and IPUMS-CPS $11.5\rightarrow1.9$\,s on one machine).
-Its time hardly grows with $|\mathcal{P}|$ (ACSIncome $4.7\rightarrow5.7$\,s from $10\%$ to all views, against $4.0\rightarrow35$\,s for \textsf{PrivExpl}), but it grows with $\tau$ ($3.0$--$4.6\times$ up to $\tau=|\mathcal{P}|$), because it builds the histograms of every retained view, and with $|\Attrs|$ ($12$--$36\%$).
+With the same randomness it released exactly what \textsf{PrivExpl} released in all $220$ runs compared, and it is $5.8$--$11.4\times$ faster end to end (median $9.5\times$; ACSIncome $24.4\rightarrow2.9$\,s and IPUMS-CPS $11.2\rightarrow1.8$\,s on one machine).
+Its time hardly grows with $|\mathcal{P}|$ (ACSIncome $2.7\rightarrow3.1$\,s from $10\%$ to all views, against $3.3\rightarrow27$\,s for \textsf{PrivExpl}), but it grows with $\tau$ ($3.2$--$4.6\times$ up to $\tau=|\mathcal{P}|$), because it builds the histograms of every retained view, and with $|\Attrs|$ ($12$--$39\%$).
 It gains nothing when there are few views per set of view attributes.
 
 % ---------------------------------------------------------------

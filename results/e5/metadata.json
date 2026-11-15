@@ -1,5 +1,5 @@
 {
-  "timestamp_utc": "2026-11-02T01:24:00+00:00",
+  "timestamp_utc": "2026-11-15T03:37:16+00:00",
   "python": "3.13.18",
   "numpy": "2.5.3",
   "pandas": "3.0.5",
@@ -312,33 +312,65 @@
         10.0,
         30.0
       ]
+    },
+    "e7": {
+      "orders": 10,
+      "trials_per_order": 4,
+      "min_attrs": 2
+    },
+    "e8": {
+      "parts": [
+        "competitors",
+        "fixed_gamma",
+        "tau",
+        "lambda"
+      ],
+      "taus": [
+        5,
+        10,
+        15,
+        30,
+        60,
+        120,
+        250,
+        500,
+        1000,
+        "all"
+      ],
+      "lambdas": [
+        0.0,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ]
     }
   },
   "experiment": "e5",
   "repeats": 10,
   "timeout_s": 1800.0,
   "merged_from": [
-    "results_shards/local/e5-A1",
-    "results_shards/local/e5-A2",
-    "results_shards/local/e5-ACS_Q1C1",
-    "results_shards/local/e5-ACS_Q2C2",
-    "results_shards/local/e5-ACS_Q3C4",
-    "results_shards/local/e5-ACS_Q4C7",
-    "results_shards/local/e5-C1",
-    "results_shards/local/e5-C2",
-    "results_shards/local/e5-C3",
-    "results_shards/local/e5-H1",
-    "results_shards/local/e5-H2",
-    "results_shards/local/e5-H3",
-    "results_shards/local/e5-I1",
-    "results_shards/local/e5-I12",
-    "results_shards/local/e5-I6",
-    "results_shards/local/e5-I8",
-    "results_shards/local/e5-R1",
-    "results_shards/local/e5-R3",
-    "results_shards/local/e5-R5",
-    "results_shards/local/e5-T1",
-    "results_shards/local/e5-T2",
-    "results_shards/local/e5-T3"
+    "results_shards/eqbins-e5-local/e5-A1",
+    "results_shards/eqbins-e5-local/e5-A2",
+    "results_shards/eqbins-e5-local/e5-ACS_Q1C1",
+    "results_shards/eqbins-e5-local/e5-ACS_Q2C2",
+    "results_shards/eqbins-e5-local/e5-ACS_Q3C4",
+    "results_shards/eqbins-e5-local/e5-ACS_Q4C7",
+    "results_shards/eqbins-e5-local/e5-C1",
+    "results_shards/eqbins-e5-local/e5-C2",
+    "results_shards/eqbins-e5-local/e5-C3",
+    "results_shards/eqbins-e5-local/e5-H1",
+    "results_shards/eqbins-e5-local/e5-H2",
+    "results_shards/eqbins-e5-local/e5-H3",
+    "results_shards/eqbins-e5-local/e5-I1",
+    "results_shards/eqbins-e5-local/e5-I12",
+    "results_shards/eqbins-e5-local/e5-I6",
+    "results_shards/eqbins-e5-local/e5-I8",
+    "results_shards/eqbins-e5-local/e5-R1",
+    "results_shards/eqbins-e5-local/e5-R3",
+    "results_shards/eqbins-e5-local/e5-R5",
+    "results_shards/eqbins-e5-local/e5-T1",
+    "results_shards/eqbins-e5-local/e5-T2",
+    "results_shards/eqbins-e5-local/e5-T3"
   ]
 }
