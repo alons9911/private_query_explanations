@@ -72,7 +72,7 @@ def _logx(ax, xs):
 # ----------------------------------------------------------------------------- quality (E2 + E6)
 
 QUALITY_SERIES = [  # (column, label, colour, marker, linestyle)
-    ("ratio_B3_mean", "ApproxRatio vs optimum", P.BLUE, "o", "-"),
+    ("ratio_B3_mean", "ApproxRatio vs filtered optimum", P.BLUE, "o", "-"),
     ("ratio_B1_mean", "ApproxRatio vs B1", P.BLUE, "o", ":"),
     ("attr_precision_B3_mean", "attribute precision", P.ORANGE, "s", "-"),
     ("precision_at_k_B3_mean", "precision@k", P.AQUA, "^", "-"),
@@ -319,8 +319,7 @@ def fig_attrs() -> Path:
             if col == "ratio_B1_mean":
                 continue
             ax.plot(sub.value, sub[col.replace("_mean", "")], color=c, marker=mk, linestyle=ls, label=lab)
-        top = float(np.nanmax(sub[[c for c, *_ in QUALITY_SERIES]].to_numpy()))
-        ax.set_ylim(0, max(1.1, top + 0.08))  # keep every point (ratios to B1 can exceed 1) inside the frame
+        ax.set_ylim(0, 1.1)
         ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
         ax.axhline(1.0, color=P.MUTED, linewidth=0.5, zorder=0)
         if j:
