@@ -21,13 +21,30 @@ DUPLICATES = {"C4": "H1", "R6": "T2"}
 CASE_STUDIES = {"A2", "ACS_Q1C1", "C1", "I1"}
 
 GROUPS = [
-    ("adult", r"Adult~\cite{adult-uci}. A1 and A2 (the running example) from the earlier draft; A3 and R1--R4: $Q'$ from our refinement search."),
-    ("acsincome", r"ACSIncome~\cite{DingHMS21}. Queries $Q_i$, constraint sets $C_j$ and refined queries $Q'$ of Erica~\cite{LMSJ23}; $Q'$ is one of the minimal refinements Erica returned."),
-    ("tax", r"Tax~\cite{BohannonFGJK07,MahdaviAFMOST19}. T1 from the earlier draft; T2, T3 and R5: $Q'$ from our refinement search (R6 of the case-study search is the same pair as T2)."),
-    ("tax_dirty", r"Tax-dirty~\cite{MahdaviAFMOST19}, CQA. $\Sigma$ = the Tax rules of~\cite{NiMZWLY24} without $\texttt{AreaCode}\to\texttt{State}$; $Q$ = US Census divisions picked by our selection rule."),
-    ("hospital", r"Hospital~\cite{rekatsinas2017}, CQA. $\Sigma=\{\texttt{HospitalName}\to\texttt{ZipCode}, \texttt{HospitalName}\to\texttt{PhoneNumber}, \texttt{ZipCode}\to\texttt{City}\}$; H1 from the earlier draft, H2 and H3 by our selection rule."),
-    ("ipums", r"IPUMS-CPS~\cite{TaoGMR22}, contrasts. The questions of DPXPlain (I1 is its default question); the attribute that defines the groups is excluded from the views and the explanation attributes."),
+    ("adult", r"Adult~\cite{adult-uci}: refinements under representation constraints (ours); A2 is the running example of Section~\ref{sec:introduction}."),
+    ("acsincome", r"ACSIncome~\cite{DingHMS21}: queries, constraints and refinements of Erica~\cite{LMSJ23}."),
+    ("tax", r"Tax~\cite{BohannonFGJK07,MahdaviAFMOST19}: refinements under representation constraints (ours)."),
+    ("tax_dirty", r"Tax-dirty~\cite{MahdaviAFMOST19}: consistent answers under the Tax rules of~\cite{NiMZWLY24} (ours)."),
+    ("hospital", r"Hospital~\cite{rekatsinas2017}: consistent answers under $\texttt{HospitalName}\to\texttt{ZipCode}$, $\texttt{HospitalName}\to\texttt{PhoneNumber}$, $\texttt{ZipCode}\to\texttt{City}$ (ours)."),
+    ("ipums", r"IPUMS-CPS~\cite{TaoGMR22}: the questions of DPXPlain~\cite{TaoGMR22}; the attribute that defines the groups is excluded from views and explanation attributes."),
 ]
+
+# paper IDs: one letter per dataset, numbered in table order (internal pair ids stay as in configs/pairs.yaml)
+PREFIX = {"adult": "A", "acsincome": "S", "tax": "T", "tax_dirty": "D", "hospital": "H", "ipums": "I"}
+
+
+def display_ids() -> dict[str, str]:
+    cfg = yaml.safe_load((ROOT / "configs" / "experiments.yaml").read_text())
+    P = yaml.safe_load((ROOT / "configs" / "pairs.yaml").read_text())
+    count: dict[str, int] = {}
+    out = {}
+    for pid in cfg["pairs"]:
+        if pid in DUPLICATES:
+            continue
+        ds = P[pid]["dataset"]
+        count[ds] = count.get(ds, 0) + 1
+        out[pid] = f"{PREFIX[ds]}{count[ds]}"
+    return out
 
 
 def _labels() -> dict:
@@ -80,8 +97,7 @@ def _constraint(cs, labels: dict) -> str:
 
 
 def _id(pid: str) -> str:
-    t = pid.replace("ACS_", "")
-    t = re.sub(r"^Q(\d)C(\d)$", r"$Q_\1C_\2$", t)
+    t = display_ids()[pid]
     return r"\textbf{" + t + "}" if pid in CASE_STUDIES else t
 
 

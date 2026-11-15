@@ -21,11 +21,11 @@ The experiments answer three questions:
 \toprule
 Dataset & $N$ & $|\Attrs|$ & $|\mathcal{P}|$ & Setting & Pairs & Pairs from \\
 \midrule
-Adult~\cite{adult-uci}            & 48{,}842    & 10 & 1{,}144 & refinement & 7  & Sec.~\ref{sec:introduction}, ours \\
+Adult~\cite{adult-uci}            & 48{,}842    & 10 & 1{,}144 & refinement & 7  & ours \\
 ACSIncome~\cite{DingHMS21}       & 1{,}664{,}500 & 10 & 1{,}084 & refinement & 10 & Erica~\cite{LMSJ23} \\
-Tax~\cite{BohannonFGJK07}        & 200{,}000   & 9  & 2{,}106 & refinement & 4  & draft, ours \\
-Tax-dirty~\cite{MahdaviAFMOST19} & 200{,}000   & 9  & 2{,}300 & CQA        & 3  & rules of~\cite{NiMZWLY24} \\
-Hospital~\cite{rekatsinas2017}   & 1{,}000     & 10 & 502     & CQA        & 3  & draft, rule \\
+Tax~\cite{BohannonFGJK07}        & 200{,}000   & 9  & 2{,}106 & refinement & 4  & ours \\
+Tax-dirty~\cite{MahdaviAFMOST19} & 200{,}000   & 9  & 2{,}300 & CQA        & 3  & ours, rules of~\cite{NiMZWLY24} \\
+Hospital~\cite{rekatsinas2017}   & 1{,}000     & 10 & 502     & CQA        & 3  & ours \\
 IPUMS-CPS~\cite{TaoGMR22}        & 1{,}146{,}552 & 8 & 1{,}026 & contrast  & 17 & DPXPlain~\cite{TaoGMR22} \\
 \bottomrule
 \end{tabular}
@@ -36,14 +36,14 @@ Table~\ref{tab:datasets} lists the datasets and Table~\ref{tab:pairs} every pair
 Numeric attributes are bucketed into equal-width bins with round edges (ages and weekly hours by decade, a separate bin for $0$ where most values are $0$, the education code of ACSIncome by level), and views are conjunctions of at most two conditions.
 \emph{Refinement.}
 On ACSIncome, the dataset of Erica~\cite{LMSJ23,ERICA}, we use Erica's queries, constraint sets and the minimal refinements Erica itself returned (ten of its twelve combinations decode to refinements that satisfy their constraints); among several minimal refinements we keep the one whose effect is least visible from the query and the constraints.
-Adult adds the running example (A2) and five pairs of our own, Tax~\cite{BohannonFGJK07} (the clean file of Raha~\cite{MahdaviAFMOST19}) four.
+On Adult (including the running example, A2) and on Tax~\cite{BohannonFGJK07} (the clean file of Raha~\cite{MahdaviAFMOST19}) the pairs are ours.
 \emph{CQA.}
 Tax-dirty is the dirty Tax file of Raha with the Tax rules of the repair benchmark of Ni et~al.~\cite{NiMZWLY24}, minus $\texttt{AreaCode}\to\texttt{State}$, a cell-repair rule that under subset repair (Definition~\ref{def:consistent-answer}) puts $82\%$ of the tuples in conflict; with the other seven rules $3.9\%$ are, very unevenly ($52\%$ in Alaska).
 Hospital is HoloClean's dirty file~\cite{rekatsinas2017} with three dependencies on hospital name, zip code and phone.
 $Q_\Sigma(D)$ is $Q(D)$ minus the tuples in a conflict~\cite{chomicki2004}, and each CQA query is a selection whose consistent answer drops $10$--$90\%$ of $Q(D)$, unevenly.
 \emph{Contrasts.}
 We use all $17$ questions of DPXPlain~\cite{TaoGMR22} on its IPUMS-CPS extract, the classical setting of contrast-set mining~\cite{BayPazzani01,DongLi99}; the attribute that defines the two groups is removed from the views and the explanation attributes.
-Of the $44$ pairs, $27$ come from Erica and DPXPlain, four from the earlier draft and the rest from our refinement search or CQA selection rule.
+Of the $44$ pairs, $27$ come from Erica and DPXPlain and $17$ are ours.
 
 \input{sections/pairs_table}
 
@@ -91,11 +91,11 @@ No release spends an explanation on the hours predicate the analyst already sees
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/exp/case_acs.pdf}
-\caption{$Q_1C_1$ (ACSIncome, from Erica): the five explanations of the first release. OASO office support, MBSA management, SRO sales.}
+\caption{S1 (ACSIncome, from Erica): the five explanations of the first release. OASO office support, MBSA management, SRO sales.}
 \label{fig:case-acs}
 \end{figure*}
 
-\paragraph{Refinement from Erica ($Q_1C_1$): the release describes the workers the refinement adds.}
+\paragraph{Refinement from Erica (S1): the release describes the workers the refinement adds.}
 Erica meets the constraints on married women and Black workers by adding private-sector employees to a query over government employees, and the output grows from $141{,}100$ to $587{,}712$.
 Every release spends its explanations on the newcomers, whom $Q$ does not contain at all (Figure~\ref{fig:case-acs}): among those working $40$--$49$ hours, $13\%$ are in office support, $13\%$ in management and $10\%$ in sales, $39\%$ hold a bachelor's degree, and $55\%$ are householders.
 An analyst comparing the incomes of the two outputs learns which population drives the comparison, which the query, a change in one predicate, does not show.
@@ -103,11 +103,11 @@ An analyst comparing the incomes of the two outputs learns which population driv
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/exp/case_c1.pdf}
-\caption{C1 (Tax-dirty, Pacific division, $Q$ against its consistent answer $Q_\Sigma$): the five explanations of the first release.}
+\caption{D1 (Tax-dirty, Pacific division, $Q$ against its consistent answer $Q_\Sigma$): the five explanations of the first release.}
 \label{fig:case-c1}
 \end{figure*}
 
-\paragraph{CQA (C1): the consistent answer is biased, not only smaller.}
+\paragraph{CQA (D1): the consistent answer is biased, not only smaller.}
 Over the five Pacific states $\texttt{AVG(Rate)}$ is $4.74$ on $Q(D)$ and $5.23$ on $Q_\Sigma(D)$, although $Q_\Sigma$ drops only $12\%$ of the tuples.
 All ten releases show Alaska losing half of its tuples ($71\%$ among childless taxpayers without child exemption) and the other states at most $7\%$ (Figure~\ref{fig:case-c1}); four also show the lowest rate bin shrinking by $31\%$ against $3\%$ for the highest.
 Alaska, with no state income tax, has rate $0$ throughout: the repair semantics, not the taxpayers, moved the average.
@@ -177,14 +177,14 @@ IPUMS-CPS  & 0.91 & 0.91 & 0.99 & 0.87 (0.46) & 0.35\\
 
 \paragraph{The release reaches $0.91$--$0.96$ of the optimum on most data; small outputs and CQA are harder.}
 At the defaults the ratio is $0.96$ on Adult and Tax and $0.91$ on IPUMS-CPS (Table~\ref{tab:quality}).
-ACSIncome averages $0.80$ because of three pairs at $0.33$--$0.45$ ($Q_3C_5$, $Q_3C_6$, $Q_4C_8$, all with outputs under $4{,}400$ tuples); the other seven reach $0.85$ or more.
+ACSIncome averages $0.80$ because of three pairs at $0.33$--$0.45$ (S7, S8 and S10, all with outputs under $4{,}400$ tuples); the other seven reach $0.85$ or more.
 Tax-dirty and Hospital reach $0.64$ and $0.55$.
 \Btwo{} and \Bthree{} coincide on every pair and setting, as Proposition~\ref{prop:greedy-exact} predicts.
 
 \paragraph{A good set is not the same set.}
 On Adult the release scores $0.96$ of the optimum but holds only $39\%$ of its explanations; on IPUMS-CPS, $0.91$ against $35\%$.
 The leading candidates are near-ties (on Adult the best two differ by about $2\%$): a view and its refinement by one more condition explain the same attribute almost equally well.
-Attribute precision, $0.79$--$0.87$ against a chance level of $0.32$--$0.46$, shows that the right attributes are explained through neighbouring views, as in C1, where every release explains the state through a different view.
+Attribute precision, $0.79$--$0.87$ against a chance level of $0.32$--$0.46$, shows that the right attributes are explained through neighbouring views, as in D1, where every release explains the state through a different view.
 Two runs on the same pair therefore return different, equally valid sets, and ApproxRatio alone, the measure of earlier private explanation work, flatters methods with many near-duplicate candidates.
 
 \paragraph{Smoothing moves the target.}
