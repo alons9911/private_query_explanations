@@ -65,8 +65,6 @@ Unless varied: the whole dataset, every view, $k=5$, $\lambda=0.5$, $\epsilon=1$
 Derived constants follow their rules when $k$, $\epsilon$ or $\tau$ vary.
 Every pair is run at least ten times and every accuracy point averages $40$ private runs.
 Running time is measured end to end, ten times per point, on four pairs per dataset; a run is stopped at $30$ minutes, and a point that hits the limit is run three times.
-Independent runs shared a 4-core cloud machine, four at a time (under $2\%$ slowdown); machines differed by up to $1.7\times$, so methods are compared only within one.
-The running times reported in this version were measured with an earlier, quantile bucketing of the numeric attributes, under which $|\mathcal{P}|$ was $9$--$19\%$ smaller on Adult, ACSIncome and the two Tax datasets; all other results use the bins above.
 \alon{Running-time experiments with the new bins are running; replace Figures~\ref{fig:scalability} and~\ref{fig:attrs} (top row) and the numbers of Section~\ref{subsec:scalability} when they finish.}
 
 % ---------------------------------------------------------------
