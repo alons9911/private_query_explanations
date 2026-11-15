@@ -31,55 +31,61 @@ IPUMS-CPS~\cite{TaoGMR22}        & 1{,}146{,}552 & 8 & 746--1{,}124 & contrast  
 \end{tabular}}
 \end{table}
 
-\paragraph{Datasets and query pairs.}
-Table~\ref{tab:datasets} lists the datasets, Table~\ref{tab:pairs} the pairs and Table~\ref{tab:attributes} (appendix) the attributes.
-Tax~\cite{BohannonFGJK07} is synthetic, and the dirty files of Tax and Hospital carry injected errors.
-We bucket numeric attributes into equal-width bins with rounded edges: ages and weekly hours by decade, a separate bin for $0$ where most values are $0$, and the education code of ACSIncome by level.
+\paragraph{Datasets.}
+Table~\ref{tab:datasets} summarises the six datasets, and Table~\ref{tab:attributes} (appendix) lists their attributes.
+\begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
+  \item \textbf{Adult}~\cite{adult-uci} (real data): $48{,}842$ census records with $10$ explanation attributes. Seven refinement pairs of ours, including the running example A2.
+  \item \textbf{ACSIncome}~\cite{DingHMS21} (real data): $1{,}664{,}500$ records of the American Community Survey, the dataset of Erica~\cite{LMSJ23,ERICA}. Ten refinement pairs from Erica.
+  \item \textbf{Tax}~\cite{BohannonFGJK07} (synthetic data): the $200{,}000$-tuple clean file of Raha~\cite{MahdaviAFMOST19}. Four refinement pairs of ours.
+  \item \textbf{Tax-dirty}~\cite{MahdaviAFMOST19} (synthetic data, injected errors): the dirty file of the same Tax data, with the Tax rules of Ni et~al.~\cite{NiMZWLY24}. Three CQA pairs of ours.
+  \item \textbf{Hospital}~\cite{rekatsinas2017} (real data, injected errors): HoloClean's $1{,}000$-tuple dirty file with three functional dependencies (Table~\ref{tab:pairs}). Three CQA pairs of ours.
+  \item \textbf{IPUMS-CPS}~\cite{TaoGMR22} (real data): DPXPlain's extract of the Current Population Survey, $1{,}146{,}552$ tuples. All $17$ contrast questions of DPXPlain.
+\end{itemize}
+Numeric attributes are bucketed into equal-width bins with rounded edges: ages and weekly hours by decade, a separate bin for $0$ where most values are $0$, and the education code of ACSIncome by level.
 In the dirty files, missing and out-of-domain values go to \texttt{NA} and \texttt{Other} bins.
 Views are conjunctions of at most two conditions.
+
+\paragraph{Query pairs.}
+Table~\ref{tab:pairs} lists the $44$ pairs, $27$ of them from earlier work.
+\begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
+  \item \emph{Refinement}: $Q_2$ changes predicates of $Q_1$ so that its output meets a constraint on the representation of a group.
+  \item \emph{CQA}: $Q_2=Q_\Sigma$ is the consistent answer of $Q_1$ under the integrity constraints of the dataset.
+  \item \emph{Contrast}: $Q_1$ and $Q_2$ select two disjoint groups of the same table.
+\end{itemize}
+Section~\ref{sec:usecase-results} describes how the pairs of each setting were built.
 The explanations depend only on the two selections, so Table~\ref{tab:pairs} omits the aggregates the analyst compares (e.g.\ \texttt{AVG(Rate)} in D1).
-\emph{Refinement.}
-On ACSIncome, the dataset of Erica~\cite{LMSJ23,ERICA}, we use Erica's queries and constraint sets with the refinements Erica returns, keeping the ten of its twelve query--constraint combinations whose refinement satisfies the constraints.
-Where Erica returns several minimal refinements, we keep the one that most changes the attributes neither the query nor the constraints mention, which favours pairs with something to explain.
-On Adult (including the running example, A2) and Tax (the clean file of Raha~\cite{MahdaviAFMOST19}) the pairs are ours, found by searching for changes of one or two predicates that meet a representation constraint.
-\emph{CQA.}
-Tax-dirty is the dirty Tax file of Raha with the Tax rules of the repair benchmark of Ni et~al.~\cite{NiMZWLY24}, except $\texttt{AreaCode}\to\texttt{State}$, a rule written for cell repair that under subset repair (Definition~\ref{def:consistent-answer}) puts $82\%$ of the tuples in conflict.
-With the other seven rules $3.9\%$ of the tuples are in conflict, unevenly across states.
-Hospital is HoloClean's dirty file~\cite{rekatsinas2017} with the three functional dependencies of Table~\ref{tab:pairs}.
-$Q_2=Q_\Sigma$ returns $Q_1(D)$ minus the tuples in a conflict~\cite{chomicki2004}; each $Q_1$ is a selection whose consistent answer drops $10$--$90\%$ of $Q_1(D)$, far more for some values than for others.
-\emph{Contrasts.}
-Here $Q_1$ and $Q_2$ select two disjoint groups of the same table, and the framework applies unchanged.
-We use all $17$ questions of DPXPlain~\cite{TaoGMR22} on its IPUMS-CPS extract, the classical setting of contrast-set mining~\cite{BayPazzani01,DongLi99}, and remove the attribute that defines the two groups from the views and the explanation attributes.
 
 \input{sections/pairs_table}
 
 \paragraph{Metrics.}
-We score a set $E$ of $k$ candidates by $F^0_\lambda(E)$, the objective $F_w$ of Definition~\ref{def:setobj} with $w_j=\lambda^{j-1}$ and $\gamma=0$.
-The unsmoothed score does not depend on a parameter of the mechanism; since it also rewards changes in very small bins, we also report the smoothed score $F^\gamma_\lambda$, with the pair's default $\gamma$, where it matters.
-For a reference set $E_B$, the \emph{ApproxRatio} is $F^0_\lambda(E)/F^0_\lambda(E_B)$, \emph{precision@k} is $|E\cap E_B|/k$, and \emph{attribute precision} is the overlap of the two multisets of explained attributes divided by $k$.
-We read attribute precision against its chance level for $k$ candidates drawn at random from the candidates of the exact top-$\tau$ views.
-The \emph{coverage} of a set is the mean $\Cov$ (Eq.~\eqref{eq:coverage-proxy}) of its views.
 All measures use exact histograms, so the Laplace noise of the release (scale $2k/\epsilon_H$) does not enter them.
+\begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
+  \item \emph{Score} $F^0_\lambda(E)$ of a set $E$ of $k$ candidates: the objective $F_w$ of Definition~\ref{def:setobj} with $w_j=\lambda^{j-1}$ and $\gamma=0$. It does not depend on a parameter of the mechanism but rewards changes in very small bins, so where it matters we also report the smoothed score $F^\gamma_\lambda$, with the pair's default $\gamma$.
+  \item \emph{ApproxRatio} against a reference set $E_B$: $F^0_\lambda(E)/F^0_\lambda(E_B)$.
+  \item \emph{Precision@k}: $|E\cap E_B|/k$.
+  \item \emph{Attribute precision}: the overlap of the two multisets of explained attributes, divided by $k$. We read it against its chance level, for $k$ candidates drawn at random from the candidates of the exact top-$\tau$ views.
+  \item \emph{Coverage}: the mean $\Cov$ (Eq.~\eqref{eq:coverage-proxy}) of the views of a set.
+\end{itemize}
 
-\paragraph{References and competitors.}
+\paragraph{Baselines and competitors.}
 No earlier system explains the difference between two query outputs with histograms under differential privacy.
 The closest, DPXPlain~\cite{TaoGMR22}, explains the difference between two group aggregates with predicates, an output $F^0_\lambda$ cannot score.
-We therefore compare with non-private references, each removing one more ingredient of \textsf{PrivExpl}, and with two private competitors.
-\Bone{} removes the noise: the exact top-$\tau$ views by $\Use$, then $k$ greedy rounds by $\HD_\gamma\cdot\DivS$.
-\Bthree{} also removes the smoothing; by Proposition~\ref{prop:greedy-exact} it returns the maximum of $F^0_\lambda$ over the candidates of the exact top-$\tau$ views, which we call the \emph{filtered optimum}.
-Exhaustive search over the same candidates (\Btwo{}) returned the same score on every pair and setting, as the proposition guarantees.
-The filtered optimum is not an upper bound on \textsf{PrivExpl}, whose noisy view stage can retain other views.
+We therefore compare \textsf{PrivExpl} with non-private references, each removing one more of its ingredients, and with two private competitors.
+\begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
+  \item \Bone{} (no noise): the exact top-$\tau$ views by $\Use$, then $k$ greedy rounds by $\HD_\gamma\cdot\DivS$.
+  \item \Bthree{} (no noise, no smoothing): greedy by $\HD$. By Proposition~\ref{prop:greedy-exact} it returns the maximum of $F^0_\lambda$ over the candidates of the exact top-$\tau$ views, which we call the \emph{filtered optimum}. It is not an upper bound on \textsf{PrivExpl}, whose noisy view stage can retain other views.
+  \item \Btwo{} (exhaustive search over the same candidates): returned the same score as \Bthree{} on every pair and setting, as the proposition guarantees; we use it only for running time.
+  \item \textsf{SingleStage} (private): Algorithm~\ref{alg:topk} on the candidates of all views, without a view stage. It selects by $\HD_\gamma\cdot\DivS$ alone, ignoring representativeness and coverage, and spends $\epsilon_P+\epsilon_S$ on the selection and $\epsilon_H$ on the release, with $\gamma$ from Eq.~\eqref{eq:gamma-rule} for $|\mathcal{P}||\Attrs|$ candidates.
+  \item \textsf{Random} (private): $k$ candidates drawn uniformly, with no budget spent on the selection.
+\end{itemize}
 Since \Bone{} and \Bthree{} differ only in $\gamma$, $F^0_\lambda(\Bone)/F^0_\lambda(\Bthree)$ is the cost of smoothing; the ratio to \Bone{} is the effect of noise at fixed smoothing, and can exceed $1$ because \Bone{} does not maximise the unsmoothed score.
-\textsf{SingleStage} runs Algorithm~\ref{alg:topk} on the candidates of all views, without a view stage.
-It selects by $\HD_\gamma\cdot\DivS$ alone and so ignores representativeness and coverage; it spends $\epsilon_P+\epsilon_S$ on the selection and $\epsilon_H$ on the release, with $\gamma$ from Eq.~\eqref{eq:gamma-rule} for $|\mathcal{P}||\Attrs|$ candidates.
-\textsf{Random} draws $k$ candidates uniformly and spends nothing on the selection.
 
-\paragraph{Parameters and runs.}
-Unless varied: the whole dataset, every view, $k=5$, $\lambda=0.5$, $\epsilon=1$ split equally ($\epsilon_P=\epsilon_S=\epsilon_H=1/3$), $\gamma_R=N/100$, $\tau=15$ and $\gamma\approx150$ from Eqs.~\eqref{eq:tau-rule} and~\eqref{eq:gamma-rule}, and $\bar N=|D|$.
-Derived constants follow their rules when $k$, $\epsilon$ or $\tau$ vary.
-An accuracy point of a pair averages $40$ private runs, and a point of a dataset averages its pairs; a mean over all $44$ pairs weights each dataset by its number of pairs ($17$ on IPUMS-CPS).
-Each experiment draws its own runs, so the default point can differ between experiments in the second decimal.
-Running time is measured end to end, ten times per point, on $22$ pairs (A1, A2, A4, A6, S1, S4, S6, S9, T1--T4, D1--D3, H1--H3, I1, I6, I8, I12); a run is stopped at $30$ minutes, and a point that reaches the limit is run three times.
+\paragraph{Default setting and runs.}
+Unless stated otherwise: the whole dataset, every view, $k=5$, $\lambda=0.5$, $\epsilon=1$ split equally ($\epsilon_P=\epsilon_S=\epsilon_H=1/3$), $\gamma_R=N/100$, $\tau=15$ and $\gamma\approx150$ from Eqs.~\eqref{eq:tau-rule} and~\eqref{eq:gamma-rule}, and $\bar N=|D|$; derived constants follow their rules when $k$, $\epsilon$ or $\tau$ vary.
+\begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
+  \item \emph{Accuracy}: a point of a pair averages $40$ private runs, and a point of a dataset averages its pairs; a mean over all $44$ pairs weights each dataset by its number of pairs ($17$ on IPUMS-CPS). Each experiment draws its own runs, so the default point can differ between experiments in the second decimal.
+  \item \emph{Running time}: measured end to end, ten times per point, on $22$ pairs (A1, A2, A4, A6, S1, S4, S6, S9, T1--T4, D1--D3, H1--H3, I1, I6, I8, I12). A run is stopped at $30$ minutes, and a point that reaches the limit is run three times.
+\end{itemize}
 \alon{Running-time experiments with the new bins are running; replace Figures~\ref{fig:scalability} and~\ref{fig:attrs} (top row) and the numbers of Section~\ref{subsec:scalability} when they finish.}
 
 % ---------------------------------------------------------------
@@ -101,8 +107,9 @@ The released values carry noise with a standard deviation of about $42$ per bar,
 \end{figure*}
 
 \paragraph{Refinement (A2): the Master's holders of the refined output differ in occupation, sector and marital status.}
-The refinement of Section~\ref{sec:introduction} keeps only Master's degrees and lowers the hours threshold from $50$ to $30$.
-The output shrinks from $3{,}055$ to $2{,}453$ tuples, its Master's part grows from $874$ to all $2{,}453$, and the female share rises from $19.5\%$ to $30.6\%$.
+Our refinement pairs on Adult and Tax come from a search for changes of one or two predicates of a query that meet a representation constraint (Table~\ref{tab:pairs}).
+A2, the running example of Section~\ref{sec:introduction}, keeps only Master's degrees and lowers the hours threshold from $50$ to $30$, which raises the female share from $19.5\%$ to $30.6\%$.
+The output shrinks from $3{,}055$ to $2{,}453$ tuples, and its Master's part grows from $874$ to all $2{,}453$.
 Every release explains the Master's holders by occupation, relationship and workclass; the explanations of Figure~\ref{fig:case-a2} recur in two to seven of the ten releases.
 Among them, the refined output has more professional-specialty workers ($41\%\rightarrow49\%$) and fewer executives ($41\%\rightarrow31\%$), more local and state government employees ($25\%\rightarrow30\%$), and fewer married members ($66\%\rightarrow59\%$ among white Master's holders).
 The largest change, the $2{,}181$ Bachelor's holders that $Q_2$ drops ($71\%$ of $Q_1$), appears in only three releases, by hours worked.
@@ -116,7 +123,10 @@ $\HD_\gamma$ measures the change in each bin relative to the bin's support in th
 \end{figure*}
 
 \paragraph{Refinement from Erica (S1): the release describes the workers the refinement adds.}
-Erica meets the constraints on married women and Black workers by adding private-sector employees to a query over government employees; the output grows from $141{,}100$ to $587{,}712$.
+Erica~\cite{LMSJ23} computes minimal refinements of a query that meet cardinality constraints on groups.
+On ACSIncome we use its queries and constraint sets with the refinements it returns, keeping the ten of its twelve query--constraint combinations whose refinement satisfies the constraints.
+Where Erica returns several minimal refinements, we keep the one that most changes the attributes neither the query nor the constraints mention, which favours pairs with something to explain.
+In S1, Erica meets the constraints on married women and Black workers by adding private-sector employees to a query over government employees; the output grows from $141{,}100$ to $587{,}712$.
 In every release all five explanations are on private-sector views, which $Q_1$ does not meet (Figure~\ref{fig:case-acs}).
 Among the added workers who work $40$--$49$ hours, $13\%$ are in office support, $13\%$ in management and $10\%$ in sales, $39\%$ hold a bachelor's degree, and $55\%$ are reference persons of their household.
 An analyst comparing the incomes of the two outputs learns who was added, which the query, a change of one predicate, does not say.
@@ -129,7 +139,10 @@ An analyst comparing the incomes of the two outputs learns who was added, which 
 \end{figure*}
 
 \paragraph{CQA (D1): the consistent answer loses half of Alaska, which raises the average rate.}
-Over the five Pacific states $\texttt{AVG(Rate)}$ is $4.74$ on $Q_1(D)$ and $5.23$ on $Q_\Sigma(D)$, although $Q_\Sigma$ drops only $12\%$ of the tuples.
+The consistent answer of a query under integrity constraints keeps the answers that hold in every repair~\cite{chomicki2004}; for a selection under subset repair (Definition~\ref{def:consistent-answer}), $Q_\Sigma(D)$ is $Q_1(D)$ minus the tuples in a conflict.
+On Tax-dirty we use the Tax rules of Ni et~al.~\cite{NiMZWLY24} except $\texttt{AreaCode}\to\texttt{State}$, a rule written for cell repair that under subset repair puts $82\%$ of the tuples in conflict; with the other seven rules $3.9\%$ of the tuples are in conflict, unevenly across states.
+Each of our CQA queries, on Tax-dirty and Hospital, is a selection whose consistent answer drops $10$--$90\%$ of its output, far more for some values than for others.
+D1 selects the five Pacific states: $\texttt{AVG(Rate)}$ is $4.74$ on $Q_1(D)$ and $5.23$ on $Q_\Sigma(D)$, although $Q_\Sigma$ drops only $12\%$ of the tuples.
 All ten releases explain the state, through one of three views (\texttt{HasChild}=\texttt{N} in six): Alaska loses half of its tuples, and $71\%$ of those with $\texttt{HasChild}=\texttt{N}$ and $\texttt{ChildExemp}=0$, while the other states lose at most $7\%$ (Figure~\ref{fig:case-c1}).
 Every Alaska tuple has rate $0$, so dropping half of them raises the average.
 Four releases also explain the rate: the lowest bin shrinks by $16$--$34\%$, the highest by at most $4\%$.
@@ -142,7 +155,9 @@ Four releases also explain the rate: the lowest bin shrinks by $16$--$34\%$, the
 \end{figure*}
 
 \paragraph{Contrast (I1): low-income women are more often spouses and outside the labour force than low-income men.}
-For DPXPlain's default question every release includes views on incomes under $25{,}000$, where women outnumber men $1.6$ to $1$ (Figure~\ref{fig:case-i1}).
+In a contrast, $Q_1$ and $Q_2$ select two disjoint groups of the same table, the classical setting of contrast-set mining~\cite{BayPazzani01,DongLi99}, and the framework applies unchanged.
+We use all $17$ questions of DPXPlain~\cite{TaoGMR22} on its IPUMS-CPS extract and remove the attribute that defines the two groups from the views and the explanation attributes, since it separates the groups by definition.
+For DPXPlain's default question, I1, every release includes views on incomes under $25{,}000$, where women outnumber men $1.6$ to $1$ (Figure~\ref{fig:case-i1}).
 Among them, women are more often outside the labour force ($52\%$ against $46\%$) and, among white respondents, the householder's spouse ($25\%$ against $14\%$); slightly more of them hold a bachelor's degree ($13\%$ against $9\%$).
 
 % ---------------------------------------------------------------
