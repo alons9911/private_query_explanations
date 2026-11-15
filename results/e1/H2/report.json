@@ -57,114 +57,114 @@
       {
         "rank": 1,
         "view": "EmergencyService='yes'",
-        "use": 0.8743311269841271,
+        "use": 0.8749353809523811,
         "coverage": 0.921,
-        "representativeness": 0.9493280423280424
+        "representativeness": 0.9499841269841272
       },
       {
         "rank": 2,
         "view": "State='al'",
-        "use": 0.8680388086675889,
+        "use": 0.86808940802213,
         "coverage": 0.878,
-        "representativeness": 0.9886546795758415
+        "representativeness": 0.9887123098201935
       },
       {
         "rank": 3,
         "view": "State='al' AND EmergencyService='yes'",
-        "use": 0.8237359737171465,
+        "use": 0.8245450193992491,
         "coverage": 0.878,
-        "representativeness": 0.9381958698372966
+        "representativeness": 0.9391173341677097
       },
       {
         "rank": 4,
-        "view": "Condition='surgical infection prevention'",
-        "use": 0.24225777669902918,
-        "coverage": 0.279,
-        "representativeness": 0.8683074433656959
+        "view": "Score='90-100'",
+        "use": 0.5154455597628609,
+        "coverage": 0.566,
+        "representativeness": 0.9106812009944539
       },
       {
         "rank": 5,
-        "view": "EmergencyService='yes' AND Condition='surgical infection prevention'",
-        "use": 0.23023729580152674,
-        "coverage": 0.279,
-        "representativeness": 0.8252232824427481
+        "view": "EmergencyService='yes' AND Score='90-100'",
+        "use": 0.4988132524461839,
+        "coverage": 0.566,
+        "representativeness": 0.8812954990215264
       },
       {
         "rank": 6,
-        "view": "State='al' AND Condition='surgical infection prevention'",
-        "use": 0.22564120408163268,
-        "coverage": 0.264,
-        "representativeness": 0.854701530612245
+        "view": "State='al' AND Score='90-100'",
+        "use": 0.48335155978260874,
+        "coverage": 0.537,
+        "representativeness": 0.9000960144927537
       },
       {
         "rank": 7,
-        "view": "Condition='heart attack'",
-        "use": 0.20698177021107128,
-        "coverage": 0.247,
-        "representativeness": 0.8379828753484667
+        "view": "Sample='0-99'",
+        "use": 0.4657345149051491,
+        "coverage": 0.516,
+        "representativeness": 0.9025862691960254
       },
       {
         "rank": 8,
-        "view": "Score IN (99, 100]",
-        "use": 0.20018346376811594,
-        "coverage": 0.231,
-        "representativeness": 0.8665950812472552
+        "view": "EmergencyService='yes' AND Sample='0-99'",
+        "use": 0.45073090041067765,
+        "coverage": 0.516,
+        "representativeness": 0.8735094969199179
       },
       {
         "rank": 9,
-        "view": "State='al' AND Condition='heart attack'",
-        "use": 0.19758318055555557,
-        "coverage": 0.241,
-        "representativeness": 0.8198472222222223
+        "view": "State='al' AND Sample='0-99'",
+        "use": 0.43498302704429304,
+        "coverage": 0.491,
+        "representativeness": 0.8859124787052811
       },
       {
         "rank": 10,
-        "view": "EmergencyService='yes' AND Condition='heart attack'",
-        "use": 0.19698356926406926,
-        "coverage": 0.247,
-        "representativeness": 0.797504329004329
+        "view": "Score='90-100' AND Sample='0-99'",
+        "use": 0.24576456521739132,
+        "coverage": 0.28,
+        "representativeness": 0.8777305900621117
       },
       {
         "rank": 11,
-        "view": "EmergencyService='yes' AND Score IN (99, 100]",
-        "use": 0.19315858732876715,
-        "coverage": 0.231,
-        "representativeness": 0.8361843607305937
+        "view": "Condition='surgical infection prevention'",
+        "use": 0.24219356957928806,
+        "coverage": 0.279,
+        "representativeness": 0.8680773103200288
       },
       {
         "rank": 12,
-        "view": "HospitalOwner='government - hospital district or authority'",
-        "use": 0.19115758547008546,
-        "coverage": 0.245,
-        "representativeness": 0.7802350427350427
+        "view": "EmergencyService='yes' AND Condition='surgical infection prevention'",
+        "use": 0.23061639503816794,
+        "coverage": 0.279,
+        "representativeness": 0.8265820610687022
       },
       {
         "rank": 13,
-        "view": "State='al' AND Score IN (99, 100]",
-        "use": 0.18921400874485597,
-        "coverage": 0.223,
-        "representativeness": 0.8484933127572016
+        "view": "State='al' AND Condition='surgical infection prevention'",
+        "use": 0.22587400000000002,
+        "coverage": 0.264,
+        "representativeness": 0.8555833333333334
       },
       {
         "rank": 14,
-        "view": "HospitalOwner='government - hospital district or authority' AND EmergencyService='yes'",
-        "use": 0.1883915732758621,
-        "coverage": 0.245,
-        "representativeness": 0.7689451970443351
+        "view": "Condition='heart attack'",
+        "use": 0.21100715213062524,
+        "coverage": 0.247,
+        "representativeness": 0.8542799681401831
       },
       {
         "rank": 15,
-        "view": "State='al' AND HospitalOwner='government - hospital district or authority'",
-        "use": 0.1792340297029703,
-        "coverage": 0.238,
-        "representativeness": 0.7530841584158416
+        "view": "State='al' AND Condition='heart attack'",
+        "use": 0.20180737499999998,
+        "coverage": 0.241,
+        "representativeness": 0.837375
       }
     ],
     "retained": [
       {
         "noisy_rank": 1,
         "view": "EmergencyService='Other' AND Sample='NA'",
-        "exact_rank": 485,
+        "exact_rank": 474,
         "use": 0.0,
         "coverage": 0.0,
         "representativeness": 0.5
@@ -173,113 +173,113 @@
         "noisy_rank": 2,
         "view": "EmergencyService='yes'",
         "exact_rank": 1,
-        "use": 0.8743311269841271,
+        "use": 0.8749353809523811,
         "coverage": 0.921,
-        "representativeness": 0.9493280423280424
+        "representativeness": 0.9499841269841272
       },
       {
         "noisy_rank": 3,
-        "view": "Condition='heart attack' AND Score IN (91, 96]",
-        "exact_rank": 186,
-        "use": 0.014970999999999998,
-        "coverage": 0.022,
-        "representativeness": 0.6805
+        "view": "Condition='heart attack' AND Score='50-59'",
+        "exact_rank": 260,
+        "use": 0.0024014117647058824,
+        "coverage": 0.004,
+        "representativeness": 0.6003529411764705
       },
       {
         "noisy_rank": 4,
-        "view": "Condition='Other' AND Sample IN [0, 3]",
-        "exact_rank": 297,
-        "use": 0.0030308333333333337,
-        "coverage": 0.005,
-        "representativeness": 0.6061666666666667
+        "view": "Condition='surgical infection prevention' AND Sample='NA'",
+        "exact_rank": 160,
+        "use": 0.01074951388888889,
+        "coverage": 0.019,
+        "representativeness": 0.565763888888889
       },
       {
         "noisy_rank": 5,
-        "view": "Condition='surgical infection prevention' AND Sample IN (58, 107]",
-        "exact_rank": 176,
-        "use": 0.016171875,
-        "coverage": 0.023,
-        "representativeness": 0.703125
+        "view": "Condition='surgical infection prevention' AND Sample='100-199'",
+        "exact_rank": 84,
+        "use": 0.03750724206349207,
+        "coverage": 0.05,
+        "representativeness": 0.7501448412698413
       },
       {
         "noisy_rank": 6,
-        "view": "Condition='heart attack' AND Sample='NA'",
-        "exact_rank": 235,
-        "use": 0.0084775,
-        "coverage": 0.015,
-        "representativeness": 0.5651666666666667
+        "view": "Condition='heart attack' AND Sample='100-199'",
+        "exact_rank": 138,
+        "use": 0.015031458333333334,
+        "coverage": 0.023,
+        "representativeness": 0.6535416666666667
       },
       {
         "noisy_rank": 7,
-        "view": "EmergencyService='yes' AND Score IN (99, 100]",
-        "exact_rank": 11,
-        "use": 0.19315858732876715,
-        "coverage": 0.231,
-        "representativeness": 0.8361843607305937
+        "view": "Condition='Other' AND Sample='0-99'",
+        "exact_rank": 143,
+        "use": 0.014763125000000002,
+        "coverage": 0.02,
+        "representativeness": 0.7381562500000001
       },
       {
         "noisy_rank": 8,
-        "view": "Condition='Other' AND Sample IN (3, 19]",
-        "exact_rank": 283,
-        "use": 0.0036056029411764704,
-        "coverage": 0.006,
-        "representativeness": 0.6009338235294117
+        "view": "HospitalOwner='voluntary non-profit - private' AND Score='50-59'",
+        "exact_rank": 280,
+        "use": 0.0017580416666666664,
+        "coverage": 0.003,
+        "representativeness": 0.5860138888888888
       },
       {
         "noisy_rank": 9,
-        "view": "HospitalOwner='Other' AND Score IN (91, 96]",
-        "exact_rank": 371,
-        "use": 0.0005117499999999999,
-        "coverage": 0.001,
-        "representativeness": 0.5117499999999999
+        "view": "EmergencyService='yes' AND Score='70-79'",
+        "exact_rank": 101,
+        "use": 0.028004374999999998,
+        "coverage": 0.037,
+        "representativeness": 0.756875
       },
       {
         "noisy_rank": 10,
-        "view": "HospitalOwner='government - hospital district or authority' AND Sample IN [0, 3]",
-        "exact_rank": 179,
-        "use": 0.016108874999999998,
-        "coverage": 0.027,
-        "representativeness": 0.596625
+        "view": "HospitalOwner='Other' AND Score='90-100'",
+        "exact_rank": 177,
+        "use": 0.009098375,
+        "coverage": 0.013,
+        "representativeness": 0.699875
       },
       {
         "noisy_rank": 11,
-        "view": "EmergencyService='yes' AND Score='NA'",
-        "exact_rank": 44,
-        "use": 0.10889203733766233,
-        "coverage": 0.153,
-        "representativeness": 0.7117126623376623
+        "view": "HospitalOwner='voluntary non-profit - private' AND Score='80-89'",
+        "exact_rank": 118,
+        "use": 0.022576327127659578,
+        "coverage": 0.031,
+        "representativeness": 0.7282686170212767
       },
       {
         "noisy_rank": 12,
-        "view": "HospitalOwner='Other' AND Score='NA'",
-        "exact_rank": 313,
-        "use": 0.002298166666666667,
-        "coverage": 0.004,
-        "representativeness": 0.5745416666666667
+        "view": "State='al' AND Score='90-100'",
+        "exact_rank": 6,
+        "use": 0.48335155978260874,
+        "coverage": 0.537,
+        "representativeness": 0.9000960144927537
       },
       {
         "noisy_rank": 13,
-        "view": "HospitalOwner='government - federal' AND EmergencyService='no'",
-        "exact_rank": 398,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.49966666666666665
+        "view": "EmergencyService='yes' AND Score='80-89'",
+        "exact_rank": 47,
+        "use": 0.09688773913043479,
+        "coverage": 0.116,
+        "representativeness": 0.8352391304347826
       },
       {
         "noisy_rank": 14,
-        "view": "State='al' AND EmergencyService='yes'",
-        "exact_rank": 3,
-        "use": 0.8237359737171465,
-        "coverage": 0.878,
-        "representativeness": 0.9381958698372966
+        "view": "HospitalOwner='government - federal' AND EmergencyService='no'",
+        "exact_rank": 375,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.4996666666666667
       },
       {
         "noisy_rank": 15,
-        "view": "EmergencyService='no' AND Score IN [0, 82]",
-        "exact_rank": 460,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.627892441860465
+        "view": "State='al' AND EmergencyService='yes'",
+        "exact_rank": 3,
+        "use": 0.8245450193992491,
+        "coverage": 0.878,
+        "representativeness": 0.9391173341677097
       }
     ],
     "overlap_with_exact_top_tau": 0.2,
@@ -287,43 +287,42 @@
       "EmergencyService='yes'": 4,
       "Sample='NA'": 2,
       "Condition='heart attack'": 2,
-      "Score IN (91, 96]": 2,
-      "Condition='Other'": 2,
-      "Sample IN [0, 3]": 2,
-      "HospitalOwner='Other'": 2,
-      "Score='NA'": 2,
-      "EmergencyService='no'": 2,
+      "Score='50-59'": 2,
+      "Condition='surgical infection prevention'": 2,
+      "Sample='100-199'": 2,
+      "HospitalOwner='voluntary non-profit - private'": 2,
+      "Score='90-100'": 2,
+      "Score='80-89'": 2,
+      "State='al'": 2,
       "EmergencyService='Other'": 1,
-      "Condition='surgical infection prevention'": 1,
-      "Sample IN (58, 107]": 1,
-      "Score IN (99, 100]": 1,
-      "Sample IN (3, 19]": 1,
-      "HospitalOwner='government - hospital district or authority'": 1,
+      "Condition='Other'": 1,
+      "Sample='0-99'": 1,
+      "Score='70-79'": 1,
+      "HospitalOwner='Other'": 1,
       "HospitalOwner='government - federal'": 1,
-      "State='al'": 1,
-      "Score IN [0, 82]": 1
+      "EmergencyService='no'": 1
     },
     "query_attribute_views": [
       {
         "view": "EmergencyService='yes'",
         "rank": 1,
-        "use": 0.8743311269841271,
+        "use": 0.8749353809523811,
         "coverage": 0.921,
-        "representativeness": 0.9493280423280424
+        "representativeness": 0.9499841269841272
       },
       {
         "view": "EmergencyService='no'",
-        "rank": 373,
+        "rank": 344,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.712369644153958
+        "representativeness": 0.7136325344952796
       },
       {
         "view": "EmergencyService='Other'",
-        "rank": 374,
+        "rank": 345,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.784894894894895
+        "representativeness": 0.7840450450450451
       }
     ]
   },
@@ -681,7 +680,7 @@
       "exact_total_q1": 830,
       "exact_total_q2": 91,
       "exact_abs_diff_total": 739,
-      "share_of_releases_with_this_explanation": 0.4,
+      "share_of_releases_with_this_explanation": 0.5,
       "share_of_releases_explaining_this_attr": 1.0
     },
     {
@@ -1257,183 +1256,198 @@
       "exact_total_q1": 830,
       "exact_total_q2": 91,
       "exact_abs_diff_total": 739,
-      "share_of_releases_with_this_explanation": 0.5,
+      "share_of_releases_with_this_explanation": 0.4,
       "share_of_releases_explaining_this_attr": 1.0
     },
     {
       "round": 4,
-      "view": "State='al' AND EmergencyService='yes'",
-      "attr": "Score",
+      "view": "EmergencyService='yes'",
+      "attr": "Condition",
       "bins": [
-        "[0, 82]",
-        "(82, 91]",
-        "(91, 96]",
-        "(96, 99]",
-        "(99, 100]",
-        "NA"
+        "children s asthma care",
+        "heart attack",
+        "heart failure",
+        "pneumonia",
+        "surgical infection prevention",
+        "Other"
       ],
       "noisy_h1": [
-        61.103,
-        112.456,
-        85.372,
-        138.661,
-        194.927,
-        135.822
+        -29.897,
+        222.456,
+        95.372,
+        209.661,
+        245.927,
+        25.822
       ],
       "noisy_h2": [
-        -31.206,
-        -14.937,
-        9.951,
-        -14.764,
-        96.005,
-        3.384
+        -36.206,
+        0.063,
+        7.951,
+        -19.764,
+        101.005,
+        -2.616
       ],
       "exact_n": [
-        100,
-        111,
-        118,
-        120,
-        201,
-        139
+        9,
+        221,
+        128,
+        191,
+        252,
+        29
       ],
       "exact_h1": [
-        100,
-        111,
-        118,
-        120,
-        201,
-        139
+        9,
+        221,
+        128,
+        191,
+        252,
+        29
       ],
       "exact_h2": [
-        9,
-        11,
-        15,
-        23,
-        22,
-        9
+        4,
+        26,
+        13,
+        18,
+        27,
+        3
       ],
-      "hd_gamma": 2.4477558721327863,
-      "utility": 2.4477558721327863,
+      "hd_gamma": 2.180840954540317,
+      "utility": 2.180840954540317,
       "n_candidates": 118,
       "bins_clearing_2sigma": [
-        "(82, 91]",
-        "(96, 99]",
-        "NA"
+        "heart attack",
+        "pneumonia",
+        "surgical infection prevention"
       ],
       "exact_share_q1": [
-        0.1267,
-        0.1407,
-        0.1496,
-        0.1521,
-        0.2548,
-        0.1762
+        0.0108,
+        0.2663,
+        0.1542,
+        0.2301,
+        0.3036,
+        0.0349
       ],
       "exact_share_q2": [
-        0.1011,
-        0.1236,
-        0.1685,
-        0.2584,
-        0.2472,
-        0.1011
+        0.044,
+        0.2857,
+        0.1429,
+        0.1978,
+        0.2967,
+        0.033
       ],
-      "noisy_total_q1": 728.341,
-      "noisy_total_q2": 48.43299999999999,
-      "exact_total_q1": 789,
-      "exact_total_q2": 89,
-      "exact_abs_diff_total": 700,
-      "share_of_releases_with_this_explanation": 0.1,
-      "share_of_releases_explaining_this_attr": 0.4
-    },
-    {
-      "round": 5,
-      "view": "EmergencyService='yes'",
-      "attr": "Sample",
-      "bins": [
-        "[0, 3]",
-        "(3, 19]",
-        "(19, 58]",
-        "(58, 107]",
-        "(107, 210]",
-        "(210, 1421]",
-        "NA"
-      ],
-      "noisy_h1": [
-        154.69,
-        140.522,
-        163.469,
-        131.389,
-        101.495,
-        160.559,
-        17.93
-      ],
-      "noisy_h2": [
-        26.69,
-        28.52,
-        -8.473,
-        24.258,
-        6.785,
-        65.786,
-        67.699
-      ],
-      "exact_n": [
-        133,
-        112,
-        121,
-        127,
-        141,
-        151,
-        45
-      ],
-      "exact_h1": [
-        133,
-        112,
-        121,
-        127,
-        141,
-        151,
-        45
-      ],
-      "exact_h2": [
-        14,
-        11,
-        9,
-        8,
-        17,
-        32,
-        0
-      ],
-      "hd_gamma": 2.6979278400743967,
-      "utility": 2.6979278400743967,
-      "n_candidates": 117,
-      "bins_clearing_2sigma": [
-        "[0, 3]",
-        "(19, 58]"
-      ],
-      "exact_share_q1": [
-        0.1602,
-        0.1349,
-        0.1458,
-        0.153,
-        0.1699,
-        0.1819,
-        0.0542
-      ],
-      "exact_share_q2": [
-        0.1538,
-        0.1209,
-        0.0989,
-        0.0879,
-        0.1868,
-        0.3516,
-        0.0
-      ],
-      "noisy_total_q1": 870.0539999999999,
-      "noisy_total_q2": 211.265,
+      "noisy_total_q1": 769.341,
+      "noisy_total_q2": 50.43299999999999,
       "exact_total_q1": 830,
       "exact_total_q2": 91,
       "exact_abs_diff_total": 739,
-      "share_of_releases_with_this_explanation": 0.4,
-      "share_of_releases_explaining_this_attr": 0.6
+      "share_of_releases_with_this_explanation": 0.2,
+      "share_of_releases_explaining_this_attr": 0.5
+    },
+    {
+      "round": 5,
+      "view": "State='al' AND EmergencyService='yes'",
+      "attr": "HospitalOwner",
+      "bins": [
+        "government - federal",
+        "government - hospital district or authority",
+        "government - local",
+        "government - state",
+        "proprietary",
+        "voluntary non-profit - church",
+        "voluntary non-profit - other",
+        "voluntary non-profit - private",
+        "Other"
+      ],
+      "noisy_h1": [
+        68.69,
+        215.522,
+        42.469,
+        39.389,
+        120.495,
+        77.559,
+        68.93,
+        189.69,
+        36.52
+      ],
+      "noisy_h2": [
+        -16.473,
+        67.258,
+        -10.215,
+        35.786,
+        71.699,
+        17.945,
+        -42.711,
+        91.494,
+        -10.417
+      ],
+      "exact_n": [
+        47,
+        187,
+        0,
+        35,
+        160,
+        68,
+        96,
+        177,
+        19
+      ],
+      "exact_h1": [
+        47,
+        187,
+        0,
+        35,
+        160,
+        68,
+        96,
+        177,
+        19
+      ],
+      "exact_h2": [
+        1,
+        51,
+        0,
+        2,
+        4,
+        0,
+        4,
+        25,
+        2
+      ],
+      "hd_gamma": 2.56683469239883,
+      "utility": 2.56683469239883,
+      "n_candidates": 117,
+      "bins_clearing_2sigma": [
+        "government - hospital district or authority"
+      ],
+      "exact_share_q1": [
+        0.0596,
+        0.237,
+        0.0,
+        0.0444,
+        0.2028,
+        0.0862,
+        0.1217,
+        0.2243,
+        0.0241
+      ],
+      "exact_share_q2": [
+        0.0112,
+        0.573,
+        0.0,
+        0.0225,
+        0.0449,
+        0.0,
+        0.0449,
+        0.2809,
+        0.0225
+      ],
+      "noisy_total_q1": 859.2639999999999,
+      "noisy_total_q2": 204.366,
+      "exact_total_q1": 789,
+      "exact_total_q2": 89,
+      "exact_abs_diff_total": 700,
+      "share_of_releases_with_this_explanation": 0.2,
+      "share_of_releases_explaining_this_attr": 0.9
     }
   ],
   "releases": {
@@ -1453,127 +1467,43 @@
           "MeasureCode"
         ],
         [
-          "State='al' AND EmergencyService='yes'",
-          "Score"
-        ],
-        [
           "EmergencyService='yes'",
-          "Sample"
-        ]
-      ],
-      [
-        [
-          "EmergencyService='yes'",
-          "MeasureCode"
-        ],
-        [
-          "EmergencyService='yes'",
-          "CountyName"
-        ],
-        [
-          "State='al'",
-          "City"
-        ],
-        [
-          "State='al'",
-          "HospitalOwner"
-        ],
-        [
-          "EmergencyService='yes'",
-          "Sample"
-        ]
-      ],
-      [
-        [
-          "EmergencyService='yes'",
-          "MeasureCode"
-        ],
-        [
-          "EmergencyService='yes'",
-          "CountyName"
-        ],
-        [
-          "EmergencyService='yes'",
-          "City"
-        ],
-        [
-          "EmergencyService='yes'",
-          "Score"
-        ],
-        [
-          "EmergencyService='yes'",
-          "Sample"
-        ]
-      ],
-      [
-        [
-          "State='al'",
-          "City"
-        ],
-        [
-          "State='al'",
-          "CountyName"
-        ],
-        [
-          "State='al'",
-          "MeasureCode"
-        ],
-        [
-          "State='al'",
-          "Score"
-        ],
-        [
-          "State='al'",
-          "HospitalOwner"
-        ]
-      ],
-      [
-        [
-          "HospitalOwner='proprietary'",
-          "City"
-        ],
-        [
-          "HospitalOwner='proprietary'",
           "Condition"
         ],
         [
-          "HospitalOwner='proprietary'",
-          "CountyName"
-        ],
-        [
-          "HospitalOwner='proprietary'",
-          "State"
-        ],
-        [
-          "EmergencyService='yes' AND Sample IN (58, 107]",
-          "MeasureCode"
-        ]
-      ],
-      [
-        [
-          "State='al' AND EmergencyService='yes'",
-          "City"
-        ],
-        [
-          "State='al' AND EmergencyService='yes'",
-          "MeasureCode"
-        ],
-        [
-          "State='al' AND EmergencyService='yes'",
-          "CountyName"
-        ],
-        [
-          "State='al' AND EmergencyService='yes'",
-          "Sample"
-        ],
-        [
           "State='al' AND EmergencyService='yes'",
           "HospitalOwner"
         ]
       ],
       [
         [
+          "EmergencyService='yes'",
+          "CountyName"
+        ],
+        [
           "State='al'",
+          "City"
+        ],
+        [
+          "State='al'",
+          "MeasureCode"
+        ],
+        [
+          "State='al'",
+          "HospitalOwner"
+        ],
+        [
+          "EmergencyService='yes'",
+          "City"
+        ]
+      ],
+      [
+        [
+          "EmergencyService='yes'",
+          "MeasureCode"
+        ],
+        [
+          "EmergencyService='yes'",
           "CountyName"
         ],
         [
@@ -1582,37 +1512,121 @@
         ],
         [
           "EmergencyService='yes'",
-          "MeasureCode"
+          "HospitalOwner"
         ],
         [
           "EmergencyService='yes'",
+          "Condition"
+        ]
+      ],
+      [
+        [
+          "State='al'",
+          "City"
+        ],
+        [
+          "State='al'",
+          "CountyName"
+        ],
+        [
+          "State='al'",
+          "MeasureCode"
+        ],
+        [
+          "State='al'",
           "Score"
         ],
         [
-          "EmergencyService='yes'",
+          "State='al'",
           "HospitalOwner"
         ]
       ],
       [
         [
-          "HospitalOwner='voluntary non-profit - private' AND EmergencyService='yes'",
+          "EmergencyService='yes' AND Sample='100-199'",
           "MeasureCode"
         ],
         [
-          "EmergencyService='yes' AND Sample IN (210, 1421]",
+          "EmergencyService='yes' AND Sample='100-199'",
           "City"
         ],
         [
-          "HospitalOwner='voluntary non-profit - private' AND EmergencyService='yes'",
+          "HospitalOwner='proprietary'",
+          "MeasureCode"
+        ],
+        [
+          "Condition='surgical infection prevention' AND Score='90-100'",
+          "CountyName"
+        ],
+        [
+          "EmergencyService='yes' AND Sample='100-199'",
+          "Score"
+        ]
+      ],
+      [
+        [
+          "State='al' AND EmergencyService='yes'",
+          "City"
+        ],
+        [
+          "State='al' AND EmergencyService='yes'",
+          "MeasureCode"
+        ],
+        [
+          "State='al' AND EmergencyService='yes'",
+          "CountyName"
+        ],
+        [
+          "State='al' AND EmergencyService='yes'",
+          "HospitalOwner"
+        ],
+        [
+          "State='al' AND EmergencyService='yes'",
+          "Score"
+        ]
+      ],
+      [
+        [
+          "State='al'",
+          "CountyName"
+        ],
+        [
+          "EmergencyService='yes'",
+          "City"
+        ],
+        [
+          "EmergencyService='yes'",
+          "MeasureCode"
+        ],
+        [
+          "EmergencyService='yes'",
+          "HospitalOwner"
+        ],
+        [
+          "State='al'",
           "Condition"
+        ]
+      ],
+      [
+        [
+          "Sample='0-99'",
+          "City"
         ],
         [
-          "EmergencyService='yes' AND Sample IN (210, 1421]",
+          "Sample='0-99'",
+          "MeasureCode"
+        ],
+        [
+          "Sample='0-99'",
+          "CountyName"
+        ],
+        [
+          "Sample='0-99'",
           "HospitalOwner"
         ],
         [
-          "HospitalOwner='voluntary non-profit - private' AND EmergencyService='yes'",
-          "CountyName"
+          "Sample='0-99'",
+          "Condition"
         ]
       ],
       [
@@ -1634,7 +1648,7 @@
         ],
         [
           "State='al'",
-          "Sample"
+          "Condition"
         ]
       ],
       [
@@ -1655,29 +1669,29 @@
           "HospitalOwner"
         ],
         [
-          "EmergencyService='yes'",
+          "State='al'",
           "Sample"
         ]
       ]
     ],
     "retained_overlap_with_exact_top_tau": [
       0.2,
-      0.2,
+      0.13333333333333333,
       0.13333333333333333,
       0.06666666666666667,
       0.0,
       0.06666666666666667,
       0.26666666666666666,
-      0.0,
+      0.06666666666666667,
       0.13333333333333333,
-      0.13333333333333333
+      0.2
     ]
   },
   "timings": {
-    "view_stage_ms": 0.12628200011022273,
-    "explanation_stage_ms": 1.708327999949688,
-    "mechanism_ms": 1.8346100000599108,
-    "cache_build_s": 0.09215234599969335
+    "view_stage_ms": 0.1634259999718779,
+    "explanation_stage_ms": 2.1138800000244373,
+    "mechanism_ms": 2.2773059999963152,
+    "cache_build_s": 0.10287417000000687
   },
   "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
 }

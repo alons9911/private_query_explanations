@@ -57,7 +57,7 @@
     "tau": 15,
     "gamma": 147.15824350031113,
     "gamma_R": 2000.0,
-    "|P|": 1977,
+    "|P|": 2300,
     "|Attrs|": 9,
     "Delta_Use": 2e-05,
     "laplace_scale_per_bin": 29.999999940000002,
@@ -67,73 +67,73 @@
     "exact_top_tau": [
       {
         "rank": 1,
-        "view": "MarriedExemp IN [0, 174]",
-        "use": 0.06324529383933383,
-        "coverage": 0.06975,
-        "representativeness": 0.906742564004786
+        "view": "ChildExemp='0'",
+        "use": 0.06067644540715099,
+        "coverage": 0.066675,
+        "representativeness": 0.9100329269913909
       },
       {
         "rank": 2,
-        "view": "SingleExemp IN [0, 87]",
-        "use": 0.06219863473913181,
-        "coverage": 0.06861,
-        "representativeness": 0.9065534869426003
+        "view": "MarriedExemp='0'",
+        "use": 0.060538744266307495,
+        "coverage": 0.067765,
+        "representativeness": 0.8933630084307163
       },
       {
         "rank": 3,
-        "view": "ChildExemp IN [0, 103]",
-        "use": 0.06123931867725925,
-        "coverage": 0.066675,
-        "representativeness": 0.9184749707875404
+        "view": "SingleExemp='0'",
+        "use": 0.05965499237112441,
+        "coverage": 0.06682,
+        "representativeness": 0.892771511091356
       },
       {
         "rank": 4,
-        "view": "Rate IN [0, 3.07]",
-        "use": 0.060338514358462124,
-        "coverage": 0.07139,
-        "representativeness": 0.8451956066460586
+        "view": "MarriedExemp='0' AND ChildExemp='0'",
+        "use": 0.05522348888545395,
+        "coverage": 0.064925,
+        "representativeness": 0.8505735677389904
       },
       {
         "rank": 5,
-        "view": "Rate IN [0, 3.07] AND MarriedExemp IN [0, 174]",
-        "use": 0.05813521132259001,
-        "coverage": 0.06975,
-        "representativeness": 0.8334797322235126
+        "view": "Rate='0-2'",
+        "use": 0.0546558161490512,
+        "coverage": 0.069435,
+        "representativeness": 0.7871508050558249
       },
       {
         "rank": 6,
-        "view": "MarriedExemp IN [0, 174] AND ChildExemp IN [0, 103]",
-        "use": 0.05762453292749198,
-        "coverage": 0.06588,
-        "representativeness": 0.8746893279825741
+        "view": "SingleExemp='0' AND ChildExemp='0'",
+        "use": 0.05438067616003885,
+        "coverage": 0.063945,
+        "representativeness": 0.8504289023385543
       },
       {
         "rank": 7,
-        "view": "Rate IN [0, 3.07] AND SingleExemp IN [0, 87]",
-        "use": 0.05724248402598022,
-        "coverage": 0.06861,
-        "representativeness": 0.8343169221101912
+        "view": "Rate='0-2' AND MarriedExemp='0'",
+        "use": 0.053055861974897006,
+        "coverage": 0.066705,
+        "representativeness": 0.7953805857866277
       },
       {
         "rank": 8,
-        "view": "SingleExemp IN [0, 87] AND ChildExemp IN [0, 103]",
-        "use": 0.056789735370105905,
-        "coverage": 0.064905,
-        "representativeness": 0.874967034436575
+        "view": "Rate='0-2' AND SingleExemp='0'",
+        "use": 0.05251517637342611,
+        "coverage": 0.065925,
+        "representativeness": 0.796589706081549
       },
       {
         "rank": 9,
-        "view": "Rate IN [0, 3.07] AND ChildExemp IN [0, 103]",
-        "use": 0.05486670771911493,
-        "coverage": 0.066675,
-        "representativeness": 0.822897753567528
+        "view": "Rate='0-2' AND ChildExemp='0'",
+        "use": 0.05213164202665119,
+        "coverage": 0.065785,
+        "representativeness": 0.792454845734608
       },
       {
         "rank": 10,
-        "view": "SingleExemp IN [0, 87] AND MarriedExemp IN [0, 174]",
-        "use": 0.05444995726004182,
-        "coverage": 0.06697,
-        "representativeness": 0.8130499814848712
+        "view": "SingleExemp='0' AND MarriedExemp='0'",
+        "use": 0.04846407848009581,
+        "coverage": 0.063195,
+        "representativeness": 0.7668973570709045
       },
       {
         "rank": 11,
@@ -145,16 +145,16 @@
       {
         "rank": 12,
         "view": "HasChild='Y'",
-        "use": 0.03589057304091391,
+        "use": 0.0357175306208909,
         "coverage": 0.037755,
-        "representativeness": 0.950617747077577
+        "representativeness": 0.9460344489707562
       },
       {
         "rank": 13,
-        "view": "MaritalStatus='S' AND MarriedExemp IN [0, 174]",
-        "use": 0.035417141072267726,
+        "view": "MaritalStatus='S' AND MarriedExemp='0'",
+        "use": 0.03521783471471242,
         "coverage": 0.03746,
-        "representativeness": 0.945465591891824
+        "representativeness": 0.9401450804781745
       },
       {
         "rank": 14,
@@ -166,91 +166,91 @@
       {
         "rank": 15,
         "view": "MaritalStatus='S'",
-        "use": 0.034193087538307854,
+        "use": 0.03383982297544696,
         "coverage": 0.03746,
-        "representativeness": 0.9127893096184692
+        "representativeness": 0.9033588621315258
       }
     ],
     "retained": [
       {
         "noisy_rank": 1,
-        "view": "SingleExemp IN [0, 87]",
-        "exact_rank": 2,
-        "use": 0.06219863473913181,
-        "coverage": 0.06861,
-        "representativeness": 0.9065534869426003
+        "view": "ChildExemp='0'",
+        "exact_rank": 1,
+        "use": 0.06067644540715099,
+        "coverage": 0.066675,
+        "representativeness": 0.9100329269913909
       },
       {
         "noisy_rank": 2,
-        "view": "MarriedExemp IN [0, 174]",
-        "exact_rank": 1,
-        "use": 0.06324529383933383,
-        "coverage": 0.06975,
-        "representativeness": 0.906742564004786
+        "view": "MarriedExemp='0'",
+        "exact_rank": 2,
+        "use": 0.060538744266307495,
+        "coverage": 0.067765,
+        "representativeness": 0.8933630084307163
       },
       {
         "noisy_rank": 3,
-        "view": "Rate IN [0, 3.07]",
-        "exact_rank": 4,
-        "use": 0.060338514358462124,
-        "coverage": 0.07139,
-        "representativeness": 0.8451956066460586
+        "view": "SingleExemp='0'",
+        "exact_rank": 3,
+        "use": 0.05965499237112441,
+        "coverage": 0.06682,
+        "representativeness": 0.892771511091356
       },
       {
         "noisy_rank": 4,
-        "view": "ChildExemp IN [0, 103]",
-        "exact_rank": 3,
-        "use": 0.06123931867725925,
-        "coverage": 0.066675,
-        "representativeness": 0.9184749707875404
+        "view": "Rate='0-2'",
+        "exact_rank": 5,
+        "use": 0.0546558161490512,
+        "coverage": 0.069435,
+        "representativeness": 0.7871508050558249
       },
       {
         "noisy_rank": 5,
-        "view": "MarriedExemp IN [0, 174] AND ChildExemp IN [0, 103]",
-        "exact_rank": 6,
-        "use": 0.05762453292749198,
-        "coverage": 0.06588,
-        "representativeness": 0.8746893279825741
+        "view": "MarriedExemp='0' AND ChildExemp='0'",
+        "exact_rank": 4,
+        "use": 0.05522348888545395,
+        "coverage": 0.064925,
+        "representativeness": 0.8505735677389904
       },
       {
         "noisy_rank": 6,
-        "view": "Rate IN [0, 3.07] AND SingleExemp IN [0, 87]",
-        "exact_rank": 7,
-        "use": 0.05724248402598022,
-        "coverage": 0.06861,
-        "representativeness": 0.8343169221101912
+        "view": "Rate='0-2' AND SingleExemp='0'",
+        "exact_rank": 8,
+        "use": 0.05251517637342611,
+        "coverage": 0.065925,
+        "representativeness": 0.796589706081549
       },
       {
         "noisy_rank": 7,
-        "view": "SingleExemp IN [0, 87] AND MarriedExemp IN [0, 174]",
-        "exact_rank": 10,
-        "use": 0.05444995726004182,
-        "coverage": 0.06697,
-        "representativeness": 0.8130499814848712
+        "view": "SingleExemp='0' AND ChildExemp='0'",
+        "exact_rank": 6,
+        "use": 0.05438067616003885,
+        "coverage": 0.063945,
+        "representativeness": 0.8504289023385543
       },
       {
         "noisy_rank": 8,
-        "view": "Rate IN [0, 3.07] AND ChildExemp IN [0, 103]",
-        "exact_rank": 9,
-        "use": 0.05486670771911493,
-        "coverage": 0.066675,
-        "representativeness": 0.822897753567528
+        "view": "Rate='0-2' AND MarriedExemp='0'",
+        "exact_rank": 7,
+        "use": 0.053055861974897006,
+        "coverage": 0.066705,
+        "representativeness": 0.7953805857866277
       },
       {
         "noisy_rank": 9,
-        "view": "Rate IN [0, 3.07] AND MarriedExemp IN [0, 174]",
-        "exact_rank": 5,
-        "use": 0.05813521132259001,
-        "coverage": 0.06975,
-        "representativeness": 0.8334797322235126
+        "view": "Rate='0-2' AND ChildExemp='0'",
+        "exact_rank": 9,
+        "use": 0.05213164202665119,
+        "coverage": 0.065785,
+        "representativeness": 0.792454845734608
       },
       {
         "noisy_rank": 10,
-        "view": "SingleExemp IN [0, 87] AND ChildExemp IN [0, 103]",
-        "exact_rank": 8,
-        "use": 0.056789735370105905,
-        "coverage": 0.064905,
-        "representativeness": 0.874967034436575
+        "view": "SingleExemp='0' AND MarriedExemp='0'",
+        "exact_rank": 10,
+        "use": 0.04846407848009581,
+        "coverage": 0.063195,
+        "representativeness": 0.7668973570709045
       },
       {
         "noisy_rank": 11,
@@ -262,14 +262,22 @@
       },
       {
         "noisy_rank": 12,
-        "view": "HasChild='N' AND ChildExemp IN [0, 103]",
-        "exact_rank": 16,
-        "use": 0.03230716150212537,
-        "coverage": 0.032635,
-        "representativeness": 0.9899543895242953
+        "view": "State='WA'",
+        "exact_rank": 30,
+        "use": 0.028631227575,
+        "coverage": 0.03732,
+        "representativeness": 0.767181875
       },
       {
         "noisy_rank": 13,
+        "view": "MaritalStatus='M' AND SingleExemp='0'",
+        "exact_rank": 18,
+        "use": 0.030934037279839125,
+        "coverage": 0.03293,
+        "representativeness": 0.9393877096823299
+      },
+      {
+        "noisy_rank": 14,
         "view": "Gender='F'",
         "exact_rank": 11,
         "use": 0.035945301455994214,
@@ -277,443 +285,436 @@
         "representativeness": 0.9902286902477746
       },
       {
-        "noisy_rank": 14,
+        "noisy_rank": 15,
         "view": "HasChild='Y'",
         "exact_rank": 12,
-        "use": 0.03589057304091391,
+        "use": 0.0357175306208909,
         "coverage": 0.037755,
-        "representativeness": 0.950617747077577
-      },
-      {
-        "noisy_rank": 15,
-        "view": "HasChild='Y' AND MarriedExemp IN [0, 174]",
-        "exact_rank": 17,
-        "use": 0.0323057131297788,
-        "coverage": 0.03691,
-        "representativeness": 0.8752563839008073
+        "representativeness": 0.9460344489707562
       }
     ],
     "overlap_with_exact_top_tau": 0.8666666666666667,
     "retained_atom_counts": {
-      "MarriedExemp IN [0, 174]": 5,
-      "ChildExemp IN [0, 103]": 5,
-      "SingleExemp IN [0, 87]": 4,
-      "Rate IN [0, 3.07]": 4,
-      "HasChild='Y'": 2,
+      "SingleExemp='0'": 5,
+      "ChildExemp='0'": 4,
+      "MarriedExemp='0'": 4,
+      "Rate='0-2'": 4,
       "Gender='M'": 1,
-      "HasChild='N'": 1,
-      "Gender='F'": 1
+      "State='WA'": 1,
+      "MaritalStatus='M'": 1,
+      "Gender='F'": 1,
+      "HasChild='Y'": 1
     },
     "query_attribute_views": [
       {
-        "view": "Rate IN [0, 3.07]",
-        "rank": 4,
-        "use": 0.060338514358462124,
-        "coverage": 0.07139,
-        "representativeness": 0.8451956066460586
+        "view": "Rate='0-2'",
+        "rank": 5,
+        "use": 0.0546558161490512,
+        "coverage": 0.069435,
+        "representativeness": 0.7871508050558249
       },
       {
         "view": "State='WA'",
-        "rank": 33,
-        "use": 0.029365428122327314,
+        "rank": 30,
+        "use": 0.028631227575,
         "coverage": 0.03732,
-        "representativeness": 0.7868549872006247
+        "representativeness": 0.767181875
       },
       {
         "view": "State='AK'",
         "rank": 47,
-        "use": 0.02083410926846591,
+        "use": 0.020466101953125003,
         "coverage": 0.026875,
-        "representativeness": 0.7752226704545455
+        "representativeness": 0.7615293750000001
       },
       {
         "view": "State='CA'",
-        "rank": 150,
-        "use": 0.0028912265409449496,
+        "rank": 145,
+        "use": 0.0027739423779047337,
         "coverage": 0.003775,
-        "representativeness": 0.7658878254158806
+        "representativeness": 0.7348191729548963
       },
       {
         "view": "State='HI'",
-        "rank": 158,
-        "use": 0.0024726958215517242,
+        "rank": 148,
+        "use": 0.0025172851827109685,
         "coverage": 0.00342,
-        "representativeness": 0.7230104741379311
+        "representativeness": 0.7360482990382949
       },
       {
-        "view": "Rate IN (3.07, 4.75]",
-        "rank": 245,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.8758594677958147
+        "view": "Rate='2-4'",
+        "rank": 155,
+        "use": 0.0016726818123395874,
+        "coverage": 0.001955,
+        "representativeness": 0.8555917198667966
       },
       {
-        "view": "Rate IN (4.75, 5.95]",
-        "rank": 246,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.8409622406905146
-      },
-      {
-        "view": "Rate IN (5.95, 7]",
-        "rank": 247,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.8533143726381269
-      },
-      {
-        "view": "Rate IN (7, 9.3]",
-        "rank": 248,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.8295211965913407
-      },
-      {
-        "view": "Rate='NA'",
-        "rank": 249,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.5344919718792868
-      },
-      {
-        "view": "State='AL'",
-        "rank": 253,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.7045926648773007
-      },
-      {
-        "view": "State='AR'",
-        "rank": 254,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.7958069305924328
-      },
-      {
-        "view": "State='AZ'",
-        "rank": 255,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.7225735660751207
-      },
-      {
-        "view": "State='CO'",
-        "rank": 256,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.7678760700822482
-      },
-      {
-        "view": "State='CT'",
-        "rank": 257,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.7304269548776343
-      },
-      {
-        "view": "State='DC'",
-        "rank": 258,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.716751416326357
-      },
-      {
-        "view": "State='DE'",
+        "view": "Rate='4-6'",
         "rank": 259,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7352149127830436
+        "representativeness": 0.8840785067140715
       },
       {
-        "view": "State='FL'",
+        "view": "Rate='6-8'",
         "rank": 260,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7877300712161697
+        "representativeness": 0.8453717007740148
       },
       {
-        "view": "State='GA'",
+        "view": "Rate='8-10'",
         "rank": 261,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7145007410319619
+        "representativeness": 0.7749198037131899
       },
       {
-        "view": "State='IA'",
+        "view": "Rate='NA'",
         "rank": 262,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7926038050964188
+        "representativeness": 0.5262338145861911
       },
       {
-        "view": "State='ID'",
-        "rank": 263,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.7179102968856947
-      },
-      {
-        "view": "State='IL'",
-        "rank": 264,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.7269389613814223
-      },
-      {
-        "view": "State='IN'",
-        "rank": 265,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.7051953625541126
-      },
-      {
-        "view": "State='KS'",
-        "rank": 266,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.7326172678937479
-      },
-      {
-        "view": "State='KY'",
-        "rank": 267,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.828115150807673
-      },
-      {
-        "view": "State='LA'",
-        "rank": 268,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.7259182582503929
-      },
-      {
-        "view": "State='MA'",
-        "rank": 269,
-        "use": 0.0,
-        "coverage": 0.0,
-        "representativeness": 0.7046746356502243
-      },
-      {
-        "view": "State='MD'",
+        "view": "State='AL'",
         "rank": 270,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7056424533052161
+        "representativeness": 0.7265445398773005
       },
       {
-        "view": "State='ME'",
+        "view": "State='AR'",
         "rank": 271,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7117723932376697
+        "representativeness": 0.7518843368320611
       },
       {
-        "view": "State='MI'",
+        "view": "State='AZ'",
         "rank": 272,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7043048024920466
+        "representativeness": 0.7412073268435562
       },
       {
-        "view": "State='MN'",
+        "view": "State='CO'",
         "rank": 273,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7353786126643334
+        "representativeness": 0.7690049999999999
       },
       {
-        "view": "State='MO'",
+        "view": "State='CT'",
         "rank": 274,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7158420726450799
+        "representativeness": 0.6999025582087016
       },
       {
-        "view": "State='MS'",
+        "view": "State='DC'",
         "rank": 275,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7098668882978724
+        "representativeness": 0.7291998615364982
       },
       {
-        "view": "State='MT'",
+        "view": "State='DE'",
         "rank": 276,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7187378454858198
+        "representativeness": 0.7476879036115499
       },
       {
-        "view": "State='NC'",
+        "view": "State='FL'",
         "rank": 277,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7267542210804717
+        "representativeness": 0.767181875
       },
       {
-        "view": "State='ND'",
+        "view": "State='GA'",
         "rank": 278,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7274663538654533
+        "representativeness": 0.7232001160319619
       },
       {
-        "view": "State='NE'",
+        "view": "State='IA'",
         "rank": 279,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7471157554801671
+        "representativeness": 0.7457102066115702
       },
       {
-        "view": "State='NH'",
+        "view": "State='ID'",
         "rank": 280,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7887910776414773
+        "representativeness": 0.7135455971937029
       },
       {
-        "view": "State='NJ'",
+        "view": "State='IL'",
         "rank": 281,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7342906918896321
+        "representativeness": 0.7257402113814222
       },
       {
-        "view": "State='NM'",
+        "view": "State='IN'",
         "rank": 282,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7130427790027137
+        "representativeness": 0.7200703625541126
       },
       {
-        "view": "State='NV'",
+        "view": "State='KS'",
         "rank": 283,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7868775732040605
+        "representativeness": 0.7554060178937478
       },
       {
-        "view": "State='NY'",
+        "view": "State='KY'",
         "rank": 284,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7483344769803657
+        "representativeness": 0.7740830224634023
       },
       {
-        "view": "State='OH'",
+        "view": "State='LA'",
         "rank": 285,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7487193972269263
+        "representativeness": 0.7103632582503928
       },
       {
-        "view": "State='OK'",
+        "view": "State='MA'",
         "rank": 286,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7152734211577265
+        "representativeness": 0.6954990106502242
       },
       {
-        "view": "State='OR'",
+        "view": "State='MD'",
         "rank": 287,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.698275425388104
+        "representativeness": 0.733487453305216
       },
       {
-        "view": "State='PA'",
+        "view": "State='ME'",
         "rank": 288,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7898132403324287
+        "representativeness": 0.7108630182376697
       },
       {
-        "view": "State='PR'",
+        "view": "State='MI'",
         "rank": 289,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7912425086994801
+        "representativeness": 0.6899091774920467
       },
       {
-        "view": "State='RI'",
+        "view": "State='MN'",
         "rank": 290,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.789380276123213
+        "representativeness": 0.7248942884582551
       },
       {
-        "view": "State='SC'",
+        "view": "State='MO'",
         "rank": 291,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.719994718803056
+        "representativeness": 0.7341133226450799
       },
       {
-        "view": "State='SD'",
+        "view": "State='MS'",
         "rank": 292,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7860823708100558
+        "representativeness": 0.6767450132978723
       },
       {
-        "view": "State='TN'",
+        "view": "State='MT'",
         "rank": 293,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7891190799795362
+        "representativeness": 0.7369372204858198
       },
       {
-        "view": "State='TX'",
+        "view": "State='NC'",
         "rank": 294,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7877300712161697
+        "representativeness": 0.7005485960804717
       },
       {
-        "view": "State='UT'",
+        "view": "State='ND'",
         "rank": 295,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7118489695945946
+        "representativeness": 0.6924413538654532
       },
       {
-        "view": "State='VA'",
+        "view": "State='NE'",
         "rank": 296,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7115057438829326
+        "representativeness": 0.7422299665100904
       },
       {
-        "view": "State='VT'",
+        "view": "State='NH'",
         "rank": 297,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7189311388327437
+        "representativeness": 0.7671818750000001
       },
       {
-        "view": "State='WI'",
+        "view": "State='NJ'",
         "rank": 298,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7306153992759796
+        "representativeness": 0.7573772826086957
       },
       {
-        "view": "State='WV'",
+        "view": "State='NM'",
         "rank": 299,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.752616275492862
+        "representativeness": 0.7084227790027137
       },
       {
-        "view": "State='WY'",
+        "view": "State='NV'",
         "rank": 300,
         "use": 0.0,
         "coverage": 0.0,
-        "representativeness": 0.7875738723248189
+        "representativeness": 0.767181875
+      },
+      {
+        "view": "State='NY'",
+        "rank": 301,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.7454792357819906
+      },
+      {
+        "view": "State='OH'",
+        "rank": 302,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.7513074449618966
+      },
+      {
+        "view": "State='OK'",
+        "rank": 303,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.7335446711577266
+      },
+      {
+        "view": "State='OR'",
+        "rank": 304,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.7080548042037328
+      },
+      {
+        "view": "State='PA'",
+        "rank": 305,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.7605525
+      },
+      {
+        "view": "State='PR'",
+        "rank": 306,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.7671818749999999
+      },
+      {
+        "view": "State='RI'",
+        "rank": 307,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.767181875
+      },
+      {
+        "view": "State='SC'",
+        "rank": 308,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.708995343803056
+      },
+      {
+        "view": "State='SD'",
+        "rank": 309,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.767181875
+      },
+      {
+        "view": "State='TN'",
+        "rank": 310,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.767181875
+      },
+      {
+        "view": "State='TX'",
+        "rank": 311,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.767181875
+      },
+      {
+        "view": "State='UT'",
+        "rank": 312,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.7346377195945947
+      },
+      {
+        "view": "State='VA'",
+        "rank": 313,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.7334576188829327
+      },
+      {
+        "view": "State='VT'",
+        "rank": 314,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.7242049663129526
+      },
+      {
+        "view": "State='WI'",
+        "rank": 315,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.7389386541737649
+      },
+      {
+        "view": "State='WV'",
+        "rank": 316,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.775443150492862
+      },
+      {
+        "view": "State='WY'",
+        "rank": 317,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.767181875
       },
       {
         "view": "State='Other'",
-        "rank": 301,
+        "rank": 318,
         "use": 0.0,
         "coverage": 0.0,
         "representativeness": 0.5454545454545454
@@ -723,74 +724,7 @@
   "explanations": [
     {
       "round": 1,
-      "view": "Rate IN [0, 3.07] AND SingleExemp IN [0, 87]",
-      "attr": "ChildExemp",
-      "bins": [
-        "[0, 103]",
-        "(103, 1500]",
-        "(1500, 3300]",
-        "NA"
-      ],
-      "noisy_h1": [
-        7339.85,
-        274.374,
-        -21.746,
-        250.541
-      ],
-      "noisy_h2": [
-        5711.247,
-        283.496,
-        -58.456,
-        -5.01
-      ],
-      "exact_n": [
-        52529,
-        2414,
-        2421,
-        200
-      ],
-      "exact_h1": [
-        7269,
-        274,
-        0,
-        200
-      ],
-      "exact_h2": [
-        5712,
-        267,
-        0,
-        0
-      ],
-      "hd_gamma": 0.6083972552121402,
-      "utility": 0.6083972552121402,
-      "n_candidates": 112,
-      "bins_clearing_2sigma": [
-        "[0, 103]",
-        "NA"
-      ],
-      "exact_share_q1": [
-        0.9388,
-        0.0354,
-        0.0,
-        0.0258
-      ],
-      "exact_share_q2": [
-        0.9553,
-        0.0447,
-        0.0,
-        0.0
-      ],
-      "noisy_total_q1": 7843.019,
-      "noisy_total_q2": 5931.277,
-      "exact_total_q1": 7743,
-      "exact_total_q2": 5979,
-      "exact_abs_diff_total": 1764,
-      "share_of_releases_with_this_explanation": 0.4,
-      "share_of_releases_explaining_this_attr": 0.9
-    },
-    {
-      "round": 2,
-      "view": "ChildExemp IN [0, 103]",
+      "view": "SingleExemp='0' AND MarriedExemp='0'",
       "attr": "State",
       "bins": [
         "AK",
@@ -848,167 +782,167 @@
         "Other"
       ],
       "noisy_h1": [
-        3420.816,
-        31.433,
-        -16.521,
-        63.854,
-        320.651,
-        -2.101,
-        42.54,
-        67.712,
-        -29.823,
-        -50.002,
-        -60.361,
-        144.456,
-        0.252,
-        27.282,
-        -183.388,
-        41.251,
-        -121.935,
-        8.025,
-        0.457,
-        40.263,
-        50.434,
-        49.067,
-        32.98,
-        -172.188,
-        20.878,
-        48.514,
-        -0.462,
-        9.951,
-        -26.433,
-        -24.396,
-        9.231,
-        -16.55,
-        -38.728,
-        25.627,
-        9.927,
-        6.126,
-        -25.781,
-        56.021,
-        -17.154,
-        44.647,
-        -58.642,
-        68.386,
-        72.969,
-        291.404,
-        -21.824,
-        22.453,
-        -3.182,
-        -19.825,
-        3724.257,
-        -5.816,
-        -2.93,
-        -22.554,
-        -78.078
+        3406.863,
+        -0.004,
+        62.949,
+        11.858,
+        -7.0,
+        -5.474,
+        34.448,
+        13.427,
+        102.369,
+        36.734,
+        -24.175,
+        1.637,
+        -66.476,
+        -6.533,
+        -22.242,
+        -18.284,
+        59.977,
+        77.055,
+        12.019,
+        108.015,
+        76.277,
+        0.74,
+        5.551,
+        -7.976,
+        35.37,
+        31.939,
+        -8.953,
+        25.576,
+        0.669,
+        -45.287,
+        -34.033,
+        2.894,
+        70.1,
+        27.033,
+        5.344,
+        -67.488,
+        -4.031,
+        -24.132,
+        77.595,
+        -67.455,
+        -7.65,
+        -19.911,
+        1.261,
+        28.665,
+        -29.337,
+        -11.449,
+        -44.911,
+        -31.913,
+        3795.415,
+        -3.064,
+        -10.043,
+        -77.131,
+        -7.443
       ],
       "noisy_h2": [
-        1693.079,
-        -22.473,
-        6.14,
-        10.244,
-        189.583,
-        -49.284,
-        -10.633,
-        18.538,
-        5.433,
-        -23.784,
-        24.755,
-        150.37,
-        -49.797,
-        -10.657,
-        25.2,
-        52.099,
-        6.22,
-        7.425,
-        40.884,
-        -36.083,
-        30.463,
-        28.722,
-        75.827,
-        -5.6,
-        5.131,
-        -3.471,
-        0.411,
-        -0.466,
-        75.439,
-        -5.434,
-        -7.246,
-        -54.847,
-        -31.476,
-        26.222,
-        20.969,
-        -0.535,
-        22.855,
-        39.842,
-        -8.327,
-        0.844,
-        -6.554,
-        50.046,
-        2.621,
-        -3.324,
-        14.922,
-        42.003,
-        19.328,
-        -89.166,
-        3700.027,
-        -32.942,
-        38.975,
-        3.623,
-        -64.045
+        1689.504,
+        -53.917,
+        20.191,
+        -48.23,
+        33.147,
+        7.513,
+        32.009,
+        -4.752,
+        2.082,
+        -184.0,
+        14.235,
+        -5.597,
+        -3.856,
+        -13.096,
+        3.993,
+        0.817,
+        52.834,
+        46.552,
+        11.16,
+        30.157,
+        0.297,
+        5.103,
+        -40.703,
+        13.097,
+        -17.825,
+        15.164,
+        -1.788,
+        -48.31,
+        -15.028,
+        -13.9,
+        -7.254,
+        134.8,
+        11.552,
+        24.544,
+        32.817,
+        -4.384,
+        36.566,
+        15.592,
+        -10.34,
+        -19.127,
+        -133.857,
+        -6.91,
+        -56.151,
+        22.39,
+        107.274,
+        40.433,
+        -1.942,
+        -37.028,
+        3675.598,
+        -23.241,
+        28.189,
+        -19.254,
+        -16.672
       ],
       "exact_n": [
         3432,
-        1919,
-        3980,
-        1911,
-        1946,
+        0,
+        53,
+        0,
+        0,
         3836,
-        3884,
-        1934,
-        1846,
+        0,
+        0,
+        0,
         3801,
-        1899,
-        1886,
-        3808,
-        1970,
-        1934,
-        1887,
-        2011,
-        3943,
-        1863,
-        1922,
-        1902,
-        1884,
-        1844,
-        1917,
-        1935,
-        1958,
-        1907,
-        1953,
-        1957,
-        3748,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
         3849,
-        1953,
-        1895,
+        66,
+        0,
         3763,
-        1946,
-        1970,
-        1940,
-        1854,
+        3908,
+        0,
+        0,
+        0,
         3896,
         3963,
         3876,
-        1968,
+        0,
         3728,
         3864,
         3801,
-        1966,
-        1883,
-        1981,
+        0,
+        0,
+        0,
         3762,
-        1956,
-        1968,
+        0,
+        0,
         3794,
         200
       ],
@@ -1017,14 +951,14 @@
         0,
         0,
         0,
-        193,
         0,
         0,
         0,
         0,
         0,
         0,
-        161,
+        0,
+        0,
         0,
         0,
         0,
@@ -1072,14 +1006,14 @@
         0,
         0,
         0,
-        190,
         0,
         0,
         0,
         0,
         0,
         0,
-        152,
+        0,
+        0,
         0,
         0,
         0,
@@ -1122,30 +1056,18 @@
         0,
         0
       ],
-      "hd_gamma": 0.4931070902664785,
-      "utility": 0.4931070902664785,
-      "n_candidates": 111,
+      "hd_gamma": 0.4872472386861976,
+      "utility": 0.4872472386861976,
+      "n_candidates": 113,
       "bins_clearing_2sigma": [
         "AK",
-        "CA",
-        "IL",
-        "KS",
-        "MN",
-        "TN"
+        "FL",
+        "NJ",
+        "RI",
+        "TX"
       ],
       "exact_share_q1": [
-        0.4547,
-        0.0,
-        0.0,
-        0.0,
-        0.0256,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0213,
+        0.4771,
         0.0,
         0.0,
         0.0,
@@ -1182,25 +1104,25 @@
         0.0,
         0.0,
         0.0,
-        0.4984,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.5229,
         0.0,
         0.0,
         0.0,
         0.0
       ],
       "exact_share_q2": [
-        0.3012,
-        0.0,
-        0.0,
-        0.0,
-        0.0328,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0263,
+        0.3201,
         0.0,
         0.0,
         0.0,
@@ -1237,204 +1159,321 @@
         0.0,
         0.0,
         0.0,
-        0.6397,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.6799,
         0.0,
         0.0,
         0.0,
         0.0
       ],
-      "noisy_total_q1": 7753.1900000000005,
-      "noisy_total_q2": 5912.0960000000005,
-      "exact_total_q1": 7548,
-      "exact_total_q2": 5787,
-      "exact_abs_diff_total": 1761,
-      "share_of_releases_with_this_explanation": 0.2,
-      "share_of_releases_explaining_this_attr": 0.9
+      "noisy_total_q1": 7459.384999999999,
+      "noisy_total_q2": 5320.448,
+      "exact_total_q1": 7194,
+      "exact_total_q2": 5445,
+      "exact_abs_diff_total": 1749,
+      "share_of_releases_with_this_explanation": 0.3,
+      "share_of_releases_explaining_this_attr": 0.8
+    },
+    {
+      "round": 2,
+      "view": "MarriedExemp='0'",
+      "attr": "SingleExemp",
+      "bins": [
+        "0",
+        "1-2999",
+        "3000-5999",
+        "6000-8999",
+        "9000+",
+        "NA"
+      ],
+      "noisy_h1": [
+        7254.973,
+        360.289,
+        -9.681,
+        -45.28,
+        37.153,
+        193.461
+      ],
+      "noisy_h2": [
+        5424.866,
+        368.172,
+        75.294,
+        30.697,
+        -46.662,
+        98.765
+      ],
+      "exact_n": [
+        53592,
+        50539,
+        19021,
+        1932,
+        1931,
+        200
+      ],
+      "exact_h1": [
+        7194,
+        363,
+        0,
+        0,
+        0,
+        200
+      ],
+      "exact_h2": [
+        5445,
+        351,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hd_gamma": 0.6088890032713954,
+      "utility": 0.6088890032713954,
+      "n_candidates": 112,
+      "bins_clearing_2sigma": [
+        "0"
+      ],
+      "exact_share_q1": [
+        0.9274,
+        0.0468,
+        0.0,
+        0.0,
+        0.0,
+        0.0258
+      ],
+      "exact_share_q2": [
+        0.9394,
+        0.0606,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "noisy_total_q1": 7790.915000000001,
+      "noisy_total_q2": 5951.1320000000005,
+      "exact_total_q1": 7757,
+      "exact_total_q2": 5796,
+      "exact_abs_diff_total": 1961,
+      "share_of_releases_with_this_explanation": 0.1,
+      "share_of_releases_explaining_this_attr": 0.8
     },
     {
       "round": 3,
-      "view": "MarriedExemp IN [0, 174]",
-      "attr": "Gender",
+      "view": "SingleExemp='0' AND ChildExemp='0'",
+      "attr": "HasChild",
       "bins": [
-        "F",
-        "M"
+        "N",
+        "Y"
       ],
       "noisy_h1": [
-        4036.082,
-        3739.0
+        3597.309,
+        3643.557
       ],
       "noisy_h2": [
-        3083.235,
-        2918.403
+        2494.505,
+        3108.393
       ],
       "exact_n": [
-        67937,
-        66918
+        63070,
+        25792
       ],
       "exact_h1": [
-        4034,
-        3923
+        3575,
+        3597
       ],
       "exact_h2": [
-        3069,
-        2924
+        2499,
+        3118
       ],
-      "hd_gamma": 0.02906959615273933,
-      "utility": 0.02906959615273933,
-      "n_candidates": 110,
+      "hd_gamma": 0.035486984774294614,
+      "utility": 0.035486984774294614,
+      "n_candidates": 111,
       "bins_clearing_2sigma": [
-        "F",
-        "M"
+        "N",
+        "Y"
       ],
       "exact_share_q1": [
-        0.507,
-        0.493
+        0.4985,
+        0.5015
       ],
       "exact_share_q2": [
-        0.5121,
-        0.4879
+        0.4449,
+        0.5551
       ],
-      "noisy_total_q1": 7775.082,
-      "noisy_total_q2": 6001.638,
-      "exact_total_q1": 7957,
-      "exact_total_q2": 5993,
-      "exact_abs_diff_total": 1964,
-      "share_of_releases_with_this_explanation": 0.1,
+      "noisy_total_q1": 7240.866,
+      "noisy_total_q2": 5602.898,
+      "exact_total_q1": 7172,
+      "exact_total_q2": 5617,
+      "exact_abs_diff_total": 1555,
+      "share_of_releases_with_this_explanation": 0.2,
       "share_of_releases_explaining_this_attr": 0.4
     },
     {
       "round": 4,
-      "view": "MarriedExemp IN [0, 174]",
-      "attr": "SingleExemp",
+      "view": "MarriedExemp='0'",
+      "attr": "ChildExemp",
       "bins": [
-        "[0, 87]",
-        "(87, 2100]",
-        "(2100, 12750]",
+        "0",
+        "1-999",
+        "1000-1999",
+        "2000+",
         "NA"
       ],
       "noisy_h1": [
-        7461.428,
-        226.913,
-        -13.275,
-        239.965
+        7383.158,
+        28.409,
+        81.637,
+        45.712,
+        204.589
       ],
       "noisy_h2": [
-        5856.331,
-        195.6,
-        0.269,
-        -17.858
+        5649.957,
+        54.618,
+        99.654,
+        3.324,
+        59.706
       ],
       "exact_n": [
-        69023,
-        32995,
-        32637,
+        89377,
+        9557,
+        12682,
+        15399,
         200
       ],
       "exact_h1": [
-        7574,
-        183,
+        7370,
+        83,
+        104,
         0,
         200
       ],
       "exact_h2": [
-        5820,
-        173,
+        5615,
+        83,
+        98,
         0,
         0
       ],
-      "hd_gamma": 0.6017656391515136,
-      "utility": 0.6017656391515136,
-      "n_candidates": 109,
+      "hd_gamma": 0.5961774842445915,
+      "utility": 0.5961774842445915,
+      "n_candidates": 110,
       "bins_clearing_2sigma": [
-        "[0, 87]",
+        "0",
         "NA"
       ],
       "exact_share_q1": [
-        0.9519,
-        0.023,
+        0.9501,
+        0.0107,
+        0.0134,
         0.0,
-        0.0251
+        0.0258
       ],
       "exact_share_q2": [
-        0.9711,
-        0.0289,
+        0.9688,
+        0.0143,
+        0.0169,
         0.0,
         0.0
       ],
-      "noisy_total_q1": 7915.031000000001,
-      "noisy_total_q2": 6034.342000000001,
-      "exact_total_q1": 7957,
-      "exact_total_q2": 5993,
-      "exact_abs_diff_total": 1964,
+      "noisy_total_q1": 7743.505,
+      "noisy_total_q2": 5867.259000000001,
+      "exact_total_q1": 7757,
+      "exact_total_q2": 5796,
+      "exact_abs_diff_total": 1961,
       "share_of_releases_with_this_explanation": 0.4,
       "share_of_releases_explaining_this_attr": 1.0
     },
     {
       "round": 5,
-      "view": "Rate IN [0, 3.07]",
+      "view": "ChildExemp='0'",
       "attr": "SingleExemp",
       "bins": [
-        "[0, 87]",
-        "(87, 2100]",
-        "(2100, 12750]",
+        "0",
+        "1-2999",
+        "3000-5999",
+        "6000-8999",
+        "9000+",
         "NA"
       ],
       "noisy_h1": [
-        7771.329,
-        135.089,
-        13.211,
-        174.044
+        7145.964,
+        220.444,
+        108.595,
+        21.456,
+        122.387,
+        156.747
       ],
       "noisy_h2": [
-        5948.846,
-        208.731,
-        -42.461,
-        -38.871
+        5614.137,
+        215.315,
+        125.75,
+        14.104,
+        46.001,
+        -45.253
       ],
       "exact_n": [
-        57564,
-        6796,
-        2669,
+        88862,
+        25232,
+        9625,
+        967,
+        1931,
         200
       ],
       "exact_h1": [
-        7743,
-        183,
+        7172,
+        176,
+        0,
+        0,
         0,
         200
       ],
       "exact_h2": [
-        5979,
-        173,
+        5617,
+        170,
+        0,
+        0,
         0,
         0
       ],
-      "hd_gamma": 0.6081124321105092,
-      "utility": 0.3040562160552546,
-      "n_candidates": 108,
+      "hd_gamma": 0.5938126794517062,
+      "utility": 0.2969063397258531,
+      "n_candidates": 109,
       "bins_clearing_2sigma": [
-        "[0, 87]",
+        "0",
         "NA"
       ],
       "exact_share_q1": [
-        0.9529,
-        0.0225,
+        0.9502,
+        0.0233,
         0.0,
-        0.0246
+        0.0,
+        0.0,
+        0.0265
       ],
       "exact_share_q2": [
-        0.9719,
-        0.0281,
+        0.9706,
+        0.0294,
+        0.0,
+        0.0,
         0.0,
         0.0
       ],
-      "noisy_total_q1": 8093.673,
-      "noisy_total_q2": 6076.244999999999,
-      "exact_total_q1": 8126,
-      "exact_total_q2": 6152,
-      "exact_abs_diff_total": 1974,
-      "share_of_releases_with_this_explanation": 0.2,
-      "share_of_releases_explaining_this_attr": 1.0
+      "noisy_total_q1": 7775.593000000001,
+      "noisy_total_q2": 5970.054,
+      "exact_total_q1": 7548,
+      "exact_total_q2": 5787,
+      "exact_abs_diff_total": 1761,
+      "share_of_releases_with_this_explanation": 0.1,
+      "share_of_releases_explaining_this_attr": 0.8
     }
   ],
   "releases": {
@@ -1442,243 +1481,243 @@
     "selections": [
       [
         [
-          "Rate IN [0, 3.07] AND SingleExemp IN [0, 87]",
-          "ChildExemp"
-        ],
-        [
-          "ChildExemp IN [0, 103]",
+          "SingleExemp='0' AND MarriedExemp='0'",
           "State"
         ],
         [
-          "MarriedExemp IN [0, 174]",
-          "Gender"
-        ],
-        [
-          "MarriedExemp IN [0, 174]",
+          "MarriedExemp='0'",
           "SingleExemp"
         ],
         [
-          "Rate IN [0, 3.07]",
-          "SingleExemp"
-        ]
-      ],
-      [
-        [
-          "SingleExemp IN [0, 87] AND MarriedExemp IN [0, 174]",
-          "State"
-        ],
-        [
-          "MaritalStatus='S' AND MarriedExemp IN [0, 174]",
-          "ChildExemp"
-        ],
-        [
-          "MaritalStatus='S' AND MarriedExemp IN [0, 174]",
-          "SingleExemp"
-        ],
-        [
-          "ChildExemp IN [0, 103]",
-          "SingleExemp"
-        ],
-        [
-          "MarriedExemp IN [0, 174]",
-          "State"
-        ]
-      ],
-      [
-        [
-          "Gender='F' AND Rate IN [0, 3.07]",
-          "ChildExemp"
-        ],
-        [
-          "Gender='F'",
+          "SingleExemp='0' AND ChildExemp='0'",
           "HasChild"
         ],
         [
-          "Rate IN [0, 3.07] AND SingleExemp IN [0, 87]",
+          "MarriedExemp='0'",
           "ChildExemp"
         ],
         [
-          "Rate IN [0, 3.07] AND ChildExemp IN [0, 103]",
-          "State"
-        ],
-        [
-          "MarriedExemp IN [0, 174] AND ChildExemp IN [0, 103]",
+          "ChildExemp='0'",
           "SingleExemp"
         ]
       ],
       [
+        [
+          "Rate='0-2' AND ChildExemp='0'",
+          "SingleExemp"
+        ],
+        [
+          "MarriedExemp='0'",
+          "State"
+        ],
+        [
+          "Rate='0-2'",
+          "State"
+        ],
+        [
+          "MarriedExemp='0'",
+          "ChildExemp"
+        ],
         [
           "Gender='F'",
-          "SingleExemp"
-        ],
-        [
-          "Rate IN [0, 3.07]",
-          "SingleExemp"
-        ],
-        [
-          "Rate IN [0, 3.07] AND SingleExemp IN [0, 87]",
-          "State"
-        ],
-        [
-          "SingleExemp IN [0, 87]",
-          "ChildExemp"
-        ],
-        [
-          "SingleExemp IN [0, 87]",
-          "State"
+          "Salary"
         ]
       ],
       [
         [
-          "MarriedExemp IN [0, 174]",
-          "SingleExemp"
-        ],
-        [
-          "Rate IN [0, 3.07] AND SingleExemp IN [0, 87]",
+          "Rate='0-2' AND SingleExemp='0'",
           "ChildExemp"
         ],
         [
-          "Rate IN [0, 3.07] AND MarriedExemp IN [0, 174]",
-          "State"
+          "MaritalStatus='M' AND SingleExemp='0'",
+          "ChildExemp"
         ],
         [
-          "SingleExemp IN [0, 87]",
-          "State"
+          "MarriedExemp='0' AND ChildExemp='0'",
+          "SingleExemp"
         ],
         [
-          "Gender='M'",
+          "SingleExemp='0' AND ChildExemp='0'",
           "HasChild"
+        ],
+        [
+          "SingleExemp='0' AND MarriedExemp='0'",
+          "Salary"
         ]
       ],
       [
         [
-          "MarriedExemp IN [0, 174]",
-          "SingleExemp"
+          "MaritalStatus='S' AND SingleExemp='0'",
+          "Salary"
         ],
         [
-          "SingleExemp IN [0, 87] AND MarriedExemp IN [0, 174]",
+          "MarriedExemp='0'",
           "ChildExemp"
         ],
         [
-          "MaritalStatus='S' AND MarriedExemp IN [0, 174]",
-          "Rate"
-        ],
-        [
-          "Gender='F'",
-          "ChildExemp"
-        ],
-        [
-          "Rate IN [0, 3.07] AND ChildExemp IN [0, 103]",
+          "MarriedExemp='0' AND ChildExemp='0'",
           "SingleExemp"
-        ]
-      ],
-      [
+        ],
         [
-          "Rate IN [0, 3.07] AND ChildExemp IN [0, 103]",
+          "Rate='0-2'",
           "MaritalStatus"
         ],
         [
-          "Rate IN [0, 3.07]",
-          "ChildExemp"
-        ],
-        [
-          "SingleExemp IN [0, 87] AND ChildExemp IN [0, 103]",
+          "Rate='0-2' AND State='WA'",
           "Gender"
-        ],
-        [
-          "Rate IN [0, 3.07]",
-          "State"
-        ],
-        [
-          "Rate IN [0, 3.07] AND ChildExemp IN [0, 103]",
-          "SingleExemp"
         ]
       ],
       [
         [
-          "Rate IN [0, 3.07] AND SingleExemp IN [0, 87]",
+          "SingleExemp='0' AND MarriedExemp='0'",
           "ChildExemp"
         ],
         [
-          "MarriedExemp IN [0, 174]",
-          "State"
-        ],
-        [
-          "MarriedExemp IN [0, 174]",
+          "Rate='0-2' AND ChildExemp='0'",
           "SingleExemp"
         ],
         [
-          "MarriedExemp IN [0, 174] AND ChildExemp IN [0, 103]",
+          "SingleExemp='0' AND MarriedExemp='0'",
+          "State"
+        ],
+        [
+          "ChildExemp='0'",
           "Rate"
         ],
         [
-          "ChildExemp IN [0, 103]",
-          "State"
+          "HasChild='Y'",
+          "MaritalStatus"
         ]
       ],
       [
         [
-          "MaritalStatus='S' AND MarriedExemp IN [0, 174]",
-          "State"
+          "MarriedExemp='0'",
+          "ChildExemp"
         ],
         [
-          "Rate IN [0, 3.07] AND MarriedExemp IN [0, 174]",
-          "SingleExemp"
-        ],
-        [
-          "Rate IN [0, 3.07] AND MarriedExemp IN [0, 174]",
-          "State"
-        ],
-        [
-          "SingleExemp IN [0, 87] AND MarriedExemp IN [0, 174]",
+          "Rate='0-2' AND ChildExemp='0'",
           "Gender"
         ],
         [
-          "Gender='M' AND ChildExemp IN [0, 103]",
+          "Rate='0-2' AND MarriedExemp='0'",
+          "State"
+        ],
+        [
+          "Rate='0-2' AND MarriedExemp='0'",
+          "SingleExemp"
+        ],
+        [
+          "Rate='0-2' AND SingleExemp='0'",
+          "Salary"
+        ]
+      ],
+      [
+        [
+          "SingleExemp='0' AND MarriedExemp='0'",
+          "ChildExemp"
+        ],
+        [
+          "SingleExemp='0' AND MarriedExemp='0'",
+          "State"
+        ],
+        [
+          "HasChild='Y'",
+          "Salary"
+        ],
+        [
+          "Rate='0-2'",
+          "State"
+        ],
+        [
+          "Rate='0-2' AND SingleExemp='0'",
+          "Gender"
+        ]
+      ],
+      [
+        [
+          "MarriedExemp='0' AND ChildExemp='0'",
+          "State"
+        ],
+        [
+          "Rate='0-2' AND SingleExemp='0'",
+          "ChildExemp"
+        ],
+        [
+          "Rate='0-2' AND ChildExemp='0'",
+          "SingleExemp"
+        ],
+        [
+          "MaritalStatus='S'",
+          "State"
+        ],
+        [
+          "MarriedExemp='0' AND ChildExemp='0'",
+          "Rate"
+        ]
+      ],
+      [
+        [
+          "SingleExemp='0' AND MarriedExemp='0'",
+          "ChildExemp"
+        ],
+        [
+          "Rate='0-2' AND SingleExemp='0'",
+          "ChildExemp"
+        ],
+        [
+          "MarriedExemp='0'",
+          "State"
+        ],
+        [
+          "Rate='0-2' AND ChildExemp='0'",
+          "HasChild"
+        ],
+        [
+          "MarriedExemp='0' AND ChildExemp='0'",
           "SingleExemp"
         ]
       ],
       [
         [
-          "SingleExemp IN [0, 87]",
+          "Rate='0-2' AND SingleExemp='0'",
+          "ChildExemp"
+        ],
+        [
+          "Gender='F'",
+          "Rate"
+        ],
+        [
+          "Rate='0-2'",
+          "ChildExemp"
+        ],
+        [
+          "Rate='0-2' AND SingleExemp='0'",
+          "HasChild"
+        ],
+        [
+          "MarriedExemp='0'",
           "State"
-        ],
-        [
-          "Gender='F' AND SingleExemp IN [0, 87]",
-          "ChildExemp"
-        ],
-        [
-          "MarriedExemp IN [0, 174] AND ChildExemp IN [0, 103]",
-          "SingleExemp"
-        ],
-        [
-          "SingleExemp IN [0, 87] AND MarriedExemp IN [0, 174]",
-          "Gender"
-        ],
-        [
-          "MarriedExemp IN [0, 174]",
-          "ChildExemp"
         ]
       ]
     ],
     "retained_overlap_with_exact_top_tau": [
       0.8666666666666667,
       0.8666666666666667,
+      0.9333333333333333,
+      0.8666666666666667,
+      0.8666666666666667,
       0.8,
-      1.0,
-      0.8666666666666667,
-      0.8666666666666667,
       0.9333333333333333,
+      0.8,
       0.9333333333333333,
-      0.8666666666666667,
-      0.9333333333333333
+      0.8666666666666667
     ]
   },
   "timings": {
-    "view_stage_ms": 0.1930959997480386,
-    "explanation_stage_ms": 58.72761200043897,
-    "mechanism_ms": 58.920708000187005,
-    "cache_build_s": 3.617649271999653
+    "view_stage_ms": 0.18487500005903712,
+    "explanation_stage_ms": 58.36449899993568,
+    "mechanism_ms": 58.549373999994714,
+    "cache_build_s": 4.167925091000029
   },
   "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
 }
