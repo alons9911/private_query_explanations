@@ -95,15 +95,14 @@ def pairs_table() -> Path:
     for pid in pids:
         r = s.loc[pid]
         lab = labels if r.dataset == "acsincome" else {}
-        n1, n2 = int(r["|Q1|"]), int(r["|Q2|"])
-        sizes = (f"{n1:,} / {n2:,}" if P[pid].get("kind") == "contrast" else f"{n1:,}$\\to${n2:,}").replace(",", "{,}")
-        rows[r.dataset].append(f"{_id(pid)} & {_sql(r.Q1, lab)} & {_sql(r.Q2, lab)} & "
-                               f"{_constraint(P[pid].get('constraints'), lab)} & {sizes} \\\\")
+        rows[r.dataset].append((_id(pid), _sql(r.Q1, lab), _sql(r.Q2, lab), _constraint(P[pid].get("constraints"), lab)))
     total = sum(len(v) for v in rows.values())
 
     def part(groups, first: bool) -> list[str]:
+        """The first part (refinement pairs) has a constraint column; the second (CQA and contrasts) has none."""
+        with_constraint = any(row[3] != "--" for g, _ in groups for row in rows[g])
         cap = (rf"The {total} query pairs of the experiments, by dataset. Bold: the case studies of Section~\ref{{sec:usecase-results}}. "
-               r"$|Q_1|\to|Q_2|$: output sizes ($|Q_1|$ / $|Q_2|$ for contrasts). ACS codes are shown by name; "
+               r"ACS codes are shown by name; "
                r"\texttt{SCHL} 16 = high-school diploma, 19 = some college, 21 = bachelor's, 22 = master's, 23 = professional degree.") \
             if first else r"The query pairs of the experiments (continued)."
         L = [r"\begin{table*}[t]", r"\centering", r"\scriptsize"]
@@ -113,13 +112,16 @@ def pairs_table() -> Path:
         if first:
             L.append(r"\label{tab:pairs}")
         L += [r"\setlength{\tabcolsep}{3pt}", r"\renewcommand{\arraystretch}{1.08}",
-              r"\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.6cm}r@{}}",
-              r"\toprule", r"ID & $Q_1$ & $Q_2$ & Constraint & $|Q_1|\to|Q_2|$\\"]
+              (r"\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{4.4cm}@{}}"
+               if with_constraint else
+               r"\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}"),
+              r"\toprule", r"ID & $Q_1$ & $Q_2$ & Constraint\\" if with_constraint else r"ID & $Q_1$ & $Q_2$\\"]
+        ncol = 4 if with_constraint else 3
         for g, head in groups:
             if not rows[g]:
                 continue
-            L += [r"\midrule", rf"\multicolumn{{5}}{{@{{}}p{{\textwidth}}@{{}}}}{{\emph{{{head}}}}}\\[1pt]"]
-            L += rows[g]
+            L += [r"\midrule", rf"\multicolumn{{{ncol}}}{{@{{}}p{{\textwidth}}@{{}}}}{{\emph{{{head}}}}}\\[1pt]"]
+            L += [" & ".join(row[:ncol]) + r" \\" for row in rows[g]]
         L += [r"\bottomrule", r"\end{tabularx}", r"\end{table*}"]
         return L
 
