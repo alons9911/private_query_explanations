@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+
 import json
 import math
 import platform
@@ -79,10 +81,34 @@ def pairs_by_dataset(pair_ids: list[str], datasets: list[str] | None = None) -> 
 
 
 def write_raw(df: pd.DataFrame, exp: str, name: str, base: Path | None = None) -> Path:
-    """Raw per-run data of an experiment: ``results/<exp>/raw/<name>.csv`` (figures are rebuilt from these)."""
+    """Raw per-run data of an experiment: ``results/<exp>/raw/<name>.csv`` (figures are rebuilt from these).
+
+    Written to a temporary file and renamed, so that a process killed mid-write leaves the
+    previous checkpoint intact (see :func:`resume_rows`)."""
     p = out_dir(f"{exp}/raw", base) / f"{name}.csv"
-    df.to_csv(p, index=False)
+    tmp = p.with_suffix(".csv.tmp")
+    df.to_csv(tmp, index=False)
+    os.replace(tmp, p)
     return p
+
+
+def resume_rows(exp: str, name: str, base: Path | None, keys: tuple[str, ...]) -> tuple[list[dict], set]:
+    """Rows already measured by an earlier, interrupted run of the same job, and the set of their
+    points (tuples of ``keys``).  Long running-time jobs checkpoint their raw data after every
+    complete point; a relaunched job keeps those points and measures only the missing ones, so a
+    point is never mixed from two runs.  ``PQDE_FRESH=1`` starts from scratch."""
+    p = Path(base or RESULTS_DIR) / exp / "raw" / f"{name}.csv"
+    if os.environ.get("PQDE_FRESH") or not p.exists():
+        return [], set()
+    df = pd.read_csv(p)
+    rows = df.to_dict("records")
+    done = {point_key(r, keys) for r in rows}
+    print(f"  resuming {p}: {len(done)} points already measured", flush=True)
+    return rows, done
+
+
+def point_key(row: dict, keys: tuple[str, ...]) -> tuple:
+    return tuple(round(float(row[k]), 9) if k == "value" else str(row[k]) for k in keys)
 
 
 def read_raw(exp: str, name: str, base: Path | None = None) -> pd.DataFrame:

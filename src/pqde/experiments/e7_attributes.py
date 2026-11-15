@@ -40,7 +40,8 @@ from ..runner import METHODS, time_methods
 from ..stats import build_cache
 from ..views import enumerate_views
 from .accuracy import BASELINES, summarise
-from .common import (make_params, out_dir, pairs_by_dataset, run_metadata, spawn_rngs, stable_key, stats_route,
+from .common import (make_params, out_dir, pairs_by_dataset, point_key, resume_rows, run_metadata, spawn_rngs,
+                     stable_key, stats_route,
                      write_csv, write_json, write_raw)
 
 EXP = "e7"
@@ -75,7 +76,7 @@ def run_runtime(cfg: dict, pairs: list[str] | None = None, base=None, quick: boo
     timeout_reps = int(d.get("timeout_repeats", 3))
     n_orders = 2 if quick else int(e["orders"])
     pids = pairs or cfg.get("runtime_pairs", cfg["pairs"])
-    rows = []
+    rows, done = resume_rows(EXP, raw_name, base, ("pair", "value"))
     for ds_name, plist in pairs_by_dataset(pids, cfg.get("datasets")).items():
         for pid in plist:
             pair = resolve_pair(pid)
@@ -85,6 +86,8 @@ def run_runtime(cfg: dict, pairs: list[str] | None = None, base=None, quick: boo
             print(f"  E7t {ds_name}/{pid}: {len(pool)} attributes", flush=True)
             ms = sizes(pool, e)
             for m in (ms if not quick else [ms[0], ms[-1]]):
+                if point_key({"pair": pid, "value": m}, ("pair", "value")) in done:
+                    continue  # measured before an interruption
                 n_to: dict = {}
                 for r, order in enumerate(orders):
                     methods = tuple(x for x in METHODS if n_to.get(x, 0) < timeout_reps)

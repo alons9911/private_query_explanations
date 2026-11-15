@@ -21,7 +21,8 @@ from .. import plotting
 from ..pairs import pair_on_sample, resolve_pair
 from ..runner import METHODS, time_methods
 from ..views import enumerate_views
-from .common import make_params, out_dir, pairs_by_dataset, read_raw, run_metadata, write_csv, write_json, write_raw
+from .common import (make_params, out_dir, pairs_by_dataset, point_key, read_raw, resume_rows, run_metadata,
+                     write_csv, write_json, write_raw)
 
 EXP = "e4"
 PARAM_SWEEPS = ("k", "epsilon", "tau", "gamma_mult")
@@ -68,7 +69,7 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
     repeats = 1 if quick else int(e["repeats"])
     by_ds = pairs_by_dataset(pairs or e.get("pairs") or cfg.get("runtime_pairs", cfg["pairs"]), cfg.get("datasets"))
     timeout_reps = int(d.get("timeout_repeats", 3))
-    rows = []
+    rows, done = resume_rows(EXP, "runtime", base, ("pair", "sweep", "value"))
     for ds_name, pids in by_ds.items():
         sweeps = {k: list(v) for k, v in e["sweeps"].items()}
         if "data_fraction" in sweeps:
@@ -85,6 +86,8 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
                 if sweep == "tau":  # capped at |P|; "all" = every view
                     values = sorted({n_full if str(v) == "all" else min(int(v), n_full) for v in values})
                 for val in values:
+                    if point_key({"pair": pid, "sweep": sweep, "value": val}, ("pair", "sweep", "value")) in done:
+                        continue  # measured before an interruption
                     frac = float(val) if sweep == "data_fraction" else float(d["data_fraction"])
                     vfrac = float(val) if sweep == "view_fraction" else float(d["view_fraction"])
                     ds, q1, q2 = pair_on_sample(pair, frac, seed)
