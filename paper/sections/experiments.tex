@@ -14,7 +14,7 @@ The experiments answer three questions:
 \begin{table}[t]
 \centering
 \small
-\caption{Datasets and the source of their query pairs.}
+\caption{Datasets and the source of their query pairs. On IPUMS-CPS $|\mathcal{P}|$ depends on the attribute each question removes.}
 \label{tab:datasets}
 \setlength{\tabcolsep}{3pt}
 \resizebox{\columnwidth}{!}{\begin{tabular}{@{}lrrrlrl@{}}
@@ -26,7 +26,7 @@ ACSIncome~\cite{DingHMS21}       & 1{,}664{,}500 & 10 & 1{,}084 & refinement & 1
 Tax~\cite{BohannonFGJK07}        & 200{,}000   & 9  & 2{,}106 & refinement & 4  & ours \\
 Tax-dirty~\cite{MahdaviAFMOST19} & 200{,}000   & 9  & 2{,}300 & CQA        & 3  & ours, rules~\cite{NiMZWLY24} \\
 Hospital~\cite{rekatsinas2017}   & 1{,}000     & 10 & 502     & CQA        & 3  & ours \\
-IPUMS-CPS~\cite{TaoGMR22}        & 1{,}146{,}552 & 8 & 1{,}026 & contrast  & 17 & DPXPlain~\cite{TaoGMR22} \\
+IPUMS-CPS~\cite{TaoGMR22}        & 1{,}146{,}552 & 8 & 746--1{,}124 & contrast  & 17 & DPXPlain~\cite{TaoGMR22} \\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -64,7 +64,7 @@ These three measures evaluate the selection; the released histograms are evaluat
 No earlier system explains the difference of two query outputs privately, so we compare with non-private references, each removing one more ingredient of the algorithm.
 \Bone{} removes the noise: the exact top-$\tau$ views by $\Use$, then $k$ greedy rounds by $\HD_\gamma$.
 \Bthree{} also removes the smoothing (greedy by $\HD$); by Proposition~\ref{prop:greedy-exact} it returns the maximum of $F^0_\lambda$ over the candidates of the exact top-$\tau$ views, which we call the \emph{optimum}.
-\Btwo{}, exhaustive search over the same candidates ($\binom{k|\Attrs|}{k}$ subsets of the top $k$ candidates of each attribute), returned the \Bthree{} set on every pair and setting, as the proposition guarantees.
+\Btwo{}, exhaustive search over the same candidates ($\binom{k|\Attrs|}{k}$ subsets of the top $k$ candidates of each attribute), returned a set of the same score as \Bthree{} on every pair and setting, as the proposition guarantees (the same set up to ties).
 The optimum is not an upper bound on the private algorithm, whose noisy view stage can retain other views; Section~\ref{subsec:quality} also compares with the maximum of $F^0_\lambda$ over the candidates of all views.
 Since \Bone{} and \Bthree{} differ only in $\gamma$, $F^0_\lambda(\Bone)/F^0_\lambda(\Bthree)$ isolates the cost of smoothing, and the ratio to \Bone{} the effect of noise at fixed smoothing, which can exceed $1$ because \Bone{} does not maximise the unsmoothed score.
 \alon{[E8 running] Private competitors at the same $\epsilon$: \textsf{SingleStage}, one private selection over the candidates of all views ($\epsilon_P+\epsilon_S$ for the selection, $\gamma$ by Eq.~\eqref{eq:gamma-rule} with $|\mathcal{P}||\Attrs|$ candidates, $\epsilon_H$ for the release), and \textsf{Random}, $k$ candidates drawn uniformly (the whole $\epsilon$ for the release).}
@@ -95,10 +95,9 @@ Each figure shows the five explanations of the first release: bars are released 
 \end{figure*}
 
 \paragraph{Refinement (A2): the refined output is a different population, not only a more female one.}
-The refinement of Section~\ref{sec:introduction} replaces Bachelor's by Master's degrees and lowers the hours threshold from $50$ to $30$: the output shrinks from $3{,}055$ to $2{,}453$ tuples, its Master's part grows from $874$ to all $2{,}453$, and the female share rises from $19.5\%$ to $30.6\%$.
+The refinement of Section~\ref{sec:introduction} keeps only Master's degrees and lowers the hours threshold from $50$ to $30$: the output shrinks from $3{,}055$ to $2{,}453$ tuples, its Master's part grows from $874$ to all $2{,}453$, and the female share rises from $19.5\%$ to $30.6\%$.
 Every release explains the Master's part by occupation, relationship and workclass (Figure~\ref{fig:case-a2}): it becomes more professional (professional specialty $41\%\rightarrow49\%$, executives $41\%\rightarrow31\%$), more public-sector (local and state government $25\%\rightarrow30\%$) and less often married (husbands $60\%\rightarrow52\%$).
-The Bachelor's holders $Q_2$ drops form a retained view too, but $Q_1$ held only the $27\%$ of them who work $50$ hours or more, so their candidates score below those of the Master's part, which $Q_2$ nearly triples.
-No release spends an explanation on the hours predicate the analyst already sees.
+The Bachelor's holders $Q_2$ drops appear in three releases, through their hours; $Q_1$ held only the $27\%$ of them who work $50$ hours or more, so their candidates score below those of the Master's part, which $Q_2$ nearly triples.
 
 \begin{figure*}[t]
 \centering
@@ -121,9 +120,9 @@ An analyst comparing the incomes of the two outputs learns who the added workers
 
 \paragraph{CQA (D1): the consistent answer is biased, not only smaller.}
 Over the five Pacific states $\texttt{AVG(Rate)}$ is $4.74$ on $Q_1(D)$ and $5.23$ on $Q_\Sigma(D)$, although $Q_\Sigma$ drops only $12\%$ of the tuples.
-All ten releases show Alaska losing half of its tuples ($71\%$ of those with $\texttt{HasChild}=\texttt{N}$ and $\texttt{ChildExemp}=0$) and the other states at most $7\%$ (Figure~\ref{fig:case-c1}); four also show the lowest rate bin shrinking by $31\%$ against $3\%$ for the highest.
+All ten releases show Alaska losing half of its tuples ($71\%$ of those with $\texttt{HasChild}=\texttt{N}$ and $\texttt{ChildExemp}=0$) and the other states at most $7\%$ (Figure~\ref{fig:case-c1}); four also explain the rate, with the lowest bin shrinking by $16$--$34\%$ against at most $4\%$ for the highest.
 Alaska, with no state income tax, has rate $0$ throughout: the conflicts, concentrated in Alaska, not a change among the taxpayers, moved the average.
-Each release shows the state through a different view, so no single explanation recurs, but the state is explained in all ten.
+The state is explained in all ten releases, through three different views (\texttt{HasChild}=\texttt{N} in six).
 
 \begin{figure*}[t]
 \centering
@@ -174,10 +173,10 @@ Among them the women are, if anything, better educated ($13\%$ hold a bachelor's
 Dataset & \Bone{} & optimum & $\frac{F(\Bone)}{F(\Bthree)}$ & Attr.\ prec. & Prec.@$k$\\
 \midrule
 Adult      & 1.00 & 0.96 & 0.95 & 0.79 (0.34) & 0.39\\
-ACSIncome  & 0.80 & 0.80 & 1.00 & 0.72 (0.40) & 0.50\\
+ACSIncome  & 0.80 & 0.80 & 1.00 & 0.72 (0.39) & 0.50\\
 Tax        & 0.96 & 0.96 & 1.00 & 0.84 (0.32) & 0.52\\
 Tax-dirty  & 0.66 & 0.64 & 0.98 & 0.56 (0.28) & 0.14\\
-Hospital   & 0.67 & 0.55 & 0.80 & 0.52 (0.35) & 0.05\\
+Hospital   & 0.67 & 0.55 & 0.80 & 0.52 (0.34) & 0.05\\
 IPUMS-CPS  & 0.91 & 0.91 & 1.00 & 0.87 (0.46) & 0.35\\
 \bottomrule
 \end{tabular}
@@ -191,7 +190,7 @@ Tax-dirty and Hospital reach $0.64$ and $0.55$.
 \paragraph{A good set is not the same set.}
 On Adult the release scores $0.96$ of the optimum but holds only $39\%$ of its explanations; on IPUMS-CPS, $0.91$ against $35\%$.
 The leading candidates are near-ties (on Adult the best two differ by about $2\%$): a view and its refinement by one more condition explain the same attribute almost equally well.
-Outside CQA, attribute precision is $0.72$--$0.87$ against a chance level of $0.32$--$0.46$: the release explains the right attributes, often through neighbouring views, as in D1, where every release explains the state through a different view.
+Outside CQA, attribute precision is $0.72$--$0.87$ against a chance level of $0.32$--$0.46$: the release explains the right attributes, often through neighbouring views, as in D1, where every release explains the state through one of three views.
 Two runs on the same pair therefore return different sets of nearly equal score: precision@k alone would understate them, and ApproxRatio alone would hide that the exact explanations vary between runs.
 
 \paragraph{Smoothing costs accuracy only where bins are small.}
@@ -208,10 +207,10 @@ The yardstick is partly to blame: the unsmoothed measure rewards relative change
 
 \paragraph{View selection gets more accurate with $N$; explanation selection does not.}
 At the default $\epsilon_P$ the retained views overlap the exact top-$\tau$ by $0.91$ or more on every dataset but Hospital ($0.09$; $0.92$ at $\epsilon_P=10$), and IPUMS-CPS reaches $0.97$ at $\epsilon_P=0.03$ (Figure~\ref{fig:view-stage}): the sensitivity of $\Use$ shrinks as $1/N$.
-That of $\HD_\gamma$ is $1/(1+\gamma)$ at any size, and $\HD_\gamma$ normalises each bin by its support, so the second stage is decided by the margin between candidates, not by $N$.
-Tax-dirty shows it: its view stage is accurate ($0.92$), but its best candidate scores $\HD_\gamma=0.62$, less than the separation $2\ln|C_i|/((1+\gamma)\epsilon_i)=0.96$ the mechanism resolves at the defaults (other datasets: $3.7$--$11$), so the draw is spread over many candidates (ratio $0.64$, precision@k $0.14$).
-Tax, on the same schema, is the easiest dataset: what makes CQA hard here is the size of the difference.
-On Hospital ($N=1{,}000$) both stages fail: at most two of the fifteen retained views belong to the exact top-$\tau$ in any release, and Laplace noise of scale $30$ per bin swamps bins of a handful of tuples, down to negative released counts (clamping them at zero is free post-processing but does not restore them).
+That of $\HD_\gamma$ is $1/(1+\gamma)$ at any size, and $\HD_\gamma$ normalises each bin by its support, so the second stage is decided by how far the best candidates score above what the mechanism can resolve, not by $N$.
+Tax-dirty shows it: its view stage is accurate ($0.92$), but its best candidate scores $\HD_\gamma=0.62$ (median over runs), less than the separation $2\ln|C_i|/((1+\gamma)\epsilon_i)=0.96$ the mechanism resolves at the defaults (other datasets: $3.7$--$11$), so the draw is spread over many candidates (ratio $0.64$, precision@k $0.14$), although its relative gap between the two best candidates ($2.5\%$) is no smaller than on Adult or IPUMS-CPS.
+Tax, on the same schema, is the easiest dataset: what makes CQA hard here is the size of the difference, $0.9$k--$2.3$k tuples in the symmetric difference of the Tax-dirty pairs against $8.8$k--$58$k on Tax.
+On Hospital ($N=1{,}000$) both stages fail: at most four of the fifteen retained views belong to the exact top-$\tau$ in any release, and Laplace noise of scale $30$ per bin swamps bins of a handful of tuples, down to negative released counts (clamping them at zero is free post-processing but does not restore them).
 
 \paragraph{On IPUMS-CPS and ACSIncome, more budget buys little.}
 IPUMS-CPS stays at $0.89$--$0.92$ from $\epsilon=0.1$ to $20$, and ACSIncome rises from $0.80$ only to $0.87$, while Adult, Tax-dirty and Hospital gain throughout (Figure~\ref{fig:quality}).
@@ -220,14 +219,14 @@ Both view stages are already near-exact ($0.91$), and a larger $\epsilon$ also l
 
 \paragraph{Eq.~\eqref{eq:gamma-rule} sits at the floor of the range of Remark~\ref{rem:gamma-window}; data with large bins want more smoothing.}
 Smoothing is indispensable (ApproxRatio $0.39$ at $\gamma=0$ and $0.85$ at the default, mean over all $44$ pairs), and the default is the best of the multiples tried on Adult ($0.95$), but the best $\gamma$ is $3\times$ the default on Tax and Tax-dirty and $10\times$ on ACSIncome and IPUMS-CPS (mean $0.90$--$0.91$ at $3$--$10\times$; bottom row of Figure~\ref{fig:quality}).
-The rule ignores the size of a bin, which is $17$ tuples at the median on Adult but $700$--$900$ on ACSIncome and Tax, where the default $\gamma$ exceeds only $4$--$27\%$ of the bins: there the ceiling $m/b$ of Eq.~\eqref{eq:gamma-window} lies far above the floor, and a rule that also reads a public size, such as $\bar N/b$, is a natural candidate we leave to future work.
+The rule ignores the size of a bin, which is $17$ tuples at the median on Adult but $680$--$940$ on ACSIncome and Tax, where the default $\gamma$ exceeds only $4$--$27\%$ of the bins: there the ceiling $m/b$ of Eq.~\eqref{eq:gamma-window} lies far above the floor, and a rule that also reads a public size, such as $\bar N/b$, is a natural candidate we leave to future work.
 
 \paragraph{Wide attributes dominate the explanations.}
 \label{subsec:attrs}
 We vary $|\Attrs|$ from $2$ to every attribute of Table~\ref{tab:attributes}, adding \texttt{nativeCountry} and the two capital attributes on Adult, the state and the place of birth on ACSIncome and the area code on Tax and Tax-dirty (Figure~\ref{fig:attrs}).
-The ApproxRatio falls on Adult ($0.92\rightarrow0.72$ from $2$ to $13$ attributes), rises on ACSIncome ($0.82\rightarrow0.94$) and Tax ($0.86\rightarrow0.99$) and stays flat elsewhere; with $\gamma$ fixed at its default the curves move by at most $0.03$, so the growth of Eq.~\eqref{eq:gamma-rule} with $|\Attrs|$ does not explain the trends.
+The ApproxRatio falls on Adult ($0.92\rightarrow0.72$ from $2$ to $13$ attributes), rises on ACSIncome ($0.82\rightarrow0.94$) and Tax ($0.86\rightarrow0.99$) and stays flat elsewhere; with $\gamma$ fixed at its default the ApproxRatio curves move by at most $0.03$, so the growth of Eq.~\eqref{eq:gamma-rule} with $|\Attrs|$ does not explain the trends.
 The added attributes do.
-$\HD_\gamma$ sums over bins, so a wide attribute accumulates distance: on ACSIncome the place of birth ($224$ values) and the state ($51$), with large bins, take $74\%$ of the released explanations and are found reliably (ratio $0.84$ over the attribute sets without the place of birth, $0.94$ over those with it), while on Adult \texttt{nativeCountry} ($42$ values, mostly tiny bins) widens the smoothing gap (ratio against \Bthree{} $0.96$ without it, $0.75$ with it; above $1$ against \Bone{}).
+$\HD_\gamma$ sums over bins, so a wide attribute accumulates distance: on ACSIncome the place of birth ($224$ values) and the state ($51$), with large bins, take $74\%$ of the released explanations and are found reliably (ratio $0.81$ over the attribute sets without the place of birth, $0.94$ over those with it), while on Adult \texttt{nativeCountry} ($42$ values, mostly tiny bins) widens the smoothing gap (ratio against \Bthree{} $0.94$ without it, $0.76$ with it; above $1$ against \Bone{}).
 Accuracy depends on which attributes are added, not on how many; and since the maximum of the unsmoothed score also grows with the number of bins, a higher ratio on a wide attribute does not mean a more readable explanation: a $224$-bin histogram of the place of birth is hard to read, and grouping its values, as Erica does for occupation codes, is the simplest guard.
 \alon{Decide whether wide attributes should be capped in the datasets of the paper, or $\HD_\gamma$ normalised by the number of bins.}
 
@@ -239,12 +238,12 @@ The ApproxRatio with $(\epsilon_P,\epsilon_S,\epsilon_H)$ equal to $(1/3,1/3,1/3
 \label{subsec:scalability}
 
 \paragraph{Privacy costs nothing in running time, and the time follows Section~\ref{subsec:complexity-analysis}.}
-The private algorithm, \Bone{} and \Bthree{} are within $0.5\%$ of one another on every pair, since $96$--$99\%$ of the time is the $\Use$ pass they share; the time is linear in $N$ and $|\mathcal{P}|$ and flat in $k$, $\epsilon$, $\gamma$ and $|\Attrs|$ (Figures~\ref{fig:scalability} and~\ref{fig:attrs}).
-Exhaustive search (\Btwo{}), which returns the \Bthree{} set, is exponential in $k$: it takes $21$--$80$\,s at $k=6$, $3$--$23$ minutes at $k=7$, and hits the limit from $k=8$ on all $22$ pairs ($2.9\times10^{10}$ subsets).
+At the defaults the private algorithm, \Bone{} and \Bthree{} are within $0.5\%$ of one another on every pair, since $96$--$99\%$ of the time is the $\Use$ pass they share; the time is linear in $N$ and $|\mathcal{P}|$ and flat in $k$, $\epsilon$, $\gamma$ and $|\Attrs|$ (Figures~\ref{fig:scalability} and~\ref{fig:attrs}).
+Exhaustive search (\Btwo{}), which gains nothing over \Bthree{}, is exponential in $k$: it takes $21$--$80$\,s at $k=6$, $3$--$23$ minutes at $k=7$, and hits the limit from $k=8$ on all $22$ pairs ($2.9\times10^{10}$ subsets).
 
 \paragraph{Computing the statistics in grouped passes makes the pipeline $9\times$ faster with identical output.}
 \textsf{OptPrivExpl} is $5.9$--$11.5\times$ faster end to end (median $9.4\times$; ACSIncome $22.8\rightarrow3.0$\,s, IPUMS-CPS $11.5\rightarrow1.9$\,s on one machine) and released exactly the same output in all $220$ runs compared.
-It is nearly flat in $|\mathcal{P}|$ (ACSIncome $4.7\rightarrow5.7$\,s from $10\%$ to all views, against $4.0\rightarrow35$\,s), since its cost grows with the number of sets of view attributes rather than of views, but grows with $\tau$ ($3$--$4.5\times$ up to $\tau=|\mathcal{P}|$), since it builds the histograms of every retained view, and with $|\Attrs|$ ($12$--$36\%$); it gains nothing when there are few views per set of view attributes.
+It is nearly flat in $|\mathcal{P}|$ (ACSIncome $4.7\rightarrow5.7$\,s from $10\%$ to all views, against $4.0\rightarrow35$\,s), since its cost grows with the number of sets of view attributes rather than of views, but grows with $\tau$ ($3.0$--$4.6\times$ up to $\tau=|\mathcal{P}|$), since it builds the histograms of every retained view, and with $|\Attrs|$ ($12$--$36\%$); it gains nothing when there are few views per set of view attributes.
 
 % ---------------------------------------------------------------
 \subsection{Summary}
@@ -253,7 +252,7 @@ It is nearly flat in $|\mathcal{P}|$ (ACSIncome $4.7\rightarrow5.7$\,s from $10\
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
   \item In each case study the released explanations expose what a refinement, a repair or a contrast does to the population, which neither the queries nor the constraint state.
   \item At $\epsilon=1$ they reach $0.91$--$0.96$ of the optimum on three of six datasets, through near-tied sets: outside CQA the explained attributes are mostly right, while the exact explanations vary between runs.
-  \item View selection improves with $N$; explanation selection depends on the margin between candidates rather than on $N$, which makes small differences (Tax-dirty) and small data (Hospital) hard.
+  \item View selection improves with $N$; explanation selection depends on whether the best candidates score above what the mechanism can resolve, not on $N$, which makes small differences (Tax-dirty) and small data (Hospital) hard.
   \item Eq.~\eqref{eq:gamma-rule} under-smooths data with large bins, and wide attributes dominate $\HD_\gamma$.
   \item Privacy costs nothing in time, without noise exact greedy matches exhaustive search, which is infeasible from $k=8$, and grouped statistics make the pipeline nine times faster.
 \end{itemize}
