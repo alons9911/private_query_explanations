@@ -1,7 +1,7 @@
 """Experiment drivers (Section 5).  Each module has ``run(cfg, ...)`` and, where it
 produces figures from raw data, ``plot(cfg, base)``."""
 
-from . import case_studies, e1_case_studies, erica_select, e2_accuracy, e3_drivers, e4_scalability, e5_runtime, e6_gamma, pair_search
+from . import case_studies, e1_case_studies, erica_select, e2_accuracy, e3_drivers, e4_scalability, e5_runtime, e6_gamma, e8_review, pair_search
 from .e7_attributes import ACCURACY as _e7a, ACCURACY_FIXED_GAMMA as _e7g, RUNTIME as _e7t, RUNTIME_K7 as _e7t7
 
 EXPERIMENTS = {
@@ -15,6 +15,7 @@ EXPERIMENTS = {
     "e7t7": _e7t7,
     "e7a": _e7a,
     "e7g": _e7g,
+    "e8": e8_review,
     "search": pair_search,
     "cases": case_studies,
     "erica": erica_select,

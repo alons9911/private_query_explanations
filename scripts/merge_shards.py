@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SHARDS = ROOT / "results_shards"
 RESULTS = ROOT / "results"
 WHOLE = {"e1": "e1", "e2": "e2", "e3": "e3", "e6": "e6", "cases": "case_studies"}
-PER_PAIR = ("e4", "e5", "e7t", "e7t7", "e7a", "e7g")
+PER_PAIR = ("e4", "e5", "e7t", "e7t7", "e7a", "e7g", "e8")
 SUBDIR = {"e7t": "e7", "e7t7": "e7", "e7a": "e7", "e7g": "e7"}  # both parts of E7 write into results/e7/raw
 
 

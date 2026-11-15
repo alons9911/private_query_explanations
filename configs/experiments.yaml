@@ -98,3 +98,10 @@ e7:
   orders: 10               # random nested orders per pair; run r of a point uses order r
   trials_per_order: 4      # accuracy: 10 orders x 4 = 40 private runs per point
   min_attrs: 2
+
+# E8 -- experiments requested by the review (accuracy only): the optimum over all views, private
+# competitors (single-stage selection, random k), the eps sweep with gamma fixed, quality vs tau and lambda
+e8:
+  parts: [competitors, fixed_gamma, tau, lambda]
+  taus: [5, 10, 15, 30, 60, 120, 250, 500, 1000, all]   # capped at |P|
+  lambdas: [0.0, 0.25, 0.5, 0.75, 1.0]
