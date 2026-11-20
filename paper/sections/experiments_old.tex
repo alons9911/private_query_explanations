@@ -1,0 +1,715 @@
+\section{Experiments}
+\label{sec:experiments}
+
+% \begin{table}[t!]
+%     \centering
+%     \footnotesize  
+%     % \hspace*{-0.5cm}
+%     \begin{tabular}{lclc}
+%     \hline
+%     \textbf{Dataset} & \textbf{Query} & \multicolumn{1}{c}{\textbf{Predicates}} & \textbf{Order by (DESC)} \\ \hline\hline
+%     \multirow{3}{*}{Astronauts} & \multirow{3}{*}{$Q_A$} & \texttt{"Graduate Major" = 'Physics'}& \multirow{3}{*}{{\tt "Space Flight (hrs)"}}\\
+%     &&\texttt{AND "Space Walks" <= 3}&\\
+%     &&\texttt{AND "Space Walks" >= 1}&\\\hline
+%     \multirow{3}{*}{Law Students} & \multirow{3}{*}{$Q_L$} & \texttt{Region = 'GL'}& \multirow{3}{*}{{\tt LSAT}}\\
+%     &&\texttt{AND GPA <= 4.0}&\\
+%     &&\texttt{AND GPA >= 3.5}&\\\hline
+%     \multirow{2}{*}{MEPS} & \multirow{2}{*}{$Q_M$} & \texttt{Age > 22}& \multirow{2}{*}{{\tt Utilization}}\\
+%     &&\texttt{AND "Family Size" >= 4}&\\\hline
+%     TPC-H & $Q_5$ & \texttt{Region = 'ASIA'} & {\tt Revenue} \\ \hline
+%     \end{tabular}
+%     \caption{Queries}
+%     \label{tab:queries}
+% \end{table}
+
+
+We performed an experimental analysis of our proposed algorithm on real-life and synthetic datasets considering realistic scenarios. We \revmulti{first} examine the effect of different parameters on the running time. 
+% , such as the distance measure, maximum deviation ($\varepsilon$), the number of constraints, their type, the largest $k$ with a constraint in the constraint set ($k^*$), and the data size.
+We show that our solution scales, performs well on realistic scenarios and that the optimization presented in Section~\ref{sec:optimizations} are effective. \revmulti{We then compare our solution to~\cite{MLJ22,ERICA} that studies a similar problem for queries without ranking. We demonstrate the differences between solutions and compare their outputs and performance through a use case.}
+ 
+% \revmulti{The system proposed in \cite{MLJ22,ERICA} (known as ERICA) may in some cases produce a set of refinements that perfectly satisfy a set of cardinality constraints with a single value of $k$, without any guarantee on minimizing its distance in our setting. We present a case study to compare the results found by our algorithm and ERICA.} 
+
+
+% in order to evaluate its ability to scale in several parameters. We also examined how often a refinement can be produced for various maximum deviations in realistic scenarios. We first outline the setup of our experiments, and then describe the effects of scaling various parameters as seen in our experimental results. Finally, we investigate the effectiveness of our approach on real-life datasets to gain an understanding of how useful our model is as an intervention for satisfying cardinality constraints. %We also investigate the value of generating the refinement skyline and the cost incurred to generate it.
+
+\subsection{Evaluation Benchmark}\label{sec:benchmark}
+To the best of our knowledge, we are the first to consider this problem, and there is no benchmark consisting of datasets, including ranking queries and sets of cardinality constraints. To this end, we have developed a dedicated benchmark that involves real-life datasets used in the context of ranking as follows. 
+%\yuval{report also the number of attributes fro each dataset}
+% \subsubsection*{Datasets} %\yuval{The ranking are based on other works?}
+% there does not yet exist a benchmark for our problem consisting of datasets including ranking queries and sets of cardinality constraints. For this reason, we conduct experiments using a few real-world datasets from other works which also specify some ranking criteria. However, we had to generate queries and constraint sets that mimic real-world scenarios in order to demonstrate our solution. We use the following real-world datasets:
+\begin{itemize}[leftmargin=1em,labelwidth=*,align=left]
+    \item {\bf Astronauts\footnote{\url{https://www.kaggle.com/datasets/nasa/astronaut-yearbook}}}: A dataset of 19 attributes containing 357 NASA astronauts and information about their careers. Astronauts are ranked in descending order by their number of space flight hours, as was done in \cite{SYJ18}.
+    \item {\bf Law Students \cite{LawDataOriginal,LawData}}: A dataset of 8 attributes containing 21,790 law students and various evaluations such as grade point average, LSAT examination scores, and first year grade average. Students are ranked by their LSAT scores, as in \cite{ZHW20}.
+    % Law students are ranked in descending order by their LSAT scores, as in \cite{ZHW20}.
+    \item {\bf MEPS\footnote{\url{https://meps.ahrq.gov/data\_stats/download\_data/pufs/h192/h192doc.shtml}}}: A dataset of 1,941 attributes containing 34,655 individuals and information related to their usage of healthcare. Patients are ranked in descending order by a combination of utilization metrics (office-based visits + ER visits + in-patient nights + home health visits), as was done in \cite{YGS19}. 
+\end{itemize}
+
+\reva{To evaluate scalability, we use Synthetic Data Vault (SDV) \cite{SDV} to learn the distributions of our real-life datasets and subsequently synthesize scaled-up versions.
+%In order to fully examine the properties of our solution, in addition to the above datasets, 
+We also} use the {\bf TPC-H Benchmark}%\footnote{\url{https://www.tpc.org/tpc\_documents\_current\_versions/current\_specifications5.asp}}
+, which includes complex queries involving multiple tables. We generate a TPC-H dataset of scale factor $1$, which is approximately $1$ GB of data. We use Query 5 (Q5) from the TPC-H specification and remove the predicates filtering on date types. 
+% The possible constraints over Q5 are parameterized by a value $k$ and are enumerated below
+% \begin{enumerate}
+%     \item $\lb{OrderPriority='5-LOW'}{k} = \frac{k}{2}$
+%     \item $\lb{OrderPriority='3-MEDIUM'}{k} = \frac{k}{5}$
+%     \item $\lb{MktSegment='AUTOMOBILE'}{k} = \frac{k}{5}$
+%     \item $\lb{MktSegment='BUILDING'}{k} = \frac{k}{5}$
+%     \item $\lb{MktSegment='MACHINERY'}{k} = \frac{k}{5}$
+% \end{enumerate}
+% \felix{move to table?}
+
+% \begin{table*}
+%     \centering
+%     \footnotesize
+%     \begin{tabular}{llllll}
+%     \hline
+%     \textbf{Dataset} &  & \textbf{Categorical Predicates} & \textbf{Numerical Predicates} & \textbf{Order by} & \textbf{Constraints} \\ \hline\hline
+%          \multirow{5}{*}{Astronauts} &  \multirow{5}{*}{$Q_A$} & \multirow{5}{*}{\texttt {"Graduate Major" = 'Physics'}} & \multirow{5}{*}{\texttt {"Space Walks" <= 3 AND "Space Walks" >= 1}}& \multirow{5}{*}{\texttt{"Space Flight (hr)"}}& (1) $\lb{Gender='Female'}{k} = \frac{k}{2}$\\&&&&&(2) $\lb{Status='Male'}{k} = \frac{k}{2}$\\&&&&&(3) $\lb{Status='Active'}{k} = \frac{k}{5}$\\&&&&&(4) $\lb{Status='Management'}{k} = \frac{k}{5}$\\&&&&&(5) $\lb{Status='Retired'}{k} = \frac{k}{5}$  \\
+% \hline
+%          \multirow{5}{*}{Law Students} & \multirow{5}{*}{$Q_L$} & \multirow{5}{*}{\texttt {region\_first = 'GL'}} & \multirow{5}{*}{\texttt {UGPA <= 4.0 AND UGPA >= 3.5}}& \multirow{5}{*}{\texttt{LSAT}}& (1) $\lb{Sex='Female'}{k} = \frac{k}{2}$\\&&&&&(2) $\lb{Sex='Male'}{k} = \frac{k}{2}$\\&&&&&(3) $\lb{Race='Black'}{k} = \frac{k}{5}$\\&&&&&(4) $\lb{Race='White'}{k} = \frac{k}{5}$\\&&&&&(5) $\lb{Race='Asian'}{k} = \frac{k}{5}$\\  
+%          \hline
+%          \multirow{5}{*}{MEPS} & \multirow{5}{*}{$Q_M$} & \multirow{5}{*}{N/A} & \multirow{5}{*}{{\texttt Age > 25 AND Family Size >= 4}}& \multirow{5}{*}{\texttt{Utilization}}& (1) $\lb{Sex='Female'}{k} = \frac{k}{2}$\\&&&&&(2) $\lb{Sex='Male'}{k} = \frac{k}{2}$\\&&&&&(3) $\lb{Race='Asian'}{k} = \frac{k}{5}$\\&&&&&(4) $\lb{Race='Black'}{k} = \frac{k}{5}$\\&&&&&(5) $\lb{Race='White'}{k} = \frac{k}{5}$\\  
+%          % \multirow{5}{*}{MEPS} & $Q_{M,1}$& N/A & \texttt {Age > 25 AND Family Size >= 4} &
+%          %  \multirow{5}{*}{\texttt{Utilization}}& (1) $\lb{Sex='Female'}{k} = \frac{k}{2}$\\&&&&&(2) $\lb{Sex='Male'}{k} = \frac{k}{2}$\\&$Q_{M,2}$ & N/A & \texttt {BMI > -1 AND BMI < 22} &&(3) $\lb{Race='Asian'}{k} = \frac{k}{5}$\\&&&&&(4) $\lb{Race='Black'}{k} = \frac{k}{5}$\\&&&&&(5) $\lb{Race='White'}{k} = \frac{k}{5}$  \\
+%          \hline
+%           \multirow{5}{*}{TPC-H} & \multirow{5}{*}{$Q_5$} & \multirow{5}{*}{{\tt "Region Name" = 'Asia'}} & \multirow{5}{*}{N/A}& \multirow{5}{*}{{\tt Revenue}}& (1) $\lb{OrderPriority='5-LOW'}{k} = \frac{k}{2}$\\&&&&&(2) $\lb{OrderPriority='3-MEDIUM'}{k} = \frac{k}{5}$\\&&&&&(3) $\lb{MktSegment='AUTOMOBILE'}{k} = \frac{k}{5}$\\&&&&&(4) $\lb{MktSegment='BUILDING'}{k} = \frac{k}{5}$\\&&&&&(5) $\lb{MktSegment='MACHINERY'}{k} = \frac{k}{5}$\\
+%           \hline
+%     \end{tabular}
+%     \caption{Queries and constraints}
+%     \label{tab:queriesAndCons}
+% \end{table*}    
+
+% \begin{table}
+%     \centering
+%     \footnotesize
+%     \hspace*{-0.5cm}
+%     \begin{tabular}{cccc}
+%     \hline
+%     \textbf{Dataset} & \textbf{Query} & \textbf{Predicates} & \textbf{Order by (DESC)} \\ \hline\hline
+%     Astronauts & $Q_A$ & \texttt{\shortstack[c]{"Graduate Major" = 'Physics'\\ AND "Space Walks" <= 3\\ AND "Space Walks" >= 1}} & {\tt "Space Flight (hr)"} \\ \hline
+%     Law Students & $Q_L$ & \texttt{\shortstack[c]{Region = 'GL' AND\\ GPA <= 4.0\\ AND GPA >= 3.5}} & {\tt LSAT} \\ \hline
+%     MEPS & $Q_M$ & \texttt{\shortstack[c]{Age > 22 AND\\ "Family Size" >= 4}} & {\tt Utilization} \\ \hline
+%     TPC-H & $Q_5$ & \texttt{Region = 'ASIA'} & {\tt Revenue} \\ \hline
+%     \end{tabular}
+%     \caption{Queries}
+%     \label{tab:queries}
+% \end{table}
+
+
+
+% \begin{table}[t!]
+%     \centering
+%     \footnotesize
+%     \begin{tabular}{cl}
+%     \hline
+%     \textbf{Dataset} & \textbf{Constraints}\\ \hline\hline
+%     Astronauts & \begin{tabular}{@{}ll@{}}
+%         (1) $\lb{Gender='F'}{k} = \frac{k}{2}$ & (4) $\lb{Status='Management'}{k} = \frac{k}{5}$ \\ (2) $\lb{Gender='M'}{k} = \frac{k}{2}$ & (5) $\lb{Status='Retired'}{k} = \frac{k}{5}$ \\ (3) $\lb{Status='Active'}{k} = \frac{k}{5}$ &
+%     \end{tabular} \\ \hline
+%     Law Students & \begin{tabular}{@{}ll@{}}
+%         (1) $\lb{Sex='F'}{k} = \frac{k}{2}$ & (4) $\lb{Race='White'}{k} = \frac{k}{5}$ \\ (2) $\lb{Sex='M'}{k} = \frac{k}{2}$ & (5) $\lb{Race='Asian'}{k} = \frac{k}{5}$ \\ (3) $\lb{Race='Black'}{k} = \frac{k}{5}$ &
+%     \end{tabular} \\ \hline
+%     MEPS & \begin{tabular}{@{}ll@{}}
+%         (1) $\lb{Sex='F'}{k} = \frac{k}{2}$ & (4) $\lb{Race='Black'}{k} = \frac{k}{5}$ \\ (2) $\lb{Sex='M'}{k} = \frac{k}{2}$ & (5) $\lb{Race='White'}{k} = \frac{k}{5}$ \\ (3) $\lb{Race='Asian'}{k} = \frac{k}{5}$ &
+%     \end{tabular} \\ \hline
+%     TPC-H & \begin{tabular}{@{}ll@{}}
+%         (1) $\lb{OrderPrio='5-LOW'}{k} = \frac{k}{2}$ & (4) $\lb{MktSeg='BUILDING'}{k} = \frac{k}{5}$ \\ (2) $\lb{OrderPrio='3-MEDIUM'}{k} = \frac{k}{5}$ & (5) $\lb{MktSeg='MACHINERY'}{k} = \frac{k}{5}$ \\ (3) $\lb{MktSeg='AUTOMOBILE'}{k} = \frac{k}{5}$ &
+%     \end{tabular} \\ \hline
+%     \end{tabular}
+%     \caption{Constraints %\julia{I see some possible bugs here, please check. Status='Male'}? \felix{15/10 check} 
+%     }
+%     \label{tab:constraints}
+% \end{table}
+
+% In order to better understand the scalability of our approach, we consider a synthetic benchmark for which we generate datasets at different scales. Specifically, we use the:
+% \begin{itemize}[leftmargin=1em,labelwidth=*,align=left]
+%     \item {\bf TPC-H Benchmark\footnote{https://www.tpc.org/tpc\_documents\_current\_versions/current\_specifications5.asp}}: A standardized benchmark with 8 relations designed to reflect a decision support workload for a data warehouse. We have generated a dataset according to the specifications of TPC-H using \resolve{tool} with at scale factors of \resolve{x}. We use the \resolve{x} relations which have \resolve{x} tuples respectively. Tuples are not any one way, but are ranked differently by each TPC-H benchmark query that includes an {\tt ORDER BY} clause. We generate our own constraint sets for these queries to achieve some realistically desirable outcome.
+% \end{itemize}
+
+% \yuval{split datasets into real-life and synthetic}
+
+
+
+
+% \begin{table*}[ht]
+% \begin{tabularx}{\linewidth}{XXXX}
+% \textbf{Dataset} & \textbf{Cat. Preds.} & \textbf{Num. Preds.} & \textbf{Constraint Sets} \\ \hline
+% Astronauts       & {\tt a} & \begin{enumerate} \item {\tt a} \item {\tt b} \end{enumerate} & \begin{tabular}{l|ll}
+% \multirow{3}{*}{$C_{A, 1}^k$} & \multicolumn{1}{l|}{$C_{A_, 2}^k$} & $\lb{Gender='Female'}{k} = k/2$     \\ \cline{2-3} 
+%                               &                                    & $\lb{Status='Active'}{k} = k/5$     \\
+%                               &                                    & $\lb{Status='Management'}{k} = k/5$
+% \end{tabular}                         \\
+% Law Students     & {\tt a} & \begin{enumerate} \item {\tt a} \item {\tt a} \end{enumerate} &                          \\
+% MEPS             & {\tt a} & \begin{enumerate} \item {\tt a} \item {\tt a} \end{enumerate} &                         
+% \end{tabularx}
+% \caption{Queries \& predicates defined for the datasets}
+% \end{table*}
+
+% \begin{table}[]
+% \begin{tabular}{cc}
+% \hline
+% \multicolumn{1}{c|}{\boldmath{$Q_{A, C}$}}                               & \boldmath{$Q_{A, N}$}                        \\ \hline
+% \multicolumn{2}{c}{{\tt SELECT * FROM Astronauts WHERE}}                                                      \\ \hline
+% \multicolumn{1}{c|}{\texttt{\shortstack[c]{"Graduate Major"\\ = 'Physics'}}} & \texttt{\shortstack[c]{"Space Walks" <= 3 \\ AND "Space Walks" >= 1}} \\ \hline
+% \multicolumn{2}{c}{{\tt ORDER BY "Space Flight (hr)" DESC}}                                               \\ \hline
+% \hline
+% \multicolumn{1}{c|}{\boldmath{$Q_{L, C}$}}                               & \boldmath{$Q_{L, N}$}                        \\ \hline
+% \multicolumn{2}{c}{{\tt SELECT * FROM LawStudents WHERE}}                                                      \\ \hline
+% \multicolumn{1}{c|}{\texttt{\shortstack[c]{region\_first = 'GL'}}} & \texttt{\shortstack[c]{UGPA <= 4.0 \\ AND UGPA >= 3.5}} \\ \hline
+% \multicolumn{2}{c}{{\tt ORDER BY LSAT DESC}}                                               \\ \hline
+% \hline
+% \multicolumn{1}{c|}{\boldmath{$Q_{M, 1}$}}                               & \boldmath{$Q_{M, 2}$}                        \\ \hline
+% \multicolumn{2}{c}{{\tt SELECT * FROM MEPS WHERE}}                                                      \\ \hline
+% \multicolumn{1}{c|}{\texttt{\shortstack[c]{Age > 25 \\ AND FamilySize >= 4}}} & \texttt{\shortstack[c]{BMI < 22 \\ AND BMI > -1}} \\ \hline
+% \multicolumn{2}{c}{{\tt ORDER BY Utilization DESC}}                                               \\ \hline
+% \end{tabular}
+% \caption{Summary of queries defined for experiments}
+% \label{ref:queries}
+% \end{table}
+
+% \begin{table}[]
+% \begin{tabular}{l|ll}
+% \hline
+% \multirow{3}{*}{$C_{A, 1}^k$} & \multicolumn{1}{l|}{$C_{A_, 2}^k$} & $\lb{Gender='Female'}{k} = k/2$     \\ \cline{2-3} 
+%                               &                                    & $\lb{Status='Active'}{k} = k/5$     \\
+%                               &                                    & $\lb{Status='Management'}{k} = k/5$ \\
+% \hline
+% \multirow{2}{*}{$C_{L, 1}^k$} & \multicolumn{1}{l|}{$C_{L_, 2}^k$} & $\lb{Sex=1}{k} = k/2$     \\ \cline{2-3} 
+%                               &                                    & $\lb{Race='Black'}{k} = 3k/20$     \\
+% \hline
+% \end{tabular}
+
+% \caption{\felix{testing}}
+% \end{table}
+
+\subsubsection*{Queries and constraints} %\yuval{Summarize in table. Use meaningful value names, even if they are different in the code} 
+\Cref{tab:queriesAndConstraints} \revc{summarizes} the queries and constraints used.
+ We generated queries and constraints for each dataset, showcasing real-life scenarios. Each row in the table represents a query. %\julia{Don't need this, removing to save space:}
+ % defined per dataset using different predicate combinations.
+% Generally, the structure of a query is
+%  \begin{center}
+%     \begin{small}
+%     \begin{tabular}{l}
+%        \verb"SELECT * FROM <dataset>" \\
+%        \verb|WHERE <predicates>| \\
+%        \verb|ORDER BY <order by> DESC|\\
+%     \end{tabular}
+%     \end{small}
+%     \end{center} 
+ For example, the first line represents the following query 
+ $Q_A$ over the Astronauts dataset. 
+ \begin{center}
+     \footnotesize
+     \begin{tabular}{l}
+        \verb"SELECT * FROM Astronauts" \\
+        \verb|WHERE "Space Walks" <= 3 AND "Space Walks" >= 1| \\
+        \verb|AND "Graduate Major" = 'Physics'|\\
+        \verb|ORDER BY "Space Flight (hrs)" DESC|\\
+     \end{tabular}
+     \end{center}
+     This query may be used in the selection process of astronauts for a mission. The mission requires specific training (number of space walks) and background (graduate major), and the candidates are ordered by their experience (space flight hours).  
+     % Using this set of predicates, we further define the queries $Q_{A, C}$ and $Q_{A, N}$, containing only the categorical or numerical predicates, respectively. 
+     Similarly, the query $Q_L$ for the Law Students dataset may be used to rank outstanding students (based on their GPA) from a particular region based on their SAT scores for a scholarship. Finally, $Q_M$ is defined for the MEPS dataset.  Such a query may be used to invite the best-fitting patients (based on their utilization) with specific criteria, for a study.
+     
+     % Finally, the MEPS dataset is not amenable to being filtered by categorical predicates, thus, we defined one query $Q_M$ with only numerical predicates. Such a query may be used to invite the best-fitting patients (based on their utilization) with specific criteria, for a study. %\felix{Note: seems like we only have one query for MEPS in the actual expts.}
+     
+     
+     We defined result diversity constraints for each dataset (listed in Table~\ref{tab:queriesAndConstraints}). For instance, in the Astronauts dataset, the result should include women and candidates of varying ranks in the organizational hierarchy. The constraints' bounds are parameterized with a value $k$, and we set them to values that produce a valid refinement in most cases. Specifically, out of 132 performed experiments, we were not able to find a solution in only 2. 
+     %In fact, in $83\%$ of the experiments there was a refinement with deviation $0$ (i.e., perfectly satisfying the constraints).
+     % performed had a refinement perfectly satisfying when evaluating the experiment with $\varepsilon$ set to $0$ instead. \felix{$\leftarrow$ 15/10 check}
+     
+     % The constraints set \yuval{do we need the annotations?} ensures diversity in terms of the number of females selected for the mission 
+
+ 
+% \yuval{merge with the constraints}
+%\yuval{explain why these queries are interesting/reasonable }
+% \begin{itemize}[leftmargin=1em,labelwidth=*,align=left]
+%     \item {\bf Astronauts}: We define one query over {\tt Astronauts} which we denote $Q_A$. From $Q_A$, we derive two additional queries: $Q_{A, C}$ is $Q_{A}$ with only its categorical predicates and $Q_{A, N}$ is $Q_{A}$ with only its numerical predicates. We define $Q_A$ as:
+%      \begin{center}
+%      \begin{small}
+%      \begin{tabular}{l}
+%         \verb"SELECT * FROM Astronauts" \\
+%         \verb|WHERE "Space Walks" <= 3 AND "Space Walks" >= 1| \\
+%         \verb|AND "Graduate Major" = 'Physics'|\\
+%         \verb|ORDER BY "Space Flight (hrs)" DESC|\\
+%      \end{tabular}
+%      \end{small}
+%      \end{center}
+%      This query is intended to mimic a selection process where the most experienced (in space flight hours) astronauts who have had graduate-level training in a certain discipline and have sufficient space walk experience are selected for a mission. We define two sets of constraints over {\tt Astronauts}. We parameterize the constraints with a value $k$. The constraint set $\constraints_{A, 1}^k$ consists of the cardinality constraints
+%     \begin{align*}
+%             \lb{Gender='Female'}{k} &= k/2 \\
+%             \lb{Status='Active'}{k} &= k/5 \\
+%             \lb{Status='Management'}{k} &= k/5
+%     \end{align*}
+%     The constraint set $\constraints_{A, 2}^k$ is the singleton constraint set formed by taking only the first constraint of $\constraints_{A, 1}^k$. The constraints ensure that women candidates and candidates of varying ranks in the organizational hierarchy are represented.
+%     \item {\bf Law Students}: We define one query over {\tt LawStudents} which we denote $Q_L$. The derived queries $Q_{L, C}$ and $Q_{L, N}$ are defined similarly to the above. We define $Q_L$ as:
+%      \begin{center}
+%      \begin{small}
+%      \begin{tabular}{l}
+%         \verb|SELECT * FROM LawStudents WHERE UGPA <= 4.0|\\
+%         \verb|AND UGPA >= 3.5 AND region_first = 'GL'|\\
+%         \verb|ORDER BY LSAT DESC|\\
+%      \end{tabular}
+%      \end{small}
+%      \end{center}
+%      This query is similar in nature to the last; it mimics a selection process where the best students from a particular region who maintained an undergraduate GPA within a range are invited for a hiring interview. We define two sets of constraints over {\tt LawStudents}. The attribute ${\tt sex}$ is assigned a value of 1 for female and 2 for male. We parameterize the constraints with a value $k$. The constraint set $\constraints_{L, 1}^k$ consists of the cardinality constraints
+%     \begin{align*}
+%             \lb{Sex=1}{k} &= k/2 \\
+%             \lb{Race='Black'}{k} &= 3k/20
+%     \end{align*}
+%     The constraint set $\constraints_{L, 2}^k$ is the singleton constraint set formed by taking only the first constraint of $\constraints_{L, 1}^k$. The constraints were chosen to match approximately the proportion of these demographic groups in the data.
+%     \item {\bf MEPS}: We define two queries over {\tt MEPS} which we denote $Q_{M,1}$ and $Q_{M, 2}$ respectively. We use the columns storing age ({\tt AGE16X}), number of family members ({\tt FAMS1231}), and body mass index ({\tt BMINDX53}). The former query is defined as:
+%      \begin{center}
+%      \begin{small}
+%      \begin{tabular}{l}
+%         \verb|SELECT * FROM MEPS WHERE Age > 25 AND| \\
+%         \verb|"FamilySize" >= 4 ORDER BY Utilization DESC|\\
+%      \end{tabular}
+%      \end{small}
+%      \end{center}
+%     While the latter is defined as:
+%      \begin{center}
+%      \begin{small}
+%      \begin{tabular}{l}
+%         \verb|SELECT * FROM MEPS WHERE BMI > -1 AND| \\
+%         \verb|BMI < 22 ORDER BY Utilization DESC|\\
+%      \end{tabular}
+%      \end{small}
+%      \end{center}
+%      Both queries mimic queries that may be used to invite patients fitting specific criteria to a study. We define two sets of constraints over {\tt MEPS}. We parameterize the constraints with a value $k$. The relevant values for the race attribute ({\tt RACEV1X}) are $4$ (denoting Asian) and $2$ (denoting Black). We let the constraint set $\constraints_{M, 1}^k$ be
+%         \begin{align*}
+%             \lb{Sex=1}{k} &= k/2 \\
+%             \lb{Race=4}{k} &= k/5 \\
+%             \lb{Race=2}{k} &= k/5
+%     \end{align*}
+%     Similarly, the constraint set $\constraints_{M, 2}^k$ is the singleton constraint set formed by the first constraint of $\constraints_{M, 1}^k$. Satisfying these constraint sets produces more diverse sets of patients for studies, which has demonstrated importance for conducting robust clinical studies \felix{\cite{B14}}. The constraints were therefore chosen to match approximately the proportion of the demographic groups in the data.
+%     \item {\bf TPC-H Benchmark}: We choose queries from the TPC-H specification that are supported by our framework. In particular, these are queries \resolve{x} and \resolve{x} which we denote $Q_{T, x}$ and $Q_{T, x}$ respectively. These queries \resolve{x}. \felix{Details needed for constraint sets.}
+% \end{itemize}
+
+% \subsubsection*{Constraints} \felix{check 30/9}
+% %\yuval{explain why these constraints are interesting/reasonable }
+% \begin{itemize}
+    % \item {\bf Astronauts}: We define two sets of constraints over {\tt Astronauts}. We parameterize the constraints with a value $k$. The constraint set $\constraints_{A, 1}^k$ consists of the cardinality constraints
+    % \begin{align*}
+    %         \lb{Gender='Female'}{k} &= k/2 \\
+    %         \lb{Status='Active'}{k} &= k/5 \\
+    %         \lb{Status='Management'}{k} &= k/5
+    % \end{align*}
+    % The constraint set $\constraints_{A, 2}^k$ is the singleton constraint set formed by taking only the first constraint of $\constraints_{A, 1}^k$.  \felix{reason...}
+    % \item {\bf Law Students}: We define two sets of constraints over {\tt LawStudents}. The attribute ${\tt sex}$ is assigned a value of 1 for female and 2 for male. We parameterize the constraints with a value $k$. The constraint set $\constraints_{L, 1}^k$ consists of the cardinality constraints
+    % \begin{align*}
+    %         \lb{sex=1}{k} &= k/2 \\
+    %         \lb{race='Black'}{k} &= 3k/20
+    % \end{align*}
+    % The constraint set $\constraints_{L, 2}^k$ is the singleton constraint set formed by taking only the first constraint of $\constraints_{L, 1}^k$. The constraints were chosen to match approximately the proportion of these demographic groups in the data.
+    % \item {\bf MEPS}: We define two sets of constraints over {\tt MEPS}. We parameterize the constraints with a value $k$. The relevant values for the race attribute ({\tt RACEV1X}) are $4$ (denoting Asian) and $2$ (denoting Black). We let the constraint set $\constraints_{M, 1}^k$ be
+    %     \begin{align*}
+    %         \lb{SEX=1}{k} &= k/2 \\
+    %         \lb{RACEV1X=4}{k} &= k/5 \\
+    %         \lb{RACEV1X=2}{k} &= k/5
+    % \end{align*}
+    % Similarly, the constraint set $\constraints_{M, 2}^k$ is the singleton constraint set formed by the first constraint of $\constraints_{M, 1}^k$. Satisfying these constraint sets produces more diverse sets of patients for studies, which has demonstrated importance for conducting robust clinical studies \felix{\cite{B14}}. The constraints were therefore chosen to match approximately the proportion of the demographic groups in the data.
+%     \item {\bf TPC-H Benchmark}: \felix{Details needed.}
+% \end{itemize}
+
+% \yuval{parameters setting: how did we select $k$ and $\varepsilon$}
+\subsubsection*{Parameters setting} When using ranked-retrieval in decision-making contexts (e.g., when deciding how many people to invite for in-person interviews), one expects the number of items a user will consider ($k$) to be relatively low. In general, rankings are subject to position bias --- a geometric drop in visibility of items in lower ranks --- and so are best-suited for cases where the user interacts with a small number of top-ranked items~\cite{DBLP:journals/cacm/Baeza-Yates18}.
+%Typically\felix{is there a citation for this? @Julia mentioned in one of our meetings}, the top-$10$ to top-$30$ items are of the most interest for intervening upon. 
+Thus, unless otherwise specified, we use $k=10$ as a default value. Furthermore, we let the default maximum deviation $\varepsilon$ be $0.5$, aiming to strike a balance between being sufficiently close to the constraints but realistically possible in the datasets. \reva{In practice, this parameter may be chosen by specifying a worst-case scenario that is still acceptable, and then use the deviation of this scenario as calculated by \Cref{def:mospe} to set $\varepsilon$.} We also set the constraints set to include a single constraint (constraint (1) from Table~\ref{tab:queriesAndConstraints} for each dataset). We used the three distance measures mentioned in \Cref{sec:distance}: the queries predicates distance measure \revb{$DIS_{pred}$ (abbr. QD in the figures)}, the Jaccard distance over the output, \revb{$DIS_{Jaccard}$ (JAC in the figures)}, and Kendall's $\tau$, \revb{$DIS_{Kendall}$}, for top-$k$ lists defined in~\cite{FKS03} \revb{(KEN in the figures)}. 
+
+
+
+% \varepsilon between $0$ and $1$ in increments of $0.1$ ($10\%$). This range reflects realistic values that may be input by users.
+%Therefore, in order to test this range (and beyond for testing scalability), we set $k$ between $10$ to $100$ in increments of $10$.
+
+% \subsubsection*{Distance measures} 
+% Using the variables of the MILP problem, we modeled the three distance measures mentioned in \Cref{sec:distance}: the queries predicates distance measure, the Jaccard distance over the output, and Kendall's $\tau$ for top-$k$ lists defined in~\cite{FKS03}. These distance measures were also implemented for the na\"{i}ve approach.%, which is described next.
+
+\subsubsection*{Compared algorithms}
+To our knowledge, our problem is novel and has no competing algorithms other than the na\"{i}ve exhaustive search. Therefore, we compare our baseline MILP-based algorithm (MILP), our optimized MILP-based algorithm (MILP+opt), which includes the optimization described in Section~\ref{sec:optimizations}, an exhaustive search over the space of refinements (Na\"{i}ve), \revc{and a version the exhaustive search that uses our provenance annotations to evaluate the refinements (Na\"{i}ve+prov).} 
+% \revmulti{The system proposed in \cite{MLJ22,ERICA} (known as ERICA) may in some cases produce a set of refinements that perfectly satisfy a set of cardinality constraints with a single value of $k$, without any guarantee on minimizing its distance in our setting. We present a case study to compare the results found by our algorithm and ERICA.} 
+% \revb{Each algorithm is evaluated with three distance measures: $DIS_{pred}$ (abbr. QD), $DIS_{Jaccard}$ (JAC), and $DIS_{Kendall}$ (KEN).} 
+\revc{We report the total running time and show the setup time (constructing the MILP for MILP-based solutions, and generating the provenance for Na\"{i}ve+prov).} \revmulti{The MILP solver time is the gap between total and setup.}
+% For the MILP-based solutions, we report the overall running time as well as the setup time for generating the MILP program. 
+% For the MILP-based solutions, we report the overall running time (solid lines in Figures~\ref{fig:time_vs_k} and~\ref{fig:time_vs_eps}) divided into setup (i.e., evaluating $\widetilde{Q}(D)$ and generating the program) time (presented as dashed lines in Figures~\ref{fig:time_vs_k} and ~\ref{fig:time_vs_eps}) and \revmulti{total} running time \revmulti{(i.e., solver time is the gap between total and setup)}.
+The reported times are an average of $5$ executions.
+%The actual deviation of the result found by the algorithm is shown in parentheses, where a value of $*$ represents no refinement found due to infeasibility \yuval{remove this from the figure?}. 
+
+ 
+
+\subsubsection*{Platform \reva{\& implementation details}}
+Our experiments were performed on macOS 13.4 with an Apple M2 processor and 16 GB of memory. Our algorithm was implemented with IBM's CPLEX 22.1.1.0\footnote{\url{https://www.ibm.com/products/ilog-cplex-optimization-studio/cplex-optimizer}} to solve the mixed-integer linear program and DuckDB 0.8.0 \cite{DuckDB} for query evaluation. The algorithm to construct the problem and the na\"{i}ve method were written and evaluated with Python 3.9.6 and PuLP 2.7.0 (the library used for modeling the MILP problem). \reva{$DIS_{pred}$ is linearized by computing the Jaccard distance for categorical predicates through the Charnes-Cooper transformation~\cite{CC62}. In addition, for numerical predicates, additional variables are generated that represent the absolute difference between the refined and original constants. As it does not consider the output, we skip generating $s_t$ and $l_{t, k}$ variables for tuples that do not belong to any group $G$ in $\constraints$. $DIS_{Jaccard}$ is evaluated over the output, thus we leverage the fact that there are at least $k^*$ tuples in the output and aim at maximizing the number of original tuples output, thereby maximizing the Jaccard distance.
+% and creating for numerical predicates additional variables equal to the absolute difference between the refined and original constant. $DIS_{Jaccard}$ is evaluated over the output and therefore we may take advantage of the fact that there are at least $k^*$ tuples in the output, therefore maximizing the amount of original tuples output (i.e. $\sum_{t \in Q(D)} r_t$) also maximizes the Jaccard distance.
+For $DIS_{Kendall}$, only Cases 2 (a tuple leaves the top-$k$) and 3 (a tuple enters the top-$k$) as defined in \cite{FKS03} may occur in our model. We create a binary variable for each case for each tuple, which is then equal to the sum of the case if the tuple is selected and zero otherwise. \iftechreport Specifically, we create variables for tuples that were present in the original top-$k^*$, as these cases pertain to pairs where at least one is present in the original output. If we have such a tuple $t$, then since we know that the order of the output is determined ahead of time by the ranking in $\widetilde{Q}$, we can sum the $l_{t', k^*}$ values for all $t'$ that match the condition of the cases. We include an upper-bound expression limiting the value to at most $0$ if the case is irrelevant (determined by $l_{t, k^*}$), and the maximum possible value otherwise. With this in mind, we model Case 2 with the expressions for each $t \in Q(D)_{k^*}$
+{\allowdisplaybreaks
+\begin{align*}
+    CaseII_t &\leq (|\widetilde{Q}(D)| + 1) \cdot (1 - l_{t, k^*}) \\
+    CaseII_t &\leq (|\widetilde{Q}(D)| + 1) \cdot l_{t, k^*} + \sum_{\mathclap{\substack{t' \in Q(D)_{k^*}\\ Q(D)(t') > Q(D)(t)}}} l_{t', k^*} \\
+    CaseII_t &\geq \sum_{\mathclap{\substack{t' \in Q(D)_{k^*}\\ Q(D)(t') > Q(D)(t)}}} l_{t', k^*} - (|\widetilde{Q}(D)| + 1) \cdot l_{t, k^*}
+\end{align*}
+}
+Similarly, we model Case 3 for each $t \ in Q(D)_{k^*}$ by the expressions
+\begin{align*}
+    CaseIII_t &\leq (|\widetilde{Q}(D)| + 1) \cdot (1 - l_{t, k^*}) \\
+    CaseIII_t &\leq (|\widetilde{Q}(D)| + 1) \cdot l_{t, k^*} + \sum_{\mathclap{\substack{t' \notin Q(D)_{k^*}}}} l_{t', k^*} \\
+    CaseIII_t &\geq \sum_{\mathclap{\substack{t' \notin Q(D)_{k^*}}}} l_{t', k^*} - (|\widetilde{Q}(D)| + 1) \cdot l_{t, k^*}
+\end{align*}
+Note that both $CaseII_t$ and $CaseIII_t$ have lower bounds of $0$. tgFinally, by minimizing the sum of these variables for each $t$ in the original output, we minimize the Kendall's $\tau$ distance for top-$k$ (over $k^*$).
+\else For more details, see \cite{Extended, impl}.} \fi
+
+
+
+\begin{figure}[t!]
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=3.7cm]{figures/astr_method.pdf}
+      \caption{Astronauts}
+      \label{fig:r1}
+    \end{subfigure}%
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=3.3cm]{figures/law_method.pdf}
+      \caption{\revc{Law Students}}
+      \label{fig:law_method}
+    \end{subfigure}
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=3.4cm]{figures/meps_method.pdf}
+      \caption{\revc{MEPS}}
+      \label{fig:meps_method}
+    \end{subfigure}%
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=3.4cm]{figures/tpch_method.pdf}
+      \caption{\revc{TPC-H}}
+      \label{fig:r4}
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{Running time of \revc{compared algorithms}, for cases where computation completed within a 1-hour timeout (method or distance omitted when timed out).  MILP+opt consistently outperforms other methods.}
+    \vspace{-0.3cm}
+    \label{fig:time_vs_method}
+\end{figure}
+\begin{figure*}[ht]
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=4cm]{figures/astr_k.pdf}
+      \caption{Astronauts (log scale)}
+      \label{fig:r5}
+    \end{subfigure}
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=3.8cm]{figures/law_k.pdf}
+      \caption{Law Students}
+      \label{fig:r6}
+    \end{subfigure}
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=3.9cm]{figures/meps_k.pdf}
+      \caption{MEPS}
+      \label{fig:r7}
+    \end{subfigure}
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=4cm]{figures/tpch_k.pdf}
+      \caption{TPC-H}
+      \label{fig:r8}
+    \end{subfigure}
+
+    \caption{Running time vs. $k^*$, showing $DIS_{pred}$ is often the fastest to compute, while $DIS_{Kendall}$ can be sensitive to increasing $k^*$.}
+    \label{fig:time_vs_k}
+\end{figure*}
+\begin{figure*}[ht]
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=4cm]{figures/astr_eps.pdf}
+      \caption{Astronauts}
+      \label{fig:r9}
+    \end{subfigure}
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=3.7cm]{figures/law_eps.pdf}
+      \caption{Law Students}
+      \label{fig:r10}
+    \end{subfigure}
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=3.7cm]{figures/meps_eps.pdf}
+      \caption{MEPS}
+      \label{fig:r11}
+    \end{subfigure}
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=4cm]{figures/tpch_eps.pdf}
+      \caption{TPC-H}
+      \label{fig:r12}
+    \end{subfigure}
+    
+    \caption{Running time vs. maximum deviation ($\varepsilon$), showing that the effect of $\varepsilon$ is limited.}
+    \label{fig:time_vs_eps}
+\end{figure*}
+
+\begin{figure*}[ht]
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=4cm]{figures/astr_num.pdf}
+      \caption{Astronauts}
+      \label{fig:r13}
+    \end{subfigure}
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=3.7cm]{figures/law_num.pdf}
+      \caption{Law Students}
+      \label{fig:r14}
+    \end{subfigure}
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=3.85cm]{figures/meps_num.pdf}
+      \caption{MEPS}
+      \label{fig:r15}
+    \end{subfigure}
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=4.1cm]{figures/tpch_num.pdf}
+      \caption{TPC-H}
+      \label{fig:r16}
+    \end{subfigure}
+    
+    \caption{Running time vs. the number of constraints: the impact of the number of constraints is limited.}
+    \label{fig:time_vs_num_of_constraints}
+\end{figure*}
+
+\begin{figure*}[ht]
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=4cm]{figures/astr_const_type.pdf}
+      \caption{Astronauts}
+      \label{fig:r17}
+    \end{subfigure}
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=3.4cm]{figures/law_const_type.pdf}
+      \caption{Law Students}
+      \label{fig:r18}
+    \end{subfigure}
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=3.7cm]{figures/meps_const_type.pdf}
+      \caption{MEPS}
+      \label{fig:r19}
+    \end{subfigure}
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=3.4cm]{figures/tpch_const_type.pdf}
+      \caption{TPC-H}
+      \label{fig:r20}
+    \end{subfigure}
+    
+    \caption{Running time vs. constraint type, showing the efficacy of one of our optimizations.}
+    \label{fig:time_vs_constraint_type}
+    \vspace{-0.5cm}
+\end{figure*}
+
+% \begin{figure}
+%     \begin{subfigure}{.23\textwidth}
+%       \centering
+%       \includegraphics[width=4cm]{figures/astr_pred_types.pdf}
+%       \caption{Astronauts}
+%       \label{fig:astr_pred_types}
+%     \end{subfigure}
+%     \begin{subfigure}{.23\textwidth}
+%       \centering
+%       \includegraphics[width=4cm]{figures/law_pred_types.pdf}
+%       \caption{Law Students}
+%       \label{fig:law_pred_types}
+%     \end{subfigure}
+
+%     \caption{The effect of predicate type}
+%     \label{fig:misc_results}
+% \end{figure}
+
+% \begin{figure}
+%     % \begin{subfigure}{.23\textwidth}
+%       \centering
+%       \includegraphics[width=4cm]{figures/tpch_size.pdf}
+%       \caption{Running time as a function of data size (TPC-H)}
+%       \label{fig:data_size}
+%     % \end{subfigure}
+% \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Results}\label{sec:results}
+% \yuval{Discuss}
+%\felix{15/10 check figures} %We first compare our algorithm (optimized and not) to the na\"{i}ve approach with different distance measures in order to study the gain in runtime efficiency made over the na\"{i}ve approach. The scaling of our algorithm is sensitive to a number of parameters other than the size of the data alone. We therefore investigate the effect of the size of the largest prefix specified by the constraint set (referred to previously as $k^*$), the maximum allowed deviation (referred to previously as $\varepsilon$), the number of different groups included in the constraint set, and finally the size of the data on the runtime efficiency of our algorithm. 
+
+\paragraph*{Running time for compared algorithms}
+We begin by comparing the running time of all algorithms using the default parameters and setting a timeout of one hour. 
+% our optimized MILP solution (MILP+opt) to the unoptimized version (MILP) and the na\"{i}ve brute-force solutions (Na\"{i}ve \revc{and Na\"{i}ve+prov}). % for the implemented distance measures. 
+% We used the default parameters and set a timeout of one hour. 
+Recall that the size of the generated MILP program (without optimization) is linear in the data size and that MILP solvers are typically sensitive to the program size. Thus, we expect the MILP algorithm to struggle with large-scale datasets. On the other hand, the na\"{i}ve approaches perform a brute-force search over the possible refinements, where their number is exponential in the number of predicates in the query (and their domain). Thus, datasets with high cardinality in the domain of the query predicate are likely to be challenging for \revc{the na\"{i}ve solutions}.  
+
+Figure~\ref{fig:r1} presents performance for the Astronauts dataset. The optimized MILP solution outperforms the unoptimized MILP, and we observe a speedup of up to 6 times. Given that there are $114$ different values for ``Graduate Major'', the space of refinements is extremely large and \revc{both Na\"{i}ve and Na\"{i}ve+prov} timed out (and thus omitted from the graph). \revc{\Cref{fig:law_method,fig:meps_method,fig:r4} show the results for the remaining datasets. In these cases, due to the data size, the unoptimized MILP was unable to terminate before the time-out. MEPS and TPC-H have a relatively small space of refinements for the posed queries, making Na\"{i}ve+prov competitive with MILP+opt. However, Law Students has a considerably larger space of refinements (although modest compared to Astronauts), making Na\"{i}ve time out and Na\"{i}ve+prov significantly slower than MILP+opt. Essentially, MILP+opt is well-posed to deal with scaling both the data size and the space of the possible refinements.}
+%Even with a comparatively small space of refinements (the categorical attribute used in the predicate has only $5$ values), optimized MILP outperforms Na\"{i}ve by about a factor of 7.
+% For Law Students and MEPS, the running time of both MILP and Na\"{i}ve exceeded the timed out, and thus, the graphs are omitted. The optimized MILP terminated within $1.3$ seconds, $0.78$ seconds and $2.45$ seconds for Law Students, and $44.4$ seconds, $38.5$ seconds and $49.9$ seconds for MEPS. 
+%\julia{right?} 
+The na\"{i}ve brute-force search methods and unoptimized MILP method fail to scale, and we exclude them from the rest of the experiments.
+
+% \subsubsection{Running time vs. algorithm \& distance}
+% \felix{13/10 check}
+% We compare the runtime efficiency of our algorithm with and without optimizations against the na\"{i}ve approach with all of the stated distance measures. For each of the constraint sets, we use only the first stated constraint. We defined a timeout of 1 hour for all experiments, for which no result is reported if the timeout is exceeded. In many cases, both the MILP approach without optimization and Naive exceed this timeout given the large size of the datasets or the large space of possible refinements. In \Cref{fig:r1}, which shows the Astronauts dataset, we find that MILP+opt always performs equally well if not faster than MILP alone. Given that there are 114 different values for "Graduate Major", the space of refinements is extremely large and Naive timed out. In \Cref{fig:r4}, we were able to run and compare Naive against MILP+opt for TPC-H, while MILP timed out. Even with a comparatively small space of refinements (the categorical attribute used in the predicate has only 5 values), MILP+opt performs considerably better than Naive. Both MILP and Naive timed out for the Law Students and MEPS datasets, so we omit them from this section as there is no comparison. This highlights the effectiveness of our optimizations in making our MILP approach scale to the size of real datasets. Furthermore, we omit both MILP and Naive from later studies as they are always outperformed by MILP+opt. 
+%We also conclude that some distance measures are more efficient than others. In particular, finding a good enough refinement with a minimal Kendall's $\tau$ for top-$k$ distance takes more time than other distance measures.
+
+\paragraph*{Effect of $k^*$}
+We study the effect of $k^*$, the largest $k$ with a constraint in the constraint set, on the running time of our algorithm by increasing the parameter $k$ of the constraint from $10$ to $100$ in increments of $10$. The results are presented in Figure~\ref{fig:time_vs_k}. Recall that the relevancy-based optimization from \Cref{sec:optimizations} aims at reducing the program size using $k^*$. 
+% Particularly, 
+We expect to see its effect degrade as $k^*$ increases, as shown in \Cref{fig:r6,fig:r7}. 
+% Indeed, we see this trend in \Cref{fig:r6,fig:r7} (for Law Students and MEPS). 
+The optimization is less effective for  Astronauts (Figure~\ref{fig:r5}), as the number of different lineage equivalent classes is large, and each consists of a relatively small number of tuples (fewer than $10$). 
+%\julia{Remove the following sentence?} 
+Therefore, the expression generated for very few tuples may be removed from the program. The optimization is particularly effective for $Q_5$ of TPC-H (\Cref{fig:r8}), as the vast majority of expressions are removed as there are only $5$ lineage-equivalent classes. Moreover, we see that most of the time is spent setting up the problem rather than solving it.
+
+% \subsubsection{Running time vs. $k^*$}
+% \felix{13/10 check}
+% We study the effect of the size of the largest prefix with a constraint in the constraint set ($k^*$) on the running time of our algorithm. We sweep the parameter $k$ of the constraint sets between $10$ and $100$ in increments of $10$, and use only the first stated constraint. The first optimization outlined in \Cref{sec:optimizations} is made particularly effective by small values of $k^*$ as it can drastically reduce the size of the generated MILP model. Therefore, we expect the benefit of the optimized version of our algorithm (MILP+opt) to degrade as $k^*$ increases. In \Cref{fig:r6,fig:r7}, we see this to be the case for the optimized algorithm (MILP+opt), where an increase in $k^*$ leads to a linear increase in running time. In \Cref{fig:r5}, there is not much benefit provided by the optimization as there are many lineages with fewer than $10$ tuples in them, so very few tuples are pruned and therefore there is not much degradation when $k$ increases as the optimization is not very effective in the first place. However, expression (\ref{eq:at_least_k_star_inline}) may account for the increase in running time for the query distance as $k$ increases. The optimization is particularly effective in \Cref{fig:r8}, as the vast majority of tuples are removed as there are only $5$ lineages for tuples generated by Q5 of TPC-H. Therefore, most of the time is spent setting up the problem (namely evaluating $\widetilde{Q}(D)$) rather than solving it.
+
+\paragraph{Maximum deviation ($\varepsilon$)}
+% \subsubsection{Running time vs. $\varepsilon$}
+\label{sec:time_vs_eps}
+% The next set of experiments aims to assess the effect of the maximum deviation $\varepsilon$ on the runtime. 
+% We study the effect of increasing values of the maximum deviation $\varepsilon$ on the runtime efficiency of our algorithm. 
+While an increase in $\varepsilon$ may make finding feasible refinements easier, the solver must still find the minimal refinement, which remains a difficult task. Therefore, the value of $\varepsilon$ should not significantly affect the running time. Figure~\ref{fig:time_vs_eps} shows that the running time is fairly stable. We observed a decrease when $\varepsilon$ reaches $1.0$. This is because we use only lower-bound constraints in this experiment, where the deviation of any (refined) query is bounded by $1.0$, i.e. finding a satisfying refinement is trivial as all refinements are good enough.
+% except when $\varepsilon$ reaches $1.0$ in which the time drops. Given a set of all lower-bound constraints, any query has deviation of at most $1.0$ from it, i.e. any query is sufficiently satisfactory. Therefore, finding the minimally distant query is trivial as the input query is sufficiently satisfactory and it has zero (minimal) distance from itself. \felix{14/10 check}.
+% we would expect that $\varepsilon$ may not have much of an effect on the runtime of our algorithm. In \Cref{fig:r9,fig:r10,fig:r11}, we see that the runtime is fairly stable except when $\varepsilon$ reaches $1.0$ in which the time drops significantly. At this value, all lower-bound constraints are satisfied by any query, so the closest query is simply itself. 
+In \Cref{fig:r12}, 
+% as is the case with other instances of the TPC-H dataset and query,
+the solver time is negligible and depends mostly on the setup time, which is very similar across all values of $\varepsilon$ (differing by at most $1\%$).
+%As shown in \Cref{fig:r9,fig:r10,fig:r11,fig:r12}, we see a decrease in running time when there is a decrease in the actual deviation (in parentheses) of the best refinement.
+
+
+% \subsubsection{Running time vs. number of constraints}
+
+\paragraph*{Number of constraints}
+% We also study the effect of the number of constraints on the runtime efficiency of our algorithm. 
+The number of generated expressions of the form (\ref{eq:in_prefix_inline}) and (\ref{eq:tuples_to_satisfy_inline}) is linear in the number of constraints. Thus, when increasing the number of constraints, the program size increases and as a result, we expect to see an increase in the running time.
+% so we expect the runtime of our algorithm to increase as the number of constraints increases.
+We gradually added constraints to the constraint set in the order they listed in Table~\ref{tab:queriesAndConstraints}. To ensure that the set of constraints can be satisfied along with the default value of $\varepsilon$, we slightly adjust the value of the first two constraints for Astronauts, Law Students, and MEPS to have a lower-bound of $\frac{k}{3}$. As shown in Figure~\ref{fig:time_vs_num_of_constraints}, we observed a slight increase in the running time as the number of constraints increased in contrast to increasing the value of $k$. \reva{The number of expressions is linear in the number of constraints and tuples, however there are significantly fewer constraints than tuples, which is why the number of constraints does not have a pronounced effect on the runtime.}
+% REMOVED FROM SUBMISSION (replaced with above 3-1): This is due to the fact that the number of tuples is significantly larger than the number of constraints, resulting in the dominance of tuple count over the running time.
+% that all of these constraints may be satisfied together with the default value of $\varepsilon$, we adjust some constraints slightly. For Astronauts, Law Students, and MEPS, we change the first two stated constraints to have a lower-bound of $\frac{k}{3}$. For the experiment with $n$ constraints, the first (modified) $n$ constraints in \Cref{tab:constraints} are the input. 
+% \Cref{fig:r13,fig:r14,fig:r15} support this trend, even though the effect seems to be slight compared to that of increasing the value of $k$. This follows from the fact that the number of tuples is much larger than the number of constraints. 
+% As in previous experiments with 
+TPC-H \Cref{fig:r16} shows a negligible difference as the vast majority of the time is set up the MILP problem, as the solver has only $5$ lineage equivalence classes to explore.
+
+% \subsubsection{Running time vs. type of constraints}
+\paragraph*{Effect of constraints type}
+In \Cref{sec:optimizations}, we presented an optimization that is effective when tuples belong to groups with only either lower-bound or upper-bound constraints made on them. To demonstrate the effect of this optimization, we generate two sets of constraints for each dataset: $\constraints_{L}$ with lower bound constraints only, and $\constraints_{M}$ with a mixed set of upper bound and lower bound constraints. In particular, each dataset, $\constraints_{L}$ includes constraints (1) and (2) from Table~\ref{tab:queriesAndConstraints}, and $\constraints_{M}$ includes constraints (1) and (2), where constraint (2) is turned into an upper-bound constraint. 
+% for each dataset, we compare using the first two constraints against the first two with the second one turned into an upper-bound constraint.
+Notice that these particular attributes are binary, and, as we assume there are at least $k^*$ tuples in the output, they are equivalent (except for TPC-H, which lacks any binary attributes). We then compared the running time when using $\constraints_{L}$ and $\constraints_{M}$. The results are presented in \revmulti{\Cref{fig:time_vs_constraint_type}}. As expected, the running times for the case of $\constraints_{L}$ are typically better, as shown in \revmulti{\Cref{fig:r17,fig:r18,fig:r19}}, indicating the usefulness of the optimization. We note that the experiment in \revmulti{\Cref{fig:r20}} depicting the experiment for TPC-H shares the same performance characteristics as the previous experiments.
+
+% By combining both types of cardinality constraints in a single constraint set, we expect an increase in the runtime of our algorithm as this optimization may no longer be made. We see this to be the case from \Cref{fig:r16,fig:r17,fig:r18}, where it is particularly effective in MEPS, where the runtime may be halved by the optimization. The experiment in \Cref{fig:r19} depicting the experiment for TPC-H shares the same performance characteristics as the previous experiments.%, where it has so few lineages that many optimizations past the first lose relevancy.
+
+% \subsubsection{Running time vs. data size}
+
+\begin{figure*}[ht]
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=4cm]{figures/astr_size.pdf}
+      \caption{\reva{Astronauts}}
+      \label{fig:r21}
+    \end{subfigure}
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=3.6cm]{figures/law_size.pdf}
+      \caption{\reva{Law Students}}
+      \label{fig:r22}
+    \end{subfigure}
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=3.7cm]{figures/meps_size.pdf}
+      \caption{\reva{MEPS}}
+      \label{fig:r23}
+    \end{subfigure}
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=3.7cm]{figures/tpch_size.pdf}
+      \caption{\reva{TPC-H}}
+      \label{fig:r24}
+    \end{subfigure}
+    
+    \caption{\reva{Running time vs. data size. The setup time is mostly impacted by the cost to capture lineage from the input query, while the solving time is mostly impacted by the number of lineage classes.}}
+    \label{fig:time_vs_size}
+    \vspace{-0.5cm}
+\end{figure*}
+
+\paragraph*{Effect of dataset size}
+% Finally, we study the effect of the dataset size on the running time. 
+\reva{We use SDV~\cite{SDV} to synthesize scaled-up versions of the real datasets. Not only does this increase the data size, but new lineage classes are created according to the distribution of the dataset as well. For TPC-H, we generate different scales of the dataset according to its standard, but no new lineage classes are created.} The number of variables and expressions of the generated MILP is linear in the number of tuples in the dataset. However, given that solving MILP is in ${\sf NP}$, we expect a non-polynomial increase in running time with an increase in the data size. \reva{
+The results are plotted in \Cref{fig:time_vs_size}, each plot starting from the original size of the dataset. For the Astronauts, Law students, and MEPS datasets, we observed a modest increase in the runtime as the data size grows. This could be explained by the low increase in the number of lineage classes, which impacts the efficiency of our optimization and has a greater effect on the running time.
+% In general, we see an increase in running time following an increase in the data size. We note that the increase in running time is less than expected, which may be explained by the scaled-up datasets only seeing a modest increase in the number of lineage classes, which our optimizations are able to take advantage of. 
+In TPC-H (Figure~\ref{fig:r24}), the vast majority of the running time is spent building the MILP problem, and in this case, constructing the set of lineages for Q5 involves a non-trivial amount of join processing.}
+% For this set of experiments, we use all of the default parameters defined prior. 
+
+
+\paragraph*{\revb{Distance measure}}
+\revb{We observed that in most cases, $DIS_{Kendall}$ is the hardest to compute as it involves extra binary variables in order to linearize the measure. When the refinement space is extremely large, such as for Astronauts,  $DIS_{pred}$ takes longer to prove optimality (as seen in \Cref{fig:r5,fig:r13}).}
+% In some cases, we see that the $DIS_{pred}$ takes longer in cases where the refinement space is extremely large, such as for Astronauts as seen in \Cref{fig:r5,fig:r13}, as it requires more computation to prove optimality.}
+%\yuval{discuss}
+%\revb{In all results, we see patterns in the runtime efficiency of the distance measure being minimized. In almost all results, the runtime of Kendall's $\tau$ for top-$k$ exceeds that of the other two tested distance measures. Recall that its linearization introduces a number of additional binary variables that are absent from the other two distance measures. For this reason, it also makes the runtime grow faster with respect to $k^*$ as seen in \Cref{fig:time_vs_k}. Both the Jaccard distance and Kendall's $\tau$ are unable to take advantage of the same optimization described for the predicates distance, as they require the rank of the tuples present in the original query's top-$k^*$ in order to compute the distance.}
+% \felix{IN INITIAL SUBMITTED VERSION:} We generated data using the TPC-H benchmark in increments of $100$ MB and used query $Q_5$ with the default parameters settings. We observed an increase in the running time from 0.78 seconds for 100 MB to 15.2 seconds for 1 GB (times for all tested distance measures were within 1\% of each other). %As expected, running time grows given an increase in the data size. While this is expected given the complexity of solving MILP problems, we note that our optimizations allow refinement over workloads of realistic sizes.
+
+% We use the TPC-H benchmark as described above to study this effect. Specifically, we sample in increments of 100 MB and refine Q5 with the first constraint with the default parameters specified above. \Cref{fig:data_size} shows as expected the growth of the running time given the increase in the data size. This is to be expected given the complexity of solving MILP problems, but our optimizations allow refinement over workloads of realistic sizes.
+
+% \subsubsection{Incidence of perfect satisfaction}
+% \felix{13/10 check}
+% Recall from \Cref{thm:no-perfect} that there are cases in which there is no refinement that perfectly satisfies the constraints. Therefore, we would like to understand how often refinements could be used as an intervention to satisfy cardinality constraints. We use the realistic constraint sets we have generated thus far and see for how many they cannot be satisfied completely. From \Cref{sec:time_vs_eps}, the refinements made for all datasets when $\varepsilon$ was $0$ perfectly satisfied the constraint sets. Furthermore, none of the refinements made were the same as the input query. This means that none of the input queries satisfied their set of constraints. With our intervention, we were able to satisfy these constraints made over real-world data, demonstrating its potential to achieve exactly the desired result despite \Cref{thm:no-perfect}.\yuval{This paragraph is not very informative and does not show what I would expect--that in most cases we can't find a solution with perfect satisfaction. I assume we are able to find a solution for $\varepsilon=0$ because this is the way we selected the parameters. A more interesting value to report here is how many times the found solution had a deviation of 0 out of all the experiments performed. Either change or remove the paragraph}
+
+% \subsubsection{Minimum possible deviation}
+% Ideally, even if there is no refinement that perfectly satisfies the set of cardinality constraints as before, there is some refinement that is relatively close to satisfying all of them. In order to understand how well refinements can satisfy sets of constraints if not perfectly, we check for the minimum possible deviation that may be achieved by making refinements over the input query from the constraint sets that had no refinement that totally satisfied them as determined in the previous experiment.
+
+\iftechreport
+\begin{figure}[t!]
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=4.3cm]{figures/astr_pred_types.pdf}
+      \caption{Astronauts}
+      \label{fig:p1}
+    \end{subfigure}%
+    \begin{subfigure}{.23\textwidth}
+      \centering
+      \includegraphics[width=4cm]{figures/law_pred_types.pdf}
+      \caption{Law Students}
+      \label{fig:p2}
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{Running time as a function of the type of predicates used in the query, showing that categorical predicates may take more time to refine if not negligible.}
+    \vspace{-0.3cm}
+    \label{fig:time_vs_pred_type}
+\end{figure}
+\paragraph*{Effect of predicates type}
+Recall from \Cref{sec:search} that categorical and numerical predicates are processed differently by our MILP model. While categorical values map directly to one MILP variable, a few auxiliary variables and expressions must be created in order to model the semantics of numerical predicates. Therefore, we are interested in whether or not this handling makes numerical predicates less efficient to refine than categorical. The queries defined for MEPS and TPC-H lack numerical predicates, so we use Astronauts and Law Students for this experiment. We then compare the runtime of refining $Q_A$ and $Q_L$ with either only their categorical or numerical predicates. Recall that the categorical attribute of Astronauts has a very large domain, so the number of refinements of this predicate only is extremely large. Therefore, as shown in \Cref{fig:p1}, we see that refining $Q_A$ with only its categorical predicate takes longer than $Q_A$ with only its numerical predicates. \Cref{fig:p2} shows the difference is negligible -- this follows since the space of refinements is much smaller given the smaller domain for its categorical attribute. We conclude from this experiment that in some cases, categorical predicates can take more time to refine if the size of their domain is large.
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{\revmulti{Comparison with Erica \cite{ERICA,ERICAfull}}}
+\label{sec:erica_comparison}
+\revmulti{We conclude with a comparison to 
+Erica~\cite{ERICA,ERICAfull}, which presents a similar framework for query refinements to satisfy cardinality constraints over groups representation in the query's output. We note Erica focuses on cardinality constraints over the {\it entire} output, without considering the order of tuples. By restricting the overall output size to $k$, Erica may be used to refine a given query to satisfy constraints over the top-$k$ tuples. However, as we next demonstrate, this additional constraint over the output size also limits the possible refinements to those that have at most $k$ tuples. Moreover, this adjustment of Erica cannot be used to constrain over different values of $k$ simultaneously (as in our running example). Additionally, since satisfying the constraints in our setting is more challenging, we focus on finding approximate solutions that are close to satisfying the constraints, while Erica only finds solutions that satisfy the constraints exactly. Finally, our framework allows the user to define different distance measures between queries whereas Erica uses a single distance measure based on the predicate distance.
+% ,  a system that supports finding predicate-distance-minimal refinements that satisfy a set of cardinality constraints over the {\it entire} output. 
+We compare the systems by refining the query $Q_L$ except with the predicates {\tt Region = `GL' AND GPA >= 3.0}.
+     % \begin{center}
+     % \footnotesize
+     % \begin{tabular}{l}
+     %    {\tt SELECT * FROM "Law Students"} \\
+     %     {\tt WHERE Region = 'GL' AND GPA >= 3.0} \\
+     %    {\tt ORDER BY LSAT DESC}\\
+     % \end{tabular}
+     % \end{center}
+subject to the singleton constraint set $\constraints = \{ \lb{Sex='F'}{k=100} = 50 \}$. To be consistent with~\cite{ERICA,ERICAfull}, we aim at minimizing the predicate distance (using $DIS_{pred}$ as the distance measure) and allow only results that satisfy the constraints exactly, i.e., $\varepsilon = 0$. When running Erica, we added a constraint requiring that exactly $100$ results are returned to ensure the top-$100$ tuples contains at least $50$ female candidates, and that there are enough results to satisfy the assumption in our problem definition. 
+Using our optimized MILP-based approach, we were able to find a minimal refinement in $\approx 11$ seconds. The refinement selects candidates from the regions {\tt `GL'} or {\tt `SC'} with a GPA of at least $4.0$. Erica found $5$ different refinements in $\approx 53$ seconds, none of them are closer to $Q$ than the refinement found by our framework. In fact, all of the refinements require a GPA of at least $4.0$ and select {\it 3} regions. The refinement found by our system was not generated by Erica due to the additional constraint requiring the output size to be exactly $100$.}
+
+% set $\varepsilon = 0$  and used $DIS_{pred}$ as a distance measure,
+
+% as Erica does not support approximation of constraint sets. We minimize with respect to $DIS_{pred}$, as Erica only supports minimizing with respect to this distance. \felix{Is it exactly this or just similar?} While Erica is not designed to handle {\tt ORDER BY} queries, for a constraint set with only one value of $k$, we may use this system to obtain refinements where the top-$k$ fulfills the constraints by appending a constraint requiring that exactly $k$ results are returned. This way, there are the minimum number of results as assumed by our problem, but no more than $k$, meaning that all resulting tuples are necessarily in the top-$k$. Therefore, we refine $Q$ with Erica by omitting its {\tt ORDER BY} clause, and imposing the constraints that $50$ female candidates appear in the output, and that the output has exactly $100$ results.} \\
+% \indent \revmulti{Using our optimized MILP-based approach, we are able to find a minimal refinement in $\approx 11$ seconds. The minimal refinement selects candidates from the regions {\tt 'GL'} or {\tt 'SC'} with a GPA of at least $4.0$. Erica finds $5$ different refinements satisfying the constraints in $\approx 53$ seconds, although none of them are closer to $Q$ than the refinement found by our framework. In fact, all of the refinements require a GPA of at least $4.0$ and select {\it 3} regions.}
+
+%The original query selects $68$ male candidates and $32$ female candidates in the top-$100$. By selecting students from 1 additional region, and raising the GPA requirement, we receive an output containing 46 male candidates and 54 female candidates in the top-100.

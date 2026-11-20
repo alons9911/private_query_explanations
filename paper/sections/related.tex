@@ -1,0 +1,46 @@
+\section{Related Work}
+\label{sec:related}
+
+We discuss three lines of work: how the pair of query outputs that we explain is produced, how existing systems explain query results and differences between data, and how differential privacy has been used for explanations. To our knowledge, no prior work generates differentially private explanations for the differences between two related query outputs.
+
+\emph{Query refinement and repair.}
+Query refinement has been studied for queries with empty answers~\cite{muslea2005online,KoudasLTV06} and for queries that must meet constraints on the size of the output~\cite{MK09,chu1994structured}.
+Recent work refines queries to satisfy diversity and representation constraints.
+Erica~\cite{ERICA,LMSJ23} changes a query so that the result meets constraints on the sizes of several subgroups. It uses provenance annotations to do this efficiently.
+The work in~\cite{SSAD22} finds a fair query that is close to the user's query. It supports range predicates and a binary sensitive attribute.
+The work in~\cite{CSSM24} changes the selection conditions of top-$k$ queries.
+Provenance has also been used to analyze and reduce bias in data-driven tools~\cite{MLJ22}.
+In consistent query answering, queries are evaluated over the repairs of an inconsistent database~\cite{arenas1999,bertossi2006,bertossi2011}.
+These systems return a refined query or a repaired answer. They give limited support for explaining what the change means for the data.
+Our framework treats the process that produces the second output as a black box, so it can be used together with these systems (Section~\ref{subsec:prelim-settings}).
+
+\emph{Explaining query results and data.}
+Provenance~\cite{buneman2001,cheney2009,herschel2017} tracks why and where output data comes from.
+Intervention-based work~\cite{RoyS14} explains an aggregate result with predicates that select tuples whose removal changes the result.
+Scorpion~\cite{wu2013} finds predicates that explain outliers in aggregate results using properties of the input tuples.
+Why-not questions~\cite{CJ09,tran2010conquer} ask why some tuples are missing from a query result.
+CAPE~\cite{MZGR19} explains an outlier in an aggregate result by values that deviate in the opposite direction.
+MacroBase~\cite{MacroBase} explains outliers with attribute-value combinations that are common among outliers and rare among inliers. It ranks them with the relative risk ratio.
+DIFF~\cite{DIFF} is a relational operator that provides the functionality of such explanation engines.
+Some works are closer to ours.
+SeeDB~\cite{SeeDB} scores a view by the distance between its distributions on a target subset and on a reference subset.
+FEDEX~\cite{FEDEX} scores a data exploration step by how much it changes the distribution of an attribute.
+Contrast set mining~\cite{BayPazzani01} and emerging patterns~\cite{DongLi99} look for conjunctions of attribute values whose distribution or support differs between groups or datasets.
+We use the interestingness, coverage, representativeness and diversity measures from this literature (Section~\ref{subsec:prelim-quality}).
+However, these works mainly explain a single query result, a prediction, or a data transformation. They do not explain the differences between two related query outputs.
+In addition, explanations based on individual tuples cannot be used under differential privacy~\cite{TaoGMR22}.
+
+\emph{Differential privacy for explanations.}
+DPXPlain~\cite{TaoGMR22} explains aggregate query results under differential privacy.
+The user compares the aggregate values of two groups in a query result.
+DPXPlain releases noisy answers, a confidence interval for the difference between the groups, and a table of top-$k$ explanation predicates.
+The predicates are selected with the one-shot top-$k$ mechanism~\cite{DurfeeRogers19}.
+DPClustX~\cite{DPClustX} explains clustering results under differential privacy using histograms. It works in two stages.
+It replaces quality measures with high sensitivity by measures with low sensitivity.
+Like both works, we use private selection. Like DPClustX, we release noisy histograms and use quality measures with low sensitivity.
+Our setting is different. We explain the difference between two related query outputs, such as a query and its refinement.
+Our quality measures are defined for this comparison (Section~\ref{sec:explanation-quality}).
+Each explanation is a pair of noisy histograms of an attribute inside a selected view.
+Systems for differentially private data analysis~\cite{mcsherry2009,JNS18,JNHS20} support aggregate queries. As noted in~\cite{TaoGMR22}, private SQL systems do not support explanations.
+We build our algorithms from known mechanisms: the exponential mechanism~\cite{mcsherry2007}, one-shot top-$k$~\cite{DurfeeRogers19} and the Laplace mechanism~\cite{DMNS2006}.
+We smooth the denominators of ratio-based scores to bound their sensitivity. A similar idea is used in differentially private decision trees~\cite{FriedmanSchuster10} and in~\cite{DPClustX}.

@@ -1,0 +1,11 @@
+{
+  "tables": ["acs_income"],
+  "selection_numeric_attributes": {
+    "WKHP": [">=", 60, 1],
+    "SCHL": ["<=", 16, 1]
+  },
+  "selection_categorical_attributes": {
+    "PINCP_bucket": ["<20K"]
+  }
+}
+

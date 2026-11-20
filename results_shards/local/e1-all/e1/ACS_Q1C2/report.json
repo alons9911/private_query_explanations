@@ -1,0 +1,1463 @@
+{
+  "pair": {
+    "pair": "ACS_Q1C2",
+    "dataset": "acsincome",
+    "synthetic_data": false,
+    "N": 1664500,
+    "kind": "refinement",
+    "Q1": "WKHP >= 40 AND SCHL >= 19 AND COW IN ('3', '4', '5')",
+    "Q2": "WKHP >= 41 AND SCHL >= 19 AND COW IN ('3', '4', '5')",
+    "|Q1|": 141100,
+    "|Q2|": 48096,
+    "|Q1 & Q2|": 48096,
+    "constraint: <= 15249 tuples with SEX = 'M' AND RELP = 1": {
+      "share_Q1": 0.1138,
+      "share_Q2": 0.1286
+    },
+    "constraint: <= 11498 tuples with age_bucket = '30-60' AND MAR = 3": {
+      "share_Q1": 0.0858,
+      "share_Q2": 0.0826
+    },
+    "aggregate": "PINCP",
+    "AVG_Q1": 70386.3945145287,
+    "AVG_Q2": 80148.06911177645
+  },
+  "parameters": {
+    "k": 5,
+    "lambda": 0.5,
+    "epsilon": 1.0,
+    "eps_P": 0.333333333,
+    "eps_S": 0.333333333,
+    "eps_H": 0.333333334,
+    "tau": 15,
+    "gamma": 150.31905897320672,
+    "gamma_R": 16645.0,
+    "|P|": 914,
+    "|Attrs|": 10,
+    "Delta_Use": 2.4031240612796634e-06,
+    "laplace_scale_per_bin": 29.999999940000002,
+    "sigma_of_released_difference": 59.999999880000004
+  },
+  "view_stage": {
+    "exact_top_tau": [
+      {
+        "rank": 1,
+        "view": "RAC1P='White'",
+        "use": 0.08864224498729217,
+        "coverage": 0.09041153499549415,
+        "representativeness": 0.9804307049062915
+      },
+      {
+        "rank": 2,
+        "view": "MAR='married'",
+        "use": 0.06905811348160892,
+        "coverage": 0.07554280564734155,
+        "representativeness": 0.9141587063100981
+      },
+      {
+        "rank": 3,
+        "view": "RELP='reference-person'",
+        "use": 0.06495138827364536,
+        "coverage": 0.0690765995794533,
+        "representativeness": 0.940280625697809
+      },
+      {
+        "rank": 4,
+        "view": "MAR='married' AND RAC1P='White'",
+        "use": 0.0564437874858541,
+        "coverage": 0.06281105437068189,
+        "representativeness": 0.8986282438875948
+      },
+      {
+        "rank": 5,
+        "view": "SEX='F'",
+        "use": 0.05501881137695538,
+        "coverage": 0.058653649744668065,
+        "representativeness": 0.9380287776884146
+      },
+      {
+        "rank": 6,
+        "view": "WKHP IN (25, 40]",
+        "use": 0.054064201554623055,
+        "coverage": 0.055875037548813455,
+        "representativeness": 0.9675913238964999
+      },
+      {
+        "rank": 7,
+        "view": "SEX='M'",
+        "use": 0.052006391640324535,
+        "coverage": 0.05501171522979874,
+        "representativeness": 0.9453693894669498
+      },
+      {
+        "rank": 8,
+        "view": "RAC1P='White' AND RELP='reference-person'",
+        "use": 0.050506526816333296,
+        "coverage": 0.0548747371583058,
+        "representativeness": 0.9203966967646544
+      },
+      {
+        "rank": 9,
+        "view": "SCHL IN (19, 21]",
+        "use": 0.04862804841320527,
+        "coverage": 0.05222529288074497,
+        "representativeness": 0.9311206453977403
+      },
+      {
+        "rank": 10,
+        "view": "COW='local-gov'",
+        "use": 0.04451442209797445,
+        "coverage": 0.05028296785821568,
+        "representativeness": 0.8852783356681142
+      },
+      {
+        "rank": 11,
+        "view": "SEX='F' AND RAC1P='White'",
+        "use": 0.04261981823041456,
+        "coverage": 0.045909282066686694,
+        "representativeness": 0.9283486108213598
+      },
+      {
+        "rank": 12,
+        "view": "SEX='M' AND RAC1P='White'",
+        "use": 0.041364951903832194,
+        "coverage": 0.04450225292880745,
+        "representativeness": 0.9295024224954598
+      },
+      {
+        "rank": 13,
+        "view": "RAC1P='White' AND WKHP IN (25, 40]",
+        "use": 0.04053609806611128,
+        "coverage": 0.04203063983178132,
+        "representativeness": 0.9644416127936282
+      },
+      {
+        "rank": 14,
+        "view": "RAC1P='White' AND SCHL IN (19, 21]",
+        "use": 0.03824097680581384,
+        "coverage": 0.041611895464103335,
+        "representativeness": 0.9189914657649415
+      },
+      {
+        "rank": 15,
+        "view": "MAR='married' AND RELP='reference-person'",
+        "use": 0.03818649639103846,
+        "coverage": 0.042466806848903575,
+        "representativeness": 0.8992080927324154
+      }
+    ],
+    "retained": [
+      {
+        "noisy_rank": 1,
+        "view": "RAC1P='White'",
+        "exact_rank": 1,
+        "use": 0.08864224498729217,
+        "coverage": 0.09041153499549415,
+        "representativeness": 0.9804307049062915
+      },
+      {
+        "noisy_rank": 2,
+        "view": "MAR='married'",
+        "exact_rank": 2,
+        "use": 0.06905811348160892,
+        "coverage": 0.07554280564734155,
+        "representativeness": 0.9141587063100981
+      },
+      {
+        "noisy_rank": 3,
+        "view": "RELP='reference-person'",
+        "exact_rank": 3,
+        "use": 0.06495138827364536,
+        "coverage": 0.0690765995794533,
+        "representativeness": 0.940280625697809
+      },
+      {
+        "noisy_rank": 4,
+        "view": "MAR='married' AND RAC1P='White'",
+        "exact_rank": 4,
+        "use": 0.0564437874858541,
+        "coverage": 0.06281105437068189,
+        "representativeness": 0.8986282438875948
+      },
+      {
+        "noisy_rank": 5,
+        "view": "SEX='F'",
+        "exact_rank": 5,
+        "use": 0.05501881137695538,
+        "coverage": 0.058653649744668065,
+        "representativeness": 0.9380287776884146
+      },
+      {
+        "noisy_rank": 6,
+        "view": "WKHP IN (25, 40]",
+        "exact_rank": 6,
+        "use": 0.054064201554623055,
+        "coverage": 0.055875037548813455,
+        "representativeness": 0.9675913238964999
+      },
+      {
+        "noisy_rank": 7,
+        "view": "SEX='M'",
+        "exact_rank": 7,
+        "use": 0.052006391640324535,
+        "coverage": 0.05501171522979874,
+        "representativeness": 0.9453693894669498
+      },
+      {
+        "noisy_rank": 8,
+        "view": "RAC1P='White' AND RELP='reference-person'",
+        "exact_rank": 8,
+        "use": 0.050506526816333296,
+        "coverage": 0.0548747371583058,
+        "representativeness": 0.9203966967646544
+      },
+      {
+        "noisy_rank": 9,
+        "view": "SCHL IN (19, 21]",
+        "exact_rank": 9,
+        "use": 0.04862804841320527,
+        "coverage": 0.05222529288074497,
+        "representativeness": 0.9311206453977403
+      },
+      {
+        "noisy_rank": 10,
+        "view": "COW='local-gov'",
+        "exact_rank": 10,
+        "use": 0.04451442209797445,
+        "coverage": 0.05028296785821568,
+        "representativeness": 0.8852783356681142
+      },
+      {
+        "noisy_rank": 11,
+        "view": "SEX='F' AND RAC1P='White'",
+        "exact_rank": 11,
+        "use": 0.04261981823041456,
+        "coverage": 0.045909282066686694,
+        "representativeness": 0.9283486108213598
+      },
+      {
+        "noisy_rank": 12,
+        "view": "SEX='M' AND RAC1P='White'",
+        "exact_rank": 12,
+        "use": 0.041364951903832194,
+        "coverage": 0.04450225292880745,
+        "representativeness": 0.9295024224954598
+      },
+      {
+        "noisy_rank": 13,
+        "view": "RAC1P='White' AND WKHP IN (25, 40]",
+        "exact_rank": 13,
+        "use": 0.04053609806611128,
+        "coverage": 0.04203063983178132,
+        "representativeness": 0.9644416127936282
+      },
+      {
+        "noisy_rank": 14,
+        "view": "MAR='married' AND RELP='reference-person'",
+        "exact_rank": 15,
+        "use": 0.03818649639103846,
+        "coverage": 0.042466806848903575,
+        "representativeness": 0.8992080927324154
+      },
+      {
+        "noisy_rank": 15,
+        "view": "RAC1P='White' AND SCHL IN (19, 21]",
+        "exact_rank": 14,
+        "use": 0.03824097680581384,
+        "coverage": 0.041611895464103335,
+        "representativeness": 0.9189914657649415
+      }
+    ],
+    "overlap_with_exact_top_tau": 1.0,
+    "retained_atom_counts": {
+      "RAC1P='White'": 7,
+      "MAR='married'": 3,
+      "RELP='reference-person'": 3,
+      "SEX='F'": 2,
+      "WKHP IN (25, 40]": 2,
+      "SEX='M'": 2,
+      "SCHL IN (19, 21]": 2,
+      "COW='local-gov'": 1
+    },
+    "query_attribute_views": [
+      {
+        "view": "WKHP IN (25, 40]",
+        "rank": 6,
+        "use": 0.054064201554623055,
+        "coverage": 0.055875037548813455,
+        "representativeness": 0.9675913238964999
+      },
+      {
+        "view": "SCHL IN (19, 21]",
+        "rank": 9,
+        "use": 0.04862804841320527,
+        "coverage": 0.05222529288074497,
+        "representativeness": 0.9311206453977403
+      },
+      {
+        "view": "COW='local-gov'",
+        "rank": 10,
+        "use": 0.04451442209797445,
+        "coverage": 0.05028296785821568,
+        "representativeness": 0.8852783356681142
+      },
+      {
+        "view": "WKHP IN (40, 50]",
+        "rank": 16,
+        "use": 0.03565674814644002,
+        "coverage": 0.03989306097927305,
+        "representativeness": 0.8938082782107379
+      },
+      {
+        "view": "SCHL IN (21, 24]",
+        "rank": 18,
+        "use": 0.03530025727912472,
+        "coverage": 0.043118053469510365,
+        "representativeness": 0.8186885640393352
+      },
+      {
+        "view": "COW='state-gov'",
+        "rank": 21,
+        "use": 0.03226407485726382,
+        "coverage": 0.03715950735956744,
+        "representativeness": 0.8682589503963594
+      },
+      {
+        "view": "COW='federal-gov'",
+        "rank": 46,
+        "use": 0.021890505437275186,
+        "coverage": 0.026222889756683687,
+        "representativeness": 0.8347861597402985
+      },
+      {
+        "view": "SCHL IN (18, 19]",
+        "rank": 63,
+        "use": 0.016849777712309832,
+        "coverage": 0.018322018624211477,
+        "representativeness": 0.9196463587283902
+      },
+      {
+        "view": "WKHP IN (50, 99]",
+        "rank": 67,
+        "use": 0.015708761289792057,
+        "coverage": 0.017897266446380296,
+        "representativeness": 0.8777184681725034
+      },
+      {
+        "view": "COW='private'",
+        "rank": 613,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.9575259804835095
+      },
+      {
+        "view": "COW='non-profit'",
+        "rank": 614,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.8889247996246543
+      },
+      {
+        "view": "COW='self-emp-not-inc'",
+        "rank": 615,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.8741293791069963
+      },
+      {
+        "view": "COW='self-emp-inc'",
+        "rank": 616,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.8433949394091603
+      },
+      {
+        "view": "COW='unpaid-family'",
+        "rank": 617,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.6183693863320632
+      },
+      {
+        "view": "WKHP IN [1, 25]",
+        "rank": 618,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.8184656567518483
+      },
+      {
+        "view": "SCHL IN [1, 16]",
+        "rank": 619,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.8945224587860032
+      },
+      {
+        "view": "SCHL IN (16, 18]",
+        "rank": 620,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.9272869996793445
+      }
+    ]
+  },
+  "explanations": [
+    {
+      "round": 1,
+      "view": "COW='local-gov'",
+      "attr": "OCCP_bucket",
+      "bins": [
+        "OASO",
+        "MBSA",
+        "SRO",
+        "TMMO",
+        "ETLO",
+        "HPTO",
+        "PO",
+        "FPASO",
+        "CEO",
+        "BGCMO",
+        "BOS",
+        "CMO",
+        "IMRW",
+        "HSO",
+        "PCSO",
+        "FS",
+        "ASESMO",
+        "PSO",
+        "AEO",
+        "CSSO",
+        "LO",
+        "LPSSO",
+        "FFFO",
+        "MSO",
+        "EW"
+      ],
+      "noisy_h1": [
+        5963.277,
+        6005.732,
+        356.006,
+        999.594,
+        22872.834,
+        2738.049,
+        681.06,
+        227.599,
+        973.41,
+        1092.9,
+        1265.45,
+        1360.631,
+        736.298,
+        463.502,
+        434.8,
+        1155.775,
+        466.123,
+        8874.238,
+        761.083,
+        2805.958,
+        909.95,
+        918.149,
+        61.854,
+        6.693,
+        -12.126
+      ],
+      "noisy_h2": [
+        940.49,
+        2832.608,
+        61.654,
+        281.627,
+        9174.157,
+        872.645,
+        162.398,
+        30.696,
+        113.886,
+        241.552,
+        242.903,
+        268.437,
+        109.71,
+        150.592,
+        72.19,
+        209.882,
+        97.125,
+        4472.016,
+        159.384,
+        605.829,
+        330.162,
+        266.871,
+        21.192,
+        -11.783,
+        21.633
+      ],
+      "exact_n": [
+        14587,
+        8931,
+        1160,
+        4996,
+        35990,
+        4418,
+        1864,
+        2665,
+        3279,
+        5120,
+        1886,
+        1900,
+        1895,
+        2081,
+        2577,
+        1695,
+        919,
+        14293,
+        1006,
+        3963,
+        1201,
+        1256,
+        128,
+        0,
+        12
+      ],
+      "exact_h1": [
+        5983,
+        5998,
+        372,
+        1028,
+        22865,
+        2740,
+        660,
+        234,
+        932,
+        1082,
+        1228,
+        1358,
+        733,
+        455,
+        406,
+        1123,
+        458,
+        8872,
+        756,
+        2769,
+        944,
+        919,
+        41,
+        0,
+        3
+      ],
+      "exact_h2": [
+        877,
+        2808,
+        95,
+        268,
+        9228,
+        914,
+        154,
+        48,
+        158,
+        154,
+        282,
+        226,
+        154,
+        121,
+        76,
+        231,
+        125,
+        4466,
+        161,
+        600,
+        332,
+        247,
+        9,
+        0,
+        3
+      ],
+      "hd_gamma": 7.310790877892492,
+      "utility": 7.310790877892492,
+      "n_candidates": 128,
+      "bins_clearing_2sigma": [
+        "OASO",
+        "MBSA",
+        "SRO",
+        "TMMO",
+        "ETLO",
+        "HPTO",
+        "PO",
+        "FPASO",
+        "CEO",
+        "BGCMO",
+        "BOS",
+        "CMO",
+        "IMRW",
+        "HSO",
+        "PCSO",
+        "FS",
+        "ASESMO",
+        "PSO",
+        "AEO",
+        "CSSO",
+        "LO",
+        "LPSSO"
+      ],
+      "exact_share_q1": [
+        0.0966,
+        0.0968,
+        0.006,
+        0.0166,
+        0.369,
+        0.0442,
+        0.0107,
+        0.0038,
+        0.015,
+        0.0175,
+        0.0198,
+        0.0219,
+        0.0118,
+        0.0073,
+        0.0066,
+        0.0181,
+        0.0074,
+        0.1432,
+        0.0122,
+        0.0447,
+        0.0152,
+        0.0148,
+        0.0007,
+        0.0,
+        0.0
+      ],
+      "exact_share_q2": [
+        0.0403,
+        0.1292,
+        0.0044,
+        0.0123,
+        0.4245,
+        0.042,
+        0.0071,
+        0.0022,
+        0.0073,
+        0.0071,
+        0.013,
+        0.0104,
+        0.0071,
+        0.0056,
+        0.0035,
+        0.0106,
+        0.0058,
+        0.2055,
+        0.0074,
+        0.0276,
+        0.0153,
+        0.0114,
+        0.0004,
+        0.0,
+        0.0001
+      ],
+      "noisy_total_q1": 62118.839,
+      "noisy_total_q2": 21727.856,
+      "exact_total_q1": 61959,
+      "exact_total_q2": 21737,
+      "exact_abs_diff_total": 40222,
+      "share_of_releases_with_this_explanation": 1.0,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 2,
+      "view": "COW='local-gov'",
+      "attr": "RELP",
+      "bins": [
+        "reference-person",
+        "spouse",
+        "biological-child",
+        "Other",
+        "unmarried-partner",
+        "noninst-group-quarters",
+        "housemate-roommate",
+        "sibling",
+        "other-nonrelative"
+      ],
+      "noisy_h1": [
+        35705.921,
+        18427.157,
+        3474.226,
+        1127.18,
+        1482.885,
+        241.912,
+        585.418,
+        403.557,
+        259.625
+      ],
+      "noisy_h2": [
+        13382.367,
+        6397.26,
+        801.769,
+        339.73,
+        465.247,
+        76.886,
+        222.971,
+        64.96,
+        90.934
+      ],
+      "exact_n": [
+        63945,
+        33953,
+        9334,
+        3461,
+        2788,
+        1540,
+        1189,
+        939,
+        673
+      ],
+      "exact_h1": [
+        35779,
+        18478,
+        3454,
+        1208,
+        1513,
+        259,
+        619,
+        386,
+        263
+      ],
+      "exact_h2": [
+        13416,
+        6415,
+        789,
+        241,
+        454,
+        45,
+        217,
+        88,
+        72
+      ],
+      "hd_gamma": 2.5441000057157113,
+      "utility": 2.5441000057157113,
+      "n_candidates": 127,
+      "bins_clearing_2sigma": [
+        "reference-person",
+        "spouse",
+        "biological-child",
+        "Other",
+        "unmarried-partner",
+        "noninst-group-quarters",
+        "housemate-roommate",
+        "sibling",
+        "other-nonrelative"
+      ],
+      "exact_share_q1": [
+        0.5775,
+        0.2982,
+        0.0557,
+        0.0195,
+        0.0244,
+        0.0042,
+        0.01,
+        0.0062,
+        0.0042
+      ],
+      "exact_share_q2": [
+        0.6172,
+        0.2951,
+        0.0363,
+        0.0111,
+        0.0209,
+        0.0021,
+        0.01,
+        0.004,
+        0.0033
+      ],
+      "noisy_total_q1": 61707.881,
+      "noisy_total_q2": 21842.124,
+      "exact_total_q1": 61959,
+      "exact_total_q2": 21737,
+      "exact_abs_diff_total": 40222,
+      "share_of_releases_with_this_explanation": 1.0,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 3,
+      "view": "RAC1P='White' AND SCHL IN (19, 21]",
+      "attr": "COW",
+      "bins": [
+        "private",
+        "non-profit",
+        "local-gov",
+        "self-emp-not-inc",
+        "state-gov",
+        "self-emp-inc",
+        "federal-gov",
+        "unpaid-family"
+      ],
+      "noisy_h1": [
+        -38.157,
+        62.878,
+        23658.732,
+        31.854,
+        16812.972,
+        -64.537,
+        11639.218,
+        -34.021
+      ],
+      "noisy_h2": [
+        9.298,
+        3.629,
+        8372.787,
+        98.523,
+        4853.827,
+        9.711,
+        3940.545,
+        -4.665
+      ],
+      "exact_n": [
+        263004,
+        43960,
+        32910,
+        26387,
+        21896,
+        19250,
+        12569,
+        1278
+      ],
+      "exact_h1": [
+        0,
+        0,
+        23670,
+        0,
+        16805,
+        0,
+        11646,
+        0
+      ],
+      "exact_h2": [
+        0,
+        0,
+        8364,
+        0,
+        4831,
+        0,
+        3947,
+        0
+      ],
+      "hd_gamma": 1.6114008542277778,
+      "utility": 1.6114008542277778,
+      "n_candidates": 126,
+      "bins_clearing_2sigma": [
+        "local-gov",
+        "state-gov",
+        "federal-gov"
+      ],
+      "exact_share_q1": [
+        0.0,
+        0.0,
+        0.4541,
+        0.0,
+        0.3224,
+        0.0,
+        0.2234,
+        0.0
+      ],
+      "exact_share_q2": [
+        0.0,
+        0.0,
+        0.4879,
+        0.0,
+        0.2818,
+        0.0,
+        0.2303,
+        0.0
+      ],
+      "noisy_total_q1": 52068.939,
+      "noisy_total_q2": 17283.655,
+      "exact_total_q1": 52121,
+      "exact_total_q2": 17142,
+      "exact_abs_diff_total": 34979,
+      "share_of_releases_with_this_explanation": 0.2,
+      "share_of_releases_explaining_this_attr": 0.9
+    },
+    {
+      "round": 4,
+      "view": "RAC1P='White' AND WKHP IN (25, 40]",
+      "attr": "OCCP_bucket",
+      "bins": [
+        "OASO",
+        "MBSA",
+        "SRO",
+        "TMMO",
+        "ETLO",
+        "HPTO",
+        "PO",
+        "FPASO",
+        "CEO",
+        "BGCMO",
+        "BOS",
+        "CMO",
+        "IMRW",
+        "HSO",
+        "PCSO",
+        "FS",
+        "ASESMO",
+        "PSO",
+        "AEO",
+        "CSSO",
+        "LO",
+        "LPSSO",
+        "FFFO",
+        "MSO",
+        "EW"
+      ],
+      "noisy_h1": [
+        8532.87,
+        6606.933,
+        512.068,
+        1035.973,
+        19874.39,
+        3627.852,
+        800.763,
+        294.83,
+        1038.897,
+        1152.291,
+        2638.131,
+        3094.864,
+        1311.43,
+        506.38,
+        346.309,
+        2086.96,
+        790.73,
+        5744.081,
+        1738.201,
+        3352.013,
+        1670.323,
+        2140.753,
+        75.406,
+        890.308,
+        28.933
+      ],
+      "noisy_h2": [
+        -77.266,
+        -35.576,
+        6.807,
+        -18.861,
+        -43.669,
+        -19.39,
+        4.28,
+        47.933,
+        -82.632,
+        -98.788,
+        -6.255,
+        -37.837,
+        -16.279,
+        -44.924,
+        6.756,
+        -18.066,
+        -26.492,
+        -37.4,
+        1.238,
+        -34.361,
+        23.357,
+        -42.323,
+        -69.886,
+        9.717,
+        -73.838
+      ],
+      "exact_n": [
+        97494,
+        62926,
+        63914,
+        45834,
+        48113,
+        49840,
+        41093,
+        32253,
+        40132,
+        25574,
+        23818,
+        23112,
+        23748,
+        19849,
+        16662,
+        17027,
+        14064,
+        14002,
+        14095,
+        13292,
+        7709,
+        7374,
+        4786,
+        1670,
+        728
+      ],
+      "exact_h1": [
+        8622,
+        6621,
+        467,
+        1096,
+        19842,
+        3654,
+        848,
+        249,
+        1057,
+        1191,
+        2648,
+        3115,
+        1241,
+        524,
+        390,
+        1970,
+        777,
+        5773,
+        1766,
+        3319,
+        1524,
+        2196,
+        140,
+        908,
+        22
+      ],
+      "exact_h2": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hd_gamma": 3.1412346167464453,
+      "utility": 1.5706173083732227,
+      "n_candidates": 125,
+      "bins_clearing_2sigma": [
+        "OASO",
+        "MBSA",
+        "SRO",
+        "TMMO",
+        "ETLO",
+        "HPTO",
+        "PO",
+        "FPASO",
+        "CEO",
+        "BGCMO",
+        "BOS",
+        "CMO",
+        "IMRW",
+        "HSO",
+        "PCSO",
+        "FS",
+        "ASESMO",
+        "PSO",
+        "AEO",
+        "CSSO",
+        "LO",
+        "LPSSO",
+        "FFFO",
+        "MSO"
+      ],
+      "exact_share_q1": [
+        0.1232,
+        0.0946,
+        0.0067,
+        0.0157,
+        0.2836,
+        0.0522,
+        0.0121,
+        0.0036,
+        0.0151,
+        0.017,
+        0.0379,
+        0.0445,
+        0.0177,
+        0.0075,
+        0.0056,
+        0.0282,
+        0.0111,
+        0.0825,
+        0.0252,
+        0.0474,
+        0.0218,
+        0.0314,
+        0.002,
+        0.013,
+        0.0003
+      ],
+      "exact_share_q2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "noisy_total_q1": 69891.689,
+      "noisy_total_q2": -683.755,
+      "exact_total_q1": 69960,
+      "exact_total_q2": 0,
+      "exact_abs_diff_total": 69960,
+      "share_of_releases_with_this_explanation": 0.2,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 5,
+      "view": "COW='local-gov'",
+      "attr": "RAC1P",
+      "bins": [
+        "White",
+        "Black",
+        "Asian",
+        "other-race",
+        "two-or-more",
+        "Other"
+      ],
+      "noisy_h1": [
+        49750.372,
+        5854.755,
+        2665.884,
+        1294.595,
+        1420.391,
+        1069.937
+      ],
+      "noisy_h2": [
+        18827.747,
+        1345.988,
+        586.568,
+        250.171,
+        483.826,
+        157.796
+      ],
+      "exact_n": [
+        92809,
+        12197,
+        4525,
+        3147,
+        2694,
+        2450
+      ],
+      "exact_h1": [
+        49751,
+        5822,
+        2609,
+        1290,
+        1416,
+        1071
+      ],
+      "exact_h2": [
+        18817,
+        1390,
+        594,
+        274,
+        493,
+        169
+      ],
+      "hd_gamma": 2.1022162797388013,
+      "utility": 2.1022162797388013,
+      "n_candidates": 124,
+      "bins_clearing_2sigma": [
+        "White",
+        "Black",
+        "Asian",
+        "other-race",
+        "two-or-more",
+        "Other"
+      ],
+      "exact_share_q1": [
+        0.803,
+        0.094,
+        0.0421,
+        0.0208,
+        0.0229,
+        0.0173
+      ],
+      "exact_share_q2": [
+        0.8657,
+        0.0639,
+        0.0273,
+        0.0126,
+        0.0227,
+        0.0078
+      ],
+      "noisy_total_q1": 62055.934,
+      "noisy_total_q2": 21652.095999999998,
+      "exact_total_q1": 61959,
+      "exact_total_q2": 21737,
+      "exact_abs_diff_total": 40222,
+      "share_of_releases_with_this_explanation": 0.8,
+      "share_of_releases_explaining_this_attr": 0.8
+    }
+  ],
+  "releases": {
+    "n": 10,
+    "selections": [
+      [
+        [
+          "COW='local-gov'",
+          "OCCP_bucket"
+        ],
+        [
+          "COW='local-gov'",
+          "RELP"
+        ],
+        [
+          "RAC1P='White' AND SCHL IN (19, 21]",
+          "COW"
+        ],
+        [
+          "RAC1P='White' AND WKHP IN (25, 40]",
+          "OCCP_bucket"
+        ],
+        [
+          "COW='local-gov'",
+          "RAC1P"
+        ]
+      ],
+      [
+        [
+          "COW='local-gov'",
+          "OCCP_bucket"
+        ],
+        [
+          "COW='local-gov'",
+          "RELP"
+        ],
+        [
+          "RAC1P='White' AND WKHP IN (25, 40]",
+          "OCCP_bucket"
+        ],
+        [
+          "RAC1P='White' AND WKHP IN (25, 40]",
+          "COW"
+        ],
+        [
+          "COW='local-gov'",
+          "AGEP"
+        ]
+      ],
+      [
+        [
+          "COW='local-gov'",
+          "OCCP_bucket"
+        ],
+        [
+          "COW='local-gov'",
+          "RELP"
+        ],
+        [
+          "COW='local-gov'",
+          "RAC1P"
+        ],
+        [
+          "WKHP IN (25, 40]",
+          "COW"
+        ],
+        [
+          "COW='local-gov'",
+          "AGEP"
+        ]
+      ],
+      [
+        [
+          "COW='local-gov'",
+          "OCCP_bucket"
+        ],
+        [
+          "COW='local-gov'",
+          "RAC1P"
+        ],
+        [
+          "COW='local-gov'",
+          "RELP"
+        ],
+        [
+          "RAC1P='White' AND WKHP IN (25, 40]",
+          "COW"
+        ],
+        [
+          "COW='local-gov'",
+          "AGEP"
+        ]
+      ],
+      [
+        [
+          "COW='local-gov'",
+          "OCCP_bucket"
+        ],
+        [
+          "COW='local-gov'",
+          "RELP"
+        ],
+        [
+          "COW='local-gov'",
+          "AGEP"
+        ],
+        [
+          "WKHP IN (25, 40]",
+          "OCCP_bucket"
+        ],
+        [
+          "WKHP IN (25, 40]",
+          "COW"
+        ]
+      ],
+      [
+        [
+          "COW='local-gov'",
+          "OCCP_bucket"
+        ],
+        [
+          "COW='local-gov'",
+          "RAC1P"
+        ],
+        [
+          "COW='local-gov'",
+          "RELP"
+        ],
+        [
+          "RAC1P='White' AND WKHP IN (25, 40]",
+          "COW"
+        ],
+        [
+          "COW='local-gov'",
+          "AGEP"
+        ]
+      ],
+      [
+        [
+          "COW='local-gov'",
+          "OCCP_bucket"
+        ],
+        [
+          "COW='local-gov'",
+          "RELP"
+        ],
+        [
+          "WKHP IN (25, 40]",
+          "COW"
+        ],
+        [
+          "COW='local-gov'",
+          "RAC1P"
+        ],
+        [
+          "COW='local-gov'",
+          "AGEP"
+        ]
+      ],
+      [
+        [
+          "COW='local-gov'",
+          "OCCP_bucket"
+        ],
+        [
+          "COW='local-gov'",
+          "RELP"
+        ],
+        [
+          "WKHP IN (25, 40]",
+          "OCCP_bucket"
+        ],
+        [
+          "COW='local-gov'",
+          "AGEP"
+        ],
+        [
+          "COW='local-gov'",
+          "RAC1P"
+        ]
+      ],
+      [
+        [
+          "COW='local-gov'",
+          "OCCP_bucket"
+        ],
+        [
+          "COW='local-gov'",
+          "RELP"
+        ],
+        [
+          "COW='local-gov'",
+          "RAC1P"
+        ],
+        [
+          "RAC1P='White' AND SCHL IN (19, 21]",
+          "COW"
+        ],
+        [
+          "COW='local-gov'",
+          "AGEP"
+        ]
+      ],
+      [
+        [
+          "COW='local-gov'",
+          "OCCP_bucket"
+        ],
+        [
+          "COW='local-gov'",
+          "RELP"
+        ],
+        [
+          "RAC1P='White' AND WKHP IN (25, 40]",
+          "COW"
+        ],
+        [
+          "COW='local-gov'",
+          "AGEP"
+        ],
+        [
+          "COW='local-gov'",
+          "RAC1P"
+        ]
+      ]
+    ],
+    "retained_overlap_with_exact_top_tau": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "timings": {
+    "view_stage_ms": 0.17403099991497584,
+    "explanation_stage_ms": 663.0360500003007,
+    "mechanism_ms": 663.2100810002157,
+    "cache_build_s": 22.400811620999775
+  },
+  "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
+}

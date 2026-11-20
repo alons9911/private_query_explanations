@@ -1,0 +1,503 @@
+rank,view,use,coverage,representativeness,|p(D)|,|Q1(p(D))|,|Q2(p(D))|
+1,State='al',1.00058,1.012,0.988712,954,923,89
+2,EmergencyService='yes',0.843586,0.888,0.949984,830,802,86
+3,State='al' AND EmergencyService='yes',0.793554,0.845,0.939117,789,761,84
+4,Score='90-100',0.562801,0.618,0.910681,571,552,66
+5,Sample='0-99',0.562311,0.623,0.902586,605,585,38
+6,State='al' AND Score='90-100',0.529256,0.588,0.900096,542,524,64
+7,State='al' AND Sample='0-99',0.528004,0.596,0.885912,577,558,38
+8,EmergencyService='yes' AND Score='90-100',0.481187,0.546,0.881295,501,484,62
+9,EmergencyService='yes' AND Sample='0-99',0.433261,0.496,0.873509,477,460,36
+10,Score='90-100' AND Sample='0-99',0.282629,0.322,0.877731,312,302,20
+11,Condition='surgical infection prevention',0.269972,0.311,0.868077,299,285,26
+12,State='al' AND Condition='surgical infection prevention',0.252397,0.295,0.855583,284,270,25
+13,Condition='heart attack',0.246887,0.289,0.85428,269,262,27
+14,State='al' AND Condition='heart attack',0.233628,0.279,0.837375,260,254,25
+15,HospitalOwner='voluntary non-profit - private',0.218235,0.273,0.799396,258,248,25
+16,EmergencyService='yes' AND Condition='surgical infection prevention',0.217391,0.263,0.826582,252,239,24
+17,Condition='pneumonia',0.215434,0.249,0.865195,235,229,20
+18,State='al' AND HospitalOwner='voluntary non-profit - private',0.208555,0.269,0.775297,253,244,25
+19,State='al' AND Condition='pneumonia',0.199825,0.236,0.846715,223,217,19
+20,EmergencyService='yes' AND Condition='heart attack',0.195167,0.239,0.816596,221,215,24
+21,HospitalOwner='government - hospital district or authority',0.189562,0.241,0.786564,198,190,51
+22,HospitalOwner='government - hospital district or authority' AND EmergencyService='yes',0.181499,0.234,0.775639,193,185,49
+23,Condition='heart attack' AND Sample='0-99',0.180135,0.22,0.818794,212,205,15
+24,State='al' AND HospitalOwner='government - hospital district or authority',0.177939,0.234,0.760425,192,184,50
+25,EmergencyService='yes' AND Condition='pneumonia',0.166846,0.204,0.817871,191,186,18
+26,HospitalOwner='proprietary',0.164246,0.207,0.793457,209,202,5
+27,HospitalOwner='voluntary non-profit - private' AND EmergencyService='yes',0.15348,0.198,0.775151,180,174,24
+28,Sample='100-199',0.15099,0.182,0.829615,169,163,19
+29,Score='NA',0.150296,0.191,0.786889,190,182,9
+30,HospitalOwner='voluntary non-profit - private' AND Sample='0-99',0.14547,0.194,0.749843,178,170,24
+31,State='al' AND HospitalOwner='proprietary',0.144442,0.186,0.776569,189,182,4
+32,Condition='heart failure',0.144254,0.167,0.863797,156,154,13
+33,State='al' AND Sample='100-199',0.141233,0.175,0.807046,163,157,18
+34,State='al' AND Score='NA',0.138638,0.182,0.761748,183,175,7
+35,Condition='pneumonia' AND Score='90-100',0.13826,0.168,0.822978,159,153,15
+36,Condition='surgical infection prevention' AND Score='90-100',0.136455,0.175,0.779744,158,152,23
+37,State='al' AND Condition='heart failure',0.133848,0.158,0.847139,147,145,13
+38,HospitalOwner='proprietary' AND EmergencyService='yes',0.131856,0.176,0.749184,179,172,4
+39,EmergencyService='yes' AND Sample='100-199',0.12979,0.163,0.796259,152,146,17
+40,Score='80-89',0.120246,0.138,0.871345,127,126,12
+41,HospitalOwner='government - hospital district or authority' AND Score='90-100',0.120014,0.164,0.731793,128,123,41
+42,HospitalOwner='proprietary' AND Score='90-100',0.117894,0.155,0.760606,155,150,5
+43,Score='90-100' AND Sample='100-199',0.116029,0.142,0.817105,129,124,18
+44,EmergencyService='yes' AND Condition='heart failure',0.115293,0.139,0.829449,128,126,13
+45,Condition='pneumonia' AND Sample='0-99',0.114215,0.146,0.782292,140,137,9
+46,Condition='heart attack' AND Score='90-100',0.112647,0.14,0.804623,128,124,16
+47,State='al' AND Score='80-89',0.111642,0.13,0.858785,119,118,12
+48,EmergencyService='yes' AND Score='NA',0.108761,0.144,0.755286,144,137,7
+49,EmergencyService='no',0.101336,0.142,0.713633,143,139,3
+50,HospitalOwner='voluntary non-profit - other',0.0977003,0.125,0.781603,122,120,5
+51,EmergencyService='yes' AND Score='80-89',0.0960525,0.115,0.835239,105,104,11
+52,Score='NA' AND Sample='0-99',0.0945461,0.123,0.768667,123,116,7
+53,State='al' AND EmergencyService='no',0.0925452,0.136,0.68048,138,135,1
+54,State='al' AND HospitalOwner='voluntary non-profit - other',0.0919345,0.121,0.759789,118,116,5
+55,HospitalOwner='proprietary' AND Sample='0-99',0.0918092,0.121,0.758754,124,120,1
+56,Condition='surgical infection prevention' AND Sample='0-99',0.090612,0.119,0.761445,118,112,7
+57,Condition='heart failure' AND Sample='0-99',0.0892205,0.111,0.803788,107,106,5
+58,HospitalOwner='voluntary non-profit - private' AND Score='90-100',0.085719,0.112,0.765348,101,98,14
+59,Condition='heart failure' AND Score='90-100',0.085575,0.105,0.815,100,98,7
+60,HospitalOwner='voluntary non-profit - other' AND EmergencyService='yes',0.0763841,0.102,0.748864,100,98,4
+61,Condition='heart attack' AND Score='NA',0.0761024,0.1,0.761024,96,93,7
+62,EmergencyService='no' AND Sample='0-99',0.0755082,0.111,0.680254,113,110,1
+63,Score='80-89' AND Sample='0-99',0.0730189,0.089,0.820437,81,81,8
+64,HospitalOwner='government - hospital district or authority' AND Sample='0-99',0.0709779,0.097,0.731731,94,90,7
+65,Sample='200-299',0.0613933,0.08,0.767416,69,67,13
+66,State='al' AND Sample='200-299',0.0573974,0.077,0.745421,66,64,13
+67,EmergencyService='yes' AND Sample='200-299',0.0561672,0.076,0.739042,65,63,13
+68,HospitalOwner='voluntary non-profit - other' AND Sample='0-99',0.056054,0.077,0.727974,76,75,2
+69,Sample='400+',0.0548681,0.08,0.685852,65,63,17
+70,HospitalOwner='voluntary non-profit - private' AND Score='NA',0.0536057,0.077,0.696178,77,72,5
+71,HospitalOwner='voluntary non-profit - private' AND Condition='heart attack',0.0527305,0.078,0.676032,73,71,7
+72,Condition='pneumonia' AND Sample='100-199',0.0520476,0.071,0.733064,68,66,5
+73,HospitalOwner='government - hospital district or authority' AND Condition='surgical infection prevention',0.0519788,0.076,0.683932,63,60,16
+74,HospitalOwner='voluntary non-profit - church',0.050557,0.069,0.73271,72,69,0
+75,EmergencyService='yes' AND Sample='400+',0.0503598,0.077,0.654024,63,61,16
+76,HospitalOwner='voluntary non-profit - private' AND Condition='surgical infection prevention',0.0495524,0.073,0.678799,71,66,7
+77,HospitalOwner='voluntary non-profit - private' AND EmergencyService='no',0.049531,0.071,0.697619,74,70,1
+78,HospitalOwner='voluntary non-profit - other' AND Score='90-100',0.0493734,0.067,0.736917,65,63,4
+79,State='al' AND Sample='400+',0.0480054,0.073,0.657609,59,57,16
+80,HospitalOwner='voluntary non-profit - private' AND Condition='pneumonia',0.04782,0.068,0.703235,63,62,6
+81,HospitalOwner='voluntary non-profit - church' AND EmergencyService='yes',0.0474402,0.067,0.708063,70,67,0
+82,State='al' AND HospitalOwner='voluntary non-profit - church',0.0471638,0.067,0.703937,70,67,0
+83,HospitalOwner='government - hospital district or authority' AND Sample='100-199',0.0463165,0.066,0.701766,53,51,15
+84,HospitalOwner='proprietary' AND Condition='surgical infection prevention',0.0462774,0.069,0.670687,70,67,2
+85,Condition='surgical infection prevention' AND Score='NA',0.0451363,0.064,0.705255,67,63,1
+86,Score='90-100' AND Sample='400+',0.0450634,0.068,0.662697,56,54,14
+87,Score='90-100' AND Sample='200-299',0.0445819,0.059,0.755625,50,48,11
+88,HospitalOwner='voluntary non-profit - church' AND Score='90-100',0.0423686,0.059,0.718111,62,59,0
+89,Score='NA' AND Sample='NA',0.0418696,0.063,0.664597,62,61,2
+90,HospitalOwner='government - hospital district or authority' AND Condition='heart attack',0.0413959,0.06,0.689932,51,49,11
+91,Condition='surgical infection prevention' AND Sample='100-199',0.0405078,0.054,0.750145,53,50,4
+92,Condition='surgical infection prevention' AND Sample='400+',0.040146,0.059,0.680441,51,49,10
+93,Sample='NA',0.0399724,0.064,0.624569,63,62,2
+94,HospitalOwner='government - federal',0.0372172,0.053,0.702211,51,50,3
+95,Condition='surgical infection prevention' AND Score='80-89',0.0365768,0.048,0.762017,48,47,1
+96,Condition='pneumonia' AND Score='80-89',0.0361394,0.047,0.768923,42,42,5
+97,HospitalOwner='government - hospital district or authority' AND Condition='pneumonia',0.0349644,0.054,0.647489,45,43,11
+98,EmergencyService='no' AND Score='90-100',0.0344546,0.051,0.675581,52,50,1
+99,State='al' AND Sample='NA',0.0343159,0.059,0.581625,60,59,0
+100,HospitalOwner='proprietary' AND Condition='pneumonia',0.0341445,0.051,0.6695,50,49,2
+101,Score='70-79',0.0337226,0.042,0.802919,41,39,3
+102,HospitalOwner='proprietary' AND Sample='100-199',0.0337107,0.047,0.71725,46,43,4
+103,HospitalOwner='government - federal' AND Sample='0-99',0.0336834,0.048,0.701737,48,47,1
+104,HospitalOwner='government - federal' AND EmergencyService='yes',0.0330862,0.049,0.675229,49,48,1
+105,State='al' AND Score='70-79',0.0322004,0.041,0.785375,40,38,3
+106,State='al' AND HospitalOwner='government - federal',0.0318695,0.047,0.678075,47,46,1
+107,HospitalOwner='voluntary non-profit - private' AND Condition='heart failure',0.0315817,0.046,0.686558,42,42,4
+108,HospitalOwner='voluntary non-profit - private' AND Score='80-89',0.029859,0.041,0.728269,37,37,4
+109,HospitalOwner='proprietary' AND Condition='heart attack',0.0297745,0.044,0.676693,45,44,0
+110,HospitalOwner='government - state',0.028303,0.04,0.707574,38,38,2
+111,HospitalOwner='voluntary non-profit - other' AND Condition='heart attack',0.0279947,0.042,0.666542,38,37,5
+112,EmergencyService='yes' AND Sample='NA',0.0278463,0.045,0.618807,45,45,0
+113,EmergencyService='yes' AND Score='70-79',0.0272475,0.036,0.756875,34,33,3
+114,EmergencyService='no' AND Score='NA',0.0268009,0.044,0.609111,43,42,2
+115,Condition='Other',0.0265622,0.033,0.804915,32,30,3
+116,State='al' AND HospitalOwner='government - state',0.0265562,0.039,0.680928,37,37,2
+117,HospitalOwner='government - hospital district or authority' AND Score='80-89',0.026101,0.037,0.705433,31,30,7
+118,HospitalOwner='government - hospital district or authority' AND Sample='400+',0.025855,0.04,0.646375,25,24,16
+119,HospitalOwner='government - state' AND EmergencyService='yes',0.0257489,0.038,0.677603,36,36,2
+120,State='al' AND Condition='Other',0.0253605,0.032,0.792515,31,29,3
+121,EmergencyService='no' AND Condition='heart attack',0.0251525,0.043,0.584942,42,41,2
+122,HospitalOwner='voluntary non-profit - church' AND Sample='0-99',0.0251249,0.036,0.697915,37,36,0
+123,HospitalOwner='government - hospital district or authority' AND Condition='heart failure',0.0248732,0.037,0.67225,30,29,8
+124,EmergencyService='yes' AND Condition='Other',0.0243145,0.031,0.78434,29,28,3
+125,EmergencyService='Other',0.0243054,0.031,0.784045,27,27,4
+126,State='al' AND EmergencyService='Other',0.0239922,0.031,0.773943,27,27,4
+127,Score='<50',0.0236844,0.032,0.740138,32,31,1
+128,EmergencyService='no' AND Condition='surgical infection prevention',0.022805,0.04,0.570125,40,39,1
+129,Sample='300-399',0.0226993,0.032,0.709353,29,28,4
+130,State='al' AND Score='<50',0.0223938,0.031,0.722381,31,30,1
+131,State='al' AND Sample='300-399',0.0220495,0.032,0.689048,29,28,4
+132,HospitalOwner='proprietary' AND Condition='heart failure',0.0218471,0.033,0.662034,34,33,0
+133,Condition='surgical infection prevention' AND Sample='200-299',0.021751,0.031,0.701645,27,26,5
+134,HospitalOwner='voluntary non-profit - private' AND Sample='NA',0.0217425,0.034,0.639486,35,34,0
+135,HospitalOwner='Other',0.0213754,0.028,0.763405,27,26,2
+136,EmergencyService='yes' AND Sample='300-399',0.021308,0.031,0.687355,28,27,4
+137,State='Other',0.0212113,0.027,0.785605,26,25,2
+138,EmergencyService='no' AND Condition='pneumonia',0.020918,0.034,0.615236,35,34,0
+139,HospitalOwner='voluntary non-profit - other' AND Score='NA',0.0203971,0.031,0.657973,31,31,0
+140,HospitalOwner='voluntary non-profit - other' AND Condition='surgical infection prevention',0.019869,0.031,0.640935,32,31,0
+141,HospitalOwner='voluntary non-profit - other' AND Condition='pneumonia',0.0196575,0.03,0.65525,30,30,0
+142,Score='<50' AND Sample='0-99',0.0192546,0.027,0.713132,28,27,0
+143,Condition='surgical infection prevention' AND Sample='NA',0.019236,0.034,0.565764,35,34,0
+144,HospitalOwner='government - hospital district or authority' AND Sample='200-299',0.018792,0.027,0.696,18,18,9
+145,State='Other' AND EmergencyService='yes',0.018784,0.025,0.75136,23,23,2
+146,Score='80-89' AND Sample='100-199',0.0186554,0.026,0.717514,26,26,0
+147,Score='70-79' AND Sample='0-99',0.0184973,0.025,0.739893,25,24,1
+148,Score='60-69',0.0180136,0.025,0.720543,26,25,0
+149,Score='90-100' AND Sample='300-399',0.0179839,0.026,0.691689,23,23,3
+150,State='al' AND HospitalOwner='Other',0.0178164,0.024,0.742348,23,22,2
+151,State='al' AND Score='60-69',0.0175743,0.025,0.702972,26,25,0
+152,HospitalOwner='Other' AND EmergencyService='yes',0.0175568,0.024,0.731534,23,22,2
+153,EmergencyService='yes' AND Score='<50',0.0170839,0.024,0.711831,24,23,1
+154,Condition='heart failure' AND Score='80-89',0.0170592,0.024,0.710798,21,21,3
+155,HospitalOwner='voluntary non-profit - private' AND Sample='100-199',0.0164698,0.024,0.686243,24,24,0
+156,HospitalOwner='proprietary' AND EmergencyService='no',0.0164606,0.024,0.68586,24,24,0
+157,Score='60-69' AND Sample='0-99',0.0159557,0.023,0.693728,24,23,0
+158,Condition='Other' AND Sample='0-99',0.0155013,0.021,0.738156,22,20,1
+159,EmergencyService='Other' AND Score='90-100',0.015318,0.021,0.729429,18,18,3
+160,Condition='Other' AND Score='90-100',0.0151507,0.021,0.721461,19,19,2
+161,Condition='heart attack' AND Sample='100-199',0.0150315,0.023,0.653542,20,20,3
+162,HospitalOwner='government - local' AND EmergencyService='no',0.0148825,0.024,0.620103,24,24,0
+163,HospitalOwner='government - local',0.0147623,0.025,0.590492,25,25,0
+164,HospitalOwner='proprietary' AND Score='80-89',0.0147221,0.022,0.669188,22,22,0
+165,Condition='heart failure' AND Sample='100-199',0.0144043,0.021,0.685917,20,19,2
+166,HospitalOwner='government - hospital district or authority' AND Score='NA',0.0143041,0.022,0.650188,22,21,1
+167,State='ak',0.014146,0.022,0.643,20,20,2
+168,HospitalOwner='government - state' AND Score='90-100',0.0141329,0.022,0.642406,22,22,0
+169,State='al' AND HospitalOwner='government - local',0.013929,0.025,0.557161,25,25,0
+170,EmergencyService='no' AND Condition='heart failure',0.0138613,0.023,0.602667,23,23,0
+171,HospitalOwner='voluntary non-profit - church' AND Condition='surgical infection prevention',0.0124948,0.02,0.624738,21,20,0
+172,EmergencyService='no' AND Score='80-89',0.012326,0.019,0.648737,19,19,0
+173,HospitalOwner='government - federal' AND Score='NA',0.0122846,0.02,0.614232,18,18,2
+174,HospitalOwner='government - federal' AND Score='90-100',0.0122233,0.019,0.643332,19,18,1
+175,HospitalOwner='voluntary non-profit - church' AND Condition='heart attack',0.012214,0.019,0.642841,19,19,0
+176,Condition='heart attack' AND Sample='200-299',0.0122004,0.019,0.642125,14,14,5
+177,State='Other' AND Sample='0-99',0.0120506,0.017,0.708857,18,17,0
+178,HospitalOwner='proprietary' AND Score='NA',0.0119948,0.018,0.666379,19,18,0
+179,HospitalOwner='voluntary non-profit - other' AND Score='80-89',0.011942,0.018,0.663444,17,17,1
+180,HospitalOwner='voluntary non-profit - other' AND Condition='heart failure',0.0119256,0.019,0.627664,19,19,0
+181,Condition='heart attack' AND Score='80-89',0.0114977,0.017,0.676333,14,14,3
+182,HospitalOwner='voluntary non-profit - church' AND Sample='100-199',0.0113716,0.017,0.668917,17,17,0
+183,HospitalOwner='voluntary non-profit - other' AND EmergencyService='no',0.0113268,0.017,0.666282,17,17,0
+184,HospitalOwner='Other' AND Sample='0-99',0.0112778,0.016,0.704865,16,15,1
+185,HospitalOwner='Other' AND Score='90-100',0.011198,0.016,0.699875,15,15,1
+186,EmergencyService='Other' AND Sample='0-99',0.011142,0.016,0.696375,15,15,1
+187,State='ak' AND HospitalOwner='proprietary',0.011137,0.017,0.655116,17,17,0
+188,State='ak' AND EmergencyService='yes',0.0109488,0.018,0.608268,18,18,0
+189,HospitalOwner='government - state' AND Sample='0-99',0.0108673,0.017,0.63925,15,15,2
+190,Condition='heart attack' AND Sample='NA',0.0107382,0.019,0.565167,17,17,2
+191,HospitalOwner='voluntary non-profit - other' AND Sample='100-199',0.0106677,0.016,0.666731,17,16,0
+192,HospitalOwner='proprietary' AND Sample='400+',0.0105994,0.018,0.588857,18,18,0
+193,EmergencyService='yes' AND Score='60-69',0.0105776,0.015,0.705173,16,15,0
+194,HospitalOwner='government - state' AND Condition='heart attack',0.0100207,0.016,0.626292,14,14,2
+195,HospitalOwner='voluntary non-profit - church' AND Condition='pneumonia',0.00996257,0.016,0.622661,18,16,0
+196,HospitalOwner='government - local' AND Sample='0-99',0.00979893,0.017,0.576407,17,17,0
+197,State='ak' AND Score='90-100',0.00970077,0.016,0.606298,16,16,0
+198,State='Other' AND Score='90-100',0.00970063,0.014,0.692902,13,12,2
+199,Score='50-59',0.00968051,0.015,0.645367,13,13,2
+200,EmergencyService='no' AND Sample='NA',0.0096425,0.019,0.5075,18,17,2
+201,HospitalOwner='government - federal' AND Condition='heart attack',0.00963262,0.017,0.566625,15,15,2
+202,HospitalOwner='government - federal' AND Condition='surgical infection prevention',0.00949298,0.015,0.632865,16,15,0
+203,State='al' AND Score='50-59',0.00942318,0.015,0.628212,13,13,2
+204,HospitalOwner='voluntary non-profit - private' AND Score='60-69',0.00927033,0.014,0.662167,14,14,0
+205,Condition='pneumonia' AND Sample='200-299',0.00911867,0.014,0.651333,14,13,1
+206,Condition='surgical infection prevention' AND Sample='300-399',0.00907725,0.014,0.648375,15,14,0
+207,HospitalOwner='voluntary non-profit - other' AND Sample='NA',0.00900187,0.015,0.600125,15,15,0
+208,Condition='heart failure' AND Score='70-79',0.00893958,0.014,0.638542,11,11,3
+209,Score='50-59' AND Sample='0-99',0.0086843,0.014,0.620307,12,12,2
+210,Condition='surgical infection prevention' AND Score='70-79',0.008658,0.013,0.666,14,13,0
+211,HospitalOwner='voluntary non-profit - private' AND Score='70-79',0.00863758,0.013,0.664429,13,12,1
+212,HospitalOwner='voluntary non-profit - other' AND Sample='200-299',0.00824363,0.013,0.634125,10,10,3
+213,Condition='heart failure' AND Sample='200-299',0.00802827,0.013,0.61756,11,11,2
+214,HospitalOwner='proprietary' AND Sample='200-299',0.00742595,0.012,0.61883,12,12,0
+215,Condition='pneumonia' AND Score='NA',0.00734414,0.012,0.612011,12,12,0
+216,Condition='children s asthma care',0.00710512,0.012,0.592094,9,8,4
+217,HospitalOwner='government - federal' AND Condition='pneumonia',0.0070865,0.012,0.590542,11,11,1
+218,Score='80-89' AND Sample='200-299',0.007062,0.011,0.642,10,10,1
+219,HospitalOwner='Other' AND Condition='surgical infection prevention',0.00704275,0.011,0.64025,10,10,1
+220,EmergencyService='yes' AND Condition='children s asthma care',0.006888,0.012,0.574,9,8,4
+221,State='al' AND Condition='children s asthma care',0.006888,0.012,0.574,9,8,4
+222,EmergencyService='Other' AND Condition='pneumonia',0.00688586,0.011,0.625987,9,9,2
+223,EmergencyService='no' AND Sample='100-199',0.00668905,0.011,0.608095,11,11,0
+224,Condition='heart failure' AND Sample='400+',0.00649901,0.011,0.590819,8,8,3
+225,HospitalOwner='government - local' AND Score='NA',0.00642409,0.012,0.535341,12,12,0
+226,Condition='heart attack' AND Score='<50',0.00640125,0.01,0.640125,10,10,0
+227,HospitalOwner='government - hospital district or authority' AND Score='70-79',0.00630599,0.01,0.630599,9,9,1
+228,Condition='pneumonia' AND Score='70-79',0.00629,0.01,0.629,10,10,0
+229,Condition='heart attack' AND Score='60-69',0.0062425,0.01,0.62425,10,10,0
+230,HospitalOwner='voluntary non-profit - private' AND Sample='200-299',0.00624,0.01,0.624,10,10,0
+231,HospitalOwner='government - hospital district or authority' AND Sample='300-399',0.00613971,0.01,0.613971,7,6,4
+232,EmergencyService='no' AND Score='60-69',0.00604375,0.01,0.604375,10,10,0
+233,State='ak' AND Sample='0-99',0.00569875,0.01,0.569875,10,10,0
+234,Score='70-79' AND Sample='200-299',0.005673,0.009,0.630333,8,8,1
+235,HospitalOwner='voluntary non-profit - private' AND Sample='400+',0.00545933,0.009,0.606592,9,8,1
+236,Condition='heart failure' AND Score='<50',0.00542066,0.009,0.602296,9,9,0
+237,HospitalOwner='voluntary non-profit - private' AND Score='50-59',0.00527412,0.009,0.586014,8,8,1
+238,HospitalOwner='voluntary non-profit - church' AND Condition='heart failure',0.00527009,0.009,0.585566,9,9,0
+239,Condition='children s asthma care' AND Score='90-100',0.0051523,0.009,0.572478,7,6,3
+240,HospitalOwner='voluntary non-profit - private' AND Condition='Other',0.00512037,0.008,0.640046,9,7,1
+241,State='Other' AND Condition='surgical infection prevention',0.00500829,0.008,0.626037,7,7,1
+242,EmergencyService='Other' AND Sample='100-199',0.0049665,0.008,0.620812,6,6,2
+243,EmergencyService='Other' AND Condition='surgical infection prevention',0.00496094,0.008,0.620118,7,7,1
+244,HospitalOwner='government - state' AND Sample='300-399',0.00492844,0.008,0.616056,8,8,0
+245,HospitalOwner='voluntary non-profit - church' AND Sample='200-299',0.004917,0.008,0.614625,10,8,0
+246,HospitalOwner='proprietary' AND Sample='300-399',0.00489133,0.008,0.611417,8,8,0
+247,HospitalOwner='government - hospital district or authority' AND Condition='Other',0.004889,0.008,0.611125,6,6,2
+248,Condition='heart failure' AND Score='NA',0.00483389,0.008,0.604236,8,8,0
+249,Condition='heart attack' AND Score='50-59',0.00480282,0.008,0.600353,7,7,1
+250,EmergencyService='yes' AND Score='50-59',0.0047735,0.008,0.596688,6,6,2
+251,HospitalOwner='government - state' AND Condition='surgical infection prevention',0.00465644,0.008,0.582056,8,8,0
+252,HospitalOwner='voluntary non-profit - private' AND Score='<50',0.00440378,0.007,0.629111,8,7,0
+253,Condition='Other' AND Score='NA',0.00440357,0.007,0.629081,7,6,1
+254,State='ak' AND Condition='surgical infection prevention',0.00437267,0.008,0.546583,8,8,0
+255,Condition='pneumonia' AND Sample='400+',0.00435357,0.008,0.544196,4,4,4
+256,EmergencyService='Other' AND Condition='heart attack',0.00431944,0.007,0.617063,6,6,1
+257,Condition='heart failure' AND Sample='300-399',0.00428269,0.007,0.611812,6,6,1
+258,State='Other' AND HospitalOwner='government - hospital district or authority',0.004207,0.007,0.601,6,6,1
+259,State='Other' AND Condition='pneumonia',0.00419912,0.007,0.599875,6,6,1
+260,Score='80-89' AND Sample='400+',0.00417113,0.007,0.595875,5,5,2
+261,HospitalOwner='government - state' AND Sample='100-199',0.00413916,0.007,0.591309,7,7,0
+262,HospitalOwner='government - hospital district or authority' AND EmergencyService='Other',0.00413438,0.007,0.590625,5,5,2
+263,HospitalOwner='government - federal' AND Score='<50',0.00411157,0.007,0.587368,7,7,0
+264,Condition='Other' AND Sample='100-199',0.00410608,0.007,0.586583,5,5,2
+265,HospitalOwner='government - local' AND Sample='NA',0.00409311,0.008,0.511639,8,8,0
+266,EmergencyService='no' AND Score='50-59',0.00409062,0.007,0.584375,7,7,0
+267,HospitalOwner='proprietary' AND EmergencyService='Other',0.00406525,0.007,0.58075,6,6,1
+268,HospitalOwner='government - federal' AND Condition='heart failure',0.00402613,0.007,0.575162,7,7,0
+269,HospitalOwner='government - state' AND Condition='pneumonia',0.00399437,0.007,0.570625,7,7,0
+270,HospitalOwner='government - state' AND Condition='heart failure',0.00399072,0.007,0.570103,7,7,0
+271,HospitalOwner='government - local' AND Condition='surgical infection prevention',0.00385711,0.008,0.482139,8,8,0
+272,HospitalOwner='government - local' AND Condition='heart attack',0.00374521,0.007,0.535029,7,7,0
+273,HospitalOwner='Other' AND Score='80-89',0.00368025,0.006,0.613375,6,6,0
+274,State='Other' AND Condition='heart attack',0.00363124,0.006,0.605206,7,6,0
+275,HospitalOwner='Other' AND Condition='heart attack',0.00360525,0.006,0.600875,7,6,0
+276,HospitalOwner='voluntary non-profit - other' AND EmergencyService='Other',0.00359075,0.006,0.598458,5,5,1
+277,State='Other' AND Score='80-89',0.00353438,0.006,0.589063,6,6,0
+278,HospitalOwner='government - state' AND Score='70-79',0.00349275,0.006,0.582125,6,6,0
+279,HospitalOwner='proprietary' AND Condition='children s asthma care',0.0034125,0.006,0.56875,6,5,1
+280,State='ak' AND Condition='pneumonia',0.003384,0.006,0.564,6,6,0
+281,Condition='heart attack' AND Sample='300-399',0.00336514,0.006,0.560857,4,4,2
+282,Condition='pneumonia' AND Sample='NA',0.0033615,0.006,0.56025,6,6,0
+283,Condition='children s asthma care' AND Sample='0-99',0.003288,0.006,0.548,6,5,1
+284,EmergencyService='no' AND Score='<50',0.003285,0.006,0.5475,6,6,0
+285,HospitalOwner='government - local' AND Condition='pneumonia',0.00326813,0.006,0.544687,6,6,0
+286,Condition='children s asthma care' AND Sample='100-199',0.00318156,0.006,0.53026,3,3,3
+287,HospitalOwner='government - hospital district or authority' AND Condition='children s asthma care',0.00315981,0.006,0.526635,3,3,3
+288,Condition='surgical infection prevention' AND Score='60-69',0.00305063,0.005,0.610125,6,5,0
+289,EmergencyService='no' AND Score='70-79',0.00298375,0.005,0.59675,6,5,0
+290,Score='80-89' AND Sample='300-399',0.00298208,0.005,0.596417,5,4,1
+291,Score='NA' AND Sample='100-199',0.00297063,0.005,0.594125,5,5,0
+292,HospitalOwner='proprietary' AND Score='70-79',0.00295938,0.005,0.591875,6,5,0
+293,HospitalOwner='Other' AND Condition='pneumonia',0.00294708,0.005,0.589417,5,5,0
+294,EmergencyService='Other' AND Condition='heart failure',0.00294479,0.005,0.588958,5,5,0
+295,State='Other' AND Score='NA',0.00292458,0.005,0.584917,5,5,0
+296,Condition='pneumonia' AND Score='60-69',0.00289687,0.005,0.579375,5,5,0
+297,HospitalOwner='Other' AND Sample='100-199',0.00288542,0.005,0.577083,5,5,0
+298,HospitalOwner='Other' AND Sample='200-299',0.00287018,0.005,0.574036,4,4,1
+299,HospitalOwner='Other' AND Condition='heart failure',0.00286937,0.005,0.573875,4,4,1
+300,HospitalOwner='voluntary non-profit - church' AND Score='80-89',0.00286396,0.005,0.572792,5,5,0
+301,State='Other' AND Condition='heart failure',0.00285646,0.005,0.571292,5,5,0
+302,State='Other' AND Sample='100-199',0.00284848,0.005,0.569696,4,4,1
+303,HospitalOwner='voluntary non-profit - church' AND Condition='Other',0.00284354,0.005,0.568708,5,5,0
+304,HospitalOwner='government - state' AND Sample='200-299',0.00284167,0.005,0.568333,5,5,0
+305,HospitalOwner='government - state' AND Score='80-89',0.00283292,0.005,0.566583,5,5,0
+306,HospitalOwner='government - local' AND Score='<50',0.00271062,0.005,0.542125,5,5,0
+307,Condition='pneumonia' AND Score='<50',0.0026825,0.005,0.5365,5,5,0
+308,HospitalOwner='government - federal' AND Sample='NA',0.00263457,0.005,0.526913,3,3,2
+309,Score='70-79' AND Sample='100-199',0.00239883,0.004,0.599708,5,4,0
+310,State='Other' AND HospitalOwner='voluntary non-profit - private',0.00238567,0.004,0.596417,5,4,0
+311,Condition='heart attack' AND Score='70-79',0.00236157,0.004,0.590393,4,4,0
+312,HospitalOwner='voluntary non-profit - private' AND EmergencyService='Other',0.00234614,0.004,0.586536,4,4,0
+313,HospitalOwner='Other' AND Score='NA',0.0023455,0.004,0.586375,5,4,0
+314,EmergencyService='Other' AND Score='80-89',0.00233888,0.004,0.584721,3,3,1
+315,Condition='surgical infection prevention' AND Score='<50',0.00230983,0.004,0.577458,5,4,0
+316,State='Other' AND HospitalOwner='voluntary non-profit - other',0.002289,0.004,0.57225,4,4,0
+317,State='Other' AND HospitalOwner='proprietary',0.00228538,0.004,0.571346,3,3,1
+318,HospitalOwner='voluntary non-profit - church' AND Score='NA',0.00227264,0.004,0.568161,4,4,0
+319,HospitalOwner='voluntary non-profit - church' AND Sample='400+',0.00227236,0.004,0.568089,4,4,0
+320,HospitalOwner='proprietary' AND Condition='Other',0.00227164,0.004,0.567911,4,4,0
+321,HospitalOwner='voluntary non-profit - other' AND Score='70-79',0.00226114,0.004,0.565286,4,4,0
+322,HospitalOwner='voluntary non-profit - other' AND Sample='400+',0.00225686,0.004,0.564214,4,4,0
+323,Condition='heart failure' AND Score='60-69',0.00225021,0.004,0.562554,4,4,0
+324,HospitalOwner='voluntary non-profit - church' AND Sample='300-399',0.00225014,0.004,0.562536,4,4,0
+325,Condition='heart failure' AND Sample='NA',0.00224614,0.004,0.561536,4,4,0
+326,HospitalOwner='government - federal' AND Score='80-89',0.00224136,0.004,0.560339,4,4,0
+327,Condition='pneumonia' AND Sample='300-399',0.00222996,0.004,0.55749,3,3,1
+328,HospitalOwner='proprietary' AND Score='<50',0.002226,0.004,0.5565,4,4,0
+329,HospitalOwner='government - hospital district or authority' AND Score='<50',0.00220992,0.004,0.552481,3,3,1
+330,State='ak' AND Condition='heart failure',0.0022,0.004,0.55,4,4,0
+331,State='ak' AND Sample='400+',0.002197,0.004,0.54925,4,4,0
+332,HospitalOwner='government - local' AND Score='90-100',0.002188,0.004,0.547,4,4,0
+333,HospitalOwner='government - local' AND Condition='heart failure',0.00207936,0.004,0.519839,4,4,0
+334,State='ak' AND HospitalOwner='government - federal',0.00206017,0.004,0.515042,2,2,2
+335,State='ak' AND Sample='NA',0.00205417,0.004,0.513542,2,2,2
+336,State='ak' AND EmergencyService='no',0.00201417,0.004,0.503542,2,2,2
+337,State='ak' AND Condition='heart attack',0.00200233,0.004,0.500583,2,2,2
+338,State='ak' AND Score='NA',0.00200233,0.004,0.500583,2,2,2
+339,HospitalOwner='government - federal' AND EmergencyService='no',0.00199867,0.004,0.499667,2,2,2
+340,HospitalOwner='proprietary' AND Score='60-69',0.00171629,0.003,0.572096,3,3,0
+341,State='Other' AND HospitalOwner='Other',0.00170541,0.003,0.568471,3,3,0
+342,EmergencyService='Other' AND Score='NA',0.00169719,0.003,0.565731,3,3,0
+343,HospitalOwner='government - hospital district or authority' AND Score='60-69',0.00169511,0.003,0.565036,4,3,0
+344,Condition='Other' AND Sample='200-299',0.00169494,0.003,0.564981,3,3,0
+345,EmergencyService='Other' AND Sample='200-299',0.00168594,0.003,0.561981,3,3,0
+346,HospitalOwner='voluntary non-profit - other' AND Condition='Other',0.00166647,0.003,0.55549,3,3,0
+347,HospitalOwner='voluntary non-profit - other' AND Score='<50',0.00166604,0.003,0.555346,3,3,0
+348,HospitalOwner='government - state' AND Sample='400+',0.0016556,0.003,0.551865,3,3,0
+349,EmergencyService='Other' AND Sample='400+',0.00165362,0.003,0.551208,2,2,1
+350,Condition='heart failure' AND Score='50-59',0.00164991,0.003,0.549971,3,3,0
+351,HospitalOwner='government - state' AND Score='NA',0.00164625,0.003,0.54875,2,2,1
+352,Score='70-79' AND Sample='400+',0.00163587,0.003,0.545292,2,2,1
+353,State='Other' AND Sample='400+',0.00163138,0.003,0.543792,2,2,1
+354,HospitalOwner='government - local' AND Score='60-69',0.00162787,0.003,0.542625,3,3,0
+355,Condition='children s asthma care' AND Score='<50',0.00160825,0.003,0.536083,2,2,1
+356,Score='60-69' AND Sample='100-199',0.00112425,0.002,0.562125,2,2,0
+357,State='Other' AND EmergencyService='no',0.00111146,0.002,0.555731,3,2,0
+358,HospitalOwner='Other' AND Sample='400+',0.00110992,0.002,0.554958,2,2,0
+359,Score='<50' AND Sample='400+',0.0011075,0.002,0.55375,2,2,0
+360,HospitalOwner='voluntary non-profit - private' AND Sample='300-399',0.00110125,0.002,0.550625,2,2,0
+361,HospitalOwner='government - state' AND EmergencyService='Other',0.00110025,0.002,0.550125,2,2,0
+362,EmergencyService='Other' AND Score='<50',0.00109583,0.002,0.547917,2,2,0
+363,HospitalOwner='Other' AND EmergencyService='Other',0.00109492,0.002,0.547458,2,2,0
+364,HospitalOwner='government - state' AND Condition='Other',0.00109192,0.002,0.545958,2,2,0
+365,EmergencyService='no' AND Condition='Other',0.00108673,0.002,0.543365,3,2,0
+366,HospitalOwner='Other' AND EmergencyService='no',0.00108517,0.002,0.542583,2,2,0
+367,Condition='heart attack' AND Sample='400+',0.00108192,0.002,0.540958,2,2,0
+368,HospitalOwner='government - federal' AND Condition='Other',0.00107533,0.002,0.537667,2,2,0
+369,State='Other' AND HospitalOwner='voluntary non-profit - church',0.00107525,0.002,0.537625,2,2,0
+370,HospitalOwner='voluntary non-profit - other' AND Score='50-59',0.00107167,0.002,0.535833,2,2,0
+371,HospitalOwner='voluntary non-profit - church' AND EmergencyService='Other',0.00107108,0.002,0.535542,2,2,0
+372,State='ak' AND Sample='100-199',0.00106942,0.002,0.534708,2,2,0
+373,Condition='pneumonia' AND Score='50-59',0.0010675,0.002,0.53375,2,2,0
+374,State='ak' AND Score='80-89',0.00106508,0.002,0.532542,2,2,0
+375,Condition='Other' AND Score='80-89',0.00106142,0.002,0.530708,2,2,0
+376,HospitalOwner='government - federal' AND Score='70-79',0.00106108,0.002,0.530542,2,2,0
+377,State='Other' AND HospitalOwner='government - federal',0.00105958,0.002,0.529792,2,2,0
+378,State='ak' AND Sample='200-299',0.00105508,0.002,0.527542,2,2,0
+379,Condition='surgical infection prevention' AND Score='50-59',0.00104523,0.002,0.522614,1,1,1
+380,HospitalOwner='Other' AND Score='70-79',0.00103975,0.002,0.519875,1,1,1
+381,HospitalOwner='government - state' AND Score='50-59',0.00103898,0.002,0.519489,1,1,1
+382,Score='<50' AND Sample='100-199',0.0010165,0.002,0.50825,1,1,1
+383,HospitalOwner='government - state' AND Score='60-69',0.000537102,0.001,0.537102,1,1,0
+384,HospitalOwner='government - state' AND Score='<50',0.000532489,0.001,0.532489,1,1,0
+385,Condition='Other' AND Score='70-79',0.000532125,0.001,0.532125,2,1,0
+386,HospitalOwner='government - hospital district or authority' AND Sample='NA',0.000530227,0.001,0.530227,1,1,0
+387,Score='70-79' AND Sample='300-399',0.000528989,0.001,0.528989,1,1,0
+388,EmergencyService='Other' AND Sample='300-399',0.000525625,0.001,0.525625,1,1,0
+389,Condition='Other' AND Score='60-69',0.000525614,0.001,0.525614,1,1,0
+390,Condition='Other' AND Sample='NA',0.000525364,0.001,0.525364,1,1,0
+391,HospitalOwner='government - hospital district or authority' AND Score='50-59',0.000525364,0.001,0.525364,1,1,0
+392,State='Other' AND Sample='NA',0.000525239,0.001,0.525239,1,1,0
+393,EmergencyService='no' AND Sample='200-299',0.000525114,0.001,0.525114,1,1,0
+394,EmergencyService='Other' AND Score='70-79',0.000524989,0.001,0.524989,1,1,0
+395,Condition='Other' AND Sample='300-399',0.000524989,0.001,0.524989,1,1,0
+396,State='Other' AND Score='70-79',0.000524875,0.001,0.524875,1,1,0
+397,HospitalOwner='Other' AND Condition='Other',0.00052375,0.001,0.52375,1,1,0
+398,HospitalOwner='government - local' AND EmergencyService='Other',0.000522489,0.001,0.522489,1,1,0
+399,HospitalOwner='government - federal' AND Score='60-69',0.000522364,0.001,0.522364,1,1,0
+400,HospitalOwner='proprietary' AND Sample='NA',0.000522364,0.001,0.522364,1,1,0
+401,Score='90-100' AND Sample='NA',0.000522364,0.001,0.522364,1,1,0
+402,HospitalOwner='government - local' AND Score='50-59',0.000522239,0.001,0.522239,1,1,0
+403,State='Other' AND Sample='200-299',0.000521739,0.001,0.521739,1,1,0
+404,Score='50-59' AND Sample='100-199',0.000521614,0.001,0.521614,1,1,0
+405,Score='<50' AND Sample='200-299',0.000520875,0.001,0.520875,1,1,0
+406,Condition='Other' AND Score='<50',0.0005195,0.001,0.5195,1,1,0
+407,State='ak' AND HospitalOwner='Other',0.000517875,0.001,0.517875,1,1,0
+408,State='Other' AND Score='<50',0.00051725,0.001,0.51725,1,1,0
+409,HospitalOwner='voluntary non-profit - church' AND Score='<50',0.0005145,0.001,0.5145,1,1,0
+410,State='Other' AND Condition='Other',0.0005125,0.001,0.5125,1,1,0
+411,State='Other' AND HospitalOwner='government - state',0.00051175,0.001,0.51175,1,1,0
+412,State='ak' AND HospitalOwner='government - hospital district or authority',0,0,0.5,0,0,0
+413,State='ak' AND HospitalOwner='government - local',0,0,0.5,0,0,0
+414,State='ak' AND HospitalOwner='government - state',0,0,0.5,0,0,0
+415,State='ak' AND HospitalOwner='voluntary non-profit - church',0,0,0.5,0,0,0
+416,State='ak' AND HospitalOwner='voluntary non-profit - other',0,0,0.5,0,0,0
+417,State='ak' AND HospitalOwner='voluntary non-profit - private',0,0,0.5,0,0,0
+418,State='Other' AND HospitalOwner='government - local',0,0,0.5,0,0,0
+419,State='ak' AND EmergencyService='Other',0,0,0.5,0,0,0
+420,State='Other' AND EmergencyService='Other',0,0,0.5,0,0,0
+421,State='ak' AND Condition='children s asthma care',0,0,0.5,0,0,0
+422,State='ak' AND Condition='Other',0,0,0.5,0,0,0
+423,State='Other' AND Condition='children s asthma care',0,0,0.5,0,0,0
+424,State='ak' AND Score='<50',0,0,0.5,0,0,0
+425,State='ak' AND Score='50-59',0,0,0.5,0,0,0
+426,State='ak' AND Score='60-69',0,0,0.5,0,0,0
+427,State='ak' AND Score='70-79',0,0,0.5,0,0,0
+428,State='Other' AND Score='50-59',0,0,0.5,0,0,0
+429,State='Other' AND Score='60-69',0,0,0.5,0,0,0
+430,State='ak' AND Sample='300-399',0,0,0.5,0,0,0
+431,State='Other' AND Sample='300-399',0,0,0.5,0,0,0
+432,HospitalOwner='government - federal' AND EmergencyService='Other',0,0,0.5,0,0,0
+433,HospitalOwner='government - hospital district or authority' AND EmergencyService='no',0,0,0.5,0,0,0
+434,HospitalOwner='government - local' AND EmergencyService='yes',0,0,0.5,0,0,0
+435,HospitalOwner='government - state' AND EmergencyService='no',0,0,0.5,0,0,0
+436,HospitalOwner='voluntary non-profit - church' AND EmergencyService='no',0,0,0.5,0,0,0
+437,HospitalOwner='government - federal' AND Condition='children s asthma care',0,0,0.5,0,0,0
+438,HospitalOwner='government - local' AND Condition='children s asthma care',0,0,0.5,0,0,0
+439,HospitalOwner='government - local' AND Condition='Other',0,0,0.5,0,0,0
+440,HospitalOwner='government - state' AND Condition='children s asthma care',0,0,0.5,0,0,0
+441,HospitalOwner='voluntary non-profit - church' AND Condition='children s asthma care',0,0,0.5,0,0,0
+442,HospitalOwner='voluntary non-profit - other' AND Condition='children s asthma care',0,0,0.5,0,0,0
+443,HospitalOwner='voluntary non-profit - private' AND Condition='children s asthma care',0,0,0.5,0,0,0
+444,HospitalOwner='Other' AND Condition='children s asthma care',0,0,0.5,0,0,0
+445,HospitalOwner='government - federal' AND Score='50-59',0,0,0.5,0,0,0
+446,HospitalOwner='government - local' AND Score='70-79',0,0,0.5,0,0,0
+447,HospitalOwner='government - local' AND Score='80-89',0,0,0.5,0,0,0
+448,HospitalOwner='proprietary' AND Score='50-59',0,0,0.5,0,0,0
+449,HospitalOwner='voluntary non-profit - church' AND Score='50-59',0,0,0.5,0,0,0
+450,HospitalOwner='voluntary non-profit - church' AND Score='60-69',0,0,0.5,0,0,0
+451,HospitalOwner='voluntary non-profit - church' AND Score='70-79',0,0,0.5,0,0,0
+452,HospitalOwner='voluntary non-profit - other' AND Score='60-69',0,0,0.5,0,0,0
+453,HospitalOwner='Other' AND Score='<50',0,0,0.5,0,0,0
+454,HospitalOwner='Other' AND Score='50-59',0,0,0.5,0,0,0
+455,HospitalOwner='Other' AND Score='60-69',0,0,0.5,0,0,0
+456,HospitalOwner='government - federal' AND Sample='100-199',0,0,0.5,0,0,0
+457,HospitalOwner='government - federal' AND Sample='200-299',0,0,0.5,0,0,0
+458,HospitalOwner='government - federal' AND Sample='300-399',0,0,0.5,0,0,0
+459,HospitalOwner='government - federal' AND Sample='400+',0,0,0.5,0,0,0
+460,HospitalOwner='government - local' AND Sample='100-199',0,0,0.5,0,0,0
+461,HospitalOwner='government - local' AND Sample='200-299',0,0,0.5,0,0,0
+462,HospitalOwner='government - local' AND Sample='300-399',0,0,0.5,0,0,0
+463,HospitalOwner='government - local' AND Sample='400+',0,0,0.5,0,0,0
+464,HospitalOwner='government - state' AND Sample='NA',0,0,0.5,0,0,0
+465,HospitalOwner='voluntary non-profit - church' AND Sample='NA',0,0,0.5,0,0,0
+466,HospitalOwner='voluntary non-profit - other' AND Sample='300-399',0,0,0.5,0,0,0
+467,HospitalOwner='Other' AND Sample='300-399',0,0,0.5,0,0,0
+468,HospitalOwner='Other' AND Sample='NA',0,0,0.5,0,0,0
+469,EmergencyService='no' AND Condition='children s asthma care',0,0,0.5,0,0,0
+470,EmergencyService='Other' AND Condition='children s asthma care',0,0,0.5,0,0,0
+471,EmergencyService='Other' AND Condition='Other',0,0,0.5,0,0,0
+472,EmergencyService='Other' AND Score='50-59',0,0,0.5,0,0,0
+473,EmergencyService='Other' AND Score='60-69',0,0,0.5,0,0,0
+474,EmergencyService='no' AND Sample='300-399',0,0,0.5,0,0,0
+475,EmergencyService='no' AND Sample='400+',0,0,0.5,0,0,0
+476,EmergencyService='Other' AND Sample='NA',0,0,0.5,0,0,0
+477,Condition='children s asthma care' AND Score='50-59',0,0,0.5,0,0,0
+478,Condition='children s asthma care' AND Score='60-69',0,0,0.5,0,0,0
+479,Condition='children s asthma care' AND Score='70-79',0,0,0.5,0,0,0
+480,Condition='children s asthma care' AND Score='80-89',0,0,0.5,0,0,0
+481,Condition='children s asthma care' AND Score='NA',0,0,0.5,0,0,0
+482,Condition='Other' AND Score='50-59',0,0,0.5,0,0,0
+483,Condition='children s asthma care' AND Sample='200-299',0,0,0.5,0,0,0
+484,Condition='children s asthma care' AND Sample='300-399',0,0,0.5,0,0,0
+485,Condition='children s asthma care' AND Sample='400+',0,0,0.5,0,0,0
+486,Condition='children s asthma care' AND Sample='NA',0,0,0.5,0,0,0
+487,Condition='Other' AND Sample='400+',0,0,0.5,0,0,0
+488,Score='<50' AND Sample='300-399',0,0,0.5,0,0,0
+489,Score='<50' AND Sample='NA',0,0,0.5,0,0,0
+490,Score='50-59' AND Sample='200-299',0,0,0.5,0,0,0
+491,Score='50-59' AND Sample='300-399',0,0,0.5,0,0,0
+492,Score='50-59' AND Sample='400+',0,0,0.5,0,0,0
+493,Score='50-59' AND Sample='NA',0,0,0.5,0,0,0
+494,Score='60-69' AND Sample='200-299',0,0,0.5,0,0,0
+495,Score='60-69' AND Sample='300-399',0,0,0.5,0,0,0
+496,Score='60-69' AND Sample='400+',0,0,0.5,0,0,0
+497,Score='60-69' AND Sample='NA',0,0,0.5,0,0,0
+498,Score='70-79' AND Sample='NA',0,0,0.5,0,0,0
+499,Score='80-89' AND Sample='NA',0,0,0.5,0,0,0
+500,Score='NA' AND Sample='200-299',0,0,0.5,0,0,0
+501,Score='NA' AND Sample='300-399',0,0,0.5,0,0,0
+502,Score='NA' AND Sample='400+',0,0,0.5,0,0,0

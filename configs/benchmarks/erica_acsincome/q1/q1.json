@@ -1,0 +1,11 @@
+{
+  "tables": ["acs_income"],
+  "selection_numeric_attributes": {
+    "WKHP": [">=", 40, 1],
+    "SCHL": [">=", 19, 1]
+  },
+  "selection_categorical_attributes": {
+    "COW": ["3", "4", "5"]
+  }
+}
+

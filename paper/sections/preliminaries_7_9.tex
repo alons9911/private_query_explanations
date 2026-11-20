@@ -1,0 +1,297 @@
+\section{Preliminaries}
+\label{sec:preliminaries}
+
+In this work, we study the problem of generating differentially private explanations
+for semantic differences between query outputs.
+
+This section introduces the formal concepts and notation used throughout the paper.
+
+\subsection{Databases and Queries}
+\label{subsec:prelim-db-queries}
+
+Let $D$ be a relational database over schema $\mathcal{R}$~\cite{Foundations}.
+Each tuple $t \in D$ corresponds to an individual entity or record.
+We denote by $Attr(D)$ the set of attributes appearing in the schema of $D$.
+
+We consider SQL-style selection-projection queries and aggregate queries
+with Boolean selection predicates over a single relational table
+$D$ with schema $\mathcal{A}=(A_1,\ldots,A_m)$. Each attribute $A_i$
+has an active domain $Dom(A_i)$, which may be categorical or numerical,
+and each tuple $t \in D$ assigns a value $t[A_i] \in Dom(A_i)$ to every
+attribute $A_i$. A query $Q$ consists of a selection predicate $\varphi$
+over the attributes of $D$ and either returns the selected tuples or
+computes an aggregate over them. Aggregate queries have the form
+\[
+Q(D) =
+\texttt{SELECT } agg(A)
+\texttt{ FROM } D
+\texttt{ WHERE } \varphi,
+\]
+where $agg \in \{\texttt{COUNT},\texttt{SUM},\texttt{AVG}\}$ and
+$\varphi$ is a Boolean combination of atomic conditions. Atomic
+conditions include numerical comparisons, such as $A \leq c$ or
+$A \geq c$, categorical equality predicates, such as $A = v$, and
+categorical set-membership predicates, such as $A \in S$. Given a query
+$Q$ and a database $D$, we denote by $Q(D)$ the output of the query
+evaluated over $D$.
+
+
+
+Throughout the paper, we study pairs of related queries:
+\[
+(Q_1,Q_2),
+\]
+where both queries are evaluated over the same database $D$.
+Our goal is to explain the semantic differences between:
+\[
+Q_1(D)
+\quad\text{and}\quad
+Q_2(D).
+\]
+
+Throughout the paper, we study pairs of related query outputs, denoted
+by $Q_1(D)$ and $Q_2(D)$, where both are derived from the same underlying
+database $D$. The next subsection describes two application settings that
+naturally give rise to such pairs.
+
+\subsection{Application Settings: Query Refinement and Consistent Query Answering}
+
+Query refinement studies the problem of modifying a user query so that
+its output satisfies a desired set of constraints while remaining close
+to the intent of the original query. In diversity-aware and fairness-aware
+query processing, these constraints often specify required cardinalities
+or proportions for groups defined by demographic or sensitive attributes.
+For example, a refinement may relax, tighten, remove, or replace query
+predicates in order to ensure that the result contains sufficient
+representation of a given group \cite{MK09,LMSJ23,ERICA,CSSM24}.
+Formally, given a database $D$, a query $Q$, and a set of output
+constraints $\mathcal{C}$, a query-refinement mechanism returns a refined
+query $Q'$ such that $Q'(D)$ satisfies $\mathcal{C}$, typically while
+minimizing some notion of deviation from $Q$.
+
+Consistent query answering addresses query evaluation over databases
+that may violate a set of integrity constraints. Instead of evaluating a
+query only over the possibly inconsistent database, CQA considers
+repairs: database instances that satisfy the integrity constraints and
+differ minimally from the original database. An answer is considered
+consistent if it is obtained under the repair semantics, e.g., if it is
+returned across the relevant repairs \cite{arenas1999,bertossi2006,bertossi2011}.
+As a result, the answer produced by CQA may differ from the answer
+obtained by evaluating the same query directly on the original database.
+
+Both settings naturally induce the type of related query outputs studied
+in this paper. In query refinement, the pair is the original and refined
+query outputs, $(Q(D),Q'(D))$. In CQA, the pair consists of the direct
+query answer over the original database and the answer obtained under
+the repair semantics. Our goal is not to compute refinements, repairs, or
+consistent answers, but to explain the semantic differences between such
+related outputs in a privacy-preserving manner.
+
+\subsection{Predicate Views}
+\label{subsec:prelim-views}
+
+To explain semantic differences between query outputs, our framework analyzes subsets
+of the data defined by predicates. Predicate-defined subpopulations are commonly used
+in explanation and query-analysis frameworks to localize meaningful changes in the
+data~\cite{FEDEX,dpxplain2022,wu2013}.
+
+\begin{definition}[Predicate View]
+Given a database $D$ and a predicate $p$, the predicate view induced by $p$ is defined as:
+\[
+p(D)=\{t\in D \mid p(t)=\texttt{true}\}.
+\]
+\end{definition}
+
+Predicate views allow the framework to focus on specific semantic regions of the data.
+
+\subsection{Histograms and Marginals}
+\label{subsec:prelim-histograms}
+
+Our explanations are based on distributions of attributes over query outputs and predicate views.
+
+\begin{definition}[Histogram]
+Given a database $D$ and an attribute $A \in Attr(D)$, the histogram of $A$ over $D$
+is the function:
+\[
+H_{D,A}: Dom(A,D)\rightarrow \mathbb{N},
+\]
+where $H_{D,A}(v)$ denotes the number of tuples in $D$ whose value for attribute $A$
+equals $v$.
+\end{definition}
+
+In the standard statistical sense, a marginal distribution is obtained by
+projecting a joint distribution onto a subset of attributes. In this
+paper, we use one-way marginals, namely marginals over a single
+attribute. Concretely, for a query output $Q(D)$ and an attribute $A$,
+the one-way marginal of $A$ is the histogram $H_{Q(D),A}$ over all
+values, of $A$. These one-way marginals are the basic
+objects used in our explanations: comparing $H_{Q_1(D),A}$ and
+$H_{Q_2(D),A}$ summarizes how the two query outputs differ with respect to attribute $A$. Such distributional
+summaries are also widely used in privacy-preserving data analysis and release
+mechanisms~\cite{dwork2014}.
+
+For ease of presentation, we assume that the attribute values used in
+histograms and predicate views are categorical. Numerical attributes can
+be incorporated by rendering them categorical, e.g., by bucketizing their
+domains into ranges, a common practice when presenting aggregate
+results. Thus, for categorical attributes the histogram bins are the
+attribute values, while for numerical attributes the bins correspond to
+the chosen ranges.
+
+\ag{No need to have a formal def for this. Just explain in text and add motivation for this} \alon{Addressed: removed the formal Bucketing definition and replaced it with
+an explanation and motivation for using buckets for numerical
+attributes.}
+
+\ag{Unify with previous section about statistics.}\alon{Addressed}
+
+To quantify semantic differences between query outputs, we use statistical distance
+measures between distributions.
+
+\begin{definition}[Total Variation Distance]
+Given two distributions $P$ and $Q$ over the same domain $\Omega$, the Total Variation
+Distance (TVD) between them is defined as:
+\[
+TVD(P,Q)
+=
+\frac{1}{2}
+\sum_{x\in\Omega}
+|P(x)-Q(x)|.
+\]
+\end{definition}
+
+TVD is commonly used to measure similarity between distributions and is used throughout
+our framework for view filtering and representativeness analysis.
+
+\subsection{Differential Privacy}
+\label{subsec:prelim-dp}
+Because explanations are derived from sensitive data, our framework
+relies on differential privacy to ensure that released explanations do
+not reveal information about any particular individual~\cite{dwork2014}. Intuitively, a
+differentially private mechanism should behave almost the same on two
+databases that differ in one tuple. Thus, whether a single individual is
+included in the database should have only a limited effect on the
+distribution of the released output.
+
+We first define neighboring datasets, which formalize the notion of two
+databases differing in one individual. We then define differential
+privacy as a bound on how much the output distribution of a randomized
+mechanism can change between neighboring datasets. The parameter
+$\epsilon$ controls the privacy loss: smaller values of $\epsilon$
+provide stronger privacy but typically require adding more noise.
+
+The amount of noise needed depends on the sensitivity of the function
+being released, namely the maximum amount by which the function value can
+change between neighboring datasets. The Laplace mechanism releases
+noisy numerical statistics by adding noise calibrated to this sensitivity.
+For private selection tasks, such as choosing informative views or
+explanation candidates, we use the exponential mechanism, which selects
+high-utility candidates with probability increasing in their utility
+while still satisfying differential privacy.
+
+\begin{definition}[Neighboring Datasets~\cite{dwork2006,dwork2014}]
+Two datasets $D,D'$ are neighboring datasets if they differ by exactly one tuple.
+We denote this relation by:
+\[
+D\sim D'.
+\]
+\end{definition}
+
+\begin{definition}[Differential Privacy~\cite{dwork2006,dwork2014}]
+A randomized mechanism $\mathcal{M}$ satisfies $\epsilon$-differential privacy if for
+every pair of neighboring datasets $D\sim D'$ and every subset of outputs $S$:
+\[
+Pr[\mathcal{M}(D)\in S]
+\leq
+\exp(\epsilon)
+Pr[\mathcal{M}(D')\in S].
+\]
+\end{definition}
+
+\begin{definition}[Global Sensitivity~\cite{dwork2014}]
+The global sensitivity of a function $f:D\rightarrow\mathbb{R}$ is defined as:
+\[
+\Delta f
+=
+\max_{D\sim D'}
+|f(D)-f(D')|.
+\]
+\end{definition}
+
+\begin{definition}[Laplace Mechanism~\cite{dwork2006,dwork2014}]
+Given a function $f$ with global sensitivity $\Delta f$, the Laplace mechanism releases:
+\[
+f(D)+Laplace(\Delta f/\epsilon).
+\]
+\end{definition}
+
+Thus, functions with lower sensitivity require less noise for the same
+privacy budget, which motivates the low-sensitivity proxy scores used in
+our algorithm.
+
+\begin{definition}[Exponential Mechanism~\cite{mcsherry2007,dwork2014}]
+Given a dataset $D$, a set of candidate outputs $Y$, a utility function
+$u:Y\times D\rightarrow\mathbb{R}$, and privacy budget $\epsilon$, the exponential
+mechanism selects an output $y\in Y$ with probability proportional to:
+\[
+\exp\left(
+\frac{\epsilon u(y,D)}
+{2\Delta u}
+\right),
+\]
+where $\Delta u$ is the global sensitivity of the utility function.
+\end{definition}
+
+The exponential mechanism enables private selection of high-quality explanation
+candidates while preserving differential privacy.
+
+
+Differential privacy satisfies several important composition properties, enabling
+complex privacy-preserving analytical workflows constructed from multiple private
+mechanisms \cite{mcsherry2009,li2016,bun2016}.
+These properties are central to the privacy analysis of our algorithms, which combine
+private view selection, private candidate selection, and noisy histogram release.
+
+\begin{theorem}[Sequential Composition~\cite{dwork2014,li2016}]
+Let $\mathcal{M}_1,\ldots,\mathcal{M}_k$ be randomized mechanisms such that
+$\mathcal{M}_i$ satisfies $\epsilon_i$-differential privacy for every
+$i \in \{1,\ldots,k\}$.
+Then the mechanism that releases the joint output
+\[
+\mathcal{M}(D)
+=
+\left(
+\mathcal{M}_1(D),
+\ldots,
+\mathcal{M}_k(D)
+\right)
+\]
+satisfies
+\[
+\left(\sum_{i=1}^{k}\epsilon_i\right)
+\text{-differential privacy}.
+\]
+\end{theorem}
+
+Sequential composition allows us to account for the total privacy loss of an algorithm
+that invokes multiple differentially private subroutines by summing their individual
+privacy budgets.
+
+\begin{theorem}[Post-Processing~\cite{dwork2014,li2016}]
+Let $\mathcal{M}$ be an $\epsilon$-differentially private mechanism,
+and let $f$ be any randomized mapping that does not access the private database
+except through the output of $\mathcal{M}$.
+Then the mechanism
+\[
+f(\mathcal{M}(D))
+\]
+also satisfies $\epsilon$-differential privacy.
+\end{theorem}
+
+The post-processing property implies that any deterministic or randomized computation
+performed only on already-private outputs does not incur additional privacy loss.
+
+Differential privacy is also preserved under adaptive composition
+\cite{mcsherry2009,li2016}.
+That is, if each mechanism in a sequence is selected as a function
+of previously released outputs, then the overall privacy loss remains
+bounded by the sum of the individual privacy budgets.

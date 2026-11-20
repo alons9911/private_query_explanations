@@ -1,0 +1,1222 @@
+{
+  "pair": {
+    "pair": "R4",
+    "dataset": "adult",
+    "synthetic_data": false,
+    "N": 48842,
+    "kind": "refinement",
+    "Q1": "occupation = 'Prof-specialty' AND hoursPerWeek >= 50",
+    "Q2": "occupation IN ('Other-service', 'Prof-specialty') AND hoursPerWeek >= 30",
+    "|Q1|": 1681,
+    "|Q2|": 9186,
+    "|Q1 & Q2|": 1681,
+    "constraint: >= 25% with age < 30": {
+      "share_Q1": 0.1469,
+      "share_Q2": 0.2531
+    },
+    "role": "surprising",
+    "aggregate": "income",
+    "AVG_Q1": 0.5817965496728138,
+    "AVG_Q2": 0.3115610711952972
+  },
+  "parameters": {
+    "k": 5,
+    "lambda": 0.5,
+    "epsilon": 1.0,
+    "eps_P": 0.333333333,
+    "eps_S": 0.333333333,
+    "eps_H": 0.333333334,
+    "tau": 15,
+    "gamma": 150.31905897320672,
+    "gamma_R": 488.42,
+    "|P|": 1144,
+    "|Attrs|": 10,
+    "Delta_Use": 8.189672822570739e-05,
+    "laplace_scale_per_bin": 29.999999940000002,
+    "sigma_of_released_difference": 59.999999880000004
+  },
+  "view_stage": {
+    "exact_top_tau": [
+      {
+        "rank": 1,
+        "view": "race='White'",
+        "use": 0.1839965202028718,
+        "coverage": 0.1872978174521928,
+        "representativeness": 0.9823740751802212
+      },
+      {
+        "rank": 2,
+        "view": "workclass='Private'",
+        "use": 0.1363601894252967,
+        "coverage": 0.1415584947381352,
+        "representativeness": 0.9632780404845737
+      },
+      {
+        "rank": 3,
+        "view": "occupation='Prof-specialty'",
+        "use": 0.12694625580173968,
+        "coverage": 0.14882682936816674,
+        "representativeness": 0.8529796431240294
+      },
+      {
+        "rank": 4,
+        "view": "gender='Male'",
+        "use": 0.12596316982002714,
+        "coverage": 0.1367470619548749,
+        "representativeness": 0.9211398623071965
+      },
+      {
+        "rank": 5,
+        "view": "workclass='Private' AND race='White'",
+        "use": 0.11406177738475987,
+        "coverage": 0.11801318537324434,
+        "representativeness": 0.9665172330025054
+      },
+      {
+        "rank": 6,
+        "view": "occupation='Prof-specialty' AND race='White'",
+        "use": 0.11053636928354074,
+        "coverage": 0.13240653535891242,
+        "representativeness": 0.8348256298974326
+      },
+      {
+        "rank": 7,
+        "view": "race='White' AND gender='Male'",
+        "use": 0.10738677134127303,
+        "coverage": 0.11866835919905,
+        "representativeness": 0.9049317953503204
+      },
+      {
+        "rank": 8,
+        "view": "hoursPerWeek='40-49'",
+        "use": 0.10530291535037854,
+        "coverage": 0.10941402890954506,
+        "representativeness": 0.9624260837468542
+      },
+      {
+        "rank": 9,
+        "view": "race='White' AND hoursPerWeek='40-49'",
+        "use": 0.08430010765085871,
+        "coverage": 0.08850988902993326,
+        "representativeness": 0.9524371635168265
+      },
+      {
+        "rank": 10,
+        "view": "occupation='Prof-specialty' AND gender='Male'",
+        "use": 0.07842983621682412,
+        "coverage": 0.10144957208959503,
+        "representativeness": 0.773091838648259
+      },
+      {
+        "rank": 11,
+        "view": "workclass='Private' AND gender='Male'",
+        "use": 0.07813627490476156,
+        "coverage": 0.08556160681380778,
+        "representativeness": 0.9132165443642892
+      },
+      {
+        "rank": 12,
+        "view": "gender='Female'",
+        "use": 0.0722371107218716,
+        "coverage": 0.08574587445231563,
+        "representativeness": 0.8424558170672524
+      },
+      {
+        "rank": 13,
+        "view": "workclass='Private' AND occupation='Prof-specialty'",
+        "use": 0.07028240711508299,
+        "coverage": 0.08161008967691741,
+        "representativeness": 0.8611975234106581
+      },
+      {
+        "rank": 14,
+        "view": "workclass='Private' AND hoursPerWeek='40-49'",
+        "use": 0.06978748931890098,
+        "coverage": 0.07339994267229025,
+        "representativeness": 0.9507839758197383
+      },
+      {
+        "rank": 15,
+        "view": "occupation='Other-service'",
+        "use": 0.06080992988060442,
+        "coverage": 0.07366610703902379,
+        "representativeness": 0.8254804322480492
+      }
+    ],
+    "retained": [
+      {
+        "noisy_rank": 1,
+        "view": "race='White'",
+        "exact_rank": 1,
+        "use": 0.1839965202028718,
+        "coverage": 0.1872978174521928,
+        "representativeness": 0.9823740751802212
+      },
+      {
+        "noisy_rank": 2,
+        "view": "workclass='Private'",
+        "exact_rank": 2,
+        "use": 0.1363601894252967,
+        "coverage": 0.1415584947381352,
+        "representativeness": 0.9632780404845737
+      },
+      {
+        "noisy_rank": 3,
+        "view": "occupation='Prof-specialty'",
+        "exact_rank": 3,
+        "use": 0.12694625580173968,
+        "coverage": 0.14882682936816674,
+        "representativeness": 0.8529796431240294
+      },
+      {
+        "noisy_rank": 4,
+        "view": "gender='Male'",
+        "exact_rank": 4,
+        "use": 0.12596316982002714,
+        "coverage": 0.1367470619548749,
+        "representativeness": 0.9211398623071965
+      },
+      {
+        "noisy_rank": 5,
+        "view": "workclass='Private' AND race='White'",
+        "exact_rank": 5,
+        "use": 0.11406177738475987,
+        "coverage": 0.11801318537324434,
+        "representativeness": 0.9665172330025054
+      },
+      {
+        "noisy_rank": 6,
+        "view": "hoursPerWeek='40-49'",
+        "exact_rank": 8,
+        "use": 0.10530291535037854,
+        "coverage": 0.10941402890954506,
+        "representativeness": 0.9624260837468542
+      },
+      {
+        "noisy_rank": 7,
+        "view": "race='White' AND gender='Male'",
+        "exact_rank": 7,
+        "use": 0.10738677134127303,
+        "coverage": 0.11866835919905,
+        "representativeness": 0.9049317953503204
+      },
+      {
+        "noisy_rank": 8,
+        "view": "occupation='Prof-specialty' AND race='White'",
+        "exact_rank": 6,
+        "use": 0.11053636928354074,
+        "coverage": 0.13240653535891242,
+        "representativeness": 0.8348256298974326
+      },
+      {
+        "noisy_rank": 9,
+        "view": "race='White' AND hoursPerWeek='40-49'",
+        "exact_rank": 9,
+        "use": 0.08430010765085871,
+        "coverage": 0.08850988902993326,
+        "representativeness": 0.9524371635168265
+      },
+      {
+        "noisy_rank": 10,
+        "view": "occupation='Prof-specialty' AND gender='Male'",
+        "exact_rank": 10,
+        "use": 0.07842983621682412,
+        "coverage": 0.10144957208959503,
+        "representativeness": 0.773091838648259
+      },
+      {
+        "noisy_rank": 11,
+        "view": "workclass='Private' AND gender='Male'",
+        "exact_rank": 11,
+        "use": 0.07813627490476156,
+        "coverage": 0.08556160681380778,
+        "representativeness": 0.9132165443642892
+      },
+      {
+        "noisy_rank": 12,
+        "view": "workclass='Private' AND hoursPerWeek='40-49'",
+        "exact_rank": 14,
+        "use": 0.06978748931890098,
+        "coverage": 0.07339994267229025,
+        "representativeness": 0.9507839758197383
+      },
+      {
+        "noisy_rank": 13,
+        "view": "workclass='Private' AND occupation='Prof-specialty'",
+        "exact_rank": 13,
+        "use": 0.07028240711508299,
+        "coverage": 0.08161008967691741,
+        "representativeness": 0.8611975234106581
+      },
+      {
+        "noisy_rank": 14,
+        "view": "occupation='Other-service' AND race='White'",
+        "exact_rank": 23,
+        "use": 0.04486701353353142,
+        "coverage": 0.054891282093280376,
+        "representativeness": 0.8173795878421266
+      },
+      {
+        "noisy_rank": 15,
+        "view": "gender='Male' AND hoursPerWeek='40-49'",
+        "exact_rank": 16,
+        "use": 0.05826251872852329,
+        "coverage": 0.06443225093157529,
+        "representativeness": 0.9042446583217459
+      }
+    ],
+    "overlap_with_exact_top_tau": 0.8666666666666667,
+    "retained_atom_counts": {
+      "race='White'": 6,
+      "workclass='Private'": 5,
+      "gender='Male'": 5,
+      "occupation='Prof-specialty'": 4,
+      "hoursPerWeek='40-49'": 4,
+      "occupation='Other-service'": 1
+    },
+    "query_attribute_views": [
+      {
+        "view": "occupation='Prof-specialty'",
+        "rank": 3,
+        "use": 0.12694625580173968,
+        "coverage": 0.14882682936816674,
+        "representativeness": 0.8529796431240294
+      },
+      {
+        "view": "hoursPerWeek='40-49'",
+        "rank": 8,
+        "use": 0.10530291535037854,
+        "coverage": 0.10941402890954506,
+        "representativeness": 0.9624260837468542
+      },
+      {
+        "view": "occupation='Other-service'",
+        "rank": 15,
+        "use": 0.06080992988060442,
+        "coverage": 0.07366610703902379,
+        "representativeness": 0.8254804322480492
+      },
+      {
+        "view": "hoursPerWeek='50-59'",
+        "rank": 25,
+        "use": 0.04055520063502425,
+        "coverage": 0.047500102370910284,
+        "representativeness": 0.8537918575068337
+      },
+      {
+        "view": "hoursPerWeek='30-39'",
+        "rank": 32,
+        "use": 0.031651253947793,
+        "coverage": 0.03570697350640842,
+        "representativeness": 0.8864165970860698
+      },
+      {
+        "view": "hoursPerWeek='60+'",
+        "rank": 47,
+        "use": 0.02499320385239791,
+        "coverage": 0.029871831620326767,
+        "representativeness": 0.8366813314316784
+      },
+      {
+        "view": "occupation='Craft-repair'",
+        "rank": 467,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.8673381088447818
+      },
+      {
+        "view": "occupation='Exec-managerial'",
+        "rank": 468,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.8632898784581458
+      },
+      {
+        "view": "occupation='Adm-clerical'",
+        "rank": 469,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.8570955090949092
+      },
+      {
+        "view": "occupation='Sales'",
+        "rank": 470,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.9244614008488296
+      },
+      {
+        "view": "occupation='Machine-op-inspct'",
+        "rank": 471,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.8767573730704954
+      },
+      {
+        "view": "occupation='NA'",
+        "rank": 472,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.7483146619886387
+      },
+      {
+        "view": "occupation='Transport-moving'",
+        "rank": 473,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.8571964064155956
+      },
+      {
+        "view": "occupation='Handlers-cleaners'",
+        "rank": 474,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.8442371426834225
+      },
+      {
+        "view": "occupation='Farming-fishing'",
+        "rank": 475,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.8153244756066715
+      },
+      {
+        "view": "occupation='Tech-support'",
+        "rank": 476,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.8605563415555777
+      },
+      {
+        "view": "occupation='Protective-serv'",
+        "rank": 477,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.7970870691684088
+      },
+      {
+        "view": "occupation='Priv-house-serv'",
+        "rank": 478,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.6551733184500345
+      },
+      {
+        "view": "occupation='Armed-Forces'",
+        "rank": 479,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.5148450786466287
+      },
+      {
+        "view": "hoursPerWeek='<20'",
+        "rank": 480,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.7816608181866482
+      },
+      {
+        "view": "hoursPerWeek='20-29'",
+        "rank": 481,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.8042161932178253
+      }
+    ]
+  },
+  "explanations": [
+    {
+      "round": 1,
+      "view": "occupation='Other-service' AND race='White'",
+      "attr": "education",
+      "bins": [
+        "HS-grad",
+        "Some-college",
+        "Bachelors",
+        "Masters",
+        "Assoc-voc",
+        "11th",
+        "Assoc-acdm",
+        "10th",
+        "7th-8th",
+        "Prof-school",
+        "9th",
+        "12th",
+        "Doctorate",
+        "5th-6th",
+        "1st-4th",
+        "Preschool"
+      ],
+      "noisy_h1": [
+        -32.41,
+        9.038,
+        52.582,
+        -7.269,
+        67.624,
+        20.069,
+        -22.543,
+        -73.087,
+        -14.245,
+        30.271,
+        -41.094,
+        -12.83,
+        -16.694,
+        -21.124,
+        17.289,
+        -15.88
+      ],
+      "noisy_h2": [
+        1085.522,
+        632.8,
+        174.108,
+        18.208,
+        128.113,
+        122.781,
+        76.614,
+        13.462,
+        74.313,
+        101.638,
+        26.157,
+        60.736,
+        31.743,
+        60.51,
+        -77.782,
+        41.77
+      ],
+      "exact_n": [
+        1434,
+        984,
+        202,
+        26,
+        132,
+        276,
+        87,
+        213,
+        107,
+        7,
+        104,
+        100,
+        2,
+        74,
+        38,
+        17
+      ],
+      "exact_h1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "exact_h2": [
+        1129,
+        627,
+        164,
+        20,
+        106,
+        130,
+        62,
+        119,
+        80,
+        6,
+        83,
+        49,
+        2,
+        65,
+        29,
+        10
+      ],
+      "hd_gamma": 4.50127174371519,
+      "utility": 4.50127174371519,
+      "n_candidates": 125,
+      "bins_clearing_2sigma": [
+        "HS-grad",
+        "Some-college",
+        "Bachelors"
+      ],
+      "exact_share_q1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exact_share_q2": [
+        0.4211,
+        0.2339,
+        0.0612,
+        0.0075,
+        0.0395,
+        0.0485,
+        0.0231,
+        0.0444,
+        0.0298,
+        0.0022,
+        0.031,
+        0.0183,
+        0.0007,
+        0.0242,
+        0.0108,
+        0.0037
+      ],
+      "noisy_total_q1": -60.30300000000001,
+      "noisy_total_q2": 2570.693,
+      "exact_total_q1": 0,
+      "exact_total_q2": 2681,
+      "exact_abs_diff_total": 2681,
+      "share_of_releases_with_this_explanation": 0.1,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 2,
+      "view": "occupation='Prof-specialty' AND race='White'",
+      "attr": "workclass",
+      "bins": [
+        "Private",
+        "Self-emp-not-inc",
+        "Local-gov",
+        "NA",
+        "State-gov",
+        "Self-emp-inc",
+        "Federal-gov",
+        "Without-pay",
+        "Never-worked"
+      ],
+      "noisy_h1": [
+        789.258,
+        213.613,
+        244.345,
+        -1.572,
+        154.508,
+        103.567,
+        134.25,
+        40.817,
+        0.886
+      ],
+      "noisy_h2": [
+        2650.363,
+        350.228,
+        923.293,
+        -15.098,
+        469.317,
+        178.942,
+        98.755,
+        183.472,
+        32.371
+      ],
+      "exact_n": [
+        3023,
+        531,
+        916,
+        0,
+        517,
+        223,
+        209,
+        0,
+        0
+      ],
+      "exact_h1": [
+        811,
+        199,
+        251,
+        0,
+        122,
+        122,
+        47,
+        0,
+        0
+      ],
+      "exact_h2": [
+        2763,
+        444,
+        846,
+        0,
+        442,
+        216,
+        204,
+        0,
+        0
+      ],
+      "hd_gamma": 2.7009833909043874,
+      "utility": 2.7009833909043874,
+      "n_candidates": 124,
+      "bins_clearing_2sigma": [
+        "Private",
+        "Self-emp-not-inc",
+        "Local-gov",
+        "State-gov",
+        "Without-pay"
+      ],
+      "exact_share_q1": [
+        0.5226,
+        0.1282,
+        0.1617,
+        0.0,
+        0.0786,
+        0.0786,
+        0.0303,
+        0.0,
+        0.0
+      ],
+      "exact_share_q2": [
+        0.5622,
+        0.0903,
+        0.1721,
+        0.0,
+        0.0899,
+        0.0439,
+        0.0415,
+        0.0,
+        0.0
+      ],
+      "noisy_total_q1": 1679.672,
+      "noisy_total_q2": 4871.643,
+      "exact_total_q1": 1552,
+      "exact_total_q2": 4915,
+      "exact_abs_diff_total": 3363,
+      "share_of_releases_with_this_explanation": 0.6,
+      "share_of_releases_explaining_this_attr": 0.9
+    },
+    {
+      "round": 3,
+      "view": "occupation='Prof-specialty'",
+      "attr": "age",
+      "bins": [
+        "<20",
+        "20-29",
+        "30-39",
+        "40-49",
+        "50-59",
+        "60-69",
+        "70+"
+      ],
+      "noisy_h1": [
+        -27.461,
+        291.612,
+        515.399,
+        537.438,
+        259.067,
+        61.134,
+        24.35
+      ],
+      "noisy_h2": [
+        9.434,
+        928.498,
+        1711.066,
+        1694.658,
+        843.426,
+        340.306,
+        52.167
+      ],
+      "exact_n": [
+        54,
+        1189,
+        1785,
+        1798,
+        894,
+        357,
+        95
+      ],
+      "exact_h1": [
+        1,
+        246,
+        512,
+        546,
+        269,
+        88,
+        19
+      ],
+      "exact_h2": [
+        24,
+        979,
+        1692,
+        1696,
+        857,
+        289,
+        51
+      ],
+      "hd_gamma": 2.9495221261117086,
+      "utility": 2.9495221261117086,
+      "n_candidates": 123,
+      "bins_clearing_2sigma": [
+        "20-29",
+        "30-39",
+        "40-49",
+        "50-59",
+        "60-69"
+      ],
+      "exact_share_q1": [
+        0.0006,
+        0.1463,
+        0.3046,
+        0.3248,
+        0.16,
+        0.0523,
+        0.0113
+      ],
+      "exact_share_q2": [
+        0.0043,
+        0.1752,
+        0.3028,
+        0.3035,
+        0.1534,
+        0.0517,
+        0.0091
+      ],
+      "noisy_total_q1": 1661.5389999999998,
+      "noisy_total_q2": 5579.555,
+      "exact_total_q1": 1681,
+      "exact_total_q2": 5588,
+      "exact_abs_diff_total": 3907,
+      "share_of_releases_with_this_explanation": 0.4,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 4,
+      "view": "occupation='Other-service' AND race='White'",
+      "attr": "relationship",
+      "bins": [
+        "Husband",
+        "Not-in-family",
+        "Own-child",
+        "Unmarried",
+        "Wife",
+        "Other-relative"
+      ],
+      "noisy_h1": [
+        -18.18,
+        70.006,
+        2.689,
+        -9.481,
+        24.848,
+        6.636
+      ],
+      "noisy_h2": [
+        547.55,
+        932.993,
+        470.118,
+        406.587,
+        201.955,
+        186.179
+      ],
+      "exact_n": [
+        611,
+        1182,
+        1096,
+        531,
+        207,
+        176
+      ],
+      "exact_h1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "exact_h2": [
+        550,
+        923,
+        518,
+        420,
+        149,
+        121
+      ],
+      "hd_gamma": 3.2350795438671476,
+      "utility": 3.2350795438671476,
+      "n_candidates": 122,
+      "bins_clearing_2sigma": [
+        "Husband",
+        "Not-in-family",
+        "Own-child",
+        "Unmarried",
+        "Wife",
+        "Other-relative"
+      ],
+      "exact_share_q1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exact_share_q2": [
+        0.2051,
+        0.3443,
+        0.1932,
+        0.1567,
+        0.0556,
+        0.0451
+      ],
+      "noisy_total_q1": 76.518,
+      "noisy_total_q2": 2745.382,
+      "exact_total_q1": 0,
+      "exact_total_q2": 2681,
+      "exact_abs_diff_total": 2681,
+      "share_of_releases_with_this_explanation": 0.1,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 5,
+      "view": "occupation='Other-service' AND race='White'",
+      "attr": "maritalStatus",
+      "bins": [
+        "Married-civ-spouse",
+        "Never-married",
+        "Divorced",
+        "Separated",
+        "Widowed",
+        "Married-spouse-absent",
+        "Married-AF-spouse"
+      ],
+      "noisy_h1": [
+        -51.839,
+        -10.792,
+        28.113,
+        1.13,
+        -10.695,
+        -4.707,
+        61.003
+      ],
+      "noisy_h2": [
+        745.638,
+        1161.191,
+        458.204,
+        149.412,
+        123.77,
+        81.522,
+        -1.138
+      ],
+      "exact_n": [
+        847,
+        1919,
+        611,
+        176,
+        191,
+        54,
+        5
+      ],
+      "exact_h1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "exact_h2": [
+        722,
+        1160,
+        511,
+        139,
+        108,
+        38,
+        3
+      ],
+      "hd_gamma": 2.9033968624098474,
+      "utility": 2.9033968624098474,
+      "n_candidates": 121,
+      "bins_clearing_2sigma": [
+        "Married-civ-spouse",
+        "Never-married",
+        "Divorced",
+        "Separated",
+        "Widowed"
+      ],
+      "exact_share_q1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exact_share_q2": [
+        0.2693,
+        0.4327,
+        0.1906,
+        0.0518,
+        0.0403,
+        0.0142,
+        0.0011
+      ],
+      "noisy_total_q1": 12.213000000000001,
+      "noisy_total_q2": 2718.599,
+      "exact_total_q1": 0,
+      "exact_total_q2": 2681,
+      "exact_abs_diff_total": 2681,
+      "share_of_releases_with_this_explanation": 0.1,
+      "share_of_releases_explaining_this_attr": 0.7
+    }
+  ],
+  "releases": {
+    "n": 10,
+    "selections": [
+      [
+        [
+          "occupation='Other-service' AND race='White'",
+          "education"
+        ],
+        [
+          "occupation='Prof-specialty' AND race='White'",
+          "workclass"
+        ],
+        [
+          "occupation='Prof-specialty'",
+          "age"
+        ],
+        [
+          "occupation='Other-service' AND race='White'",
+          "relationship"
+        ],
+        [
+          "occupation='Other-service' AND race='White'",
+          "maritalStatus"
+        ]
+      ],
+      [
+        [
+          "occupation='Prof-specialty'",
+          "education"
+        ],
+        [
+          "occupation='Prof-specialty'",
+          "age"
+        ],
+        [
+          "occupation='Prof-specialty'",
+          "relationship"
+        ],
+        [
+          "hoursPerWeek='40-49'",
+          "occupation"
+        ],
+        [
+          "occupation='Prof-specialty' AND race='White'",
+          "workclass"
+        ]
+      ],
+      [
+        [
+          "occupation='Prof-specialty' AND race='White'",
+          "education"
+        ],
+        [
+          "occupation='Prof-specialty'",
+          "age"
+        ],
+        [
+          "occupation='Prof-specialty' AND race='White'",
+          "workclass"
+        ],
+        [
+          "workclass='Private' AND occupation='Prof-specialty'",
+          "relationship"
+        ],
+        [
+          "occupation='Prof-specialty'",
+          "education"
+        ]
+      ],
+      [
+        [
+          "occupation='Prof-specialty'",
+          "education"
+        ],
+        [
+          "occupation='Prof-specialty' AND race='White'",
+          "workclass"
+        ],
+        [
+          "occupation='Prof-specialty' AND race='White'",
+          "age"
+        ],
+        [
+          "occupation='Prof-specialty'",
+          "maritalStatus"
+        ],
+        [
+          "occupation='Prof-specialty' AND race='White'",
+          "relationship"
+        ]
+      ],
+      [
+        [
+          "occupation='Other-service'",
+          "education"
+        ],
+        [
+          "occupation='Other-service'",
+          "age"
+        ],
+        [
+          "occupation='Other-service'",
+          "relationship"
+        ],
+        [
+          "occupation='Prof-specialty'",
+          "workclass"
+        ],
+        [
+          "occupation='Other-service'",
+          "hoursPerWeek"
+        ]
+      ],
+      [
+        [
+          "occupation='Prof-specialty'",
+          "education"
+        ],
+        [
+          "occupation='Prof-specialty'",
+          "relationship"
+        ],
+        [
+          "occupation='Prof-specialty'",
+          "age"
+        ],
+        [
+          "occupation='Prof-specialty' AND race='White'",
+          "workclass"
+        ],
+        [
+          "occupation='Prof-specialty'",
+          "maritalStatus"
+        ]
+      ],
+      [
+        [
+          "occupation='Prof-specialty'",
+          "education"
+        ],
+        [
+          "occupation='Prof-specialty' AND race='White'",
+          "age"
+        ],
+        [
+          "occupation='Prof-specialty' AND race='White'",
+          "relationship"
+        ],
+        [
+          "occupation='Prof-specialty' AND gender='Male'",
+          "workclass"
+        ],
+        [
+          "occupation='Prof-specialty' AND race='White'",
+          "maritalStatus"
+        ]
+      ],
+      [
+        [
+          "occupation='Prof-specialty' AND race='White'",
+          "education"
+        ],
+        [
+          "occupation='Prof-specialty' AND race='White'",
+          "age"
+        ],
+        [
+          "occupation='Prof-specialty' AND race='White'",
+          "workclass"
+        ],
+        [
+          "occupation='Prof-specialty'",
+          "relationship"
+        ],
+        [
+          "occupation='Prof-specialty'",
+          "maritalStatus"
+        ]
+      ],
+      [
+        [
+          "occupation='Other-service'",
+          "education"
+        ],
+        [
+          "occupation='Other-service'",
+          "age"
+        ],
+        [
+          "occupation='Other-service'",
+          "relationship"
+        ],
+        [
+          "occupation='Other-service'",
+          "maritalStatus"
+        ],
+        [
+          "occupation='Other-service'",
+          "hoursPerWeek"
+        ]
+      ],
+      [
+        [
+          "occupation='Other-service'",
+          "education"
+        ],
+        [
+          "occupation='Other-service'",
+          "relationship"
+        ],
+        [
+          "occupation='Other-service'",
+          "age"
+        ],
+        [
+          "occupation='Prof-specialty'",
+          "workclass"
+        ],
+        [
+          "occupation='Other-service'",
+          "maritalStatus"
+        ]
+      ]
+    ],
+    "retained_overlap_with_exact_top_tau": [
+      0.8666666666666667,
+      0.9333333333333333,
+      0.9333333333333333,
+      0.9333333333333333,
+      1.0,
+      0.8666666666666667,
+      0.9333333333333333,
+      0.8666666666666667,
+      0.9333333333333333,
+      0.8666666666666667
+    ]
+  },
+  "timings": {
+    "view_stage_ms": 0.1435159999800817,
+    "explanation_stage_ms": 13.467883999965125,
+    "mechanism_ms": 13.611399999945206,
+    "cache_build_s": 0.5001086669999495
+  },
+  "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
+}

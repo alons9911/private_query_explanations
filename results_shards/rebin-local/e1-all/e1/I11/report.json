@@ -1,0 +1,1212 @@
+{
+  "pair": {
+    "pair": "I11",
+    "dataset": "ipums",
+    "synthetic_data": false,
+    "N": 1146552,
+    "kind": "contrast",
+    "Q1": "CITIZEN = 'Naturalized citizen'",
+    "Q2": "CITIZEN = 'Born in U.S'",
+    "|Q1|": 88951,
+    "|Q2|": 949180,
+    "|Q1 & Q2|": 0,
+    "aggregate": "INCTOT",
+    "AVG_Q1": 39520.75741700487,
+    "AVG_Q2": 38849.74978929181,
+    "excluded_group_attrs": [
+      "CITIZEN"
+    ]
+  },
+  "parameters": {
+    "k": 5,
+    "lambda": 0.5,
+    "epsilon": 1.0,
+    "eps_P": 0.333333333,
+    "eps_S": 0.333333333,
+    "eps_H": 0.333333334,
+    "tau": 15,
+    "gamma": 143.62475242708612,
+    "gamma_R": 11465.52,
+    "|P|": 894,
+    "|Attrs|": 8,
+    "Delta_Use": 3.4887209651197678e-06,
+    "laplace_scale_per_bin": 29.999999940000002,
+    "sigma_of_released_difference": 59.999999880000004
+  },
+  "view_stage": {
+    "exact_top_tau": [
+      {
+        "rank": 1,
+        "view": "RACE='White'",
+        "use": 0.7064175586550904,
+        "coverage": 0.7180782031691542,
+        "representativeness": 0.9837613167164789
+      },
+      {
+        "rank": 2,
+        "view": "RELATE='Head/householder'",
+        "use": 0.45780363008225855,
+        "coverage": 0.4788539900501678,
+        "representativeness": 0.9560401282952578
+      },
+      {
+        "rank": 3,
+        "view": "SEX='Female'",
+        "use": 0.4528199785335381,
+        "coverage": 0.47184340527075963,
+        "representativeness": 0.9596827538019627
+      },
+      {
+        "rank": 4,
+        "view": "MARST='Married, spouse present'",
+        "use": 0.44262448146008826,
+        "coverage": 0.48383152268715246,
+        "representativeness": 0.9148318385742947
+      },
+      {
+        "rank": 5,
+        "view": "CLASSWKR='Wage/salary, private'",
+        "use": 0.44054690750673237,
+        "coverage": 0.46726445900403996,
+        "representativeness": 0.9428213488475985
+      },
+      {
+        "rank": 6,
+        "view": "SEX='Male'",
+        "use": 0.4168774310099967,
+        "coverage": 0.43359394078942776,
+        "representativeness": 0.9614466250404792
+      },
+      {
+        "rank": 7,
+        "view": "MARST='Married, spouse present' AND RACE='White'",
+        "use": 0.3711122518075783,
+        "coverage": 0.4081210446626058,
+        "representativeness": 0.9093190774182627
+      },
+      {
+        "rank": 8,
+        "view": "RELATE='Head/householder' AND RACE='White'",
+        "use": 0.3547571021180091,
+        "coverage": 0.3753200901485497,
+        "representativeness": 0.9452121307377873
+      },
+      {
+        "rank": 9,
+        "view": "RACE='White' AND CLASSWKR='Wage/salary, private'",
+        "use": 0.3499939440448432,
+        "coverage": 0.3731640605921057,
+        "representativeness": 0.9379090352096123
+      },
+      {
+        "rank": 10,
+        "view": "SEX='Female' AND RACE='White'",
+        "use": 0.3499893157677791,
+        "coverage": 0.3686601218261361,
+        "representativeness": 0.9493549615134063
+      },
+      {
+        "rank": 11,
+        "view": "INCTOT='<25k'",
+        "use": 0.34936738185000166,
+        "coverage": 0.39358703312191684,
+        "representativeness": 0.8876496237155816
+      },
+      {
+        "rank": 12,
+        "view": "SEX='Male' AND RACE='White'",
+        "use": 0.3331778074424414,
+        "coverage": 0.34941808134301805,
+        "representativeness": 0.9535219418578577
+      },
+      {
+        "rank": 13,
+        "view": "RACE='White' AND INCTOT='<25k'",
+        "use": 0.2655142730246034,
+        "coverage": 0.30096323585846957,
+        "representativeness": 0.882214973092141
+      },
+      {
+        "rank": 14,
+        "view": "INCTOT='25k-50k'",
+        "use": 0.23978941244902546,
+        "coverage": 0.25138938312435893,
+        "representativeness": 0.9538565609606706
+      },
+      {
+        "rank": 15,
+        "view": "CLASSWKR='NIU'",
+        "use": 0.2361820834075545,
+        "coverage": 0.27220832548371116,
+        "representativeness": 0.8676519463093628
+      }
+    ],
+    "retained": [
+      {
+        "noisy_rank": 1,
+        "view": "RACE='White'",
+        "exact_rank": 1,
+        "use": 0.7064175586550904,
+        "coverage": 0.7180782031691542,
+        "representativeness": 0.9837613167164789
+      },
+      {
+        "noisy_rank": 2,
+        "view": "RELATE='Head/householder'",
+        "exact_rank": 2,
+        "use": 0.45780363008225855,
+        "coverage": 0.4788539900501678,
+        "representativeness": 0.9560401282952578
+      },
+      {
+        "noisy_rank": 3,
+        "view": "SEX='Female'",
+        "exact_rank": 3,
+        "use": 0.4528199785335381,
+        "coverage": 0.47184340527075963,
+        "representativeness": 0.9596827538019627
+      },
+      {
+        "noisy_rank": 4,
+        "view": "MARST='Married, spouse present'",
+        "exact_rank": 4,
+        "use": 0.44262448146008826,
+        "coverage": 0.48383152268715246,
+        "representativeness": 0.9148318385742947
+      },
+      {
+        "noisy_rank": 5,
+        "view": "CLASSWKR='Wage/salary, private'",
+        "exact_rank": 5,
+        "use": 0.44054690750673237,
+        "coverage": 0.46726445900403996,
+        "representativeness": 0.9428213488475985
+      },
+      {
+        "noisy_rank": 6,
+        "view": "SEX='Male'",
+        "exact_rank": 6,
+        "use": 0.4168774310099967,
+        "coverage": 0.43359394078942776,
+        "representativeness": 0.9614466250404792
+      },
+      {
+        "noisy_rank": 7,
+        "view": "MARST='Married, spouse present' AND RACE='White'",
+        "exact_rank": 7,
+        "use": 0.3711122518075783,
+        "coverage": 0.4081210446626058,
+        "representativeness": 0.9093190774182627
+      },
+      {
+        "noisy_rank": 8,
+        "view": "RELATE='Head/householder' AND RACE='White'",
+        "exact_rank": 8,
+        "use": 0.3547571021180091,
+        "coverage": 0.3753200901485497,
+        "representativeness": 0.9452121307377873
+      },
+      {
+        "noisy_rank": 9,
+        "view": "RACE='White' AND CLASSWKR='Wage/salary, private'",
+        "exact_rank": 9,
+        "use": 0.3499939440448432,
+        "coverage": 0.3731640605921057,
+        "representativeness": 0.9379090352096123
+      },
+      {
+        "noisy_rank": 10,
+        "view": "SEX='Female' AND RACE='White'",
+        "exact_rank": 10,
+        "use": 0.3499893157677791,
+        "coverage": 0.3686601218261361,
+        "representativeness": 0.9493549615134063
+      },
+      {
+        "noisy_rank": 11,
+        "view": "INCTOT='<25k'",
+        "exact_rank": 11,
+        "use": 0.34936738185000166,
+        "coverage": 0.39358703312191684,
+        "representativeness": 0.8876496237155816
+      },
+      {
+        "noisy_rank": 12,
+        "view": "SEX='Male' AND RACE='White'",
+        "exact_rank": 12,
+        "use": 0.3331778074424414,
+        "coverage": 0.34941808134301805,
+        "representativeness": 0.9535219418578577
+      },
+      {
+        "noisy_rank": 13,
+        "view": "RACE='White' AND INCTOT='<25k'",
+        "exact_rank": 13,
+        "use": 0.2655142730246034,
+        "coverage": 0.30096323585846957,
+        "representativeness": 0.882214973092141
+      },
+      {
+        "noisy_rank": 14,
+        "view": "INCTOT='25k-50k'",
+        "exact_rank": 14,
+        "use": 0.23978941244902546,
+        "coverage": 0.25138938312435893,
+        "representativeness": 0.9538565609606706
+      },
+      {
+        "noisy_rank": 15,
+        "view": "CLASSWKR='NIU'",
+        "exact_rank": 15,
+        "use": 0.2361820834075545,
+        "coverage": 0.27220832548371116,
+        "representativeness": 0.8676519463093628
+      }
+    ],
+    "overlap_with_exact_top_tau": 1.0,
+    "retained_atom_counts": {
+      "RACE='White'": 7,
+      "RELATE='Head/householder'": 2,
+      "SEX='Female'": 2,
+      "MARST='Married, spouse present'": 2,
+      "CLASSWKR='Wage/salary, private'": 2,
+      "SEX='Male'": 2,
+      "INCTOT='<25k'": 2,
+      "INCTOT='25k-50k'": 1,
+      "CLASSWKR='NIU'": 1
+    },
+    "query_attribute_views": []
+  },
+  "explanations": [
+    {
+      "round": 1,
+      "view": "RACE='White'",
+      "attr": "EDUC",
+      "bins": [
+        "High school diploma or equivalent",
+        "Bachelor's degree",
+        "Some college but no degree",
+        "Master's degree",
+        "Associate's degree, academic program",
+        "Associate's degree, occupational/vocational program",
+        "Grade 11",
+        "Grade 10",
+        "Grade 9",
+        "Grades 7 or 8",
+        "Doctorate degree",
+        "12th grade, no diploma",
+        "Grades 5 or 6",
+        "Professional school degree",
+        "Grades 1, 2, 3, or 4",
+        "None or preschool"
+      ],
+      "noisy_h1": [
+        13455.375,
+        8516.549,
+        6611.449,
+        3543.793,
+        2367.119,
+        1687.118,
+        1018.557,
+        1032.014,
+        1426.057,
+        1944.885,
+        951.008,
+        823.41,
+        3054.077,
+        641.854,
+        1576.149,
+        470.404
+      ],
+      "noisy_h2": [
+        220861.843,
+        159716.059,
+        150762.87,
+        64054.527,
+        46215.003,
+        37277.183,
+        22010.072,
+        18006.24,
+        11958.532,
+        10993.325,
+        10873.198,
+        8548.584,
+        1950.073,
+        9240.562,
+        989.273,
+        647.236
+      ],
+      "exact_n": [
+        255243,
+        176564,
+        165335,
+        71198,
+        50638,
+        40687,
+        25347,
+        21426,
+        18497,
+        17490,
+        12844,
+        11711,
+        13318,
+        10440,
+        6270,
+        2273
+      ],
+      "exact_h1": [
+        13395,
+        8567,
+        6628,
+        3590,
+        2371,
+        1666,
+        1012,
+        1035,
+        1495,
+        1881,
+        955,
+        949,
+        3029,
+        634,
+        1499,
+        461
+      ],
+      "exact_h2": [
+        220858,
+        159729,
+        150863,
+        64089,
+        46183,
+        37267,
+        21982,
+        18083,
+        11941,
+        10998,
+        10875,
+        8452,
+        1921,
+        9255,
+        1011,
+        640
+      ],
+      "hd_gamma": 10.256284633141444,
+      "utility": 10.256284633141444,
+      "n_candidates": 99,
+      "bins_clearing_2sigma": [
+        "High school diploma or equivalent",
+        "Bachelor's degree",
+        "Some college but no degree",
+        "Master's degree",
+        "Associate's degree, academic program",
+        "Associate's degree, occupational/vocational program",
+        "Grade 11",
+        "Grade 10",
+        "Grade 9",
+        "Grades 7 or 8",
+        "Doctorate degree",
+        "12th grade, no diploma",
+        "Grades 5 or 6",
+        "Professional school degree",
+        "Grades 1, 2, 3, or 4",
+        "None or preschool"
+      ],
+      "exact_share_q1": [
+        0.2724,
+        0.1742,
+        0.1348,
+        0.073,
+        0.0482,
+        0.0339,
+        0.0206,
+        0.0211,
+        0.0304,
+        0.0383,
+        0.0194,
+        0.0193,
+        0.0616,
+        0.0129,
+        0.0305,
+        0.0094
+      ],
+      "exact_share_q2": [
+        0.2853,
+        0.2063,
+        0.1949,
+        0.0828,
+        0.0597,
+        0.0481,
+        0.0284,
+        0.0234,
+        0.0154,
+        0.0142,
+        0.014,
+        0.0109,
+        0.0025,
+        0.012,
+        0.0013,
+        0.0008
+      ],
+      "noisy_total_q1": 49119.818,
+      "noisy_total_q2": 774104.5800000001,
+      "exact_total_q1": 49167,
+      "exact_total_q2": 774147,
+      "exact_abs_diff_total": 728172,
+      "share_of_releases_with_this_explanation": 0.5,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 2,
+      "view": "RACE='White' AND INCTOT='<25k'",
+      "attr": "CLASSWKR",
+      "bins": [
+        "Wage/salary, private",
+        "NIU",
+        "Local government employee",
+        "Self-employed, not incorporated",
+        "State government employee",
+        "Self-employed, incorporated",
+        "Federal government employee",
+        "Armed forces",
+        "Unpaid family worker"
+      ],
+      "noisy_h1": [
+        8495.997,
+        11577.963,
+        529.032,
+        1208.27,
+        266.769,
+        374.91,
+        104.99,
+        -12.574,
+        20.241
+      ],
+      "noisy_h2": [
+        123329.581,
+        165302.273,
+        8958.909,
+        14045.176,
+        5610.27,
+        3166.456,
+        1411.788,
+        585.248,
+        227.298
+      ],
+      "exact_n": [
+        157530,
+        189513,
+        10033,
+        18034,
+        6239,
+        3777,
+        1601,
+        571,
+        242
+      ],
+      "exact_h1": [
+        8479,
+        11563,
+        564,
+        1207,
+        273,
+        300,
+        78,
+        13,
+        14
+      ],
+      "exact_h2": [
+        123358,
+        165303,
+        8918,
+        14106,
+        5578,
+        3154,
+        1404,
+        540,
+        218
+      ],
+      "hd_gamma": 6.655338149561096,
+      "utility": 6.655338149561096,
+      "n_candidates": 98,
+      "bins_clearing_2sigma": [
+        "Wage/salary, private",
+        "NIU",
+        "Local government employee",
+        "Self-employed, not incorporated",
+        "State government employee",
+        "Self-employed, incorporated",
+        "Federal government employee",
+        "Armed forces",
+        "Unpaid family worker"
+      ],
+      "exact_share_q1": [
+        0.377,
+        0.5141,
+        0.0251,
+        0.0537,
+        0.0121,
+        0.0133,
+        0.0035,
+        0.0006,
+        0.0006
+      ],
+      "exact_share_q2": [
+        0.3824,
+        0.5124,
+        0.0276,
+        0.0437,
+        0.0173,
+        0.0098,
+        0.0044,
+        0.0017,
+        0.0007
+      ],
+      "noisy_total_q1": 22565.598,
+      "noisy_total_q2": 322636.999,
+      "exact_total_q1": 22491,
+      "exact_total_q2": 322579,
+      "exact_abs_diff_total": 300088,
+      "share_of_releases_with_this_explanation": 0.1,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 3,
+      "view": "SEX='Female' AND RACE='White'",
+      "attr": "RELATE",
+      "bins": [
+        "Head/householder",
+        "Spouse",
+        "Child",
+        "Other",
+        "Unmarried partner",
+        "Opposite sex spouse",
+        "Parent",
+        "Housemate/roomate",
+        "Other relatives, n.s."
+      ],
+      "noisy_h1": [
+        12591.268,
+        7528.144,
+        1066.964,
+        514.811,
+        389.08,
+        951.846,
+        1623.2,
+        169.698,
+        498.487
+      ],
+      "noisy_h2": [
+        194733.714,
+        111016.639,
+        41327.941,
+        9433.18,
+        11827.671,
+        12411.922,
+        6717.89,
+        5469.592,
+        4455.964
+      ],
+      "exact_n": [
+        223036,
+        127374,
+        44253,
+        11302,
+        13108,
+        14353,
+        10386,
+        6117,
+        6040
+      ],
+      "exact_h1": [
+        12594,
+        7525,
+        1015,
+        529,
+        389,
+        920,
+        1623,
+        177,
+        566
+      ],
+      "exact_h2": [
+        194743,
+        111042,
+        41321,
+        9455,
+        11807,
+        12424,
+        6676,
+        5453,
+        4429
+      ],
+      "hd_gamma": 6.918183465347601,
+      "utility": 6.918183465347601,
+      "n_candidates": 97,
+      "bins_clearing_2sigma": [
+        "Head/householder",
+        "Spouse",
+        "Child",
+        "Other",
+        "Unmarried partner",
+        "Opposite sex spouse",
+        "Parent",
+        "Housemate/roomate",
+        "Other relatives, n.s."
+      ],
+      "exact_share_q1": [
+        0.497,
+        0.297,
+        0.0401,
+        0.0209,
+        0.0154,
+        0.0363,
+        0.0641,
+        0.007,
+        0.0223
+      ],
+      "exact_share_q2": [
+        0.4901,
+        0.2795,
+        0.104,
+        0.0238,
+        0.0297,
+        0.0313,
+        0.0168,
+        0.0137,
+        0.0111
+      ],
+      "noisy_total_q1": 25333.498000000003,
+      "noisy_total_q2": 397394.513,
+      "exact_total_q1": 25338,
+      "exact_total_q2": 397350,
+      "exact_abs_diff_total": 372012,
+      "share_of_releases_with_this_explanation": 0.7,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 4,
+      "view": "SEX='Female' AND RACE='White'",
+      "attr": "AGE",
+      "bins": [
+        "(10, 20]",
+        "(20, 30]",
+        "(30, 40]",
+        "(40, 50]",
+        "(50, 60]",
+        "(60, 70]",
+        "(70, 80]",
+        "(80, 90]"
+      ],
+      "noisy_h1": [
+        331.92,
+        2046.305,
+        4171.707,
+        5592.482,
+        5027.595,
+        3983.432,
+        3320.279,
+        940.692
+      ],
+      "noisy_h2": [
+        26379.12,
+        60591.099,
+        70953.61,
+        70820.299,
+        66061.804,
+        52459.39,
+        39313.133,
+        10917.874
+      ],
+      "exact_n": [
+        27731,
+        68007,
+        83539,
+        84486,
+        76174,
+        59354,
+        44449,
+        12229
+      ],
+      "exact_h1": [
+        334,
+        2052,
+        4151,
+        5576,
+        4985,
+        3943,
+        3370,
+        927
+      ],
+      "exact_h2": [
+        26310,
+        60557,
+        70899,
+        70865,
+        66060,
+        52470,
+        39287,
+        10902
+      ],
+      "hd_gamma": 6.5870019276296325,
+      "utility": 6.5870019276296325,
+      "n_candidates": 96,
+      "bins_clearing_2sigma": [
+        "(10, 20]",
+        "(20, 30]",
+        "(30, 40]",
+        "(40, 50]",
+        "(50, 60]",
+        "(60, 70]",
+        "(70, 80]",
+        "(80, 90]"
+      ],
+      "exact_share_q1": [
+        0.0132,
+        0.081,
+        0.1638,
+        0.2201,
+        0.1967,
+        0.1556,
+        0.133,
+        0.0366
+      ],
+      "exact_share_q2": [
+        0.0662,
+        0.1524,
+        0.1784,
+        0.1783,
+        0.1663,
+        0.132,
+        0.0989,
+        0.0274
+      ],
+      "noisy_total_q1": 25414.412,
+      "noisy_total_q2": 397496.32899999997,
+      "exact_total_q1": 25338,
+      "exact_total_q2": 397350,
+      "exact_abs_diff_total": 372012,
+      "share_of_releases_with_this_explanation": 0.3,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 5,
+      "view": "CLASSWKR='NIU'",
+      "attr": "EDUC",
+      "bins": [
+        "High school diploma or equivalent",
+        "Bachelor's degree",
+        "Some college but no degree",
+        "Master's degree",
+        "Associate's degree, academic program",
+        "Associate's degree, occupational/vocational program",
+        "Grade 11",
+        "Grade 10",
+        "Grade 9",
+        "Grades 7 or 8",
+        "Doctorate degree",
+        "12th grade, no diploma",
+        "Grades 5 or 6",
+        "Professional school degree",
+        "Grades 1, 2, 3, or 4",
+        "None or preschool"
+      ],
+      "noisy_h1": [
+        6719.462,
+        4230.129,
+        3121.661,
+        1573.542,
+        989.301,
+        673.597,
+        419.645,
+        542.984,
+        693.764,
+        1387.397,
+        444.026,
+        523.047,
+        1880.665,
+        398.15,
+        1085.66,
+        507.306
+      ],
+      "noisy_h2": [
+        94873.818,
+        37145.277,
+        56260.187,
+        15845.237,
+        12572.888,
+        10045.61,
+        13141.961,
+        12925.869,
+        10065.901,
+        10261.266,
+        2574.302,
+        4893.985,
+        2153.172,
+        2154.594,
+        1126.527,
+        779.49
+      ],
+      "exact_n": [
+        106729,
+        44306,
+        62120,
+        18614,
+        14183,
+        11215,
+        14311,
+        14311,
+        11862,
+        12731,
+        3304,
+        5903,
+        5942,
+        2687,
+        3712,
+        1928
+      ],
+      "exact_h1": [
+        6716,
+        4196,
+        3082,
+        1595,
+        964,
+        683,
+        431,
+        607,
+        680,
+        1231,
+        432,
+        490,
+        1878,
+        334,
+        1088,
+        574
+      ],
+      "exact_h2": [
+        94862,
+        37210,
+        56287,
+        15846,
+        12604,
+        10034,
+        13164,
+        13013,
+        10087,
+        10197,
+        2643,
+        4912,
+        2143,
+        2182,
+        1208,
+        728
+      ],
+      "hd_gamma": 10.211103745928042,
+      "utility": 5.105551872964021,
+      "n_candidates": 95,
+      "bins_clearing_2sigma": [
+        "High school diploma or equivalent",
+        "Bachelor's degree",
+        "Some college but no degree",
+        "Master's degree",
+        "Associate's degree, academic program",
+        "Associate's degree, occupational/vocational program",
+        "Grade 11",
+        "Grade 10",
+        "Grade 9",
+        "Grades 7 or 8",
+        "Doctorate degree",
+        "12th grade, no diploma",
+        "Grades 5 or 6",
+        "Professional school degree",
+        "None or preschool"
+      ],
+      "exact_share_q1": [
+        0.2688,
+        0.168,
+        0.1234,
+        0.0638,
+        0.0386,
+        0.0273,
+        0.0173,
+        0.0243,
+        0.0272,
+        0.0493,
+        0.0173,
+        0.0196,
+        0.0752,
+        0.0134,
+        0.0436,
+        0.023
+      ],
+      "exact_share_q2": [
+        0.3304,
+        0.1296,
+        0.196,
+        0.0552,
+        0.0439,
+        0.0349,
+        0.0458,
+        0.0453,
+        0.0351,
+        0.0355,
+        0.0092,
+        0.0171,
+        0.0075,
+        0.0076,
+        0.0042,
+        0.0025
+      ],
+      "noisy_total_q1": 25190.336,
+      "noisy_total_q2": 286820.08400000003,
+      "exact_total_q1": 24981,
+      "exact_total_q2": 287120,
+      "exact_abs_diff_total": 262139,
+      "share_of_releases_with_this_explanation": 0.4,
+      "share_of_releases_explaining_this_attr": 1.0
+    }
+  ],
+  "releases": {
+    "n": 10,
+    "selections": [
+      [
+        [
+          "RACE='White'",
+          "EDUC"
+        ],
+        [
+          "RACE='White' AND INCTOT='<25k'",
+          "CLASSWKR"
+        ],
+        [
+          "SEX='Female' AND RACE='White'",
+          "RELATE"
+        ],
+        [
+          "SEX='Female' AND RACE='White'",
+          "AGE"
+        ],
+        [
+          "CLASSWKR='NIU'",
+          "EDUC"
+        ]
+      ],
+      [
+        [
+          "SEX='Female' AND RACE='White'",
+          "EDUC"
+        ],
+        [
+          "SEX='Male' AND RACE='White'",
+          "CLASSWKR"
+        ],
+        [
+          "SEX='Female' AND RACE='White'",
+          "RELATE"
+        ],
+        [
+          "SEX='Female'",
+          "AGE"
+        ],
+        [
+          "SEX='Female' AND RACE='White'",
+          "INCTOT"
+        ]
+      ],
+      [
+        [
+          "SEX='Male' AND RACE='White'",
+          "EDUC"
+        ],
+        [
+          "SEX='Male' AND RACE='White'",
+          "CLASSWKR"
+        ],
+        [
+          "RACE='White'",
+          "RELATE"
+        ],
+        [
+          "SEX='Female' AND RACE='White'",
+          "AGE"
+        ],
+        [
+          "RACE='White'",
+          "EDUC"
+        ]
+      ],
+      [
+        [
+          "CLASSWKR='NIU'",
+          "EDUC"
+        ],
+        [
+          "MARST='Married, spouse present' AND RACE='White'",
+          "CLASSWKR"
+        ],
+        [
+          "SEX='Male' AND RACE='White'",
+          "AGE"
+        ],
+        [
+          "SEX='Female' AND RACE='White'",
+          "RELATE"
+        ],
+        [
+          "RACE='White'",
+          "EDUC"
+        ]
+      ],
+      [
+        [
+          "SEX='Female' AND RACE='White'",
+          "EDUC"
+        ],
+        [
+          "RACE='White'",
+          "CLASSWKR"
+        ],
+        [
+          "SEX='Female' AND RACE='White'",
+          "RELATE"
+        ],
+        [
+          "MARST='Married, spouse present' AND RACE='White'",
+          "AGE"
+        ],
+        [
+          "RACE='White'",
+          "EDUC"
+        ]
+      ],
+      [
+        [
+          "SEX='Female' AND RACE='White'",
+          "EDUC"
+        ],
+        [
+          "RACE='White'",
+          "CLASSWKR"
+        ],
+        [
+          "SEX='Female' AND RACE='White'",
+          "RELATE"
+        ],
+        [
+          "CLASSWKR='NIU'",
+          "AGE"
+        ],
+        [
+          "SEX='Male' AND RACE='White'",
+          "EDUC"
+        ]
+      ],
+      [
+        [
+          "RACE='White'",
+          "EDUC"
+        ],
+        [
+          "RACE='White'",
+          "CLASSWKR"
+        ],
+        [
+          "SEX='Female' AND RACE='White'",
+          "RELATE"
+        ],
+        [
+          "RACE='White'",
+          "AGE"
+        ],
+        [
+          "CLASSWKR='NIU'",
+          "EDUC"
+        ]
+      ],
+      [
+        [
+          "SEX='Female' AND RACE='White'",
+          "EDUC"
+        ],
+        [
+          "RACE='White'",
+          "CLASSWKR"
+        ],
+        [
+          "RACE='White'",
+          "RELATE"
+        ],
+        [
+          "INCTOT='25k-50k'",
+          "AGE"
+        ],
+        [
+          "INCTOT='<25k'",
+          "RACE"
+        ]
+      ],
+      [
+        [
+          "SEX='Female' AND RACE='White'",
+          "EDUC"
+        ],
+        [
+          "RELATE='Head/householder' AND RACE='White'",
+          "CLASSWKR"
+        ],
+        [
+          "SEX='Female' AND RACE='White'",
+          "AGE"
+        ],
+        [
+          "SEX='Female' AND RACE='White'",
+          "RELATE"
+        ],
+        [
+          "CLASSWKR='NIU'",
+          "EDUC"
+        ]
+      ],
+      [
+        [
+          "RACE='White' AND INCTOT='<25k'",
+          "EDUC"
+        ],
+        [
+          "MARST='Married, spouse present' AND RACE='White'",
+          "CLASSWKR"
+        ],
+        [
+          "RACE='White'",
+          "RELATE"
+        ],
+        [
+          "RELATE='Head/householder' AND RACE='White'",
+          "AGE"
+        ],
+        [
+          "SEX='Male' AND RACE='White'",
+          "EDUC"
+        ]
+      ]
+    ],
+    "retained_overlap_with_exact_top_tau": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "timings": {
+    "view_stage_ms": 0.1660629999378216,
+    "explanation_stage_ms": 439.84140700001717,
+    "mechanism_ms": 440.007469999955,
+    "cache_build_s": 11.79378584899996
+  },
+  "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
+}

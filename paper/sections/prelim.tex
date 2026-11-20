@@ -1,0 +1,115 @@
+\section{Preliminaries}
+\label{sec:prelim}
+
+\subsection{Databases, Queries, Constraints, and Histograms}
+\ag{TBD: define the model for a single table database, the query class that we support, the representation constraints from your paper. Citations, intuition, formal definition.}
+
+% \begin{table}[ht]
+% \centering
+% \begin{tabular}{|c|l|c|l|c|r|}
+% \hline
+% \textbf{ID} & \textbf{Name} & \textbf{Gender} & \textbf{Race} & \textbf{Age} & \textbf{Salary} \\
+% \hline
+% 1  & Alice   & F & White  & 29 & 60,000 \\
+% 2  & Bob     & M & Asian  & 35 & 70,000 \\
+% 3  & Clara   & F & Black  & 42 & 55,000 \\
+% 4  & David   & M & White  & 45 & 80,000 \\
+% 5  & Eva     & F & Asian  & 31 & 58,000 \\
+% 6  & Frank   & M & Black  & 38 & 65,000 \\
+% 7  & Grace   & F & White  & 27 & 61,000 \\
+% 8  & Henry   & M & Asian  & 41 & 72,000 \\
+% 9  & Isabel  & F & Black  & 36 & 59,000 \\
+% 10 & Jack    & M & White  & 34 & 68,000 \\
+% \hline
+% \end{tabular}
+% \caption{}
+% \label{tab:table1}
+% \end{table}
+
+Our setting begins with a relational database that stores tuples - Each representing an individual, record, or entity. A user submits a structured query (typically a SP query) to retrieve information that meets certain conditions. However, in many analytical or decision-making scenarios, simply returning the query results may inadvertently reinforce bias or underrepresent certain subgroups. To reason about and control such effects, we use ~\cite{SYJ18,barocas-hardt-narayanan,impossibilityfairness} to define how sensitive attributes, groups, and constraints are modeled within the database.
+
+A \textbf{sensitive attribute} captures information that has ethical, social, or regulatory implications - such as race, gender, or age group. These attributes define \textbf{groups} of individuals whose presence or absence in the query output can meaningfully affect fairness or diversity. For example, in a candidate-ranking scenario, "women with low income" forms one such group. \textbf{Cardinality constraints} over these groups allow us to formalize statements such as "at least 30\% of the selected candidates should be women", turning fairness or representational goals into concrete mathematical conditions. When the user's original query violates these constraints, we may search for a \textbf{query refinement} - a minimal modification of the query predicates designed to restore compliance while preserving the user’s intent.
+
+
+
+
+
+\begin{definition}[Sensitive Attribute~\cite{SYJ18}]\label{def:sensitive-attr}  
+We define a {\it sensitive attribute} as a discrete-valued feature central to fairness and diversity, such as race or gender. While the model assumes a single sensitive attribute, multiple attributes can be handled independently or combined into a composite attribute (e.g., Race $\times$ Gender). Continuous or high-cardinality attributes (e.g., age, salary) can be bucketized. We assume the dataset is partitioned by the sensitive attribute, meaning each individual is assigned exactly one value.
+\end{definition}
+
+\begin{definition}[Group~\cite{barocas-hardt-narayanan,impossibilityfairness}]\label{def:group}  
+    A {\it group} is a collection of tuples that share the same value(s) for one or more (categorical) attributes and is defined by a conjunction of conditions over values of the attributes. Its notation is $\bigwedge_{{\tt A} \in attrs} {\tt A} = {\tt Value_{A}}$ . For example, ${\tt Gender} = F \wedge {\tt Income} = Low$.
+\end{definition}
+
+\begin{definition}[Cardinality constraint~\cite{MLJ22, ERICA}]\label{def:card-constraint} 
+Applying cardinality constraints on group memberships in query results has been proposed to mitigate bias and improve diversity \cite{MLJ22, ERICA}.
+A cardinality constraint $\lb{G}{n}$ (or $\ub{G}{n}$) specifies a lower (or an upper) bound of $n$ tuples belonging to a group $G$ appearing within the result. For instance, in our running example, the constraint ``at least $3$ of the candidates are women'', can be expressed as  $\lb{{\tt Gender} = F}{3}$. Multiple cardinality constraints may be composed together, forming a constraint set that we denote by~$\constraints{}$.
+\end{definition}
+
+\begin{definition}[Constraints satisfaction~\cite{MLJ22, ERICA}]
+    Given a database $D$, a SPJ query $Q$ and a set of cardinality constraints $\constraints$, we say that {\it $Q$ satisfies the constraints} iff every constraint $c \in \constraints$ is satisfied by the set of tuples $Q(D)$.
+\end{definition}
+\begin{definition}[refinements~\cite{MK09}]
+    Given a query $Q$, a refinement of $Q$ modifies its selection predicates. A numerical predicate $A \diamond C~\in \num(Q)$ is a modification to the value of $C$. For categorical predicates $\bigvee_{c \in C} A = c~ \in \cat(Q)$, a refinement is done by adding and/or removing predicates from the set of values $C$.  We  say that a query $Q'$ is a \emph{refinement} of query $Q$ if $Q'$ is obtained from $Q$ by refining some predicates of $Q$.
+\end{definition}
+% \begin{definition}
+%    Diverse Query Refinement Mechanism -\\ An algorithm $\mathcal{M}:D \times Q \times\constraints\rightarrow Q'$ \yuval{Add a query distance measure $\Delta$} is a \emph{Diverse Query Refinement Mechanism} if it takes a database $D$, a SPJ query $Q$ and a cardinality constraints set $\constraints$, and returns a refinement of $Q$, $Q'$ which satisfies each cardinality constraint $c\in \constraints$ \yuval{such that $\Delta(Q(D), Q'(D))$ is minimal}.
+% \end{definition}
+\begin{definition}[Histogram~\cite{?}]
+    Given a database $D$, and a categorical attribute $A$, we say that the {\it histogram} defined by them is the distribution function $H_{D,A}:Dom(A, D)\rightarrow\mathbb{N}$ of the values of $A$ in the tuples of $D$.
+    This definition can be extended to support numeric attribute using bucketing.
+    % Histogram -\\ We say that the triple $<X, B, H>$ is an {\it histogram}, iff:
+    % \begin{enumerate}
+    %     \item $X = \{x_{1}, x_{2}, ..., x_{n} | x_{i} \in \mathbb{R}\}$ (multiset)
+    %     \item $B = \{b_{1}=[s_{1},t_{1}),b_{2}=[s_{2},t_{2}), ..., b_{k}=[s_{k},t_{k})\}$ is a collection of non-overlapping intervals (bins) such that $\forall_{i \leq k} s_{i} < t_{i}$ and  $\forall_{i<k}t_{i} = s_{i+1}$.
+    %     \item $H:B\rightarrow\mathbb{N}$ is defined by $H(b_{i}=[s_{i},t_{i}))=\Sigma_{j=1}^n I_{b_{i}}(x_{j})$, such that $I_{b_{i}}(x_{j}) = \left\{
+    %                         \begin{matrix} 
+    %                             1 \qquad x_{j} \in b_{i} \\
+    %                             0 \qquad x_{j} \notin b_{i} 
+    %                         \end{matrix}
+    %                     \right. $.
+    % \end{enumerate}
+    % When $X, B$ are known from the context, we can use the notation of $H$ to represent the full triple.
+    % In case of a categorical attribute we can use any mapping $M:X_{A} \rightarrow \mathbb{N}$ from the attribute domain to integers instead.
+    %\yuval{This definition limits to histograms over numerical attributes. Simplify? }
+\end{definition}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\linewidth,height=0.3\linewidth]{figures/placeholder.png}
+\caption{Example Placeholder}
+\label{fig:placeholder1}
+\end{figure}
+
+\subsection{Differential Privacy}
+\ag{TBD: sensitivity, DP definition, laplace mechanism, exponential mechanism, relevant theorems (the exp mechanism is DP, composition theorems...)}
+
+% \begin{definition}[Differential Privacy~\cite{?}]
+%     An algorithm $\mathcal{M}$ with domain $\mathbb{N}^{|\chi|}$ is $(\epsilon,\delta)$-differentially private if for all $S \subseteq Range(\mathcal{M})$ and for all $x,y \in \mathbb{N}^{|\chi|}$ such that $||x-y||_1 \leq 1$: $Pr[\mathcal{M}(x)\in S] \leq exp(\epsilon)Pr[\mathcal{M}(y)\in S] + \delta$, where the probability space is over the coin flips of the mechanism $\mathcal{M}$. If $\delta = 0$, we say that $\mathcal{M}$ is $\epsilon$-differentially private.
+% \end{definition}
+\begin{definition}[Neighbors Dataset~\cite{TheAlgFoundDP2014}]
+    We say that two datasets $D, D'$ are neighbors iff $|D \Delta D'| = 1$. We denote it by $D\sim D'$.
+\end{definition}
+\begin{definition}[Differential Privacy~\cite{TheAlgFoundDP2014, DMNS2006}]
+    An algorithm $\mathcal{M}$ is $\epsilon$-differentially private (or $\epsilon-DP$) iff for all $S \subseteq Range(\mathcal{M})$ and for all $D, D'$ {\it neighbors datasets}: $Pr[\mathcal{M}(D)\in S] \leq exp(\epsilon)Pr[\mathcal{M}(D')\in S]$, where the probability space is over the coin flips of the mechanism $\mathcal{M}$. 
+\end{definition}
+\begin{definition}[Global Sensitivity~\cite{TheAlgFoundDP2014}]
+    The {\it global-sensitivity ($\Delta$)} of a function $f:D\rightarrow \mathbb{R}$ is:\\ 
+    $\Delta f = \max_{D\sim D'\subseteq D} |f(D) - f(D')|$
+\end{definition}
+\begin{definition}[Laplace Distribution~\cite{TheAlgFoundDP2014}]
+    The {\it Laplace Distribution} (centered at 0) with scale $b$ is the distribution with probability density function:
+    \[
+    Laplace(x|b) = \frac{1}{2b} exp (- \frac{|x|}{b}).
+    \].
+    We will sometimes write $Laplace(b)$ to denote a Laplace Distribution with scale $b$, and also write $Laplace(b)$ to denote a random variable $X \sim Laplace(b)$.
+\end{definition}
+
+\begin{definition}[The Exponential Mechanism~\cite{TheAlgFoundDP2014}]
+Given a private database $D$, set of possible outcomes $Y$, utility function $f: Y\times D \rightarrow \mathbb{R}$  with global sensitivity $\Delta$, and a privacy budget $\epsilon$,
+\it{The exponential mechanism (EM)} selects and outputs an element $y\in Y$ with probability proportional to $exp({\frac{\epsilon f(y,D)}{2\Delta}})$.
+It has been proven in ~\cite{TheAlgFoundDP2014} that \it{the exponential mechanism is $\epsilon$-DP}
+\end{definition}
+
+

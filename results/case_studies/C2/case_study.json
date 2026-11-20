@@ -1,0 +1,501 @@
+{
+  "pair": {
+    "pair": "C2",
+    "dataset": "tax_dirty",
+    "synthetic_data": false,
+    "N": 200000,
+    "kind": "cqa",
+    "Q1": "State IN ('AL', 'KY', 'MS', 'TN') AND HasChild = 'N'",
+    "Q2": "Q_Sigma(State IN ('AL', 'KY', 'MS', 'TN') AND HasChild = 'N')",
+    "|Q1|": 7986,
+    "|Q2|": 7082,
+    "|Q1 & Q2|": 7082,
+    "conflicts": {
+      "tuples_in_conflict": 7851,
+      "edges": 231552,
+      "Zip->City": {
+        "tuples": 659,
+        "edges": 83553
+      },
+      "Zip->State": {
+        "tuples": 4766,
+        "edges": 86076
+      },
+      "Zip+HasChild->ChildExemp": {
+        "tuples": 2165,
+        "edges": 21555
+      },
+      "Zip+MaritalStatus->SingleExemp": {
+        "tuples": 1887,
+        "edges": 20906
+      },
+      "Zip+MaritalStatus->MarriedExemp": {
+        "tuples": 824,
+        "edges": 19462
+      },
+      "FName->Gender": {
+        "tuples": 0,
+        "edges": 0
+      },
+      "Phone+Zip->AreaCode": {
+        "tuples": 0,
+        "edges": 0
+      }
+    },
+    "role": "surprising",
+    "aggregate": "Rate",
+    "AVG_Q1": 3.6815677443526167,
+    "AVG_Q2": 3.5349712896498167
+  },
+  "motivation": {
+    "drop": 0.11319809666917105,
+    "unevenness": 0.6848818950863125,
+    "unevenness_attr": "State",
+    "hidden_drift": 0.08742350086953213,
+    "hidden_drift_attr": "State",
+    "hidden": [
+      "Gender",
+      "State",
+      "MaritalStatus",
+      "Salary",
+      "Rate",
+      "SingleExemp",
+      "MarriedExemp",
+      "ChildExemp"
+    ],
+    "largest_losses": [
+      {
+        "value": "AL",
+        "|Q|": 2119,
+        "|Q_Sigma|": 1260,
+        "kept": 0.595
+      },
+      {
+        "value": "TN",
+        "|Q|": 1882,
+        "|Q_Sigma|": 1852,
+        "kept": 0.984
+      },
+      {
+        "value": "KY",
+        "|Q|": 2027,
+        "|Q_Sigma|": 2019,
+        "kept": 0.996
+      },
+      {
+        "value": "MS",
+        "|Q|": 1958,
+        "|Q_Sigma|": 1951,
+        "kept": 0.996
+      }
+    ]
+  },
+  "stability": {
+    "trials": 40,
+    "top_explanations": [
+      {
+        "view": "HasChild='N'",
+        "attr": "ChildExemp",
+        "share_of_runs": 0.25
+      },
+      {
+        "view": "HasChild='N' AND MarriedExemp='0'",
+        "attr": "ChildExemp",
+        "share_of_runs": 0.2
+      },
+      {
+        "view": "HasChild='N' AND ChildExemp='0'",
+        "attr": "State",
+        "share_of_runs": 0.175
+      },
+      {
+        "view": "Gender='F' AND HasChild='N'",
+        "attr": "State",
+        "share_of_runs": 0.15
+      },
+      {
+        "view": "HasChild='N' AND SingleExemp='0'",
+        "attr": "State",
+        "share_of_runs": 0.125
+      },
+      {
+        "view": "HasChild='N' AND SingleExemp='0'",
+        "attr": "ChildExemp",
+        "share_of_runs": 0.125
+      },
+      {
+        "view": "HasChild='N' AND MarriedExemp='0'",
+        "attr": "State",
+        "share_of_runs": 0.125
+      },
+      {
+        "view": "HasChild='N' AND Rate='4-6'",
+        "attr": "ChildExemp",
+        "share_of_runs": 0.1
+      },
+      {
+        "view": "HasChild='N'",
+        "attr": "State",
+        "share_of_runs": 0.1
+      },
+      {
+        "view": "SingleExemp='0' AND ChildExemp='0'",
+        "attr": "Rate",
+        "share_of_runs": 0.1
+      }
+    ],
+    "attribute_share_of_runs": {
+      "State": 1.225,
+      "ChildExemp": 0.9,
+      "Rate": 0.525,
+      "SingleExemp": 0.5,
+      "Salary": 0.45,
+      "MaritalStatus": 0.4,
+      "MarriedExemp": 0.4,
+      "HasChild": 0.325,
+      "Gender": 0.275
+    }
+  },
+  "accuracy": [
+    {
+      "pair": "C2",
+      "dataset": "tax_dirty",
+      "synthetic": false,
+      "sweep": "epsilon",
+      "epsilon": 0.5,
+      "ratio_B1_mean": 0.4028792811456622,
+      "jaccard_B1_mean": 0.04027777777777778,
+      "precision_at_k_B1_mean": 0.07,
+      "attr_precision_B1_mean": 0.47000000000000003,
+      "view_jaccard_B1_mean": 0.1514285714285714,
+      "ratio_B2_mean": 0.3913673966815327,
+      "jaccard_B2_mean": 0.04791666666666666,
+      "precision_at_k_B2_mean": 0.085,
+      "attr_precision_B2_mean": 0.375,
+      "view_jaccard_B2_mean": 0.1884920634920635,
+      "ratio_B3_mean": 0.3913673966815327,
+      "jaccard_B3_mean": 0.04791666666666666,
+      "precision_at_k_B3_mean": 0.085,
+      "attr_precision_B3_mean": 0.375,
+      "view_jaccard_B3_mean": 0.1884920634920635,
+      "hist_rel_l1_mean": 0.2133250330621122,
+      "diff_sign_acc_mean": 0.7635216187751017,
+      "F_mean": 0.9116527731351665,
+      "F_B1_mean": 2.2628435260872988,
+      "F_B2_mean": 2.3294039842491157,
+      "F_B3_mean": 2.3294039842491157,
+      "gamma_mean": 294.31648700062226,
+      "tau_mean": 15.0,
+      "mechanism_ms_mean": 1.3674555000420696,
+      "ratio_B1_std": 0.24302669262056112,
+      "jaccard_B1_std": 0.06860605019571372,
+      "precision_at_k_B1_std": 0.11591331863033447,
+      "attr_precision_B1_std": 0.20025624610124926,
+      "view_jaccard_B1_std": 0.14746417493255787,
+      "ratio_B2_std": 0.23608244073649387,
+      "jaccard_B2_std": 0.06321410654954002,
+      "precision_at_k_B2_std": 0.10989505483379623,
+      "attr_precision_B2_std": 0.1877669040497027,
+      "view_jaccard_B2_std": 0.13768007006788213,
+      "ratio_B3_std": 0.23608244073649387,
+      "jaccard_B3_std": 0.06321410654954002,
+      "precision_at_k_B3_std": 0.10989505483379623,
+      "attr_precision_B3_std": 0.1877669040497027,
+      "view_jaccard_B3_std": 0.13768007006788213,
+      "hist_rel_l1_std": 0.09639589323616281,
+      "diff_sign_acc_std": 0.11291022549893537,
+      "trials": 40
+    },
+    {
+      "pair": "C2",
+      "dataset": "tax_dirty",
+      "synthetic": false,
+      "sweep": "epsilon",
+      "epsilon": 1.0,
+      "ratio_B1_mean": 0.5181314215045953,
+      "jaccard_B1_mean": 0.07916666666666666,
+      "precision_at_k_B1_mean": 0.135,
+      "attr_precision_B1_mean": 0.54,
+      "view_jaccard_B1_mean": 0.19321428571428573,
+      "ratio_B2_mean": 0.5033263189819875,
+      "jaccard_B2_mean": 0.0798611111111111,
+      "precision_at_k_B2_mean": 0.14,
+      "attr_precision_B2_mean": 0.43499999999999994,
+      "view_jaccard_B2_mean": 0.2262896825396825,
+      "ratio_B3_mean": 0.5033263189819875,
+      "jaccard_B3_mean": 0.0798611111111111,
+      "precision_at_k_B3_mean": 0.14,
+      "attr_precision_B3_mean": 0.43499999999999994,
+      "view_jaccard_B3_mean": 0.2262896825396825,
+      "hist_rel_l1_mean": 0.0997678235742968,
+      "diff_sign_acc_mean": 0.810675919260478,
+      "F_mean": 1.172450332814083,
+      "F_B1_mean": 2.2628435260872988,
+      "F_B2_mean": 2.3294039842491157,
+      "F_B3_mean": 2.3294039842491157,
+      "gamma_mean": 147.15824350031113,
+      "tau_mean": 15.0,
+      "mechanism_ms_mean": 0.5800056499992934,
+      "ratio_B1_std": 0.22789453962662945,
+      "jaccard_B1_std": 0.08908232158511224,
+      "precision_at_k_B1_std": 0.14597154622628447,
+      "attr_precision_B1_std": 0.17066987176477613,
+      "view_jaccard_B1_std": 0.13615916842600798,
+      "ratio_B2_std": 0.22138267432859943,
+      "jaccard_B2_std": 0.07232282605160814,
+      "precision_at_k_B2_std": 0.12152872405004,
+      "attr_precision_B2_std": 0.1687814548082208,
+      "view_jaccard_B2_std": 0.13657954949945228,
+      "ratio_B3_std": 0.22138267432859943,
+      "jaccard_B3_std": 0.07232282605160814,
+      "precision_at_k_B3_std": 0.12152872405004,
+      "attr_precision_B3_std": 0.1687814548082208,
+      "view_jaccard_B3_std": 0.13657954949945228,
+      "hist_rel_l1_std": 0.038559478563968276,
+      "diff_sign_acc_std": 0.09538092998249063,
+      "trials": 40
+    },
+    {
+      "pair": "C2",
+      "dataset": "tax_dirty",
+      "synthetic": false,
+      "sweep": "epsilon",
+      "epsilon": 2.0,
+      "ratio_B1_mean": 0.6190314618342824,
+      "jaccard_B1_mean": 0.12628968253968254,
+      "precision_at_k_B1_mean": 0.21000000000000002,
+      "attr_precision_B1_mean": 0.6,
+      "view_jaccard_B1_mean": 0.24071428571428571,
+      "ratio_B2_mean": 0.6013432385828094,
+      "jaccard_B2_mean": 0.11805555555555555,
+      "precision_at_k_B2_mean": 0.2,
+      "attr_precision_B2_mean": 0.505,
+      "view_jaccard_B2_mean": 0.2876488095238095,
+      "ratio_B3_mean": 0.6013432385828094,
+      "jaccard_B3_mean": 0.11805555555555555,
+      "precision_at_k_B3_mean": 0.2,
+      "attr_precision_B3_mean": 0.505,
+      "view_jaccard_B3_mean": 0.2876488095238095,
+      "hist_rel_l1_mean": 0.050303722762343336,
+      "diff_sign_acc_mean": 0.8695830545443549,
+      "F_mean": 1.4007713358560627,
+      "F_B1_mean": 2.2628435260872988,
+      "F_B2_mean": 2.3294039842491157,
+      "F_B3_mean": 2.3294039842491157,
+      "gamma_mean": 73.57912175015556,
+      "tau_mean": 15.0,
+      "mechanism_ms_mean": 0.47444082495076145,
+      "ratio_B1_std": 0.19257666534411755,
+      "jaccard_B1_std": 0.10603440665690125,
+      "precision_at_k_B1_std": 0.1565657066947309,
+      "attr_precision_B1_std": 0.1568929081105472,
+      "view_jaccard_B1_std": 0.1501862324350913,
+      "ratio_B2_std": 0.18707397402769,
+      "jaccard_B2_std": 0.08979021309607146,
+      "precision_at_k_B2_std": 0.14322297480788654,
+      "attr_precision_B2_std": 0.1632207880174141,
+      "view_jaccard_B2_std": 0.13751096192519358,
+      "ratio_B3_std": 0.18707397402769,
+      "jaccard_B3_std": 0.08979021309607146,
+      "precision_at_k_B3_std": 0.14322297480788654,
+      "attr_precision_B3_std": 0.1632207880174141,
+      "view_jaccard_B3_std": 0.13751096192519358,
+      "hist_rel_l1_std": 0.01615305062206302,
+      "diff_sign_acc_std": 0.08565283767927839,
+      "trials": 40
+    },
+    {
+      "pair": "C2",
+      "dataset": "tax_dirty",
+      "synthetic": false,
+      "sweep": "epsilon",
+      "epsilon": 5.0,
+      "ratio_B1_mean": 0.6392670146075139,
+      "jaccard_B1_mean": 0.12976190476190477,
+      "precision_at_k_B1_mean": 0.215,
+      "attr_precision_B1_mean": 0.55,
+      "view_jaccard_B1_mean": 0.2486607142857143,
+      "ratio_B2_mean": 0.6387923060766499,
+      "jaccard_B2_mean": 0.12430555555555556,
+      "precision_at_k_B2_mean": 0.21000000000000002,
+      "attr_precision_B2_mean": 0.55,
+      "view_jaccard_B2_mean": 0.294047619047619,
+      "ratio_B3_mean": 0.6387923060766499,
+      "jaccard_B3_mean": 0.12430555555555556,
+      "precision_at_k_B3_mean": 0.21000000000000002,
+      "attr_precision_B3_mean": 0.55,
+      "view_jaccard_B3_mean": 0.294047619047619,
+      "hist_rel_l1_mean": 0.020172522829720735,
+      "diff_sign_acc_mean": 0.9155079948646125,
+      "F_mean": 1.4880053428826288,
+      "F_B1_mean": 2.327674209494774,
+      "F_B2_mean": 2.3294039842491157,
+      "F_B3_mean": 2.3294039842491157,
+      "gamma_mean": 29.43164870006222,
+      "tau_mean": 15.0,
+      "mechanism_ms_mean": 0.46661850002465144,
+      "ratio_B1_std": 0.163629972606065,
+      "jaccard_B1_std": 0.10778422425564595,
+      "precision_at_k_B1_std": 0.15940594847826853,
+      "attr_precision_B1_std": 0.15525000516123696,
+      "view_jaccard_B1_std": 0.12935033685482258,
+      "ratio_B2_std": 0.16350846384348816,
+      "jaccard_B2_std": 0.09006247611688878,
+      "precision_at_k_B2_std": 0.14286446867663213,
+      "attr_precision_B2_std": 0.15525000516123696,
+      "view_jaccard_B2_std": 0.14602793035308026,
+      "ratio_B3_std": 0.16350846384348816,
+      "jaccard_B3_std": 0.09006247611688878,
+      "precision_at_k_B3_std": 0.14286446867663213,
+      "attr_precision_B3_std": 0.15525000516123696,
+      "view_jaccard_B3_std": 0.14602793035308026,
+      "hist_rel_l1_std": 0.008437849973320664,
+      "diff_sign_acc_std": 0.08652350824278933,
+      "trials": 40
+    }
+  ],
+  "explanations_key_bins": [
+    {
+      "view": "MarriedExemp='0' AND ChildExemp='0'",
+      "attr": "HasChild",
+      "bins": [
+        {
+          "bin": "N",
+          "noisy_Q1": 4832,
+          "noisy_Q2": 4540,
+          "exact_Q1": 4846,
+          "exact_Q2": 4518,
+          "clears_2sd": true
+        },
+        {
+          "bin": "Y",
+          "noisy_Q1": 12,
+          "noisy_Q2": 2,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": false
+        }
+      ]
+    },
+    {
+      "view": "SingleExemp='0' AND ChildExemp='0'",
+      "attr": "State",
+      "bins": [
+        {
+          "bin": "AL",
+          "noisy_Q1": 945,
+          "noisy_Q2": 549,
+          "exact_Q1": 945,
+          "exact_Q2": 559,
+          "clears_2sd": true
+        },
+        {
+          "bin": "ID",
+          "noisy_Q1": -63,
+          "noisy_Q2": 105,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": true
+        },
+        {
+          "bin": "WY",
+          "noisy_Q1": -30,
+          "noisy_Q2": 77,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": false
+        },
+        {
+          "bin": "NJ",
+          "noisy_Q1": -30,
+          "noisy_Q2": 66,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": false
+        }
+      ]
+    },
+    {
+      "view": "HasChild='N'",
+      "attr": "Gender",
+      "bins": [
+        {
+          "bin": "F",
+          "noisy_Q1": 4085,
+          "noisy_Q2": 3647,
+          "exact_Q1": 4086,
+          "exact_Q2": 3623,
+          "clears_2sd": true
+        },
+        {
+          "bin": "M",
+          "noisy_Q1": 3900,
+          "noisy_Q2": 3513,
+          "exact_Q1": 3900,
+          "exact_Q2": 3459,
+          "clears_2sd": true
+        }
+      ]
+    },
+    {
+      "view": "MaritalStatus='S' AND MarriedExemp='0'",
+      "attr": "SingleExemp",
+      "bins": [
+        {
+          "bin": "1-2999",
+          "noisy_Q1": 1976,
+          "noisy_Q2": 1687,
+          "exact_Q1": 1970,
+          "exact_Q2": 1701,
+          "clears_2sd": true
+        },
+        {
+          "bin": "9000+",
+          "noisy_Q1": 81,
+          "noisy_Q2": 8,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": false
+        },
+        {
+          "bin": "3000-5999",
+          "noisy_Q1": -12,
+          "noisy_Q2": -62,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": false
+        },
+        {
+          "bin": "NA",
+          "noisy_Q1": -12,
+          "noisy_Q2": -44,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": false
+        }
+      ]
+    },
+    {
+      "view": "Rate='4-6'",
+      "attr": "HasChild",
+      "bins": [
+        {
+          "bin": "N",
+          "noisy_Q1": 4721,
+          "noisy_Q2": 3840,
+          "exact_Q1": 4711,
+          "exact_Q2": 3842,
+          "clears_2sd": true
+        },
+        {
+          "bin": "Y",
+          "noisy_Q1": -37,
+          "noisy_Q2": 12,
+          "exact_Q1": 0,
+          "exact_Q2": 0,
+          "clears_2sd": false
+        }
+      ]
+    }
+  ]
+}

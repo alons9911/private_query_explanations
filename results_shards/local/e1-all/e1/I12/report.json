@@ -1,0 +1,1183 @@
+{
+  "pair": {
+    "pair": "I12",
+    "dataset": "ipums",
+    "synthetic_data": false,
+    "N": 1146552,
+    "kind": "contrast",
+    "Q1": "CLASSWKR = 'Wage/salary, private'",
+    "Q2": "CLASSWKR = 'Self-employed, not incorporated'",
+    "|Q1|": 608462,
+    "|Q2|": 50383,
+    "|Q1 & Q2|": 0,
+    "aggregate": "INCTOT",
+    "AVG_Q1": 43926.975030486705,
+    "AVG_Q2": 39336.6487108747,
+    "excluded_group_attrs": [
+      "CLASSWKR"
+    ]
+  },
+  "parameters": {
+    "k": 5,
+    "lambda": 0.5,
+    "epsilon": 1.0,
+    "eps_P": 0.333333333,
+    "eps_S": 0.333333333,
+    "eps_H": 0.333333334,
+    "tau": 15,
+    "gamma": 143.62475242708612,
+    "gamma_R": 11465.52,
+    "|P|": 783,
+    "|Attrs|": 8,
+    "Delta_Use": 3.4887209651197678e-06,
+    "laplace_scale_per_bin": 29.999999940000002,
+    "sigma_of_released_difference": 59.999999880000004
+  },
+  "view_stage": {
+    "exact_top_tau": [
+      {
+        "rank": 1,
+        "view": "CITIZEN='Born in U.S'",
+        "use": 0.4506739103043709,
+        "coverage": 0.4596520698581486,
+        "representativeness": 0.9804674880360085
+      },
+      {
+        "rank": 2,
+        "view": "RACE='White'",
+        "use": 0.44804503756707376,
+        "coverage": 0.4555004919096561,
+        "representativeness": 0.9836323901400724
+      },
+      {
+        "rank": 3,
+        "view": "RACE='White' AND CITIZEN='Born in U.S'",
+        "use": 0.3723233551169597,
+        "coverage": 0.3809753068330089,
+        "representativeness": 0.9772899934434817
+      },
+      {
+        "rank": 4,
+        "view": "SEX='Male'",
+        "use": 0.28960352864661915,
+        "coverage": 0.30132170193763563,
+        "representativeness": 0.9611107556619278
+      },
+      {
+        "rank": 5,
+        "view": "MARST='Married, spouse present'",
+        "use": 0.281591759123387,
+        "coverage": 0.307996497324151,
+        "representativeness": 0.9142693555603189
+      },
+      {
+        "rank": 6,
+        "view": "RELATE='Head/householder'",
+        "use": 0.27543381508063697,
+        "coverage": 0.2881212539858637,
+        "representativeness": 0.9559649323688935
+      },
+      {
+        "rank": 7,
+        "view": "SEX='Female'",
+        "use": 0.2622770036150612,
+        "coverage": 0.2733098891284477,
+        "representativeness": 0.9596323223116108
+      },
+      {
+        "rank": 8,
+        "view": "MARST='Married, spouse present' AND RACE='White'",
+        "use": 0.2327930599539872,
+        "coverage": 0.25621951730056725,
+        "representativeness": 0.9085688022778576
+      },
+      {
+        "rank": 9,
+        "view": "SEX='Male' AND RACE='White'",
+        "use": 0.23192766658005698,
+        "coverage": 0.2433600918231358,
+        "representativeness": 0.9530225964436788
+      },
+      {
+        "rank": 10,
+        "view": "SEX='Male' AND CITIZEN='Born in U.S'",
+        "use": 0.22490284318502454,
+        "coverage": 0.23616547701281757,
+        "representativeness": 0.9523104139933977
+      },
+      {
+        "rank": 11,
+        "view": "RELATE='Head/householder' AND CITIZEN='Born in U.S'",
+        "use": 0.21797524547510602,
+        "coverage": 0.23138767365108603,
+        "representativeness": 0.9420348199005412
+      },
+      {
+        "rank": 12,
+        "view": "RELATE='Head/householder' AND RACE='White'",
+        "use": 0.2136575253296321,
+        "coverage": 0.22608220124338016,
+        "representativeness": 0.9450435467922007
+      },
+      {
+        "rank": 13,
+        "view": "MARST='Married, spouse present' AND CITIZEN='Born in U.S'",
+        "use": 0.2130361327547205,
+        "coverage": 0.238385175726875,
+        "representativeness": 0.8936635095078326
+      },
+      {
+        "rank": 14,
+        "view": "SEX='Female' AND CITIZEN='Born in U.S'",
+        "use": 0.2124902227599845,
+        "coverage": 0.22348659284533104,
+        "representativeness": 0.9507962873953838
+      },
+      {
+        "rank": 15,
+        "view": "SEX='Female' AND RACE='White'",
+        "use": 0.20140280236512184,
+        "coverage": 0.21214040008652027,
+        "representativeness": 0.9493844750126842
+      }
+    ],
+    "retained": [
+      {
+        "noisy_rank": 1,
+        "view": "CITIZEN='Born in U.S'",
+        "exact_rank": 1,
+        "use": 0.4506739103043709,
+        "coverage": 0.4596520698581486,
+        "representativeness": 0.9804674880360085
+      },
+      {
+        "noisy_rank": 2,
+        "view": "RACE='White'",
+        "exact_rank": 2,
+        "use": 0.44804503756707376,
+        "coverage": 0.4555004919096561,
+        "representativeness": 0.9836323901400724
+      },
+      {
+        "noisy_rank": 3,
+        "view": "RACE='White' AND CITIZEN='Born in U.S'",
+        "exact_rank": 3,
+        "use": 0.3723233551169597,
+        "coverage": 0.3809753068330089,
+        "representativeness": 0.9772899934434817
+      },
+      {
+        "noisy_rank": 4,
+        "view": "SEX='Male'",
+        "exact_rank": 4,
+        "use": 0.28960352864661915,
+        "coverage": 0.30132170193763563,
+        "representativeness": 0.9611107556619278
+      },
+      {
+        "noisy_rank": 5,
+        "view": "MARST='Married, spouse present'",
+        "exact_rank": 5,
+        "use": 0.281591759123387,
+        "coverage": 0.307996497324151,
+        "representativeness": 0.9142693555603189
+      },
+      {
+        "noisy_rank": 6,
+        "view": "RELATE='Head/householder'",
+        "exact_rank": 6,
+        "use": 0.27543381508063697,
+        "coverage": 0.2881212539858637,
+        "representativeness": 0.9559649323688935
+      },
+      {
+        "noisy_rank": 7,
+        "view": "SEX='Female'",
+        "exact_rank": 7,
+        "use": 0.2622770036150612,
+        "coverage": 0.2733098891284477,
+        "representativeness": 0.9596323223116108
+      },
+      {
+        "noisy_rank": 8,
+        "view": "MARST='Married, spouse present' AND RACE='White'",
+        "exact_rank": 8,
+        "use": 0.2327930599539872,
+        "coverage": 0.25621951730056725,
+        "representativeness": 0.9085688022778576
+      },
+      {
+        "noisy_rank": 9,
+        "view": "SEX='Male' AND RACE='White'",
+        "exact_rank": 9,
+        "use": 0.23192766658005698,
+        "coverage": 0.2433600918231358,
+        "representativeness": 0.9530225964436788
+      },
+      {
+        "noisy_rank": 10,
+        "view": "SEX='Male' AND CITIZEN='Born in U.S'",
+        "exact_rank": 10,
+        "use": 0.22490284318502454,
+        "coverage": 0.23616547701281757,
+        "representativeness": 0.9523104139933977
+      },
+      {
+        "noisy_rank": 11,
+        "view": "RELATE='Head/householder' AND CITIZEN='Born in U.S'",
+        "exact_rank": 11,
+        "use": 0.21797524547510602,
+        "coverage": 0.23138767365108603,
+        "representativeness": 0.9420348199005412
+      },
+      {
+        "noisy_rank": 12,
+        "view": "RELATE='Head/householder' AND RACE='White'",
+        "exact_rank": 12,
+        "use": 0.2136575253296321,
+        "coverage": 0.22608220124338016,
+        "representativeness": 0.9450435467922007
+      },
+      {
+        "noisy_rank": 13,
+        "view": "MARST='Married, spouse present' AND CITIZEN='Born in U.S'",
+        "exact_rank": 13,
+        "use": 0.2130361327547205,
+        "coverage": 0.238385175726875,
+        "representativeness": 0.8936635095078326
+      },
+      {
+        "noisy_rank": 14,
+        "view": "SEX='Female' AND CITIZEN='Born in U.S'",
+        "exact_rank": 14,
+        "use": 0.2124902227599845,
+        "coverage": 0.22348659284533104,
+        "representativeness": 0.9507962873953838
+      },
+      {
+        "noisy_rank": 15,
+        "view": "SEX='Female' AND RACE='White'",
+        "exact_rank": 15,
+        "use": 0.20140280236512184,
+        "coverage": 0.21214040008652027,
+        "representativeness": 0.9493844750126842
+      }
+    ],
+    "overlap_with_exact_top_tau": 1.0,
+    "retained_atom_counts": {
+      "CITIZEN='Born in U.S'": 6,
+      "RACE='White'": 6,
+      "SEX='Male'": 3,
+      "MARST='Married, spouse present'": 3,
+      "RELATE='Head/householder'": 3,
+      "SEX='Female'": 3
+    },
+    "query_attribute_views": []
+  },
+  "explanations": [
+    {
+      "round": 1,
+      "view": "SEX='Male'",
+      "attr": "EDUC",
+      "bins": [
+        "High school diploma or equivalent",
+        "Bachelor's degree",
+        "Some college but no degree",
+        "Master's degree",
+        "Associate's degree, academic program",
+        "Associate's degree, occupational/vocational program",
+        "Grade 11",
+        "Grade 10",
+        "Grade 9",
+        "Grades 7 or 8",
+        "Doctorate degree",
+        "12th grade, no diploma",
+        "Grades 5 or 6",
+        "Professional school degree",
+        "Grades 1, 2, 3, or 4",
+        "None or preschool"
+      ],
+      "noisy_h1": [
+        99898.122,
+        60825.077,
+        57070.221,
+        19645.309,
+        15234.866,
+        14475.841,
+        9677.332,
+        6698.4,
+        5754.151,
+        4907.097,
+        4252.009,
+        5199.039,
+        5804.852,
+        3074.949,
+        2236.39,
+        772.931
+      ],
+      "noisy_h2": [
+        9784.715,
+        5651.911,
+        4914.599,
+        1660.965,
+        1322.205,
+        1474.506,
+        770.306,
+        628.575,
+        667.988,
+        693.092,
+        580.528,
+        431.333,
+        641.203,
+        739.181,
+        242.225,
+        106.695
+      ],
+      "exact_n": [
+        167730,
+        102575,
+        101199,
+        38679,
+        25848,
+        23565,
+        17641,
+        14401,
+        12154,
+        11838,
+        9607,
+        8738,
+        9108,
+        7204,
+        4202,
+        1741
+      ],
+      "exact_h1": [
+        99946,
+        60829,
+        57112,
+        19580,
+        15191,
+        14427,
+        9719,
+        6687,
+        5753,
+        4756,
+        4245,
+        5175,
+        5798,
+        3093,
+        2333,
+        807
+      ],
+      "exact_h2": [
+        9766,
+        5588,
+        4943,
+        1607,
+        1218,
+        1455,
+        721,
+        646,
+        656,
+        711,
+        552,
+        470,
+        656,
+        715,
+        231,
+        95
+      ],
+      "hd_gamma": 7.460229641111436,
+      "utility": 7.460229641111436,
+      "n_candidates": 96,
+      "bins_clearing_2sigma": [
+        "High school diploma or equivalent",
+        "Bachelor's degree",
+        "Some college but no degree",
+        "Master's degree",
+        "Associate's degree, academic program",
+        "Associate's degree, occupational/vocational program",
+        "Grade 11",
+        "Grade 10",
+        "Grade 9",
+        "Grades 7 or 8",
+        "Doctorate degree",
+        "12th grade, no diploma",
+        "Grades 5 or 6",
+        "Professional school degree",
+        "Grades 1, 2, 3, or 4",
+        "None or preschool"
+      ],
+      "exact_share_q1": [
+        0.3168,
+        0.1928,
+        0.181,
+        0.0621,
+        0.0482,
+        0.0457,
+        0.0308,
+        0.0212,
+        0.0182,
+        0.0151,
+        0.0135,
+        0.0164,
+        0.0184,
+        0.0098,
+        0.0074,
+        0.0026
+      ],
+      "exact_share_q2": [
+        0.3252,
+        0.1861,
+        0.1646,
+        0.0535,
+        0.0406,
+        0.0485,
+        0.024,
+        0.0215,
+        0.0218,
+        0.0237,
+        0.0184,
+        0.0157,
+        0.0218,
+        0.0238,
+        0.0077,
+        0.0032
+      ],
+      "noisy_total_q1": 315526.58599999995,
+      "noisy_total_q2": 30310.026999999995,
+      "exact_total_q1": 315451,
+      "exact_total_q2": 30030,
+      "exact_abs_diff_total": 285421,
+      "share_of_releases_with_this_explanation": 0.6,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 2,
+      "view": "SEX='Female' AND RACE='White'",
+      "attr": "RELATE",
+      "bins": [
+        "Head/householder",
+        "Spouse",
+        "Child",
+        "Other",
+        "Unmarried partner",
+        "Opposite sex spouse",
+        "Parent",
+        "Housemate/roomate",
+        "Other relatives, n.s."
+      ],
+      "noisy_h1": [
+        103107.218,
+        61909.614,
+        26821.918,
+        7186.468,
+        9139.009,
+        6912.536,
+        3911.483,
+        4166.147,
+        2839.907
+      ],
+      "noisy_h2": [
+        9479.185,
+        5596.359,
+        597.35,
+        297.218,
+        344.373,
+        550.163,
+        301.642,
+        146.242,
+        139.059
+      ],
+      "exact_n": [
+        223036,
+        127374,
+        44253,
+        11302,
+        13108,
+        14353,
+        10386,
+        6117,
+        6040
+      ],
+      "exact_h1": [
+        103140,
+        61827,
+        26780,
+        7218,
+        9119,
+        6931,
+        4018,
+        4203,
+        2837
+      ],
+      "exact_h2": [
+        9503,
+        5464,
+        559,
+        241,
+        357,
+        540,
+        244,
+        135,
+        114
+      ],
+      "hd_gamma": 4.6123589505146265,
+      "utility": 4.6123589505146265,
+      "n_candidates": 95,
+      "bins_clearing_2sigma": [
+        "Head/householder",
+        "Spouse",
+        "Child",
+        "Other",
+        "Unmarried partner",
+        "Opposite sex spouse",
+        "Parent",
+        "Housemate/roomate",
+        "Other relatives, n.s."
+      ],
+      "exact_share_q1": [
+        0.4562,
+        0.2735,
+        0.1185,
+        0.0319,
+        0.0403,
+        0.0307,
+        0.0178,
+        0.0186,
+        0.0125
+      ],
+      "exact_share_q2": [
+        0.5539,
+        0.3185,
+        0.0326,
+        0.014,
+        0.0208,
+        0.0315,
+        0.0142,
+        0.0079,
+        0.0066
+      ],
+      "noisy_total_q1": 225994.3,
+      "noisy_total_q2": 17451.591,
+      "exact_total_q1": 226073,
+      "exact_total_q2": 17157,
+      "exact_abs_diff_total": 208916,
+      "share_of_releases_with_this_explanation": 0.1,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 3,
+      "view": "SEX='Male' AND CITIZEN='Born in U.S'",
+      "attr": "AGE",
+      "bins": [
+        "(40, 50]",
+        "(30, 40]",
+        "(50, 60]",
+        "(20, 30]",
+        "(60, 70]",
+        "(70, 80]",
+        "(10, 20]",
+        "(80, 90]"
+      ],
+      "noisy_h1": [
+        52641.816,
+        57281.921,
+        43446.363,
+        55602.027,
+        17272.944,
+        3714.55,
+        17088.305,
+        292.832
+      ],
+      "noisy_h2": [
+        5540.969,
+        4229.415,
+        5759.89,
+        1994.151,
+        3996.642,
+        1572.13,
+        369.184,
+        147.42
+      ],
+      "exact_n": [
+        81869,
+        81268,
+        78041,
+        74572,
+        59501,
+        38680,
+        33543,
+        7755
+      ],
+      "exact_h1": [
+        52676,
+        57253,
+        43436,
+        55583,
+        17290,
+        3671,
+        17081,
+        290
+      ],
+      "exact_h2": [
+        5518,
+        4142,
+        5763,
+        2003,
+        3981,
+        1601,
+        374,
+        114
+      ],
+      "hd_gamma": 3.2210431132098374,
+      "utility": 3.2210431132098374,
+      "n_candidates": 94,
+      "bins_clearing_2sigma": [
+        "(40, 50]",
+        "(30, 40]",
+        "(50, 60]",
+        "(20, 30]",
+        "(60, 70]",
+        "(70, 80]",
+        "(10, 20]",
+        "(80, 90]"
+      ],
+      "exact_share_q1": [
+        0.213,
+        0.2315,
+        0.1757,
+        0.2248,
+        0.0699,
+        0.0148,
+        0.0691,
+        0.0012
+      ],
+      "exact_share_q2": [
+        0.2348,
+        0.1763,
+        0.2453,
+        0.0852,
+        0.1694,
+        0.0681,
+        0.0159,
+        0.0049
+      ],
+      "noisy_total_q1": 247340.75799999997,
+      "noisy_total_q2": 23609.801,
+      "exact_total_q1": 247280,
+      "exact_total_q2": 23496,
+      "exact_abs_diff_total": 223784,
+      "share_of_releases_with_this_explanation": 0.2,
+      "share_of_releases_explaining_this_attr": 0.9
+    },
+    {
+      "round": 4,
+      "view": "MARST='Married, spouse present'",
+      "attr": "EDUC",
+      "bins": [
+        "High school diploma or equivalent",
+        "Bachelor's degree",
+        "Some college but no degree",
+        "Master's degree",
+        "Associate's degree, academic program",
+        "Associate's degree, occupational/vocational program",
+        "Grade 11",
+        "Grade 10",
+        "Grade 9",
+        "Grades 7 or 8",
+        "Doctorate degree",
+        "12th grade, no diploma",
+        "Grades 5 or 6",
+        "Professional school degree",
+        "Grades 1, 2, 3, or 4",
+        "None or preschool"
+      ],
+      "noisy_h1": [
+        87668.214,
+        76528.348,
+        50100.416,
+        28328.58,
+        21292.393,
+        17490.099,
+        4643.871,
+        3801.796,
+        4462.323,
+        3979.905,
+        5607.001,
+        3492.41,
+        5384.929,
+        4206.608,
+        2156.758,
+        694.989
+      ],
+      "noisy_h2": [
+        9482.593,
+        7216.313,
+        5569.508,
+        2522.309,
+        1753.291,
+        1853.984,
+        495.753,
+        506.93,
+        541.285,
+        650.864,
+        712.837,
+        411.042,
+        551.242,
+        696.016,
+        200.963,
+        93.52
+      ],
+      "exact_n": [
+        168484,
+        140958,
+        97970,
+        63384,
+        37756,
+        29921,
+        9174,
+        8234,
+        8045,
+        9219,
+        12451,
+        6233,
+        8999,
+        9306,
+        4116,
+        1421
+      ],
+      "exact_h1": [
+        87692,
+        76512,
+        50099,
+        28257,
+        21295,
+        17511,
+        4687,
+        3805,
+        4464,
+        4022,
+        5600,
+        3472,
+        5397,
+        4188,
+        2139,
+        672
+      ],
+      "exact_h2": [
+        9482,
+        7220,
+        5528,
+        2517,
+        1772,
+        1910,
+        508,
+        470,
+        536,
+        661,
+        712,
+        391,
+        568,
+        772,
+        205,
+        70
+      ],
+      "hd_gamma": 7.133379509088261,
+      "utility": 3.5666897545441305,
+      "n_candidates": 93,
+      "bins_clearing_2sigma": [
+        "High school diploma or equivalent",
+        "Bachelor's degree",
+        "Some college but no degree",
+        "Master's degree",
+        "Associate's degree, academic program",
+        "Associate's degree, occupational/vocational program",
+        "Grade 11",
+        "Grade 10",
+        "Grade 9",
+        "Grades 7 or 8",
+        "Doctorate degree",
+        "12th grade, no diploma",
+        "Grades 5 or 6",
+        "Professional school degree",
+        "Grades 1, 2, 3, or 4",
+        "None or preschool"
+      ],
+      "exact_share_q1": [
+        0.2742,
+        0.2392,
+        0.1567,
+        0.0884,
+        0.0666,
+        0.0548,
+        0.0147,
+        0.0119,
+        0.014,
+        0.0126,
+        0.0175,
+        0.0109,
+        0.0169,
+        0.0131,
+        0.0067,
+        0.0021
+      ],
+      "exact_share_q2": [
+        0.2846,
+        0.2167,
+        0.1659,
+        0.0755,
+        0.0532,
+        0.0573,
+        0.0152,
+        0.0141,
+        0.0161,
+        0.0198,
+        0.0214,
+        0.0117,
+        0.017,
+        0.0232,
+        0.0062,
+        0.0021
+      ],
+      "noisy_total_q1": 319838.64,
+      "noisy_total_q2": 33258.45,
+      "exact_total_q1": 319812,
+      "exact_total_q2": 33322,
+      "exact_abs_diff_total": 286490,
+      "share_of_releases_with_this_explanation": 0.4,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 5,
+      "view": "RACE='White' AND CITIZEN='Born in U.S'",
+      "attr": "INCTOT",
+      "bins": [
+        "[1, 9001]",
+        "(9001, 18000]",
+        "(18000, 28600]",
+        "(28600, 42360]",
+        "(42360, 66685]",
+        "(66685, 199999]"
+      ],
+      "noisy_h1": [
+        40643.504,
+        45227.212,
+        61747.825,
+        79045.015,
+        84684.486,
+        90172.823
+      ],
+      "noisy_h2": [
+        4967.322,
+        5430.1,
+        5988.955,
+        6396.425,
+        6144.513,
+        6657.423
+      ],
+      "exact_n": [
+        124171,
+        122098,
+        117349,
+        128490,
+        139234,
+        142805
+      ],
+      "exact_h1": [
+        40679,
+        45203,
+        61722,
+        79040,
+        84665,
+        90058
+      ],
+      "exact_h2": [
+        4920,
+        5412,
+        5983,
+        6405,
+        6112,
+        6609
+      ],
+      "hd_gamma": 2.79959773711459,
+      "utility": 2.79959773711459,
+      "n_candidates": 92,
+      "bins_clearing_2sigma": [
+        "[1, 9001]",
+        "(9001, 18000]",
+        "(18000, 28600]",
+        "(28600, 42360]",
+        "(42360, 66685]",
+        "(66685, 199999]"
+      ],
+      "exact_share_q1": [
+        0.1014,
+        0.1126,
+        0.1538,
+        0.1969,
+        0.2109,
+        0.2244
+      ],
+      "exact_share_q2": [
+        0.1388,
+        0.1527,
+        0.1688,
+        0.1807,
+        0.1725,
+        0.1865
+      ],
+      "noisy_total_q1": 401520.865,
+      "noisy_total_q2": 35584.738,
+      "exact_total_q1": 401367,
+      "exact_total_q2": 35441,
+      "exact_abs_diff_total": 365926,
+      "share_of_releases_with_this_explanation": 0.2,
+      "share_of_releases_explaining_this_attr": 0.3
+    }
+  ],
+  "releases": {
+    "n": 10,
+    "selections": [
+      [
+        [
+          "SEX='Male'",
+          "EDUC"
+        ],
+        [
+          "SEX='Female' AND RACE='White'",
+          "RELATE"
+        ],
+        [
+          "SEX='Male' AND CITIZEN='Born in U.S'",
+          "AGE"
+        ],
+        [
+          "MARST='Married, spouse present'",
+          "EDUC"
+        ],
+        [
+          "RACE='White' AND CITIZEN='Born in U.S'",
+          "INCTOT"
+        ]
+      ],
+      [
+        [
+          "SEX='Male'",
+          "EDUC"
+        ],
+        [
+          "SEX='Male'",
+          "RELATE"
+        ],
+        [
+          "MARST='Married, spouse present'",
+          "EDUC"
+        ],
+        [
+          "SEX='Male' AND CITIZEN='Born in U.S'",
+          "AGE"
+        ],
+        [
+          "SEX='Male'",
+          "CITIZEN"
+        ]
+      ],
+      [
+        [
+          "SEX='Male' AND RACE='White'",
+          "EDUC"
+        ],
+        [
+          "RACE='White' AND CITIZEN='Born in U.S'",
+          "RELATE"
+        ],
+        [
+          "MARST='Married, spouse present'",
+          "EDUC"
+        ],
+        [
+          "SEX='Female' AND RACE='White'",
+          "MARST"
+        ],
+        [
+          "RACE='White' AND CITIZEN='Born in U.S'",
+          "INCTOT"
+        ]
+      ],
+      [
+        [
+          "MARST='Married, spouse present' AND RACE='White'",
+          "EDUC"
+        ],
+        [
+          "SEX='Male' AND CITIZEN='Born in U.S'",
+          "RELATE"
+        ],
+        [
+          "SEX='Male'",
+          "EDUC"
+        ],
+        [
+          "SEX='Female' AND RACE='White'",
+          "AGE"
+        ],
+        [
+          "RACE='White' AND CITIZEN='Born in U.S'",
+          "MARST"
+        ]
+      ],
+      [
+        [
+          "SEX='Male' AND RACE='White'",
+          "EDUC"
+        ],
+        [
+          "SEX='Female'",
+          "RELATE"
+        ],
+        [
+          "RACE='White'",
+          "EDUC"
+        ],
+        [
+          "RELATE='Head/householder'",
+          "AGE"
+        ],
+        [
+          "RACE='White'",
+          "INCTOT"
+        ]
+      ],
+      [
+        [
+          "SEX='Male'",
+          "EDUC"
+        ],
+        [
+          "SEX='Male'",
+          "RELATE"
+        ],
+        [
+          "SEX='Female' AND RACE='White'",
+          "AGE"
+        ],
+        [
+          "SEX='Male' AND RACE='White'",
+          "EDUC"
+        ],
+        [
+          "SEX='Male'",
+          "CITIZEN"
+        ]
+      ],
+      [
+        [
+          "SEX='Male' AND RACE='White'",
+          "EDUC"
+        ],
+        [
+          "SEX='Male'",
+          "RELATE"
+        ],
+        [
+          "RACE='White' AND CITIZEN='Born in U.S'",
+          "AGE"
+        ],
+        [
+          "MARST='Married, spouse present'",
+          "EDUC"
+        ],
+        [
+          "SEX='Female' AND RACE='White'",
+          "CITIZEN"
+        ]
+      ],
+      [
+        [
+          "SEX='Male' AND RACE='White'",
+          "EDUC"
+        ],
+        [
+          "SEX='Male' AND RACE='White'",
+          "RELATE"
+        ],
+        [
+          "RELATE='Head/householder'",
+          "AGE"
+        ],
+        [
+          "SEX='Male'",
+          "EDUC"
+        ],
+        [
+          "SEX='Female'",
+          "RACE"
+        ]
+      ],
+      [
+        [
+          "MARST='Married, spouse present' AND RACE='White'",
+          "EDUC"
+        ],
+        [
+          "SEX='Male'",
+          "RELATE"
+        ],
+        [
+          "SEX='Male'",
+          "EDUC"
+        ],
+        [
+          "RELATE='Head/householder'",
+          "AGE"
+        ],
+        [
+          "SEX='Female' AND CITIZEN='Born in U.S'",
+          "RELATE"
+        ]
+      ],
+      [
+        [
+          "SEX='Male' AND RACE='White'",
+          "EDUC"
+        ],
+        [
+          "RACE='White'",
+          "RELATE"
+        ],
+        [
+          "RELATE='Head/householder'",
+          "EDUC"
+        ],
+        [
+          "SEX='Male' AND RACE='White'",
+          "AGE"
+        ],
+        [
+          "RACE='White'",
+          "MARST"
+        ]
+      ]
+    ],
+    "retained_overlap_with_exact_top_tau": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "timings": {
+    "view_stage_ms": 0.16684499951225007,
+    "explanation_stage_ms": 389.7861860004923,
+    "mechanism_ms": 389.95303100000456,
+    "cache_build_s": 10.169051359999685
+  },
+  "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
+}

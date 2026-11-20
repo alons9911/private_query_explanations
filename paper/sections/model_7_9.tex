@@ -1,0 +1,134 @@
+\section{Model and Problem Statement}\label{sec:model}
+
+\subsection{Private Query-Difference Setting}
+\label{subsec:private-query-difference-setting}
+
+We consider a trusted server that holds a private database $D$ and receives, or derives, two related queries $Q_1$ and $Q_2$ over the same database.
+The goal is to explain the semantic difference between the corresponding query outputs $Q_1(D)$ and $Q_2(D)$ while preserving the privacy of individuals in $D$.
+
+In the query-refinement setting, $Q_1=Q$ is the original user query and $Q_2=Q'$ is a refined query produced by a refinement mechanism so that $Q'(D)$ satisfies a set of output constraints.
+In the consistent-query answering setting, the two outputs correspond to evaluating a query directly on the original database and evaluating it under repair semantics.
+In both settings, our framework treats the mechanism that produces the related output as a black box and focuses only on explaining the difference between the two resulting outputs.
+
+\alon{TODO: Add a short paragraph or figure that explicitly describes the trusted-server workflow: the user sends a query to the server, the server holds the private database, derives the related output, and releases differentially private explanations. Replace or update the current placeholder figure accordingly.}
+
+\subsection{Explanation Candidates}
+\label{subsec:explanation-candidates}
+
+An explanation in our framework compares the distribution of one attribute across the two query outputs, restricted to the same semantic region of the database.
+The semantic region is represented by a predicate view $p(D)$, and the compared distribution is represented by the one-way marginal of an attribute $A$.
+
+\begin{definition}[Histogram Explanation Candidate]
+Given a database $D$, two related queries $Q_1,Q_2$, a predicate view $p$, and an attribute $A \in Attr(D)$, a \emph{histogram explanation candidate} is a pair
+\[
+    e=(p,A).
+\]
+The candidate induces the two histograms
+\[
+    H_{Q_1(p(D)),A}
+    \qquad\text{and}\qquad
+    H_{Q_2(p(D)),A}.
+\]
+\end{definition}
+
+The predicate view $p(D)$ localizes the explanation to a semantic region of the data, while the attribute $A$ determines the distribution being compared.
+A candidate is informative when the two induced histograms differ substantially, since such a difference indicates that the change from $Q_1$ to $Q_2$ affected the selected population with respect to attribute $A$.
+
+\alon{TODO: Add a small running example of a candidate $(p,A)$, e.g., $p=(\texttt{education=Masters})$ and $A=\texttt{occupation}$, and show the two histograms induced by $Q_1$ and $Q_2$.}
+
+\subsection{Ideal Explanation Quality}
+\label{sec:explanation-quality}
+
+We evaluate explanation candidates according to four desiderata: \emph{interestingness}, \emph{representativeness}, \emph{coverage}, and \emph{diversity}.
+Similar families of criteria are commonly used in explanation and data-exploration systems: interestingness captures whether an explanation highlights a meaningful deviation, while diversity encourages a set of explanations to cover complementary aspects of the data rather than repeatedly showing the same phenomenon \cite{FEDEX}.
+Histogram-based explanations and distributional summaries are also used in private explanation frameworks such as DPXPlain \cite{TaoGMR22}.
+\alon{TODO: Add a citation to Differentially Private Explanations for Clusters. Also verify whether additional citations are needed for representativeness and coverage.}
+
+For an attribute $A$, let $\operatorname{Dom}(D[A])$ denote the finite set of values, or buckets, used in the histogram of $A$.
+For a candidate $e=(p,A)$, the \emph{interestingness} component measures how much the distribution of $A$ changes between $Q_1(p(D))$ and $Q_2(p(D))$:
+\[
+I(p,A)
+=
+\sum_{v \in \operatorname{Dom}(D[A])}
+\left|
+\Pr(t[A]=v \mid t \in Q_1(p(D)))
+-
+\Pr(t[A]=v \mid t \in Q_2(p(D)))
+\right|.
+\]
+Intuitively, an explanation is interesting if it highlights an attribute whose distribution is substantially affected by the query change.
+\alon{TODO: Specify the convention for empty query outputs $Q_i(p(D))$, e.g., whether such candidates are discarded or assigned score $0$.}
+
+The \emph{representativeness} component favors predicate views that are not overly exceptional or idiosyncratic relative to the underlying database.
+We measure how close the distribution of $A$ inside the view $p(D)$ is to its distribution in the full database:
+\[
+R(p,A)
+=
+1-
+\sum_{v \in \operatorname{Dom}(D[A])}
+\left|
+\Pr(t[A]=v \mid t \in D)
+-
+\Pr(t[A]=v \mid t \in p(D))
+\right|.
+\]
+This prevents explanations from focusing on small or unusual regions that may exhibit large changes but are not representative of the data.
+\alon{TODO: Check normalization. Since TVD includes a factor of $1/2$, decide whether representativeness should be $1-TVD$ or $1-\sum_v |\cdot|$. The current expression follows the previous draft but may range below $0$.}
+
+The \emph{coverage} component favors views that contain sufficient evidence from the compared query outputs.
+High coverage makes the explanation statistically more reliable and less likely to be driven by a few tuples:
+\[
+C(p)
+=
+|p(D)| \cdot |Q_1(p(D))| \cdot |Q_2(p(D))|.
+\]
+\alon{TODO: Decide whether the ideal coverage should be the product above, a normalized product, or a sum. The algorithm currently uses a normalized coverage proxy.}
+
+For a single candidate, the ideal quality is
+\[
+U^*(p,A)
+=
+I(p,A) \cdot R(p,A) \cdot C(p).
+\]
+When releasing several explanations, the selected set should also be diverse.
+Diversity encourages the explanations to expose different semantic aspects of the change from $Q_1(D)$ to $Q_2(D)$, for example by focusing on different attributes or different views.
+\alon{TODO: Add the exact ideal set-level utility, including the diversity term. Possible options are a multiplicative diversity factor, a submodular objective, or a constraint that prevents selecting the same attribute multiple times.}
+
+The ideal objective above captures the explanations we would like to select in the absence of privacy and computational constraints.
+However, directly optimizing it is problematic for differentially private selection.
+In particular, the score contains conditional distributions and coverage terms that may change significantly when a single tuple is added or removed, especially for small predicate views or small query outputs.
+This motivates the low-sensitivity proxy measures introduced in Section~\ref{sec:solution}.
+
+\begin{proposition}[Sensitivity of the ideal quality function]
+\label{prop:ideal-utility-sensitivity}
+The ideal quality function $U^*$ may have high global sensitivity.
+\end{proposition}
+
+\begin{proof}
+\alon{TODO: Add proof.}
+\end{proof}
+
+\subsection{Problem Definition}
+\label{subsec:problem-definition}
+
+We can now state the explanation task using the candidate and quality notions above.
+The non-private version asks for high-quality explanations of the difference between two related query outputs.
+The private version adds the requirement that the released explanations and histograms satisfy differential privacy with respect to the private database $D$.
+
+\begin{definition}[Query-Difference Explanation Problem]
+Given a database $D$, two related queries $Q_1,Q_2$, a set of predicate views $\mathcal{P}$, an attribute set $Attr(D)$, and an integer $k$, return a set $E$ of $k$ histogram explanation candidates $(p,A)$ that maximizes the ideal explanation quality for the semantic difference between $Q_1(D)$ and $Q_2(D)$.
+\end{definition}
+
+\begin{definition}[Differentially Private Query-Difference Explanation Problem]
+Given a private database $D$, two related queries $Q_1,Q_2$, a set of predicate views $\mathcal{P}$, an attribute set $Attr(D)$, a privacy budget $\epsilon>0$, and an integer $k$, output $k$ histogram-based explanations for the difference between $Q_1(D)$ and $Q_2(D)$ while satisfying $\epsilon$-differential privacy with respect to $D$.
+\end{definition}
+
+\alon{TODO: Decide whether the released object should be defined here as noisy difference histograms $\widetilde{\Delta H}_{p,A}$, pairs of noisy histograms $(\hat{H}_{Q_1(p(D)),A},\hat{H}_{Q_2(p(D)),A})$, or both. The current algorithm releases noisy difference histograms.}
+
+\subsection{Challenges}
+\label{subsec:model-challenges}
+
+The ideal problem above is difficult for two reasons.
+First, the space of possible predicate views is combinatorial in the number of attributes and values, so enumerating all possible semantic regions is infeasible.
+Second, the ideal utility function may have high sensitivity, which would require adding large amounts of noise or would make private selection ineffective.
+Therefore, the algorithm in the next section restricts the candidate space to predicate-based views and replaces the ideal utility components with low-sensitivity proxy measures.

@@ -1,0 +1,283 @@
+% VLDB template version of 2020-08-03 enhances the ACM template, version 1.7.0:
+% https://www.acm.org/publications/proceedings-template
+% The ACM Latex guide provides further information about the ACM template
+
+% \documentclass[sigconf,usenames,dvipsnames]{acmart}
+% \documentclass[sigconf]{acmart}
+\documentclass[sigconf, nonacm]{acmart}
+
+
+% VLDB Specific
+%% The following content must be adapted for the final version
+% paper-specific
+\newcommand\vldbdoi{XX.XX/XXX.XX}
+\newcommand\vldbpages{XXX-XXX}
+% issue-specific
+\newcommand\vldbvolume{14}
+\newcommand\vldbissue{1}
+\newcommand\vldbyear{2020}
+% should be fine as it is
+\newcommand\vldbauthors{\authors}
+\newcommand\vldbtitle{\shorttitle} 
+% leave empty if no availability url should be set
+\newcommand\vldbavailabilityurl{URL_TO_YOUR_ARTIFACTS}
+% whether page numbers should be shown or not, use 'plain' for review versions, 'empty' for camera ready
+\newcommand\vldbpagestyle{plain} 
+
+%% Macros and packages
+\usepackage{cleveref}
+\usepackage{tabularx}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{multirow} 
+\usepackage{svg}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{graphicx}
+
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  breakatwhitespace=true,
+  linewidth=\columnwidth,
+  xleftmargin=0pt,
+  frame=none
+}
+\DeclareMathOperator*{\argmin}{argmin}
+
+\newif\iftechreport
+\techreporttrue
+
+\newif\ifrevisionletter
+% \revisionlettertrue
+
+% acmart defines conjecture/corollary/definition/example/lemma/proposition/
+% theorem but not remark; add it in acmart's own remark style.
+\theoremstyle{acmdefinition}
+\newtheorem{remark}{Remark}
+\theoremstyle{acmdefinition}
+
+\newenvironment{sketch}{%
+  \renewcommand{\proofname}{Proof Sketch}\proof}{\endproof}
+
+% =====================================================================
+% NOTATION MACROS
+% Replaces the macro block inherited from the query-refinement paper this
+% project was forked from; all twenty of those (\problem, \running,
+% \candidates, \lb, \ub, \cc, \constraints, \conds, \cat, \num, \attr,
+% \sign, \domain, \provvars, \prov, \ranking, \internships, \resolve,
+% \idea, \numbercircled) had zero occurrences in the live sections.
+%
+% The operator names below were previously written bare in math mode
+% (e.g. $Usefulness(p,D)$), which TeX sets as a product of italic single
+% letters with inter-variable spacing. \mathit{} keeps the intended
+% italic appearance while typesetting each name as one word.
+% =====================================================================
+
+
+\newcommand{\yuval}[1]{\textcolor{blue}{\bf (Yuval)~#1}{\typeout{#1}}}
+\newcommand{\ag}[1]{\textcolor{red}{\bf (AG)~#1}{\typeout{#1}}}
+\newcommand{\alon}[1]{\textcolor{orange}{\bf (Alon)~#1}{\typeout{#1}}}
+\newcommand{\julia}[1]{\textcolor{magenta}{\bf (Julia)~#1}{\typeout{#1}}}
+
+% \renewcommand{\yuval}[1]{}
+% \renewcommand{\felix}[1]{}
+% \renewcommand{\julia}[1]{}
+
+\ifrevisionletter
+\newcommand{\reva}[1]{\protect\textcolor{NavyBlue}{#1}}
+\newcommand{\revb}[1]{\protect\textcolor{Bittersweet}{#1}}
+\newcommand{\revc}[1]{\protect\textcolor{Green!80!black}{#1}}
+\newcommand{\revmulti}[1]{\protect\textcolor{RoyalPurple}{#1}}
+\else
+\newcommand{\reva}[1]{#1}
+\newcommand{\revb}[1]{#1}
+\newcommand{\revc}[1]{#1}
+\newcommand{\revmulti}[1]{#1}
+\fi
+
+
+% \newcommand{\yuval}[1]{}
+% \newcommand{\felix}[1]{}
+% \newcommand{\julia}[1]{}
+
+% Notation macros (must come after the packages they rely on, e.g. amsmath).
+\usepackage{subfiles}
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage{booktabs}
+
+
+\input{macros}
+
+\begin{document}
+% \title{Refinements for Fairness in Ranking\\\small{(working title, draft) Julia: I think ''diveristy'' is more appropriate}}
+
+\ifrevisionletter
+\subfile{revision_letter}
+\fi
+
+\iftechreport
+\title{Private Query Difference Explanations}
+\else
+\title{Private Query Explanations}
+\fi
+
+
+%%
+%% The "author" command and its associated commands are used to define the authors and their affiliations.
+
+% \author{Felix S. Campbell}
+% \orcid{0000-0003-3888-1491}
+% \affiliation{%
+%   \institution{Ben-Gurion University of the Negev}
+%   \city{}
+%   \state{}
+% }
+% \email{felixsal@post.bgu.ac.il}
+
+% \author{Alon Silberstein}
+% %\orcid{0000-0001-5109-3700}
+% \affiliation{%
+%   \institution{Ben-Gurion University of the Negev}
+%   \city{}
+%   \state{}
+% } 
+% \email{alons9911@gmail.com}
+
+% \author{Julia Stoyanovich}
+% \orcid{0000-0002-1587-0450}
+% \affiliation{%
+%   \institution{New York University}
+%   \city{}
+%   \state{}
+%   \country{}
+% }
+% \email{stoyanovich@nyu.edu}
+
+% \author{Yuval Moskovitch}
+% \orcid{0000-0002-0325-7392}
+% \affiliation{%
+%   \institution{Ben-Gurion University of the Negev}
+%   \city{}
+%   \state{}
+% }
+% \email{yuvalmos@bgu.ac.il}
+
+%%
+%% The abstract is a short summary of the work to be presented in the
+%% article.
+% \begin{abstract}
+% \felix{15/10 draft}
+% Database queries are often used to select and rank items as decision support for many applications. As automated decision-making tools become more prevalent, there is a growing recognition of the need to diversify their outcomes. In this paper, we define and study the problem of modifying the selection conditions of an {\tt ORDER BY} query so that the result of the modified query 
+% % However, recent work has found that these processes may inadvertently stifle the diversity of the items that are considered to be the best.
+% % In this paper, we define and study the problem of modifying the selection conditions of queries such that the output of this modified query 
+% closely fits some user-defined notion of diversity while simultaneously maintaining the intent of the original query. We show the hardness of this problem and propose a mixed-integer linear programming (MILP) based solution. We further present optimizations designed to enhance the scalability and applicability of the solution in real-life scenarios. 
+% % subsequently develop an algorithm that with additional optimizations may be used to find such refined queries on real-life datasets. 
+% We investigate the performance characteristics of our algorithm and show its efficiency and the usefulness of our optimizations.
+
+% our algorithm provides a clear benefit in runtime efficiency over the naive approach through a set of experiments. 
+% \end{abstract}
+
+%%
+%% The code below is generated by the tool at http://dl.acm.org/ccs.cfm.
+%% Please copy and paste the code instead of the example below.
+%%
+% \begin{CCSXML}
+% <ccs2012>
+%  <concept>
+%   <concept_id>00000000.0000000.0000000</concept_id>
+%   <concept_desc>Do Not Use This Code, Generate the Correct Terms for Your P aper</concept_desc>
+%   <concept_significance>500</concept_significance>
+%  </concept>
+%  <concept>
+%   <concept_id>00000000.00000000.00000000</concept_id>
+%   <concept_desc>Do Not Use This Code, Generate the Correct Terms for Your Paper</concept_desc>
+%   <concept_significance>300</concept_significance>
+%  </concept>
+%  <concept>
+%   <concept_id>00000000.00000000.00000000</concept_id>
+%   <concept_desc>Do Not Use This Code, Generate the Correct Terms for Your Paper</concept_desc>
+%   <concept_significance>100</concept_significance>
+%  </concept>
+%  <concept>
+%   <concept_id>00000000.00000000.00000000</concept_id>
+%   <concept_desc>Do Not Use This Code, Generate the Correct Terms for Your Paper</concept_desc>
+%   <concept_significance>100</concept_significance>
+%  </concept>
+% </ccs2012>
+% \end{CCSXML}
+
+% \ccsdesc[500]{Do Not Use This Code~Generate the Correct Terms for Your Paper}
+% \ccsdesc[300]{Do Not Use This Code~Generate the Correct Terms for Your Paper}
+% \ccsdesc{Do Not Use This Code~Generate the Correct Terms for Your Paper}
+% \ccsdesc[100]{Do Not Use This Code~Generate the Correct Terms for Your Paper}
+
+%%
+%% Keywords. The author(s) should pick words that accurately describe
+%% the work being presented. Separate the keywords with commas.
+\keywords{Query refinement, diversity, provenance, ranking, top-k}
+
+\maketitle
+
+%%% do not modify the following VLDB block %%
+%%% VLDB block start %%%
+\pagestyle{\vldbpagestyle}
+\begingroup\small\noindent\raggedright\textbf{PVLDB Reference Format:}\\
+\vldbauthors. \vldbtitle. PVLDB, \vldbvolume(\vldbissue): \vldbpages, \vldbyear.\\
+\href{https://doi.org/\vldbdoi}{doi:\vldbdoi}
+\endgroup
+\begingroup
+\renewcommand\thefootnote{}\footnote{\noindent
+This work is licensed under the Creative Commons BY-NC-ND 4.0 International License. Visit \url{https://creativecommons.org/licenses/by-nc-nd/4.0/} to view a copy of this license. For any use beyond those covered by this license, obtain permission by emailing \href{mailto:info@vldb.org}{info@vldb.org}. Copyright is held by the owner/author(s). Publication rights licensed to the VLDB Endowment. \\
+\raggedright Proceedings of the VLDB Endowment, Vol. \vldbvolume, No. \vldbissue\ %
+ISSN 2150-8097. \\
+\href{https://doi.org/\vldbdoi}{doi:\vldbdoi} \\
+}\addtocounter{footnote}{-1}\endgroup
+%%% VLDB block end %%%
+
+%%% do not modify the following VLDB block %%
+%% VLDB block start %%%
+\ifdefempty{\vldbavailabilityurl}{}{
+\vspace{.3cm}
+\begingroup\small\noindent\raggedright\textbf{PVLDB Artifact Availability:}\\
+The source code, data, and/or other artifacts have been made available at \url{\vldbavailabilityurl}.
+\endgroup
+}
+%%% VLDB block end %%%
+
+\input{sections/introduction}
+\input{sections/preliminaries}
+\input{sections/model}
+\input{sections/solution}
+\input{sections/experiments}
+\input{sections/related}
+
+
+% Deprecated section
+% \input{sections/provenance}
+
+% \input{sections/search}
+
+% \input{sections/experiments}
+
+% \input{sections/related}
+
+% \input{sections/conclusion}
+
+% \felix{no acks?}
+% \begin{acks}
+%  This work was supported by the [...] Research Fund of [...] (Number [...]). Additional funding was provided by [...] and [...]. We also thank [...] for contributing [...].
+% \end{acks}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{sections/bibliography}
+\input{sections/appendix}
+
+\end{document}
+\endinput

@@ -1,0 +1,396 @@
+[
+  {
+    "id": "Q1C1",
+    "query": 1,
+    "constraint_file": "relax1",
+    "constraint_set": "C1",
+    "q1_sql": "WKHP >= 40 AND SCHL >= 19 AND COW IN ('3', '4', '5')",
+    "constraints": [
+      {
+        "where": "SEX = 'F' AND MAR = 1",
+        "min_count": 48884
+      },
+      {
+        "where": "RAC1P = 2",
+        "min_count": 15719
+      }
+    ],
+    "original_violates": true,
+    "all_valid": true,
+    "q2_sql": "WKHP >= 40 AND SCHL >= 19 AND COW IN ('3', '4', '5', '1')",
+    "choice": {
+      "combo": "Q1C1",
+      "refinement": 3,
+      "q1": "WKHP >= 40 AND SCHL >= 19 AND COW IN ('3', '4', '5')",
+      "q2": "WKHP >= 40 AND SCHL >= 19 AND COW IN ('3', '4', '5', '1')",
+      "|Q1|": 141100,
+      "|Q2|": 587712,
+      "hidden_drift": 0.3295448717926456,
+      "hidden_drift_attr": "OCCP_bucket",
+      "group_drift": 0.31451678646992703,
+      "group_drift_attr": "OCCP_bucket",
+      "income_term": 0.140255344408764,
+      "output_jaccard": 0.7599164216486987,
+      "dp_ratio_B2": 0.9846196577610382,
+      "dp_hidden_rate": 0.675,
+      "dp_clear_rate": 1.0,
+      "dp_attrs": "OCCP_bucket:21,RELP:8,AGEP:6,RAC1P:3,SCHL:1,WKHP:1",
+      "score": 0.4232645613695518
+    }
+  },
+  {
+    "id": "Q1C2",
+    "query": 1,
+    "constraint_file": "contract1",
+    "constraint_set": "C2",
+    "q1_sql": "WKHP >= 40 AND SCHL >= 19 AND COW IN ('3', '4', '5')",
+    "constraints": [
+      {
+        "where": "SEX = 'M' AND RELP = 1",
+        "max_count": 15249
+      },
+      {
+        "where": "age_bucket = '30-60' AND MAR = 3",
+        "max_count": 11498
+      }
+    ],
+    "original_violates": true,
+    "all_valid": true,
+    "q2_sql": "WKHP >= 41 AND SCHL >= 19 AND COW IN ('3', '4', '5')",
+    "choice": {
+      "combo": "Q1C2",
+      "refinement": 4,
+      "q1": "WKHP >= 40 AND SCHL >= 19 AND COW IN ('3', '4', '5')",
+      "q2": "WKHP >= 41 AND SCHL >= 19 AND COW IN ('3', '4', '5')",
+      "|Q1|": 141100,
+      "|Q2|": 48096,
+      "hidden_drift": 0.14160497750070375,
+      "hidden_drift_attr": "OCCP_bucket",
+      "group_drift": 0.13636003020911455,
+      "group_drift_attr": "OCCP_bucket",
+      "income_term": 0.13071264348937742,
+      "output_jaccard": 0.6591353649893692,
+      "dp_ratio_B2": 0.9845721104188131,
+      "dp_hidden_rate": 0.5,
+      "dp_clear_rate": 1.0,
+      "dp_attrs": "OCCP_bucket:11,RELP:8,RAC1P:8,AGEP:6,COW:5,SCHL:1,PINCP_bucket:1",
+      "score": 0.17024881804731923
+    }
+  },
+  {
+    "id": "Q2C1",
+    "query": 2,
+    "constraint_file": "relax1",
+    "constraint_set": "C1",
+    "q1_sql": "WKHP <= 40 AND SCHL <= 19 AND PINCP_bucket IN ('<20K', '20K-40K')",
+    "constraints": [
+      {
+        "where": "SEX = 'F' AND MAR = 1",
+        "min_count": 125492
+      },
+      {
+        "where": "RAC1P = 2",
+        "min_count": 69207
+      }
+    ],
+    "original_violates": true,
+    "all_valid": true,
+    "q2_sql": "WKHP <= 40 AND SCHL <= 19 AND PINCP_bucket IN ('<20K', '20K-40K', '40K-60K')",
+    "choice": {
+      "combo": "Q2C1",
+      "refinement": 1,
+      "q1": "WKHP <= 40 AND SCHL <= 19 AND PINCP_bucket IN ('<20K', '20K-40K')",
+      "q2": "WKHP <= 40 AND SCHL <= 19 AND PINCP_bucket IN ('<20K', '20K-40K', '40K-60K')",
+      "|Q1|": 539089,
+      "|Q2|": 635774,
+      "hidden_drift": 0.046734847313386146,
+      "hidden_drift_attr": "AGEP",
+      "group_drift": 0.04871899546596534,
+      "group_drift_attr": "OCCP_bucket",
+      "income_term": 0.0,
+      "output_jaccard": 0.15207447929610207,
+      "dp_ratio_B2": 0.8338285379481005,
+      "dp_hidden_rate": 0.65,
+      "dp_clear_rate": 1.0,
+      "dp_attrs": "OCCP_bucket:20,SCHL:5,AGEP:4,RELP:3,COW:2,MAR:2,WKHP:1,SEX:1,PINCP_bucket:1,RAC1P:1",
+      "score": 0.04621132428013973
+    }
+  },
+  {
+    "id": "Q2C2",
+    "query": 2,
+    "constraint_file": "contract1",
+    "constraint_set": "C2",
+    "q1_sql": "WKHP <= 40 AND SCHL <= 19 AND PINCP_bucket IN ('<20K', '20K-40K')",
+    "constraints": [
+      {
+        "where": "SEX = 'M' AND RELP = 1",
+        "max_count": 33674
+      },
+      {
+        "where": "age_bucket = '30-60' AND MAR = 3",
+        "max_count": 36921
+      }
+    ],
+    "original_violates": true,
+    "all_valid": true,
+    "q2_sql": "WKHP <= 39 AND SCHL <= 19 AND PINCP_bucket IN ('<20K', '20K-40K')",
+    "choice": {
+      "combo": "Q2C2",
+      "refinement": 3,
+      "q1": "WKHP <= 40 AND SCHL <= 19 AND PINCP_bucket IN ('<20K', '20K-40K')",
+      "q2": "WKHP <= 39 AND SCHL <= 19 AND PINCP_bucket IN ('<20K', '20K-40K')",
+      "|Q1|": 539089,
+      "|Q2|": 292741,
+      "hidden_drift": 0.11624661287227887,
+      "hidden_drift_attr": "OCCP_bucket",
+      "group_drift": 0.12689735665177687,
+      "group_drift_attr": "COW",
+      "income_term": 0.0,
+      "output_jaccard": 0.45697092687849317,
+      "dp_ratio_B2": 0.9671217308538862,
+      "dp_hidden_rate": 0.725,
+      "dp_clear_rate": 1.0,
+      "dp_attrs": "OCCP_bucket:17,RELP:9,RAC1P:8,COW:4,AGEP:2",
+      "score": 0.13027908611867128
+    }
+  },
+  {
+    "id": "Q2C3",
+    "query": 2,
+    "constraint_file": "refine1",
+    "constraint_set": "C3",
+    "q1_sql": "WKHP <= 40 AND SCHL <= 19 AND PINCP_bucket IN ('<20K', '20K-40K')",
+    "constraints": [
+      {
+        "where": "SEX = 'F' AND MAR = 1",
+        "min_count": 125492
+      },
+      {
+        "where": "SEX = 'M' AND RAC1P = 6",
+        "max_count": 9628
+      }
+    ],
+    "original_violates": true,
+    "all_valid": true,
+    "q2_sql": "WKHP <= 38 AND SCHL <= 22 AND PINCP_bucket IN ('<20K', '20K-40K', '>60K')",
+    "choice": {
+      "combo": "Q2C3",
+      "refinement": 0,
+      "q1": "WKHP <= 40 AND SCHL <= 19 AND PINCP_bucket IN ('<20K', '20K-40K')",
+      "q2": "WKHP <= 38 AND SCHL <= 22 AND PINCP_bucket IN ('<20K', '20K-40K', '>60K')",
+      "|Q1|": 539089,
+      "|Q2|": 450201,
+      "hidden_drift": 0.16323433879860208,
+      "hidden_drift_attr": "OCCP_bucket",
+      "group_drift": 0.20156840004975102,
+      "group_drift_attr": "OCCP_bucket",
+      "income_term": 0.0,
+      "output_jaccard": 0.5832190025004798,
+      "dp_ratio_B2": 0.9774330004377796,
+      "dp_hidden_rate": 0.725,
+      "dp_clear_rate": 1.0,
+      "dp_attrs": "OCCP_bucket:17,COW:8,RELP:8,AGEP:4,SCHL:2,RAC1P:1",
+      "score": 0.19141344064702123
+    }
+  },
+  {
+    "id": "Q3C4",
+    "query": 3,
+    "constraint_file": "relax1",
+    "constraint_set": "C4",
+    "q1_sql": "WKHP >= 60 AND SCHL <= 16 AND PINCP_bucket = '<20K'",
+    "constraints": [
+      {
+        "where": "SEX = 'F'",
+        "min_count": 1307
+      },
+      {
+        "where": "RAC1P = 2",
+        "min_count": 521
+      }
+    ],
+    "original_violates": true,
+    "all_valid": true,
+    "q2_sql": "WKHP >= 60 AND SCHL <= 16 AND PINCP_bucket IN ('<20K', '>60K')",
+    "choice": {
+      "combo": "Q3C4",
+      "refinement": 0,
+      "q1": "WKHP >= 60 AND SCHL <= 16 AND PINCP_bucket = '<20K'",
+      "q2": "WKHP >= 60 AND SCHL <= 16 AND PINCP_bucket IN ('<20K', '>60K')",
+      "|Q1|": 4367,
+      "|Q2|": 13177,
+      "hidden_drift": 0.2381011184857823,
+      "hidden_drift_attr": "RELP",
+      "group_drift": 0.13139350238745584,
+      "group_drift_attr": "OCCP_bucket",
+      "income_term": 0.0,
+      "output_jaccard": 0.6685892084693026,
+      "dp_ratio_B2": 0.9194310032648139,
+      "dp_hidden_rate": 0.875,
+      "dp_clear_rate": 1.0,
+      "dp_attrs": "OCCP_bucket:10,COW:8,AGEP:8,RELP:7,MAR:2,SCHL:2,WKHP:2,RAC1P:1",
+      "score": 0.26582313596957147
+    }
+  },
+  {
+    "id": "Q3C5",
+    "query": 3,
+    "constraint_file": "contract1",
+    "constraint_set": "C5",
+    "q1_sql": "WKHP >= 60 AND SCHL <= 16 AND PINCP_bucket = '<20K'",
+    "constraints": [
+      {
+        "where": "RAC1P = 1",
+        "max_count": 2829
+      },
+      {
+        "where": "age_bucket = '30-60'",
+        "max_count": 2280
+      }
+    ],
+    "original_violates": true,
+    "all_valid": true,
+    "q2_sql": "WKHP >= 60 AND SCHL <= 15 AND PINCP_bucket = '<20K'",
+    "choice": {
+      "combo": "Q3C5",
+      "refinement": 0,
+      "q1": "WKHP >= 60 AND SCHL <= 16 AND PINCP_bucket = '<20K'",
+      "q2": "WKHP >= 60 AND SCHL <= 15 AND PINCP_bucket = '<20K'",
+      "|Q1|": 4367,
+      "|Q2|": 1553,
+      "hidden_drift": 0.14538014208595726,
+      "hidden_drift_attr": "OCCP_bucket",
+      "group_drift": 0.16249054469619312,
+      "group_drift_attr": "OCCP_bucket",
+      "income_term": 0.0,
+      "output_jaccard": 0.6443782917334555,
+      "dp_ratio_B2": 0.7585602898136921,
+      "dp_hidden_rate": 0.725,
+      "dp_clear_rate": 1.0,
+      "dp_attrs": "OCCP_bucket:12,RELP:8,COW:4,MAR:4,PINCP_bucket:4,RAC1P:3,AGEP:2,SEX:1,SCHL:1,WKHP:1",
+      "score": 0.164303425464689
+    }
+  },
+  {
+    "id": "Q3C6",
+    "query": 3,
+    "constraint_file": "refine1",
+    "constraint_set": "C6",
+    "q1_sql": "WKHP >= 60 AND SCHL <= 16 AND PINCP_bucket = '<20K'",
+    "constraints": [
+      {
+        "where": "RAC1P = 2",
+        "min_count": 521
+      },
+      {
+        "where": "age_bucket = '30-60'",
+        "max_count": 2280
+      }
+    ],
+    "original_violates": true,
+    "all_valid": true,
+    "q2_sql": "WKHP >= 66 AND SCHL <= 21 AND PINCP_bucket = '<20K'",
+    "choice": {
+      "combo": "Q3C6",
+      "refinement": 0,
+      "q1": "WKHP >= 60 AND SCHL <= 16 AND PINCP_bucket = '<20K'",
+      "q2": "WKHP >= 66 AND SCHL <= 21 AND PINCP_bucket = '<20K'",
+      "|Q1|": 4367,
+      "|Q2|": 4317,
+      "hidden_drift": 0.1419787751535764,
+      "hidden_drift_attr": "OCCP_bucket",
+      "group_drift": 0.12389189854715588,
+      "group_drift_attr": "OCCP_bucket",
+      "income_term": 0.0,
+      "output_jaccard": 0.7136720485853947,
+      "dp_ratio_B2": 0.620655014847838,
+      "dp_hidden_rate": 0.575,
+      "dp_clear_rate": 0.9,
+      "dp_attrs": "OCCP_bucket:11,AGEP:7,RELP:6,COW:4,RAC1P:4,SCHL:3,PINCP_bucket:2,SEX:1,WKHP:1,MAR:1",
+      "score": 0.11725671654561373
+    }
+  },
+  {
+    "id": "Q4C7",
+    "query": 4,
+    "constraint_file": "relax1",
+    "constraint_set": "C7",
+    "q1_sql": "WKHP >= 60 AND SCHL >= 22 AND PINCP_bucket = '>60K' AND COW IN ('6', '7')",
+    "constraints": [
+      {
+        "where": "SEX = 'F'",
+        "min_count": 552
+      },
+      {
+        "where": "RAC1P = 2",
+        "min_count": 97
+      },
+      {
+        "where": "MAR = 3",
+        "min_count": 239
+      }
+    ],
+    "original_violates": true,
+    "all_valid": true,
+    "q2_sql": "WKHP >= 60 AND SCHL >= 21 AND PINCP_bucket = '>60K' AND COW IN ('6', '7')",
+    "choice": {
+      "combo": "Q4C7",
+      "refinement": 8,
+      "q1": "WKHP >= 60 AND SCHL >= 22 AND PINCP_bucket = '>60K' AND COW IN ('6', '7')",
+      "q2": "WKHP >= 60 AND SCHL >= 21 AND PINCP_bucket = '>60K' AND COW IN ('6', '7')",
+      "|Q1|": 2343,
+      "|Q2|": 4997,
+      "hidden_drift": 0.2800492075014535,
+      "hidden_drift_attr": "OCCP_bucket",
+      "group_drift": 0.25687973687973686,
+      "group_drift_attr": "OCCP_bucket",
+      "income_term": 0.0,
+      "output_jaccard": 0.5311186712027216,
+      "dp_ratio_B2": 0.5364824052226682,
+      "dp_hidden_rate": 0.425,
+      "dp_clear_rate": 1.0,
+      "dp_attrs": "OCCP_bucket:11,AGEP:6,SEX:5,MAR:4,RELP:3,SCHL:3,WKHP:3,COW:2,PINCP_bucket:2,RAC1P:1",
+      "score": 0.1736078572750618
+    }
+  },
+  {
+    "id": "Q4C8",
+    "query": 4,
+    "constraint_file": "contract1",
+    "constraint_set": "C8",
+    "q1_sql": "WKHP >= 60 AND SCHL >= 22 AND PINCP_bucket = '>60K' AND COW IN ('6', '7')",
+    "constraints": [
+      {
+        "where": "RAC1P = 1",
+        "max_count": 1862
+      },
+      {
+        "where": "SEX = 'M'",
+        "max_count": 1727
+      }
+    ],
+    "original_violates": true,
+    "all_valid": true,
+    "q2_sql": "WKHP >= 60 AND SCHL >= 23 AND PINCP_bucket = '>60K' AND COW IN ('6', '7')",
+    "choice": {
+      "combo": "Q4C8",
+      "refinement": 2,
+      "q1": "WKHP >= 60 AND SCHL >= 22 AND PINCP_bucket = '>60K' AND COW IN ('6', '7')",
+      "q2": "WKHP >= 60 AND SCHL >= 23 AND PINCP_bucket = '>60K' AND COW IN ('6', '7')",
+      "|Q1|": 2343,
+      "|Q2|": 1471,
+      "hidden_drift": 0.26698182212778976,
+      "hidden_drift_attr": "OCCP_bucket",
+      "group_drift": 0.2617779315115877,
+      "group_drift_attr": "OCCP_bucket",
+      "income_term": 0.0,
+      "output_jaccard": 0.37217242851045673,
+      "dp_ratio_B2": 0.47245033735142505,
+      "dp_hidden_rate": 0.6,
+      "dp_clear_rate": 1.0,
+      "dp_attrs": "OCCP_bucket:15,COW:6,RAC1P:6,MAR:5,RELP:3,WKHP:2,PINCP_bucket:2,AGEP:1",
+      "score": 0.23872247273015015
+    }
+  }
+]

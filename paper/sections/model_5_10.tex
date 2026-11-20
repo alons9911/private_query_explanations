@@ -1,0 +1,377 @@
+\input{macros}
+\section{Problem Statement and Model}\label{sec:model}
+
+This section states the problem of privately explaining how two related queries differ (Section~\ref{subsec:private-query-difference-setting}), and then develops the model we use to solve it in three steps.
+Section~\ref{sec:explanation-quality} introduces a two-stage explanation model and instantiates it with the classical quality measures of Section~\ref{subsec:prelim-quality}, which is how the problem would be solved without privacy.
+Section~\ref{subsec:ideal-sensitivity} bounds the sensitivity of these measures, component by component and in combination, and makes precise why it defeats private selection.
+Section~\ref{subsec:ideal-to-private} explains how the framework splits the problem into two private stages and replaces each measure by a low-sensitivity counterpart; Section~\ref{sec:solution} then gives the proxies and the algorithm.
+
+\subsection{Private Explanations of Query Differences}
+\label{subsec:private-query-difference-setting}
+
+We consider a trusted server that holds a private database $D$ and two related queries $Q_1$ and $Q_2$ over it, and whose task is to explain how the two queries differ on $D$ --- how the output $Q_2(D)$ differs from $Q_1(D)$ --- \emph{while preserving the privacy of the individuals in $D$}.
+The second query is typically derived from the first by a mechanism that the framework treats as a black box.
+In query refinement (Definition~\ref{def:refinement}), $Q_1=Q$ is the original query and $Q_2=Q'$ its refinement; in consistent query answering (Definition~\ref{def:consistent-answer}), $Q_2$ is $Q_1$ evaluated under repair semantics.
+Both are instances of the same problem, explaining how two related queries differ on the same database, and the framework does not depend on which one produced the pair.
+For a view $p$ we write $Q_i(p(D))$ for the restriction of the output of $Q_i$ to the view, $Q_i(D)\cap p(D)$ (Section~\ref{subsec:prelim-settings}); for a selection query it is the result of evaluating $Q_i$ on $p(D)$ (Proposition~\ref{prop:view-restriction}).
+
+\paragraph{Workflow.}
+An analyst submits a query $Q_1$ to the server; the server obtains $Q_2$, either because the analyst supplies it or because an external mechanism --- a refinement algorithm, a repair procedure --- derives it (Figure~\ref{fig:framework}).
+The server evaluates both, privately selects a small set of predicate views and, within them, the explanation candidates that best characterise the difference, and finally releases noisy histograms for the selected candidates.
+Only this last object leaves the server; the analyst never observes $D$, the exact outputs, or the exact scores that drove the selection.
+The mechanism producing $Q_2$ is outside the scope of the privacy analysis, which accounts only for the explanation.
+\alon{Done: trusted-server workflow described above and depicted in Figure~\ref{fig:framework}.}
+
+\paragraph{Explanation candidates.}
+An explanation compares the distribution of one attribute across the two outputs, restricted to the same semantic region of the database.
+
+\begin{definition}[Histogram Explanation Candidate]
+\label{def:candidate}
+Given a view $p\in\views$ and an explanation attribute $A\in\Attrs$, the \emph{histogram explanation candidate} $e=(p,A)$ induces the two histograms
+\[
+    \hist{Q_1(\pD)}{A}
+    \qquad\text{and}\qquad
+    \hist{Q_2(\pD)}{A}.
+\]
+We write $\mathcal{C}=\views\times\Attrs$ for the space of candidates.
+\end{definition}
+
+The view localizes the explanation to a region of the data, and the attribute determines the distribution being compared.
+A candidate is informative when its two histograms differ substantially, since that indicates that the change from $Q_1$ to $Q_2$ affected the region with respect to $A$.
+
+\begin{example}[Explanation candidate]
+\label{ex:candidate}
+Continuing Example~\ref{ex:running}, take the view $p=(\texttt{education}=\texttt{Masters})$ and the attribute $A=\texttt{occupation}$.
+The candidate $e=(p,A)$ induces two histograms over occupations: $\hist{\Qone(\pD)}{A}$, counting the Master's-degree holders working at least $50$ hours, whom the original query selects, and $\hist{\Qtwo(\pD)}{A}$, counting the Master's-degree holders working at least $30$ hours, whom the refined query selects.
+The candidate is informative to the extent that these two occupational profiles differ; if the refinement shifts the population from managerial towards professional-specialty roles, that shift is visible as a difference between the two histograms, and is invisible in the aggregate value alone.
+\end{example}
+\alon{Done: running example added as Example~\ref{ex:candidate}.}
+
+\paragraph{The problem.}
+We state the problem for an arbitrary set-quality function $F$; Section~\ref{sec:explanation-quality} instantiates it.
+
+\begin{definition}[Differentially Private Query-Difference Explanation Problem]
+\label{def:problem}
+Let $D$ be a private database, $Q_1,Q_2$ two related queries over $D$, $\views$ a set of predicates, $\Attrs$ the explanation attributes, $k\le|\mathcal{C}|$ an integer, $F:2^{\mathcal{C}}\to\mathbb{R}_{\ge0}$ a set-quality function, and $\epsilon>0$ a privacy budget.
+The problem is to return $k$ candidates $E\subseteq\mathcal{C}$ together with a noisy difference histogram for each, by a mechanism that satisfies $\epsilon$-differential privacy with respect to $D$, such that $F(E)$ is as close as possible to
+\[
+\mathrm{OPT}_k(F)=\max_{E'\subseteq\mathcal{C},\;|E'|=k}F(E').
+\]
+\end{definition}
+
+\label{subsec:problem-definition}
+The released object is the noisy \emph{difference} histogram $\nhist_{p,A}$ for each selected candidate.
+Releasing the two histograms $\hat H_{Q_1(p(D)),A}$ and $\hat H_{Q_2(p(D)),A}$ separately is also possible, and describes more of the data, since the exact pair determines the difference but not conversely.
+It is not free, however: a tuple selected by both queries changes both histograms, so the pair has $L_1$-sensitivity $2$, and under a fixed budget $\epsilon_H$ each histogram carries twice the noise scale of a single difference release; a difference recomputed from the noisy pair has $\sqrt8\approx2.8$ times the standard deviation of one released directly.
+We define the problem in terms of the difference histogram and note the paired variant where the distinction matters.
+\alon{Done: the released object is fixed to be the noisy difference histogram, with the paired alternative and its cost noted.}
+
+\subsection{A Two-Stage Explanation Model}
+\label{sec:explanation-quality}
+
+We solve the problem in two stages.
+The \emph{view stage} scores every view $p\in\views$ and retains the most promising ones; the \emph{explanation stage} scores the candidates $(p,A)$ whose view was retained and selects $k$ of them.
+The two stages match the two groups of criteria reviewed in Section~\ref{subsec:prelim-quality}: representativeness and coverage are properties of a region, interestingness is a property of an explanation, and diversity is a property of a set of explanations.
+We first instantiate each criterion as it would be used without privacy; these \emph{ideal} measures define the target quality, and Section~\ref{subsec:ideal-to-private} derives the private framework from them.
+
+\paragraph{Interestingness.}
+For a candidate $(p,A)$ abbreviate $T_i=Q_i(p(D))$.
+Interestingness measures, bin by bin, how much the two outputs differ inside the view, relative to the size of each bin in the view:
+\begin{equation}
+I(p,A)=\!\!\sum_{\substack{v\in\Dom(D[A])\\ H_{p(D),A}(v)>0}}\!\!
+\frac{\big|H_{T_1,A}(v)-H_{T_2,A}(v)\big|}{H_{p(D),A}(v)} .
+\label{eq:ideal-interestingness}
+\end{equation}
+Each term is the fraction of the view's tuples in bin $v$ by which the two outputs differ; both counts are at most the bin's size (Proposition~\ref{prop:view-restriction}), so every term lies in $[0,1]$.
+This is the Histogram Distance that the algorithm optimizes, before smoothing: Section~\ref{subsubsec:histogram-distance} obtains its proxy by adding a public constant to every denominator.
+Because the score is built from counts rather than from the two outputs' normalized distributions, it needs no special case when only one output meets the view, and it is $0$ when neither does.
+\alon{Done: the ideal interestingness is now the unsmoothed Histogram Distance, so that the proxy $\HD_\gamma$ differs from it only by smoothing. It replaces the earlier distributional form $2\,\TVD(P_{T_1,A},P_{T_2,A})$, which is undefined when only one output meets the view and had to be patched with a special value there; counts need no such case.}
+
+\begin{example}[A one-sided view]
+\label{ex:one-sided}
+In the running example take $p'=(\texttt{education}=\texttt{Bachelors})$.
+The refined predicate $\varphi_2$ requires $\texttt{education}=\texttt{Masters}$, so $\varphi_2\wedge p'$ is unsatisfiable and, by Proposition~\ref{prop:view-restriction}, $Q_2(p'(D))=\emptyset$; meanwhile $Q_1(p'(D))$ contains the Bachelor's-degree holders working at least $50$ hours.
+The view isolates exactly the population the refinement removes, and Eq.~\eqref{eq:ideal-interestingness} handles it directly: $I(p',A)=\sum_v H_{Q_1(p'(D)),A}(v)/H_{p'(D),A}(v)$, so every tuple of $Q_1$ in the view counts as a difference, weighted by the size of its bin.
+\end{example}
+
+\paragraph{Representativeness.}
+Representativeness favours views that are typical of the database rather than idiosyncratic corners of it.
+For a reference attribute $A\in\mathcal{A}_R$ (Section~\ref{subsec:prelim-db-queries}) it compares the distribution of $A$ inside the view with that in the whole database,
+\begin{equation}
+R^A(p)=1-\TVD\!\left(P_{D,A},\,P_{p(D),A}\right)\in[0,1],
+\label{eq:ideal-representativeness}
+\end{equation}
+and the view is scored by the average over the reference attributes it does not itself constrain,
+\[
+R(p)=\frac{1}{|\mathcal{A}_R(p)|}\sum_{A\in\mathcal{A}_R(p)} R^A(p),
+\qquad
+\mathcal{A}_R(p)=\mathcal{A}_R\setminus\mathrm{attr}(p),
+\]
+with $R(p)=0$ when $p(D)=\emptyset$.
+We assume $|\mathcal{A}_R|>\ell$, so that $\mathcal{A}_R(p)$ is never empty, since a view constrains at most $\ell$ attributes (Section~\ref{subsec:prelim-db-queries}).
+Two conventions are fixed here.
+The reference set does not depend on the candidate attribute, since representativeness is a property of the view and is evaluated before views are paired with attributes.
+The attributes $\mathrm{attr}(p)$ that $p$ constrains are excluded, since comparing $p(D)$ with $D$ on the attribute that defines $p$ is nearly tautological --- a view $\texttt{occupation}=c$ necessarily has an extreme occupation distribution --- and including it would systematically suppress the single-attribute views that yield the clearest explanations.
+\alon{Done: normalisation fixed to $1-\TVD$; the unnormalised form could range below $0$. The low-sensitivity counterpart used by the algorithm is Eq.~\eqref{eq:representativeness-proxy}, which additionally smooths the view-side denominator. Representativeness is now a property of the view, averaged over $\mathcal{A}_R(p)$ as in Section~\ref{subsec:prelim-db-queries}, which is what the factorization below requires.}
+
+\paragraph{Coverage.}
+Coverage favours views that carry enough evidence to support an explanation:
+\begin{equation}
+C(p)=|p(D)|\cdot\big(|Q_1(p(D))|+|Q_2(p(D))|\big).
+\label{eq:ideal-coverage}
+\end{equation}
+The second factor counts the evidence the two outputs place in the view \emph{jointly}.
+A product of the two counts would vanish whenever only one output meets the view, and so would discard precisely the one-sided views of Example~\ref{ex:one-sided}; the sum keeps them.
+The first factor weights a view by its size in the database, so that other things being equal an explanation speaks for a larger part of the data.
+By Proposition~\ref{prop:view-restriction} both counts are at most $|p(D)|$, so $C(p)\le2|p(D)|^2$.
+\alon{Done: under option B the evidence is the \emph{sum} $|Q_1(p(D))|+|Q_2(p(D))|$, replacing the product $|Q_1(p(D))|\cdot|Q_2(p(D))|$, which vanished on one-sided views. The algorithm's normalised proxy (Eq.~\eqref{eq:coverage-proxy}) is this second factor divided by the public $N$.}
+
+\paragraph{The ideal score and its factorization.}
+The ideal quality of a single candidate multiplies the three criteria, and the product separates into a view-level and an explanation-level factor:
+\begin{equation}
+U^*(p,A)=I(p,A)\cdot V(p),\qquad V(p)=R(p)\cdot C(p).
+\label{eq:ideal-factorization}
+\end{equation}
+The factor $V$ depends on the view alone and is what the view stage needs; $I$ depends on the candidate and is what the explanation stage needs.
+The two-stage model is therefore not imposed on the problem but follows from the form of its quality function.
+
+\paragraph{Diversity and the set-level quality.}
+When several explanations are released they should expose different aspects of the change rather than repeat one.
+For an attribute $A$, let $U^*_{(1)}(A)\ge U^*_{(2)}(A)\ge\cdots$ be the ideal scores of the candidates of $E$ that use $A$, in decreasing order, and let $w_1\ge w_2\ge\cdots\ge0$ with $w_1=1$ be a non-increasing weight profile.
+Then
+\begin{equation}
+U^*_w(E)=\sum_{A}\;\sum_{j\ge1} w_j\,U^*_{(j)}(A).
+\label{eq:ideal-set-utility}
+\end{equation}
+Within each attribute group the strongest candidate contributes in full and every further candidate is discounted by its rank, so repeatedly explaining the same attribute yields diminishing returns.
+We use the graded profile $w_j=\lambda^{\,j-1}$ for $0\le\lambda\le1$, which is the form the algorithm's diversity term takes in Equation~\eqref{eq:diversity-score}; $\lambda=1$ removes the diversity requirement, and $\lambda=0$ gives no credit to a second explanation on the same attribute.
+A flat profile $w=(1,\lambda,\lambda,\dots)$ is also admissible and coincides with the graded one on the first two members of a group; for $0<\lambda<1$ the two differ from the third onwards, which matters once $k$ is large enough for an attribute to be used three or more times.
+\alon{Done: set-level utility stated in Eq.~\eqref{eq:ideal-set-utility}. It was previously written as $\lambda\sum_e U^*(e)+(1-\lambda)\sum_A\max U^*$, which expands to the \emph{flat} weights $(1,\lambda,\lambda,\dots)$ and therefore disagreed with the graded profile $\lambda^{j-1}$ used by Eq.~\eqref{eq:diversity-score} and Definition~\ref{def:setobj} from the third member of a group onwards. Both are now stated in the same general weighted form.}
+
+\paragraph{The non-private problem.}
+Without the privacy requirement, the ideal problem is to compute $\mathrm{OPT}_k(U^*_w)$ together with a set attaining it.
+
+\begin{proposition}[Exact non-private selection]
+\label{prop:nonprivate-exact}
+Without the privacy requirement, an optimal set for Definition~\ref{def:problem} with $F=U^*_w$ can be computed in time
+\[
+O\big(|\views|\,(|\mathcal{A}_R|+|\Attrs|)\,N+|\mathcal{C}|\log|\mathcal{C}|\big),
+\]
+where $N=|D|$; this is polynomial in the size of the input.
+In particular, the greedy rule that repeatedly adds the candidate of largest marginal gain returns an optimal set, and no enumeration of the $\binom{|\mathcal{C}|}{k}$ candidate subsets is needed.
+\end{proposition}
+
+\begin{proof}
+Counting the evaluation of a predicate on a tuple as a unit operation, $R$ needs one pass over $D$ per view and reference attribute, $C$ one per view, and $I$ one per candidate, which gives the first term.
+Given the scores, the proof of Theorem~\ref{thm:non-private-hardness} applies verbatim with $U^*$ in place of $\HD_\gamma$, since it uses only that the objective separates over attribute groups and that $w$ is non-increasing.
+If the candidates of each group are sorted by score, taking the $j$-th best candidate of group $A$ adds $w_j$ times its score; these gains are non-increasing in $j$, so an optimal set is formed by the $k$ largest gains overall, which greedy selects.
+Finding them requires sorting each group once, which gives the second term.
+\end{proof}
+
+Set-selection problems with a diversity term are usually NP-hard --- maximum coverage~\cite{Feige98} and max-sum diversification~\cite{GollapudiS09} are standard examples --- because the contribution of a candidate depends on its overlap with every other chosen candidate.
+Here each candidate belongs to exactly one attribute group and the diversity term depends only on how many chosen candidates share that group, so the objective is separable and the overlap structure that makes those problems hard is absent.
+If diversity were instead measured by the similarity between the chosen histograms, the contribution of a candidate would again depend on every other chosen candidate, and this argument would no longer apply.
+Without privacy there is thus no algorithmic obstacle; the obstacle is privacy, to which we now turn.
+\alon{Done: the informal claim that the non-private problem is easy is now Proposition~\ref{prop:nonprivate-exact}, with its running time, and the paragraph after it explains why the problem is not of the maximum-coverage type despite its diversity term.}
+
+\subsection{Sensitivity of the Ideal Model}
+\label{subsec:ideal-sensitivity}
+
+Private selection with the exponential mechanism (Definition~\ref{def:exponential-mechanism}) calibrates its randomness to the global sensitivity of the utility (Definition~\ref{def:global-sensitivity}).
+All statements are with respect to the unbounded neighbouring relation of Definition~\ref{def:neighboring}.
+For a function $f$ and a size $N$ we write $\GS_N(f)$ for the largest change of $f$ between a database of size $N$ and a neighbour, so that $\GS(f)=\sup_N\GS_N(f)$; here $N$ ranges over all database sizes.
+A mechanism running on the private database may calibrate to $\GS_N(f)$ at $N=|D|$ only if the size of $D$ is treated as public, as Section~\ref{sec:solution} does (Proposition~\ref{prop:usefulness-sensitivity}); otherwise it must calibrate to $\GS(f)$, since the scale of its noise would itself reveal $|D|$.
+We bound each ideal component separately, and then their combination.
+Upper bounds hold for every candidate.
+Equalities and lower bounds are attained by explicit databases, and so require that the view and the two queries admit the tuples those databases use; each statement names the tuples it needs.
+
+\begin{lemma}[Interestingness]
+\label{lem:ideal-interestingness}
+$\GS_N(I)\le1$ for every $N$, with equality whenever the view admits a tuple selected by exactly one of the two queries.
+Otherwise the queries agree on every tuple of the view, and $I\equiv0$.
+\end{lemma}
+
+\begin{proof}
+Let $D'=D\cup\{t\}$; removing a tuple is the reverse.
+If $t$ does not satisfy $p$ nothing changes.
+Otherwise $t$ falls into a single bin $v^*$ of $A$ and every other term of Eq.~\eqref{eq:ideal-interestingness} is unchanged.
+Let $m=H_{p(D),A}(v^*)$ and let $x\le m$ be the difference of the two counts in that bin.
+Each output is a selection $\sigma_{\varphi_i}(D)$ (Section~\ref{subsec:prelim-db-queries}), so $t$ enters it at most once and the new difference $x'$ satisfies $|x'-x|\le1$.
+If $m=0$ the bin is new and contributes $x'\le1$.
+If $m\ge1$ the term moves from $x/m$ to $x'/(m+1)$, and
+\begin{align*}
+\frac{x'}{m+1}-\frac{x}{m}&\le\frac{m-x}{m(m+1)}\le\frac1{m+1},\\
+\frac{x}{m}-\frac{x'}{m+1}&\le\frac{x+m}{m(m+1)}\le\frac2{m+1},
+\end{align*}
+both at most $1$.
+For equality, let $t$ be a tuple of the view selected by exactly one query, and let $D$ contain no tuple of the view in the bin of $t$; adding $t$ creates that bin with difference $1$, so $I$ grows by exactly $1$.
+If no such tuple exists, every tuple of the view is selected by both queries or by neither, so the two counts coincide in every bin and $I\equiv0$.
+\end{proof}
+
+The value $1$ is attained only through bins holding at most one tuple of the view, including a bin the new tuple populates; a bin already holding $m\ge1$ tuples moves by at most $\tfrac2{m+1}$.
+The sensitivity is thus dictated by the sparsest bins of any view, whereas the candidates that make good explanations rest on well-populated ones --- the mismatch that the smoothed proxy of Section~\ref{subsubsec:histogram-distance} targets.
+\alon{TODO (decision needed): at $\gamma=0$ this lemma gives exactly $1$, whereas Proposition~\ref{prop:hd-sensitivity} bounds $\GS(\HD_\gamma)$ by $2/(1+\gamma)$, i.e.\ by $2$ at $\gamma=0$. The same per-bin argument gives $\GS(\HD_\gamma)=1/(1+\gamma)$ exactly for every $\gamma\ge0$ (verified by exhaustive search on small databases), so Proposition~\ref{prop:hd-sensitivity} is loose by a factor of $2$. Tightening it would halve the noise of explanation selection in Algorithm~\ref{alg:topk}; it is left unchanged pending a decision, since it changes the algorithm's calibration.}
+
+\begin{lemma}[Representativeness]
+\label{lem:ideal-representativeness}
+If some tuples satisfy $p$ and others do not, then $\GS_N(R)=1$ for every $N\ge1$, the whole range of $R$.
+Moreover, when the reference attributes have at least two bins, even over neighbouring pairs in which $p(D)$ is non-empty on both sides, $\GS_N(R)\ge\tfrac12-\tfrac1N$.
+\end{lemma}
+
+\begin{proof}
+$R\in[0,1]$, so $\GS(R)\le1$.
+For equality at every size $N$, let $D$ consist of $N$ tuples outside $p$ and add one tuple satisfying $p$, all with value $a$ on every attribute of $\mathcal{A}_R(p)$.
+Then $p(D)=\emptyset$ and $R=0$, whereas in $D'$ both distributions are the point mass at $a$ on every $A\in\mathcal{A}_R(p)$, so $R=1$.
+
+For the second claim, let $D$ contain one tuple satisfying $p$ with value $a$ on every attribute of $\mathcal{A}_R(p)$ and $N-1$ tuples outside $p$ with value $b$.
+Then $R=\tfrac1N$, since on each $A\in\mathcal{A}_R(p)$ the total variation distance between $P_{D,A}$ and $P_{p(D),A}$ is $1-\tfrac1N$.
+Adding a tuple that satisfies $p$ with value $b$ makes the view distribution uniform on $\{a,b\}$ and the database distribution $(\tfrac1{N+1},\tfrac{N}{N+1})$, at total variation distance $\tfrac{N-1}{2(N+1)}$, so $R=\tfrac{N+3}{2(N+1)}$.
+The change is $\tfrac{N+3}{2(N+1)}-\tfrac1N>\tfrac12-\tfrac1N$.
+\end{proof}
+
+\begin{lemma}[Coverage]
+\label{lem:ideal-coverage}
+For every $N$, $\GS_N(C)\le4N+2$, with equality whenever the view admits a tuple selected by both queries.
+\end{lemma}
+
+\begin{proof}
+Let $D'=D\cup\{t\}$ with $|D|=N$, $m=|p(D)|$ and $s=|Q_1(p(D))|+|Q_2(p(D))|\le2m$.
+If $t$ does not satisfy $p$, $C$ is unchanged.
+Otherwise $m$ grows by one and, since each output selects $t$ at most once, $s$ grows by some $\delta\in\{0,1,2\}$, so
+\begin{align*}
+C(D')-C(D)&=(m+1)(s+\delta)-ms\\
+&=s+\delta(m+1)\;\le\;4m+2\;\le\;4N+2 .
+\end{align*}
+Removing a tuple from a database of size $N$ is the same computation with a database of size $N-1$ in the role of $D$, and gives at most $4N-2$.
+Equality holds when every tuple of $D$ satisfies $p$ and both queries and $t$ does too, which gives $m=N$, $s=2N$ and $\delta=2$.
+\end{proof}
+
+Since $C(p)\le2|p(D)|^2$, the entire coverage of a view with fewer than $\sqrt{2N+1}$ tuples lies below this sensitivity.
+
+The diversity term contributes no sensitivity of its own: the weight profile $w$ is fixed in advance and reads no data, and it acts only through the scores it weights.
+Individually, then, the sensitivities are at most linear in $N$ --- constants for $I$ and $R$, and $4N+2$ for $C$ --- although each is already large compared with the scores of typical candidates.
+Their product is another matter.
+
+\begin{proposition}[Sensitivity of the ideal quality]
+\label{prop:ideal-utility-sensitivity}
+For every candidate and every $N\ge1$,
+\[
+\GS_N(U^*)\;\le\;2N^2+(8N+2)\,b,\qquad b=|\Dom(D[A])|.
+\]
+If moreover the view admits a tuple selected by both queries and, in another bin of $A$, a tuple selected by exactly one of them, then $\GS_N(U^*)\ge2N^2+3N+1$; in particular $\GS(U^*)$ is then not bounded by any constant.
+\end{proposition}
+
+\begin{proof}
+\emph{Lower bound.}
+Let $D$ consist of $N$ tuples of the first kind, all in bin $a$.
+Then $p(D)=D$ and bin $a$ contributes $0$, so $I=0$ and $U^*(p,A)=0$.
+Add one tuple of the second kind, in bin $c\neq a$: bin $c$ now contributes $1$, so $I=1$; $p(D')=D'$ gives $R=1$; and $C=(N+1)\big((N+1)+N\big)$.
+Hence $U^*(p,A;D')=(N+1)(2N+1)=2N^2+3N+1$.
+
+\emph{Upper bound.}
+Let $D'=D\cup\{t\}$ with $|D|=N$ and write $U^*=I\cdot V$.
+The product rule gives
+\[
+|\Delta U^*|\le|\Delta I|\cdot V(D)+I(D')\cdot|\Delta V|.
+\]
+For the first term, $|\Delta I|\le1$ by Lemma~\ref{lem:ideal-interestingness} and $V(D)\le C(D)\le2N^2$.
+For the second, each of the at most $b$ terms of $I$ lies in $[0,1]$, so $I(D')\le b$, and $|\Delta V|\le|\Delta R|\cdot C(D)+R(D')\cdot|\Delta C|$.
+If $p(D)=\emptyset$ then $C(D)=0$.
+Otherwise each term $R^A$ moves by at most the total-variation movements of $P_{D,A}$ and $P_{p(D),A}$, which are at most $\tfrac1{N+1}$ and $\tfrac1{m+1}$, since adding a point to an empirical distribution over $\ell$ points moves it by at most $\tfrac1{\ell+1}$; the average $R$ obeys the same bound.
+With $C(D)\le2m^2$ this gives $|\Delta R|\cdot C(D)\le\tfrac{2m^2}{N+1}+\tfrac{2m^2}{m+1}\le4N$.
+Together with Lemma~\ref{lem:ideal-coverage}, $|\Delta V|\le8N+2$, so the second term is at most $(8N+2)b$.
+Removing a tuple is the same argument with a database of size $N-1$ in the role of $D$, which gives a smaller bound.
+\end{proof}
+
+The quadratic growth thus comes \emph{only} from the product: a bounded change in $I$ is multiplied by a view-level factor that can be as large as $2N^2$.
+What this means for private selection is the following.
+
+\begin{corollary}[Consequence for private selection]
+\label{cor:ideal-em}
+Treat $N=|D|$ as public, which is the most favourable case, and run the exponential mechanism with utility $U^*$ and a sensitivity $\Delta$ valid for every candidate.
+If some candidate satisfies the condition of Proposition~\ref{prop:ideal-utility-sensitivity}, then every candidate $(p,A)$ whose view satisfies $|p(D)|<N/\sqrt{b}$, where $b=|\Dom(D[A])|$, is selected with probability at most a factor $e^{\epsilon/2}$ larger than a candidate of score $0$.
+With $R$ alone as the utility, and some view that some tuples satisfy and others do not, the best view is favoured over the worst by at most a factor $e^{\epsilon/2}$.
+\end{corollary}
+
+\begin{proof}
+By Definition~\ref{def:exponential-mechanism}, candidates with scores $u$ and $0$ have selection probabilities in ratio $\exp(\epsilon u/(2\Delta))$.
+For $m=|p(D)|$, $U^*(p,A)\le b\cdot1\cdot2m^2$, which is below $2N^2$ whenever $m<N/\sqrt{b}$, while $\Delta\ge2N^2+3N+1$ by Proposition~\ref{prop:ideal-utility-sensitivity} applied to the candidate that satisfies its condition; so the ratio is below $e^{\epsilon/2}$.
+For $R$, Lemma~\ref{lem:ideal-representativeness} shows that $\GS_N(R)=1$ equals the range, so the largest possible score gap equals $\Delta$ and the ratio is at most $e^{\epsilon/2}$.
+\end{proof}
+
+Explanations are drawn from views that are small subpopulations, so Corollary~\ref{cor:ideal-em} covers essentially every candidate of interest: under the ideal quality, private selection is barely better than uniform.
+Without treating $|D|$ as public no finite calibration exists at all, since $\GS(U^*)$ is unbounded (Proposition~\ref{prop:ideal-utility-sensitivity}).
+The cause is a mismatch between the \emph{worst case} that the sensitivity must cover --- views as large as $D$, and bins holding a single tuple --- and the scores of \emph{typical} candidates, which are far smaller.
+\alon{Done: the single sensitivity proposition is now split into per-component results (Lemmas~\ref{lem:ideal-interestingness}--\ref{lem:ideal-coverage}) and a combined bound whose upper and lower bounds share the leading term $2N^2$ (Proposition~\ref{prop:ideal-utility-sensitivity}); for two bins the lower bound $2N^2+3N+1$ equals the exhaustive maximum at every size searched. Equalities are stated with the tuples they need: on degenerate query pairs they fail (e.g.\ $\GS_N(I)=0$ when the queries agree on the view). Corollary~\ref{cor:ideal-em} states what the bounds mean for the exponential mechanism.}
+
+\subsection{From the Ideal Model to a Private Framework}
+\label{subsec:ideal-to-private}
+
+The framework departs from the ideal model in two ways: it keeps the two stages \emph{separate}, as two private mechanisms, and it replaces each ideal factor by a low-sensitivity proxy.
+
+\paragraph{Why split into two stages.}
+Three reasons support the split.
+
+\emph{Running time.}
+The candidate space $\mathcal{C}$ has $|\views|\cdot|\Attrs|$ members, and scoring a candidate requires the histograms of its attribute over both outputs inside its view.
+The view-level factor $V$ depends on $p$ alone, so it is computed once per view and shared by all attributes.
+Retaining $\tau$ views reduces the candidate-level work from $|\views|\cdot|\Attrs|$ to $\tau\cdot|\Attrs|$, a factor $|\views|/\tau$, and the same reduction applies to each of the $k$ selection rounds (Section~\ref{subsec:complexity-analysis}).
+
+\emph{Safe filtering.}
+Views with a small view-level factor cannot host a good explanation, and the factorization identifies them before any attribute is examined.
+
+\begin{lemma}[Filtering]
+\label{lem:filtering}
+Let $\views_\tau$ consist of the $\tau$ views with the largest $V$.
+For every $p\notin\views_\tau$ and every $A\in\Attrs$,
+\[
+U^*(p,A)\;\le\;|\Dom(D[A])|\cdot\min_{q\in\views_\tau}V(q).
+\]
+\end{lemma}
+
+\begin{proof}
+By the choice of $\views_\tau$, $V(p)\le V(q)$ for every $q\in\views_\tau$; and $I(p,A)\le|\Dom(D[A])|$, since each term of Eq.~\eqref{eq:ideal-interestingness} lies in $[0,1]$.
+Apply Eq.~\eqref{eq:ideal-factorization}.
+\end{proof}
+
+Discarding the views outside $\views_\tau$ therefore forfeits only candidates whose ideal quality is at most the smallest retained view-level factor times the number of bins of their attribute.
+\alon{Done: the bound was $2\min V$, which used the range $[0,2]$ of the earlier distributional interestingness and cited Lemma~\ref{lem:ideal-interestingness}, a sensitivity result; after $I$ became the unsmoothed Histogram Distance its range is $[0,|\Dom(D[A])|]$, and an exhaustive search found $104$ violations of the old bound. The corrected bound holds on every instance searched.}
+The private algorithm approximates this filter with a private top-$\tau$ selection.
+
+\emph{Privacy.}
+This is the decisive reason.
+By Proposition~\ref{prop:ideal-utility-sensitivity}, the quadratic sensitivity of $U^*$ arises only from multiplying $I$ by $V$.
+A two-stage framework never forms that product as a utility: the view stage selects on the view-level factor alone and the explanation stage on the explanation-level factor alone, so each mechanism pays only for the sensitivity of its own factor.
+Selecting among $\tau\cdot|\Attrs|$ rather than $|\views|\cdot|\Attrs|$ candidates also tightens the utility guarantee of the exponential mechanism, which degrades with the logarithm of the number of candidates~\cite{mcsherry2007,TheAlgFoundDP2014}, at the price of the budget the view stage consumes.
+
+\paragraph{Replacing the ideal factors.}
+Splitting removes the product, but the factors themselves still have sensitivity that is large relative to typical scores (Section~\ref{subsec:ideal-sensitivity}).
+The framework therefore replaces each factor by a proxy designed to make its sensitivity small relative to the scores of typical candidates; Table~\ref{tab:ideal-vs-proxy} records the correspondence.
+Interestingness is replaced by the smoothed Histogram Distance $\HD_\gamma$, which is $I$ with a public constant $\gamma$ added to every denominator (Definition~\ref{def:hd}); smoothing lowers the sensitivity bound from $1$ to $2/(1+\gamma)$, below $1$ for every $\gamma>1$, which is the regime in which the algorithm operates.
+Representativeness is replaced by $\Rep_{\gamma_R}$, which applies the same smoothing to the view-side denominator.
+Coverage is replaced by $\Cov$, which drops the factor $|p(D)|$ --- the factor that makes the sensitivity of $C$ grow with $N$ --- and normalizes the evidence by the public $N$.
+Diversity keeps its graded form, and the set-level quality becomes $F_w$.
+Section~\ref{sec:solution} defines each proxy, proves its sensitivity, and assembles the two stages into Algorithms~\ref{alg:main} and~\ref{alg:topk}.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3.5pt}
+\caption{Ideal factors (Section~\ref{sec:explanation-quality}), their sensitivity (Section~\ref{subsec:ideal-sensitivity}), and the proxies of Section~\ref{sec:solution} that replace them. Sensitivities are comparable only relative to the scores they calibrate: the proxies are designed so that their sensitivity is small relative to the scores of typical candidates, not merely small in absolute terms.}
+\label{tab:ideal-vs-proxy}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Criterion & Ideal & $\GS$ & Proxy & $\GS$ \\
+\midrule
+Interestingness    & $I$   & $1$        & $\HD_\gamma$     & $2/(1{+}\gamma)$ \\
+Representativ.     & $R$   & $1$        & $\Rep_{\gamma_R}$ & --- \\
+Coverage           & $C$   & $4N{+}2$   & $\Cov$           & $2/N$ \\
+View factor        & $V$   & ${\le}\,8N{+}2$ & $\Use$      & $9/(4N)$ \\
+Diversity          & $w_j$ & $0$        & $\DivS$          & $0$ \\
+Candidate          & $U^*$ & $\Theta(N^2)$ & \multicolumn{2}{l}{never formed} \\
+Set-level          & $U^*_w$ & ---      & $F_w$            & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\alon{Done: Section~\ref{sec:model} is restructured as problem $\to$ two-stage model with its ideal instantiation $\to$ per-component and combined sensitivity $\to$ split and replacement. Material that Section~\ref{sec:preliminaries} now covers (the query-refinement and CQA settings, the literature on the quality criteria) is referenced rather than repeated; the former Challenges subsection is absorbed into Sections~\ref{subsec:ideal-sensitivity} and~\ref{subsec:ideal-to-private}; and the ideal-vs-proxy table moves here from Section~\ref{sec:solution}, now listing the sensitivity of both sides.}
