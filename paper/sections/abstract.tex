@@ -1,0 +1,10 @@
+\begin{abstract}
+Data-management systems increasingly change the queries users run in order to meet external requirements: refinement systems rewrite predicates so that the output meets a representation constraint, and consistent query answering drops the tuples involved in integrity violations.
+The new output satisfies the requirement, but the user sees only the changed query, not how the population behind the answer has changed.
+We study how to explain the difference between two query outputs over sensitive data under differential privacy.
+An explanation is a pair of histograms of one attribute over the tuples of the two outputs that fall in a view, a conjunctive region of the data.
+We adapt the measures of explanation quality used in prior work (representativeness, coverage, interestingness and diversity) to this setting, bound their sensitivity, and give a two-stage algorithm.
+It first privately selects views that are representative of the data and cover the two outputs, then privately selects a diverse set of explanations from these views and releases their histograms with Laplace noise; the whole pipeline is $\epsilon$-differentially private.
+On six datasets and $44$ query pairs covering query refinement, consistent query answering and contrasts between groups, the released explanations show how a refinement, a repair or a contrast changes the population, which neither the queries nor the constraints state.
+At $\epsilon=1$ they keep $60\%$ of the score of a non-private brute-force search over all candidates, mostly explaining the same attributes, and privacy adds no measurable running time.
+\end{abstract}
