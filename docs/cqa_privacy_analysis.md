@@ -147,7 +147,7 @@ $HD_{cnt}=\sum_V |H_{Q(p(D))}(V)-H_{Q'(p(D))}(V)|$
 - **CQA:** התחום התחיל ב-PODS 1999, ומוטיבציית הדגל שלו היא data integration. ראו [Bertossi, survey](https://www.researchgate.net/publication/333840185_Database_Repairs_and_Consistent_Query_Answering_Origins_and_Further_Developments) ו-[CQA for primary keys with counting](https://arxiv.org/pdf/2211.04134).
 - **הסברים ו-repairs:** [Salimi & Bertossi](https://ar5iv.labs.arxiv.org/html/1404.6857), [Bertossi & Pardal 2025](https://arxiv.org/html/2511.15623v1). אף אחת מהעבודות לא עוסקת בפרטיות.
 - **DP על נתונים לא עקביים:** [Computing Inconsistency Measures Under DP](https://arxiv.org/abs/2502.11009v2) (Mohapatra, Gilad, He, Kimelfeld, SIGMOD 2025) משתמש ב-conflict graph ומתמודד עם הסנסיטיביות שתלויה בדרגה. הטכניקות שלהם רלוונטיות להרחבה ל-FDs. ראו גם [PrivateClean](https://amplab.cs.berkeley.edu/publication/privateclean-data-cleaning-and-differential-privacy) ו-[Kamino](https://ar5iv.labs.arxiv.org/html/2012.15713).
-- **Fairness:** יש ספרות שמראה ש-data cleaning אוטומטי יכול לפגוע ב-fairness, למשל Guha, Khan, Stoyanovich, Schelter, ‏ICDE 2023. המקור לא אומת, ויש לבדוק אותו לפני ציטוט.
+- **Fairness:** ‏data cleaning אוטומטי יכול לפגוע ב-fairness: S. Guha, F. A. Khan, J. Stoyanovich, S. Schelter, *Automated Data Cleaning Can Hurt Fairness in Machine Learning-based Decision Making*, ICDE 2023, [doi:10.1109/ICDE55515.2023.00303](https://doi.org/10.1109/ICDE55515.2023.00303). גרסה מורחבת: TKDE 2024, ‏[doi:10.1109/TKDE.2024.3365524](https://doi.org/10.1109/TKDE.2024.3365524).
 - **הפער:** לא נמצאה עבודה על הסברים פרטיים להבדל בין $Q$ לבין התשובות הוודאיות שלה. החיפוש היה מוגבל.
 
 ### המלצה
