@@ -4,8 +4,20 @@
 #        scripts/shards_status.sh e7     (E7 shards: branch ...-e7-<name>,    dir results_shards/e7-<name>)
 #        scripts/shards_status.sh e7k7   (E7 at k=7: branch ...-e7k7-<name>, dir results_shards/e7k7-<name>)
 #        scripts/shards_status.sh eqbins-e4 | eqbins-e7   (equal-width bins re-runs)
+#        scripts/shards_status.sh all44   (running time on the other 22 pairs: 8 shards all44-<name>)
 cd "$(dirname "$0")/.."
 n_done=0
+if [ "${1:-}" = "all44" ]; then
+  for n in acs-a acs-b acs-c adult-a adult-b ipums-a ipums-b ipums-c; do
+    b=claude/git-repo-experiments-f0705v-all44-$n; dir=all44-$n
+    if git fetch -q origin "$b" 2>/dev/null && git cat-file -e "FETCH_HEAD:results_shards/$dir/DONE" 2>/dev/null; then
+      echo "$dir done"; n_done=$((n_done+1))
+    else
+      echo "$dir running ($(git log -1 --format=%cd --date=format-local:%H:%M FETCH_HEAD 2>/dev/null) last push)"
+    fi
+  done
+  [ "$n_done" -eq 8 ]; exit $?
+fi
 for n in acs ipums tax taxdirty adult hospital; do
   if [ "${1:-}" = "e7" ]; then b=claude/git-repo-experiments-f0705v-e7-$n; dir=e7-$n
   elif [ "${1:-}" = "e7k7" ]; then b=claude/git-repo-experiments-f0705v-e7k7-$n; dir=e7k7-$n
