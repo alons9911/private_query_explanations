@@ -102,29 +102,56 @@ def _quality_row(axes, summ: pd.DataFrame, dss: list[str], xlabel: str, logx: bo
             xfmt(ax, sub.value)
 
 
+def _rescored(name: str) -> pd.DataFrame:
+    """Rows of results/rescored/<name>.csv (scored against the brute force at the default gamma)."""
+    return _drop(pd.read_csv(RES / "rescored" / f"{name}.csv"))
+
+
+def _curve(df: pd.DataFrame, x: str, col: str) -> pd.DataFrame:
+    """Per dataset and x: mean over the pairs of the per-pair mean."""
+    pp = df.groupby(["dataset", "pair", x], as_index=False)[col].mean()
+    return pp.groupby(["dataset", x], as_index=False)[col].mean()
+
+
+# (source, x column, value column, label, colour, marker, linestyle)
+BF_SERIES_EPS = [("e2", "value", "ratio_BF", "PrivExpl", P.BLUE, "o", "-"),
+                 ("e2_b1", "value", "ratio_BF", "B1 (no noise)", P.BLUE, "o", ":"),
+                 ("single", "epsilon", "ratio_BF", "SingleStage", P.AQUA, "^", "--"),
+                 ("e2", "value", "attr_at_k_BF", "attribute@k (PrivExpl)", P.ORANGE, "s", "-")]
+BF_SERIES_GAMMA = [("e6", "value", "ratio_BF", "PrivExpl", P.BLUE, "o", "-"),
+                   ("e6_b1", "value", "ratio_BF", "B1 (no noise)", P.BLUE, "o", ":"),
+                   ("e6", "value", "attr_at_k_BF", "attribute@k (PrivExpl)", P.ORANGE, "s", "-")]
+
+
 def fig_quality() -> Path:
-    e2 = _drop(pd.read_csv(RES / "e2" / "summary.csv"))
-    e6 = _drop(pd.read_csv(RES / "e6" / "summary.csv"))
-    dss = _datasets(e2)
+    """ApproxRatio against the brute force (default gamma) and attribute@k, against eps and gamma."""
+    src = {"e2": _rescored("e2"), "e2_b1": _rescored("e2_b1"), "e6": _rescored("e6"), "e6_b1": _rescored("e6_b1")}
+    comp = _rescored("e8_competitors")
+    src["single"] = comp[comp.method == "SingleStage"]
+    dss = _datasets(src["e2"])
     fig, axes = plt.subplots(2, len(dss), figsize=(7.05, 2.75), squeeze=False, sharex="row")
-
-    def eps_ticks(ax, v):
-        ax.set_xticks([0.1, 1, 10])
-        ax.set_xticklabels(["0.1", "1", "10"])
-
-    def g_ticks(ax, v):
-        ax.set_xticks([0, 0.1, 1, 10])
-        ax.set_xticklabels(["0", ".1", "1", "10"])
-
-    _quality_row(axes[0], e2, dss, r"privacy budget $\epsilon$", True, True, eps_ticks)
-    _quality_row(axes[1], e6, dss, r"$\gamma$ / Eq. (14) value", True, False, g_ticks)
-    for ax in axes.ravel():  # the default: a shaded band, not a line that the grid could hide
-        ax.axvspan(0.85, 1.18, color=P.MUTED, alpha=0.18, linewidth=0, zorder=0)
-    for row in axes:  # one scale per row, high enough for ratios to B1 above 1
-        top = max(ax.get_ylim()[1] for ax in row)
-        for ax in row:
-            ax.set_ylim(0, top)
-        row[0].set_ylabel("score")
+    rows = [(BF_SERIES_EPS, r"privacy budget $\epsilon$", [0.1, 1, 10], ["0.1", "1", "10"]),
+            (BF_SERIES_GAMMA, r"$\gamma$ / Eq. (14) value", [0, 0.1, 1, 10], ["0", ".1", "1", "10"])]
+    for r, (series, xlabel, ticks, ticklabels) in enumerate(rows):
+        for j, ds in enumerate(dss):
+            ax = axes[r, j]
+            for name, x, col, lab, c, mk, ls in series:
+                cv = _curve(src[name][src[name].dataset == ds], x, col).sort_values(x)
+                ax.plot(cv[x], cv[col], color=c, marker=mk, linestyle=ls, label=lab,
+                        markerfacecolor=SURF if ls != "-" else c)
+                _logx(ax, cv[x])
+            ax.set_xticks(ticks)
+            ax.set_xticklabels(ticklabels)
+            ax.set_ylim(0, 1.05)
+            ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
+            ax.axhline(1.0, color=P.MUTED, linewidth=0.5, zorder=0)
+            ax.axvspan(0.85, 1.18, color=P.MUTED, alpha=0.18, linewidth=0, zorder=0)
+            if j:
+                ax.set_yticklabels([])
+            if r == 0:
+                ax.set_title(f"{DS_TITLE[ds]} ({src['e2'][src['e2'].dataset == ds].pair.nunique()})")
+            ax.set_xlabel(xlabel)
+        axes[r, 0].set_ylabel("score")
     h, l = axes[0, 0].get_legend_handles_labels()
     fig.legend(h, l, loc="upper center", ncol=4, bbox_to_anchor=(0.5, 1.06))
     fig.tight_layout(h_pad=0.6, w_pad=0.4)
@@ -288,13 +315,13 @@ def fig_attrs() -> Path:
     """Top: end-to-end time against |Attrs| (median of the 10 runs, one per attribute order, mean over
     the runtime pairs). Bottom: accuracy against |Attrs| (40 runs per point, mean over all pairs)."""
     rt = _drop(pd.read_csv(RES / "e7" / "raw" / "runtime.csv"))
-    acc = _drop(pd.read_csv(RES / "e7" / "raw" / "trials.csv"))
+    acc = _rescored("e7")
     limit = 1800.0
     per = rt.groupby(["dataset", "pair", "value", "method"], as_index=False).agg(
         total_s=("total_s", "median"), timeout=("timeout", "max"))
     pts = per.groupby(["dataset", "value", "method"], as_index=False).agg(total_s=("total_s", "mean"),
                                                                        timeout=("timeout", "max"))
-    asum = acc.groupby(["dataset", "pair", "value"], as_index=False).mean(numeric_only=True)
+    asum = acc.groupby(["dataset", "pair", "value"], as_index=False)[["ratio_BF", "attr_at_k_BF"]].mean()
     dss = [d for d in DS_ORDER if d in set(pts.dataset) | set(asum.dataset)]
     fig, axes = plt.subplots(2, len(dss), figsize=(7.05, 2.9), squeeze=False)
     plain = FuncFormatter(lambda v, _: f"{v:g}")
@@ -336,10 +363,9 @@ def fig_attrs() -> Path:
             ax.set_ylabel("time (s)")
         ax = axes[1, j]
         sub = asum[asum.dataset == ds].groupby("value", as_index=False).mean(numeric_only=True).sort_values("value")
-        for col, lab, c, mk, ls in QUALITY_SERIES:
-            if col == "ratio_B1_mean":
-                continue
-            ax.plot(sub.value, sub[col.replace("_mean", "")], color=c, marker=mk, linestyle=ls, label=lab)
+        for col, lab, c, mk in (("ratio_BF", "ApproxRatio (PrivExpl)", P.BLUE, "o"),
+                                ("attr_at_k_BF", "attribute@k (PrivExpl)", P.ORANGE, "s")):
+            ax.plot(sub.value, sub[col], color=c, marker=mk, label=lab)
         ax.set_ylim(0, 1.1)
         ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
         ax.axhline(1.0, color=P.MUTED, linewidth=0.5, zorder=0)
