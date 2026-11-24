@@ -1,0 +1,48 @@
+% \begin{example}
+% 	\label{ex:running}
+
+% 	\begin{table}[hb]
+% 		\caption{\candidates{} Table}
+% 		\label{tab:candidates}
+% 		\begin{tabular}{lllll}
+% 		\hline
+% 		\textbf{ID} & \textbf{Gender} & \textbf{Race} & \textbf{Major} & \textbf{GPA} \\ \hline
+% 		1           & M               & Black         & CS             & 3.90         \\
+% 		2           & F               & Asian         & ME             & 3.90         \\
+% 		3           & M               & White         & ME             & 3.85         \\
+% 		4           & F               & White         & ME             & 3.80         \\
+%         5           & F               & Black         & SE             & 3.80         \\
+% 		6           & M               & White         & CS             & 3.80         \\
+% 		7           & F               & Asian         & CS             & 3.75        \\
+% 		8           & F               & Black         & EE             & 3.75         \\
+% 		9           & M               & Asian         & CS             & 3.70         \\
+% 		\end{tabular}
+% 	\end{table}
+	
+% 	\begin{table}[hb]
+% 		\caption{\internships{} Table}
+% 		\label{tab:internships}
+% 		\begin{tabular}{lll}
+% 		\hline
+% 		\textbf{ID} & \textbf{Type} & \textbf{Hours} \\ \hline
+% 	     		1           & t.c.               & 100          \\
+%                     2           & g.a.               & 70           \\
+%                     3           & t.c.               & 85           \\
+% 	     		4           & g.a.               & 80           \\
+%                 5           & t.c.               & 70           \\
+% 	     		6           & r.l.               & 95           \\
+% 	     		7           & t.c.               & 100          \\
+% 	     		8           & g.a.               & 60          \\ %110
+% 	     		9           & r.l.               & 100          
+% 		\end{tabular}
+% 	\end{table}
+
+% 	\felix{Should we configure our example for intersectionality? Maybe we just mention how it is supported?} In \cite{LMSJ23}, an example is presented in which a tech company chooses from a pool of students to invite to a hiring interview. Students' demographic information and educational background are recorded in the \candidates{} table (shown in \Cref{tab:candidates}), consisting of five attributes: ID, gender, race, university major, and grade point average (GPA). Gender and race are both sensitive attributes and may not be used in evaluating a candidate. Additional information about their work experience is provided by the \internships{} table (\Cref{tab:internships}), where the type of each candidate's internships is stored as well as the amount of hours the candidate worked there. \\
+%     \indent The role being filled by the tech company may require a specific skillset and a certain amount of experience. In order to choose a set of candidates to interview, an analyst writes an SQL query to filter the pool of applicants according to the requirements specified by the hiring manager. The filtering conditions (corresponding to the {\tt WHERE} clause in SQL) may however inadvertently introduce bias in the sensitive attributes into the resulting set, excluding candidates belonging to protected classes that may be otherwise sufficiently qualified and competitive but do not match the conditions prescribed by the query. Ideally, we are able to adjust the analyst's query slightly to produce a fair ranking that is still faithful to the original intent of the imposed conditions. \\
+%     \indent The example as it is in \cite{LMSJ23} lacks any ranking aspect; every candidate in the resulting set is equally preferable without some sort of ranking to determine their order. We therefore adapt this example to include a ranking component by preferring candidates with higher GPAs. As the hiring manager's time is limited, the best (highest GPA) candidates that also fulfill the query conditions should be selected. In this case, the hiring manager has time to interview four candidates, and therefore selects the top-$4$ students matching their criteria to interview. This corresponds to appending {\tt ORDER BY Gpa DESC LIMIT 4} to the analyst's query.  \\
+%     \indent As an example of such criteria, consider that the hiring manager instructed the analyst to invite candidates who majored in computer science (`CS') and have at least 90 hours of experience in an internship. The analyst may then write the following ranking query to choose the candidates fitting this profile to interview: {\tt SELECT * FROM Candidates NATURAL JOIN Internships WHERE Major = 'CS' AND Hours $\geq$ 90 ORDER BY Gpa DESC LIMIT 4}. We will refer to this example ranking query throughout as the \running{}.
+% \end{example}
+
+% \begin{example}
+%     The \running{} as is returns candidates $1$, $6$, $7$, and $9$. Notice that despite half of the applicants in \candidates{} are women, the set resulting from the requirements is mostly men, despite there being several competitive women applicants. The company may then specify that they would like half of the candidates interviewed to be women, which may be achieved with only a small deviation from the original requirements. By including mechanical engineers (`ME') and reducing the internship hour requirement by 10 hours to 70 hours, the top-4 candidates are candidates $1$, $2$, $3$, and $4$, which consists of two men and two women, satisfying this constraint. This {\it refined} query still provides a quality set of candidates to interview while now being more inclusive to candidates that were excluded by a potentially biased set of requirements.
+% \end{example}

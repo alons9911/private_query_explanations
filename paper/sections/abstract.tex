@@ -1,0 +1,14 @@
+\begin{abstract}
+Data-management systems increasingly modify the queries users run in order to satisfy external requirements: query-refinement systems rewrite selection predicates so that the output meets a representation constraint, and consistent query answering removes the tuples involved in integrity violations.
+The modified query meets the requirement but leaves the user with new questions.
+Which population does the new answer describe, and how does it differ from the one the original query selected?
+And when the data is sensitive, can such differences be explained without revealing information about individuals?
+To address these questions, we present a framework that, to the best of our knowledge, is the first to explain the difference between two query outputs with differential privacy (DP).
+An explanation is a pair of histograms of one attribute over the tuples of the two outputs that fall in a view, a conjunctive region of the data.
+We adapt the measures of explanation quality used in prior work, namely representativeness, coverage, interestingness and diversity, to this setting and bound their sensitivity.
+Building on them, the framework
+(a)~privately selects views that are representative of the data and cover the two outputs,
+(b)~privately selects from these views a diverse set of explanations whose distributions differ most between the outputs, and
+(c)~releases their histograms with noise,
+while guaranteeing DP in all steps.
+\end{abstract}

@@ -1,0 +1,168 @@
+\input{macros}
+\section{Algorithm}\label{sec:solution}
+
+\subsection{Overview}
+\label{subsec:algorithm-overview}
+
+The algorithm first privately selects a small set of useful predicate views, then constructs explanation candidates by pairing selected views with attributes, and finally privately selects and releases the top-$k$ histogram explanations.
+This structure mirrors recent differentially private explanation frameworks, which separate the definition of explanation quality from the design of low-sensitivity private selection mechanisms \cite{TaoGMR22}.
+
+
+
+The measures the algorithm optimises, and the reasons they take the form they do, are those of Section~\ref{sec:explanation-quality}; their sensitivity is Proposition~\ref{prop:sensitivity-itemized}, and the two stages and their utilities are Section~\ref{subsec:two-stages}.
+What remains here is the algorithmic part: how the two per-round parameters are derived from the privacy budget, why the greedy selection is exact, the two algorithms themselves, and the privacy and complexity analyses.
+
+
+
+\subsection{Budget-Derived $\tau$ and $\gamma$}
+\label{subsubsec:adaptive-params}
+
+Both $\tau$ and $\gamma$ admit natural data-dependent choices, but selecting either privately would consume budget that the selection and release stages need.
+We instead follow the budget-annealing strategy of AIM~\cite{McKennaMSM22}, in which hyper-parameters are functions of the \emph{privacy accountant} rather than of the data:
+\begin{equation}
+\tau_i=\tau_{\min}+\tfrac{\epsilon_{\text{used}}}{\epsilon_S}\left(\tau_{\max}-\tau_{\min}\right),
+\qquad
+\gamma_i=\gamma_{\text{ref}}\cdot\frac{\epsilon_{\text{ref}}}{\epsilon_i}.
+\label{eq:adaptive-params}
+\end{equation}
+Both depend only on public quantities, so by post-processing (Theorem~\ref{thm:post-processing}) they incur no privacy cost.
+The form of $\gamma_i$ follows from Proposition~\ref{prop:hd-sensitivity}: the exponential mechanism's ability to separate candidates scales as $\epsilon_i/(2\,\GS)=\epsilon_i(1+\gamma)/2$, so holding separation roughly constant as $\epsilon_i$ varies requires $\gamma_i\propto 1/\epsilon_i$ --- smooth harder when a round is noisy, less when it is sharp.
+
+The reference value $\gamma_{\text{ref}}$ must still be fixed in advance from public information.
+Section~\ref{subsec:gamma-tradeoff} shows that anchoring it to a fraction of $|D|$ is defensible but crude, because what $\gamma$ competes against is the size of individual histogram \emph{bins}, whose distribution relative to $|D|$ varies sharply across datasets.
+
+\subsection{Exact Non-Private Selection}
+\label{subsec:non-private-hardness}
+
+Selection problems of this shape are commonly NP-hard, and an earlier version of this work asserted as much.
+That is not the case for the objective the explanation stage optimises: Definition~\ref{def:setobj} separates over attribute groups, and with its scores held fixed the resulting problem is solvable exactly in polynomial time.
+
+\begin{theorem}[Greedy is exactly optimal]
+\label{thm:non-private-hardness}
+Fix a candidate set $\mathcal{C}'\subseteq\mathcal{C}$, a smoothing constant $\gamma$, and a non-increasing $w$.
+Selecting $E\subseteq\mathcal{C}'$ with $|E|=k$ maximising $F_w(E)$ is solvable in polynomial time, and the greedy procedure --- repeatedly adding the candidate of largest marginal gain --- returns an optimal solution.
+\end{theorem}
+
+\begin{proof}
+By Definition~\ref{def:setobj}, $F_w(E)=\sum_A g_A(E)$ where $g_A$ depends only on the members of $E$ whose attribute is $A$.
+There is therefore no interaction between groups, and a solution is determined by how many candidates $g_A\ge0$ it takes from each group, subject to $\sum_A g_A=k$, together with which ones.
+For a fixed $g_A$, the best choice within group $A$ is its $g_A$ highest-scoring candidates, since $w$ is non-increasing and the scores are ranked (rearrangement inequality).
+Hence the value of taking $g$ candidates from group $A$ is
+\[
+f_A(g)=\sum_{j=1}^{g} w_j\, h^A_{(j)},
+\]
+whose successive marginal gains are $f_A(g)-f_A(g-1)=w_g\,h^A_{(g)}$.
+These are non-increasing in $g$, because $w_g$ is non-increasing by assumption and $h^A_{(g)}$ is non-increasing by construction; so each $f_A$ is concave.
+
+Maximising a separable sum of concave functions subject to a cardinality constraint is exactly the problem solved by the greedy rule of repeatedly taking the largest remaining marginal gain, which is optimal for separable concave resource allocation.
+Since each marginal gain is computable in constant time after sorting each group, the total cost is $O(|\mathcal{C}'|\log|\mathcal{C}'|)$ for $|\mathcal{C}'|$ candidates.
+\end{proof}
+
+\alon{Done: this replaces the previous NP-hardness claim, whose reduction was invalid --- each candidate $(p,A)$ names a single attribute, so $k$ candidates cover at most $k$ attributes and the construction could not encode Maximum Coverage. The stronger exactness result above was verified by exhaustive search against greedy on $400$ random instances, matching in all of them.}
+
+The theorem is about the explanation stage alone, with its candidate set and its scores held fixed, and it is worth being explicit about what it therefore does \emph{not} say.
+It does not say that the two-stage framework maximises $F_w$ over all of $\mathcal{C}$: the view stage filters by $\Use$, which $F_w$ does not see, so a candidate discarded there is never compared under $F_w$ at all, and Lemma~\ref{lem:filtering} is what bounds the cost of that.
+Nor does it apply across the rounds of Algorithm~\ref{alg:topk} as such, since $\gamma_i$ changes from round to round, so the scores compared in different rounds are not those of a single $F_w$.
+What the theorem does give is the reference point used in Section~\ref{subsec:quality}: with the candidate set and $\gamma$ held fixed, greedy over $F_w$ \emph{is} the optimum, which is why the non-private greedy baseline there attains the exhaustive optimum on every query pair tested --- not slack in the $(1-1/e)$ bound, but the guarantee of the theorem --- and why the gap the private algorithm exhibits against it is attributable to the privacy mechanism.
+
+\subsection{Private Query-Difference Explanation Algorithm}
+\label{subsec:private-algorithm}
+
+\begin{algorithm}[t]
+\caption{Private-Queries-Diff-Top-$k$-Explanation}
+\label{alg:main}
+\begin{algorithmic}[1]
+\Require Private dataset $D$; queries $Q_1,Q_2$; views $\mathcal{P}$; explanation attributes $\Attrs\subseteq\Attr(D)$; view budget $\tau_{\max}$; explanations $k$; smoothing constants $\gamma_{\text{ref}}$ and $\gamma_R$; diversity $\lambda$; privacy budget $\epsilon$
+\Ensure $k$ differentially private explanation histograms
+\State $\epsilon_P,\epsilon_S,\epsilon_H \gets 0.25\epsilon,\ 0.45\epsilon,\ 0.30\epsilon$
+\State \textbf{/* Private view selection */}
+\State $u_{use}(p)\gets \Use(p,D,Q_1,Q_2)$
+\State $\widehat{\mathcal{P}}\gets \textsc{OneShotTop-}\tau(\mathcal{P},u_{use},\epsilon_P,\Delta{=}\tfrac{9}{4|D|})$
+\Comment{$\epsilon_P$-DP}
+\Statex \textbf{(Post-processing)} Candidate construction incurs no privacy loss.
+\State $\mathcal{E}\gets \textsc{Find-Top-$k$-Expl}(D,Q_1,Q_2,\widehat{\mathcal{P}},$
+\Statex \hspace{\algorithmicindent}$\Attrs,k,\gamma_{\text{ref}},\epsilon_S,\epsilon_H)$
+\State \Return $\mathcal{E}$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[t]
+\caption{Find-Top-$k$-Explanations}
+\label{alg:topk}
+\begin{algorithmic}[1]
+\Require $D$; $Q_1,Q_2$; selected views $\widehat{\mathcal{P}}$; attributes $\Attrs$; $k$; $\gamma_{\text{ref}}$; $\tau_{\max}$; diversity $\lambda$; budgets $\epsilon_S,\epsilon_H$
+\State $Counts\gets\emptyset$;\ \ $\mathcal{E}\gets\emptyset$;\ \ $\epsilon_i \gets \epsilon_S/k$
+\For{$i\gets 1$ to $k$}
+  \State $\tau_i \gets$ \Call{AdaptiveTau}{$\epsilon_{\text{used}},\epsilon_S,\tau_{\max}$} \Comment{public accountant}
+  \State $\gamma_i \gets \gamma_{\text{ref}}\cdot \epsilon_{\text{ref}}/\epsilon_i$ \Comment{public; no privacy cost}
+  \State $C_i \gets \{(p,A): p\in\widehat{\mathcal{P}}[1..\tau_i],\ A\in \Attrs\}\setminus \mathcal{E}$
+  \State $u_i(p,A)\gets \HD_{\gamma_i}(D;p,A,Q_1,Q_2)\cdot \lambda^{Counts[A]}$
+  \State $c_i=(p_i,A_i)\gets \ExpMech\!\left(C_i,u_i,\epsilon_i,\tfrac{1}{1+\gamma_i}\right)$
+  \State $H^1_i\gets \hist{Q_1(p_i(D))}{A_i}$;\ \ $H^2_i\gets \hist{Q_2(p_i(D))}{A_i}$
+  \State $\hat H^j_i\gets H^j_i+\Lap(2k/\epsilon_H)$ \textbf{for} $j=1,2$
+  \State $\mathcal{E}\gets\mathcal{E}\cup\{(p_i,A_i,\hat H^1_i,\hat H^2_i)\}$;\ \ $Counts[A_i]{+}{+}$
+\EndFor
+\State \Return $\mathcal{E}$
+\end{algorithmic}
+\end{algorithm}
+
+The $k$ rounds of Algorithm~\ref{alg:topk} implement the one-shot top-$k$ mechanism of Definition~\ref{def:oneshot-topk}, applied with the smoothed sensitivity of Proposition~\ref{prop:hd-sensitivity}.
+Note that the rounds are written out explicitly here rather than as a single call, because the diversity factor makes the utility of round $i$ depend on the attributes selected in rounds $1,\dots,i-1$; the one-shot form applies unchanged to the view-selection stage, where the utility is fixed in advance.
+
+\subsection{Differential Privacy Analysis}
+\label{subsec:dp-proof}
+
+\begin{proposition}[Sensitivity of the released histograms]
+\label{prop:histogram-release-sensitivity}
+Fix a candidate $(p,A)$. The pair $\big(\hist{Q_1(\pD)}{A},\hist{Q_2(\pD)}{A}\big)$ has $L_1$-sensitivity at most $2$, and their difference $\Delta H_{p,A}$ has $L_1$-sensitivity at most $1$.
+\end{proposition}
+
+\begin{proof}
+One tuple joins at most one bin of $A$, and it may be selected by both queries, by one of them, or by neither.
+It therefore changes each of the two histograms in at most one coordinate and by at most $1$, which gives $2$ for the pair.
+For the difference, the affected coordinate changes by $d_1-d_2$ with $d_1,d_2\in\{0,1\}$, so by at most $1$, and all other coordinates are unchanged.
+\end{proof}
+
+Releasing the pair therefore calls for $\Lap(2k/\epsilon_H)$, as in Algorithm~\ref{alg:topk}; the variant that releases only the difference uses $\Lap(k/\epsilon_H)$ for the same budget.
+
+\begin{proposition}[Differential Privacy of Algorithm~\ref{alg:topk}]
+\label{thm:alg2-dp}
+Algorithm~\ref{alg:topk} satisfies $(\epsilon_S+\epsilon_H)$-differential privacy.
+\end{proposition}
+
+\begin{proof}
+Each round invokes the exponential mechanism with budget $\epsilon_S/k$ on a utility of sensitivity $1/(1+\gamma_i)$ (Proposition~\ref{prop:selection-utility-sensitivity}), which is $(\epsilon_S/k)$-DP, and the Laplace mechanism with budget $\epsilon_H/k$ on a pair of histograms of $L_1$-sensitivity $2$ (Proposition~\ref{prop:histogram-release-sensitivity}), which is $(\epsilon_H/k)$-DP.
+The quantities $\tau_i$ and $\gamma_i$ are functions of the public accountant only and are therefore not privacy-relevant.
+The rounds are adaptive, since $u_i$ depends on previously selected attributes, but adaptive sequential composition applies \cite{DBLP:series/synthesis/2016Li}, giving $k(\epsilon_S/k+\epsilon_H/k)=\epsilon_S+\epsilon_H$.
+\end{proof}
+
+\begin{proposition}[Differential Privacy of Algorithm~\ref{alg:main}]
+\label{thm:alg1-dp}
+Algorithm~\ref{alg:main} satisfies $\epsilon$-differential privacy.
+\end{proposition}
+
+\begin{proof}
+View selection is $\epsilon_P$-DP by Proposition~\ref{prop:usefulness-sensitivity}, which supplies the sensitivity $9/(4|D|)$ that Algorithm~\ref{alg:main} passes to the mechanism, together with Theorem~\ref{thm:oneshot-topk}.
+Candidate construction is post-processing.
+Algorithm~\ref{alg:topk} is $(\epsilon_S+\epsilon_H)$-DP by Proposition~\ref{thm:alg2-dp}.
+Sequential composition gives $\epsilon_P+\epsilon_S+\epsilon_H=\epsilon$.
+\end{proof}
+
+\begin{corollary}[End-to-End Differential Privacy]
+\label{cor:end-to-end-dp}
+The overall explanation pipeline satisfies $\epsilon$-differential privacy.
+\end{corollary}
+
+\subsection{Complexity Analysis}
+\label{subsec:complexity-analysis}
+
+Let $|\mathcal{P}|$ be the number of candidate views, $a=|\Attrs|$ the number of explanation attributes, $b$ the maximum number of bins per attribute, and $N=|D|$.
+(We write $a$ rather than $m$ here because $m$ already denotes the view size $|p(D)|$ in Section~\ref{sec:explanation-quality}.)
+Computing $\Use$ for every view costs $O(|\mathcal{P}|\,N)$, and the one-shot top-$\tau$ mechanism adds $O(\tau|\mathcal{P}|)$.
+Each of the $k$ rounds scores at most $\tau a$ candidates and releases one histogram, giving $O(k\,\tau\,a\,b)$ once the per-candidate bin vectors are materialised, plus $O(\tau a\, N)$ to materialise them.
+The total is
+\[
+O\!\left(|\mathcal{P}|\,N \;+\; \tau a\, N \;+\; k\,\tau\,a\,b\right).
+\]
+The two $O(N)$ terms are a one-off preprocessing cost independent of $\epsilon$ and $k$; only the third is paid per round.
+Because $\HD_\gamma$ depends on $\gamma$ solely through the denominator, caching the per-bin numerator and denominator vectors makes the score computable for \emph{any} $\gamma$ without revisiting the data --- which is what keeps the adaptive $\gamma_i$ of Equation~\eqref{eq:adaptive-params} affordable, and is reflected in the measured separation of build and per-round cost in Section~\ref{subsec:scalability}.

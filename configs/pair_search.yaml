@@ -1,0 +1,95 @@
+# Candidate spaces for the case-study pair search (scripts/search_pairs.py).
+# Every base query is a conjunction of at most two atoms from `atoms`.
+
+refinement:
+  adult:
+    agg: income            # AVG(income) = high-income rate, the aggregate of the motivating example
+    min_size: 1500
+    max_size: 20000
+    proxies: {gender: [relationship], maritalStatus: [relationship], race: []}
+    atoms:
+      - "occupation = 'Craft-repair'"
+      - "occupation = 'Exec-managerial'"
+      - "occupation = 'Prof-specialty'"
+      - "occupation = 'Sales'"
+      - "occupation = 'Transport-moving'"
+      - "occupation = 'Machine-op-inspct'"
+      - "occupation = 'Tech-support'"
+      - "occupation = 'Protective-serv'"
+      - "education IN ('Bachelors', 'Masters')"
+      - "education IN ('Masters', 'Doctorate', 'Prof-school')"
+      - "education = 'HS-grad'"
+      - "education = 'Some-college'"
+      - "workclass IN ('Self-emp-inc', 'Self-emp-not-inc')"
+      - "workclass = 'Federal-gov'"
+      - "workclass = 'Local-gov'"
+      - "maritalStatus = 'Married-civ-spouse'"
+      - "maritalStatus = 'Never-married'"
+      - "hoursPerWeek >= 45"
+      - "hoursPerWeek >= 50"
+      - "age >= 40"
+      - "age >= 50"
+      - "income = 1"
+    constraints:
+      - {attr: gender, value: Female, min_share: 0.30}
+      - {attr: race, values: [Black, Asian-Pac-Islander, Amer-Indian-Eskimo, Other], min_share: 0.15}
+      - {where: "age < 30", min_share: 0.25}
+  tax:
+    agg: Rate
+    min_size: 3000
+    max_size: 80000
+    proxies: {MaritalStatus: [SingleExemp, MarriedExemp], HasChild: [ChildExemp], Rate: [], Salary: []}
+    atoms:
+      - "State IN ('CA', 'NY', 'NJ', 'MA', 'CT')"
+      - "State IN ('TX', 'FL', 'WA', 'NV', 'TN')"
+      - "Salary >= 70000"
+      - "Salary <= 30000"
+      - "Rate >= 6"
+      - "Rate <= 2"
+      - "MaritalStatus = 'M'"
+      - "MaritalStatus = 'S'"
+      - "HasChild = 'Y'"
+      - "HasChild = 'N'"
+      - "SingleExemp > 0"
+      - "ChildExemp > 0"
+    constraints:
+      - {attr: HasChild, value: "Y", min_share: 0.30}
+      - {attr: MaritalStatus, value: "S", min_share: 0.30}
+      - {where: "Rate > 0", min_share: 0.50}
+      - {where: "Salary <= 40000", min_share: 0.30}
+
+cqa:
+  tax_dirty:
+    agg: Rate
+    min_size: 2000
+    atoms:
+      - "State IN ('NJ', 'NY', 'PA', 'CT', 'MA')"
+      - "State IN ('AL', 'AR', 'GA', 'MS', 'TN')"
+      - "State IN ('AK', 'HI', 'WA', 'OR', 'CA')"
+      - "State IN ('AL', 'AR', 'NJ', 'DE', 'RI')"
+      - "MaritalStatus = 'M'"
+      - "MaritalStatus = 'S'"
+      - "HasChild = 'Y'"
+      - "Gender = 'F'"
+      - "Salary >= 70000"
+      - "Salary <= 30000"
+      - "Rate >= 5"
+      - "Rate <= 3"
+      - "SingleExemp > 0"
+      - "MarriedExemp > 0"
+      - "ChildExemp > 0"
+  hospital:
+    agg: Score
+    min_size: 60
+    atoms:
+      - "HospitalType = 'acute care hospitals'"
+      - "EmergencyService = 'yes'"
+      - "EmergencyService = 'no'"
+      - "HospitalOwner = 'proprietary'"
+      - "HospitalOwner = 'voluntary non-profit - private'"
+      - "HospitalOwner = 'government - hospital district or authority'"
+      - "HospitalOwner = 'voluntary non-profit - other'"
+      - "Condition = 'heart attack'"
+      - "Condition = 'pneumonia'"
+      - "Condition = 'surgical infection prevention'"
+      - "Condition = 'heart failure'"

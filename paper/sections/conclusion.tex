@@ -1,0 +1,15 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+We identified a novel intervention to diversify (according to user-input constraints) the output of top-$k$ queries by refining the selection predicates of the input query. Furthermore, we recognized the importance of maintaining the user's intent as best as possible when searching for such a refinement. Towards this end, we developed a framework that can find the closest refinement for various distance measures that satisfy the user's desired constraints. 
+%We based our solution on the notion of {\it lineage} from the provenance literature, which we combined with mixed-integer linear programming to efficiently find the best approximation refinement in an otherwise large search space. 
+We introduced optimizations in order to make our framework practical for datasets of real-life scale. We demonstrated this with a suite of experiments, showing our framework's scaling capability and the usefulness of our optimizations. In the future, this problem could be extended to find refinements that remain diverse even after adding new data. This way, the refinement may explain some underlying bias of the query instead of fitting to the original data. \revmulti{Extending our model to richer classes of queries presents further interesting directions as we discussed in \Cref{sec:search}.} 
+% Extension to union is straightforward as noted in \Cref{sec:background}, while extension to subqueries would prove more challenging. Such an extension would need to treat the fact that making refinements to the predicates of the subqueries may change the relative order of the tuples.}
+
+% that this type of intervention is reasonably effective.
+% \subsubsection*{Future work}
+% \felix{13/10 draft}
+% While the refinements made by our framework work with the existing data, ideally the refinement should maintain a similar level of deviation from the set of constraints as new data is added. Were this the case, it means that the refinement made identified some underlying bias in the query, rather than fitting it to the existing data. We believe that this framework could be extended to produce refinements that are robust to new data in attempt to better capture any underlying biases.
+
+% \resolve{Until here (October -- draft)} 
+% {\color{red}\hrule}

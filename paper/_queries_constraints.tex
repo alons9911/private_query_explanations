@@ -1,0 +1,32 @@
+\begin{table*}
+    \centering
+    \small
+    % \hspace*{-0.5cm}
+    \begin{tabular}{lclcl}
+    \hline
+    \textbf{Dataset} & \textbf{Query} & \multicolumn{1}{c}{\textbf{Predicates}} & \textbf{Order by (DESC)} & \textbf{Constraints}\\ \hline\hline
+    \multirow{3}{*}{Astronauts} & \multirow{3}{*}{$Q_A$} & \texttt{"Graduate Major" = 'Physics'}& \multirow{3}{*}{{\tt "Space Flight (hr)"}} & \begin{tabular}{@{}ll@{}}
+        (1) $\lb{Gender='F'}{k} = \frac{k}{2}$ & (4) $\lb{Status='Management'}{k} = \frac{k}{5}$ \\ (2) $\lb{Gender='M'}{k} = \frac{k}{2}$ & (5) $\lb{Status='Retired'}{k} = \frac{k}{5}$ \\ (3) $\lb{Status='Active'}{k} = \frac{k}{5}$ &
+    \end{tabular}\\
+    &&\texttt{AND "Space Walks" <= 3}&\\
+    &&\texttt{AND "Space Walks" >= 1}&\\\hline
+    \multirow{3}{*}{Law Students} & \multirow{3}{*}{$Q_L$} & \texttt{Region = 'GL'}& \multirow{3}{*}{{\tt LSAT}} &
+    \begin{tabular}{@{}ll@{}}
+        (1) $\lb{Sex='F'}{k} = \frac{k}{2}$ & (4) $\lb{Race='White'}{k} = \frac{k}{5}$ \\ (2) $\lb{Sex='M'}{k} = \frac{k}{2}$ & (5) $\lb{Race='Asian'}{k} = \frac{k}{5}$ \\ (3) $\lb{Race='Black'}{k} = \frac{k}{5}$ &
+    \end{tabular} \\ \hline
+    MEPS & \begin{tabular}{@{}ll@{}}
+        (1) $\lb{Sex='F'}{k} = \frac{k}{2}$ & (4) $\lb{Race='Black'}{k} = \frac{k}{5}$ \\ (2) $\lb{Sex='M'}{k} = \frac{k}{2}$ & (5) $\lb{Race='White'}{k} = \frac{k}{5}$ \\ (3) $\lb{Race='Asian'}{k} = \frac{k}{5}$ &
+    \end{tabular}\\
+    &&\texttt{AND GPA <= 4.0}&\\
+    &&\texttt{AND GPA >= 3.5}&\\\hline
+    \multirow{2}{*}{MEPS} & \multirow{2}{*}{$Q_M$} & \texttt{Age > 22}& \multirow{2}{*}{{\tt Utilization}} & \begin{tabular}{@{}ll@{}}
+        (1) $\lb{Sex='F'}{k} = \frac{k}{2}$ & (4) $\lb{Race='Black'}{k} = \frac{k}{5}$ \\ (2) $\lb{Sex='M'}{k} = \frac{k}{2}$ & (5) $\lb{Race='White'}{k} = \frac{k}{5}$ \\ (3) $\lb{Race='Asian'}{k} = \frac{k}{5}$ &
+    \end{tabular}\\
+    &&\texttt{AND "Family Size" >= 4}&\\\hline
+    TPC-H & $Q_5$ & \texttt{Region = 'ASIA'} & {\tt Revenue} &\begin{tabular}{@{}ll@{}}
+        (1) $\lb{OrderPrio='5-LOW'}{k} = \frac{k}{2}$ & (4) $\lb{MktSeg='BUILDING'}{k} = \frac{k}{5}$ \\ (2) $\lb{OrderPrio='3-MEDIUM'}{k} = \frac{k}{5}$ & (5) $\lb{MktSeg='MACHINERY'}{k} = \frac{k}{5}$ \\ (3) $\lb{MktSeg='AUTOMOBILE'}{k} = \frac{k}{5}$ &
+    \end{tabular}\\ \hline
+    \end{tabular}
+    \caption{Constraints}
+    \label{tab:queries_constraints}
+\end{table*}
