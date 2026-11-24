@@ -104,7 +104,10 @@ def _quality_row(axes, summ: pd.DataFrame, dss: list[str], xlabel: str, logx: bo
 
 def _rescored(name: str) -> pd.DataFrame:
     """Rows of results/rescored/<name>.csv (scored against the brute force at the default gamma)."""
-    return _drop(pd.read_csv(RES / "rescored" / f"{name}.csv"))
+    df = pd.read_csv(RES / "rescored" / f"{name}.csv")
+    if "dataset" not in df or df.dataset.isna().any():  # the B1 rows carry the pair only
+        df["dataset"] = df.pair.map(pd.read_csv(RES / "rescored" / "bf.csv").set_index("pair").dataset)
+    return _drop(df)
 
 
 def _curve(df: pd.DataFrame, x: str, col: str) -> pd.DataFrame:
