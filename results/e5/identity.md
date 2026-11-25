@@ -1,5 +1,27 @@
 | dataset | pair | runs | identical_runs | max_abs_use_diff |
 |---|---|---|---|---|
+| adult | A3 | 10 | 10 | 1.11e-16 |
+| acsincome | ACS_Q1C2 | 10 | 10 | 2.78e-17 |
+| acsincome | ACS_Q2C1 | 10 | 10 | 5.55e-17 |
+| acsincome | ACS_Q2C3 | 10 | 10 | 5.55e-17 |
+| acsincome | ACS_Q3C5 | 10 | 10 | 8.67e-19 |
+| acsincome | ACS_Q3C6 | 10 | 10 | 8.67e-19 |
+| acsincome | ACS_Q4C8 | 10 | 10 | 4.34e-19 |
+| ipums | I10 | 10 | 10 | 5.55e-17 |
+| ipums | I11 | 10 | 10 | 5.55e-17 |
+| ipums | I13 | 10 | 10 | 6.94e-18 |
+| ipums | I14 | 10 | 10 | 5.55e-17 |
+| ipums | I15 | 10 | 10 | 2.78e-17 |
+| ipums | I16 | 10 | 10 | 2.78e-17 |
+| ipums | I17 | 10 | 10 | 1.39e-17 |
+| ipums | I2 | 10 | 10 | 1.11e-16 |
+| ipums | I3 | 10 | 10 | 2.78e-17 |
+| ipums | I4 | 10 | 10 | 1.11e-16 |
+| ipums | I5 | 10 | 10 | 5.55e-17 |
+| ipums | I7 | 10 | 10 | 2.78e-17 |
+| ipums | I9 | 10 | 10 | 1.11e-16 |
+| adult | R2 | 10 | 10 | 2.78e-17 |
+| adult | R4 | 10 | 10 | 2.78e-17 |
 | adult | A1 | 10 | 10 | 1.11e-16 |
 | adult | A2 | 10 | 10 | 1.39e-17 |
 | acsincome | ACS_Q1C1 | 10 | 10 | 5.55e-17 |

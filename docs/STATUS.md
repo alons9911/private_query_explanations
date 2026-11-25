@@ -2,6 +2,13 @@
 
 Keeps the state of the work outside the chat context.
 
+## 2026-11-25 ~02:10 UTC: running time on all 44 pairs merged
+Shards all44-* (8 cloud workers, the 22 pairs not timed before) done; results/e4, results/e5 and
+results/e7/raw/runtime*.csv now cover all 44 pairs (`merge_shards.py --shard 'eqbins-*' --shard
+'all44-*' e4 e5 e7t e7t7`).  The pairs of a dataset ran on up to three machines; the methods of a
+pair always on one.  Quality is scored against the one-stage brute force at the default gamma
+(results/rescored, scripts/rescore_bruteforce.py).  The abstract is sections/abstract.tex.
+
 ## 2026-11-15 ~12:45 UTC: running time on the equal-width bins merged
 All eqbins shards done (E4, E7 at k = 5 and 7, E5) and merged into results/e4, results/e5 and
 results/e7/raw/runtime*.csv (`python scripts/merge_shards.py --shard 'eqbins-*' e4 e5 e7t e7t7`);

@@ -1,5 +1,5 @@
 {
-  "timestamp_utc": "2026-11-15T12:29:31+00:00",
+  "timestamp_utc": "2026-11-24T17:42:08+00:00",
   "python": "3.13.18",
   "numpy": "2.5.3",
   "pandas": "3.0.5",
@@ -317,12 +317,61 @@
       "orders": 10,
       "trials_per_order": 4,
       "min_attrs": 2
+    },
+    "e8": {
+      "parts": [
+        "competitors",
+        "fixed_gamma",
+        "tau",
+        "lambda"
+      ],
+      "taus": [
+        5,
+        10,
+        15,
+        30,
+        60,
+        120,
+        250,
+        500,
+        1000,
+        "all"
+      ],
+      "lambdas": [
+        0.0,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ]
     }
   },
   "experiment": "e4",
   "repeats": 10,
   "timeout_s": 1800.0,
   "merged_from": [
+    "results_shards/all44-acs-a/e4-ACS_Q1C2",
+    "results_shards/all44-acs-a/e4-ACS_Q2C1",
+    "results_shards/all44-acs-a/e4-ACS_Q2C3",
+    "results_shards/all44-acs-a/e4-ACS_Q3C5",
+    "results_shards/all44-acs-b/e4-ACS_Q3C6",
+    "results_shards/all44-acs-b/e4-ACS_Q4C8",
+    "results_shards/all44-adult-a/e4-A3",
+    "results_shards/all44-adult-a/e4-R2",
+    "results_shards/all44-adult-a/e4-R4",
+    "results_shards/all44-ipums-a/e4-I10",
+    "results_shards/all44-ipums-a/e4-I11",
+    "results_shards/all44-ipums-a/e4-I2",
+    "results_shards/all44-ipums-a/e4-I3",
+    "results_shards/all44-ipums-a/e4-I4",
+    "results_shards/all44-ipums-a/e4-I5",
+    "results_shards/all44-ipums-a/e4-I7",
+    "results_shards/all44-ipums-a/e4-I9",
+    "results_shards/all44-ipums-b/e4-I13",
+    "results_shards/all44-ipums-b/e4-I14",
+    "results_shards/all44-ipums-b/e4-I15",
+    "results_shards/all44-ipums-b/e4-I16",
+    "results_shards/all44-ipums-b/e4-I17",
     "results_shards/eqbins-e4-acs/e4-ACS_Q1C1",
     "results_shards/eqbins-e4-acs/e4-ACS_Q2C2",
     "results_shards/eqbins-e4-acs/e4-ACS_Q3C4",

@@ -78,7 +78,7 @@ All measures use exact histograms, so the Laplace noise of the release does not 
 Unless stated otherwise: the whole dataset, every view, $k=5$, $\lambda=0.5$, $\epsilon=1$ split equally ($\epsilon_P=\epsilon_S=\epsilon_H=1/3$), $\gamma_R=N/100$, $\tau=15$ and $\gamma\approx150$ from Eqs.~\eqref{eq:tau-rule} and~\eqref{eq:gamma-rule}, and $\bar N=|D|$; derived constants follow their rules when $k$, $\epsilon$ or $\tau$ vary.
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
   \item \emph{Accuracy}: a point of a pair averages $40$ private runs, and a point of a dataset averages its pairs; a mean over all $44$ pairs weights each dataset by its number of pairs ($17$ on IPUMS-CPS). Each experiment draws its own runs, so the default point can differ between experiments in the second decimal.
-  \item \emph{Running time}: measured end to end, ten times per point, on $22$ pairs (A1, A2, A4, A6, S1, S4, S6, S9, T1--T4, D1--D3, H1--H3, I1, I6, I8, I12). A run is stopped at $30$ minutes, and a point that reaches the limit is run three times.
+  \item \emph{Running time}: measured end to end, ten times per point, on all $44$ pairs; the methods of a pair always ran on the same machine. A run is stopped at $30$ minutes, and a point that reaches the limit is run three times.
 \end{itemize}
 
 % ---------------------------------------------------------------
@@ -181,7 +181,7 @@ Among them, women are more often outside the labour force ($52\%$ against $46\%$
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/exp/runtime_grid.pdf}
-\caption{End-to-end running time (median of ten runs, mean over the dataset's runtime pairs), one parameter varied at a time. A cross marks a point stopped at the $30$-minute limit (three runs). Each row ran on its own machine.}
+\caption{End-to-end running time (median of ten runs, mean over the pairs of the dataset), one parameter varied at a time. A cross marks a point stopped at the $30$-minute limit (three runs).}
 \label{fig:scalability}
 \end{figure*}
 
@@ -254,14 +254,14 @@ Of five budget splits, those that give the view stage $0.2$--$0.5$ of $\epsilon$
 
 \paragraph{Privacy adds no measurable running time.}
 At the defaults \textsf{PrivExpl} and its noiseless variant \Bone{} are within $1\%$ of each other on every pair: $96$--$99\%$ of the time is the $\Use$ pass they share.
-As Section~\ref{subsec:complexity-analysis} predicts, the time grows linearly with $N$ ($11$--$12\times$ from $10\%$ to all of ACSIncome and IPUMS-CPS) and with $|\mathcal{P}|$, is flat in $k$, $\epsilon$ and $\gamma$, and grows by at most $18\%$ over the range of $|\Attrs|$ and by $18$--$41\%$ when every view is retained (Figures~\ref{fig:scalability} and~\ref{fig:attrs}).
-Exhaustive search (\Btwo{}) is exponential in $k$: it takes $15$--$59$\,s at $k=6$ and $2.4$--$17$ minutes at $k=7$, and exceeds the $30$-minute limit from $k=8$ on all $22$ pairs ($2.9\times10^{10}$ subsets).
-At $k=7$ its time roughly doubles with every added attribute and reaches the limit at $11$ attributes on ACSIncome and $12$ on Adult (Figure~\ref{fig:attrs}).
+As Section~\ref{subsec:complexity-analysis} predicts, the time grows linearly with $N$ ($11\times$ from $10\%$ to all of ACSIncome and IPUMS-CPS) and with $|\mathcal{P}|$, is flat in $k$, $\epsilon$ and $\gamma$, and grows by at most $18\%$ over the range of $|\Attrs|$ and by $18$--$41\%$ when every view is retained (Figures~\ref{fig:scalability} and~\ref{fig:attrs}).
+Exhaustive search (\Btwo{}) is exponential in $k$: it takes $15$--$61$\,s at $k=6$ and $2.4$--$17$ minutes at $k=7$, and exceeds the $30$-minute limit from $k=8$ on all $44$ pairs ($2.9\times10^{10}$ subsets).
+At $k=7$ its time roughly doubles with every added attribute and reaches the limit at $11$ attributes on ACSIncome and Adult (Figure~\ref{fig:attrs}).
 
-\paragraph{Grouped passes make the pipeline about $9\times$ faster with identical output.}
+\paragraph{Grouped passes make the pipeline about $8\times$ faster with identical output.}
 \textsf{OptPrivExpl} computes the same statistics in grouped passes: one pass per set of view attributes yields the statistics of every view on that set, and the explanation histograms are built only for the retained views.
-With the same randomness it released exactly what \textsf{PrivExpl} released in all $220$ runs compared, and it is $5.8$--$11.4\times$ faster end to end (median $9.5\times$; ACSIncome $24.4\rightarrow2.9$\,s and IPUMS-CPS $11.2\rightarrow1.8$\,s on one machine).
-Its time hardly grows with $|\mathcal{P}|$ (ACSIncome $2.7\rightarrow3.1$\,s from $10\%$ to all views, against $3.3\rightarrow27$\,s for \textsf{PrivExpl}), but it grows with $\tau$ ($3.2$--$4.6\times$ up to $\tau=|\mathcal{P}|$), because it builds the histograms of every retained view, and with $|\Attrs|$ ($12$--$39\%$).
+With the same randomness it released exactly what \textsf{PrivExpl} released in all $440$ runs compared, and it is $5.8$--$11.4\times$ faster end to end (median $8.4\times$; ACSIncome $26.8\rightarrow3.0$\,s and IPUMS-CPS $13.0\rightarrow1.9$\,s, means over the pairs).
+Its time hardly grows with $|\mathcal{P}|$ (ACSIncome $2.6\rightarrow3.0$\,s from $10\%$ to all views, against $3.1\rightarrow27$\,s for \textsf{PrivExpl}), but it grows with $\tau$ ($3.2$--$4.6\times$ up to $\tau=|\mathcal{P}|$), because it builds the histograms of every retained view, and with $|\Attrs|$ ($12$--$39\%$).
 It gains nothing when there are few views per set of view attributes.
 
 % ---------------------------------------------------------------
@@ -271,7 +271,7 @@ It gains nothing when there are few views per set of view attributes.
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
   \item In the four case studies, the release shows how a refinement, a repair or a contrast changes the population, which the queries and the constraint do not state.
   \item At $\epsilon=1$ \textsf{PrivExpl} keeps $0.60$ of the score of the brute force, explaining mostly the same attributes through other views. The view stage costs more than the noise: it keeps the explanations on views that cover much of the outputs, and a larger $\tau$ trades that for score.
-  \item Small outputs, small differences and small data are hard; data with large bins need more smoothing than Eq.~\eqref{eq:gamma-rule} gives. Privacy adds no measurable running time, and grouped passes make the pipeline about nine times faster.
+  \item Small outputs, small differences and small data are hard; data with large bins need more smoothing than Eq.~\eqref{eq:gamma-rule} gives. Privacy adds no measurable running time, and grouped passes make the pipeline about eight times faster.
 \end{itemize}
 
 % flush the figures of this section before Related Work
