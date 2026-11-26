@@ -24,6 +24,19 @@ from .experiments import e4_scalability  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 RES = ROOT / "results"
+
+
+def _method_names() -> dict[str, str]:
+    """Display names of the methods, read from paper/macros.tex (\\PrivExpl, \\Bone, ...), so that a
+    rename there reaches the legends once the figures are redrawn."""
+    import re
+
+    tex = (ROOT / "paper" / "macros.tex").read_text()
+    pat = r"\\newcommand\{\\(\w+)\}\{\\(?:textsf|ensuremath)\{(?:\\mathsf\{)?([^{}]+)\}"
+    return {m.group(1): m.group(2) for m in re.finditer(pat, tex)}
+
+
+NAME = _method_names()
 OUT = ROOT / "paper" / "figures" / "exp"
 
 DS_ORDER = ["adult", "acsincome", "tax", "tax_dirty", "hospital", "ipums"]
@@ -117,14 +130,14 @@ def _curve(df: pd.DataFrame, x: str, col: str) -> pd.DataFrame:
 
 
 # (source, x column, value column, label, colour, marker, linestyle)
-BF_SERIES_EPS = [("e2", "value", "ratio_BF", "PrivExpl", P.BLUE, "o", "-"),
-                 ("e2_b1", "value", "ratio_BF", "B1 (no noise)", P.BLUE, "o", ":"),
-                 ("fixed", "epsilon", "ratio_BF", r"PrivExpl, $\gamma$ fixed", P.MAGENTA, "D", "--"),
-                 ("single", "epsilon", "ratio_BF", "SingleStage", P.AQUA, "^", "--"),
-                 ("e2", "value", "attr_at_k_BF", "attribute@k (PrivExpl)", P.ORANGE, "s", "-")]
-BF_SERIES_GAMMA = [("e6", "value", "ratio_BF", "PrivExpl", P.BLUE, "o", "-"),
-                   ("e6_b1", "value", "ratio_BF", "B1 (no noise)", P.BLUE, "o", ":"),
-                   ("e6", "value", "attr_at_k_BF", "attribute@k (PrivExpl)", P.ORANGE, "s", "-")]
+BF_SERIES_EPS = [("e2", "value", "ratio_BF", NAME["PrivExpl"], P.BLUE, "o", "-"),
+                 ("e2_b1", "value", "ratio_BF", f"{NAME['Bone']} (no noise)", P.BLUE, "o", ":"),
+                 ("fixed", "epsilon", "ratio_BF", NAME["PrivExpl"] + r", $\gamma$ fixed", P.MAGENTA, "D", "--"),
+                 ("single", "epsilon", "ratio_BF", NAME["SingleStage"], P.AQUA, "^", "--"),
+                 ("e2", "value", "attr_at_k_BF", f"attribute@k ({NAME['PrivExpl']})", P.ORANGE, "s", "-")]
+BF_SERIES_GAMMA = [("e6", "value", "ratio_BF", NAME["PrivExpl"], P.BLUE, "o", "-"),
+                   ("e6_b1", "value", "ratio_BF", f"{NAME['Bone']} (no noise)", P.BLUE, "o", ":"),
+                   ("e6", "value", "attr_at_k_BF", f"attribute@k ({NAME['PrivExpl']})", P.ORANGE, "s", "-")]
 
 
 def fig_quality() -> Path:
@@ -189,7 +202,8 @@ SWEEPS = [("k", r"$k$", False), ("data_fraction", r"$N$ (fraction)", False), ("e
           ("view_fraction", r"$|\mathcal{P}|$ (fraction)", False), ("tau", r"$\tau$", True),
           ("gamma_mult", r"$\gamma$ / Eq. (14)", True)]
 RT_METHODS = ("PRIV_EXPL", "B1", "B2", "OPT_PRIV_EXPL")  # B3 is not used in the paper
-RT_LABEL = {"PRIV_EXPL": "PrivExpl", "B1": "B1", "B2": "B2", "B3": "B3", "OPT_PRIV_EXPL": "OptPrivExpl"}
+RT_LABEL = {"PRIV_EXPL": NAME["PrivExpl"], "B1": NAME["Bone"], "B2": NAME["Btwo"], "B3": NAME["Bthree"],
+            "OPT_PRIV_EXPL": NAME["OptPrivExpl"]}
 
 
 def _rt_panel(ax, sub: pd.DataFrame, x: str, logx: bool, limit: float):
@@ -347,12 +361,12 @@ def fig_attrs() -> Path:
             to = d7.timeout.astype(bool)
             c = P.METHOD_COLORS["B2"]
             ax.plot(d7.value[~to], d7.total_s[~to], color=c, linestyle="--", marker="^", markerfacecolor=SURF,
-                    linewidth=1.0, label="B2, $k=7$")
+                    linewidth=1.0, label=NAME["Btwo"] + ", $k=7$")
             if to.any():
                 ax.plot(list(d7.value[~to].tail(1)) + list(d7.value[to]), list(d7.total_s[~to].tail(1)) + [limit] * int(to.sum()),
                         color=c, linestyle=":", linewidth=1.0)
                 ax.plot(d7.value[to], [limit] * int(to.sum()), linestyle="none", marker="x", color=c, markersize=5,
-                        markeredgewidth=1.4, label="B2 timeout")
+                        markeredgewidth=1.4, label=f"{NAME['Btwo']} timeout")
             allt += list(d7.total_s)
         lo, hi = float(min(allt)) / 1.5, float(max(allt)) * 1.5
         if hi / lo < 10:  # at least one decade, so that run-to-run noise does not read as a trend
@@ -368,8 +382,8 @@ def fig_attrs() -> Path:
             ax.set_ylabel("time (s)")
         ax = axes[1, j]
         sub = asum[asum.dataset == ds].groupby("value", as_index=False).mean(numeric_only=True).sort_values("value")
-        for col, lab, c, mk in (("ratio_BF", "ApproxRatio (PrivExpl)", P.BLUE, "o"),
-                                ("attr_at_k_BF", "attribute@k (PrivExpl)", P.ORANGE, "s")):
+        for col, lab, c, mk in (("ratio_BF", f"ApproxRatio ({NAME['PrivExpl']})", P.BLUE, "o"),
+                                ("attr_at_k_BF", f"attribute@k ({NAME['PrivExpl']})", P.ORANGE, "s")):
             ax.plot(sub.value, sub[col], color=c, marker=mk, label=lab)
         ax.set_ylim(0, 1.1)
         ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
