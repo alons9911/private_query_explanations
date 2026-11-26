@@ -11,10 +11,12 @@ Keeps the state of the work outside the chat context.
 * Figures: runtime_grid and attrs show OptPrivExpl instead of the undefined B3.
 * scripts/review_numbers.py (resumable) writes results/rescored/review_numbers.csv and
   coverage_tau.csv: coverage of BF and per tau, best HD_gamma of the exact top-tau, output sizes,
-  median bin support.  The chapter's placeholders (CBF*, COVTAU, BFCOVSENTENCE, TAUCOVSENTENCE,
-  HDTAXDIRTY, HDOTHERS, DROPTD, DIFFTAX, SMALLACS, BINADULT, BINACS) are filled from them.
+  median bin support.  All 44 pairs done; every number of the chapter is filled from them.
+  Table 4 per-tau rows average all 44 pairs with tau >= |P| read as all views (ApproxRatio at
+  tau = 1000: 0.87, was 0.86 over the pairs with |P| > 1000).  BF's own coverage is 0.15.
 * The old "median bin 17 tuples" on Adult does not reproduce (median bin support of the explained
-  candidates is ~456); replaced by the computed statistic.
+  candidates: Adult 456, ACSIncome ~4,000, Hospital 23); the gamma paragraph no longer ties the
+  gain to bin size, since IPUMS (18k) gains less than ACSIncome.
 
 ## 2026-11-25 ~02:10 UTC: running time on all 44 pairs merged
 Shards all44-* (8 cloud workers, the 22 pairs not timed before) done; results/e4, results/e5 and
