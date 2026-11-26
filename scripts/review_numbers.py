@@ -27,8 +27,14 @@ bf = pd.read_csv(OUT / "bf.csv").set_index("pair")
 e2 = pd.read_csv(ROOT / "results/e2/raw/trials.csv")
 e2 = e2[np.isclose(e2.epsilon, 1.0)]
 tau = pd.read_csv(ROOT / "results/e8/raw/tau.csv")
-rows, trows = [], []
+RN, CT = OUT / "review_numbers.csv", OUT / "coverage_tau.csv"
+rows = pd.read_csv(RN).to_dict("records") if RN.exists() else []  # resume: pairs already computed
+trows = pd.read_csv(CT).to_dict("records") if CT.exists() else []
+done = {r["pair"] for r in rows}
+trows = [r for r in trows if r["pair"] in done]  # drop tau rows of a pair interrupted before RN was written
 for pid in bf.index:
+    if pid in done:
+        continue
     c = default_cache(pid, d)
     p = make_params(d, c.n_views, len(c.explain_attrs))
     lab = {c.view_label(v): v for v in range(c.n_views)}
@@ -53,6 +59,6 @@ for pid in bf.index:
     for t, g in tau[tau.pair == pid].groupby("tau"):
         trows.append({"pair": pid, "dataset": c.ds.name, "tau": int(t), "tau_is_all": bool(g.tau_is_all.iloc[0]),
                       "coverage": float(np.mean([mcov(s) for s in g.selections]))})
+    pd.DataFrame(trows).to_csv(CT, index=False)
+    pd.DataFrame(rows).to_csv(RN, index=False)  # written last: a pair in RN has its tau rows in CT
     print(pid, flush=True)
-pd.DataFrame(rows).to_csv(OUT / "review_numbers.csv", index=False)
-pd.DataFrame(trows).to_csv(OUT / "coverage_tau.csv", index=False)
