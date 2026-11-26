@@ -6,6 +6,9 @@ The experiments answer three questions:
 (1)~do the released explanations show an analyst something the two queries and the constraint do not (Section~\ref{sec:usecase-results});
 (2)~how close do they come to the best non-private selection, and what limits them (Section~\ref{subsec:quality});
 (3)~what does the algorithm cost in time (Section~\ref{subsec:scalability}).
+In short, the released explanations show how a refinement, a repair or a contrast changes the population, which neither the queries nor the constraint state.
+At $\epsilon=1$ \textsf{PrivExpl} keeps $0.60$ of the score of the non-private brute force and mostly explains the same attributes; its view stage, more than the noise, accounts for the gap, in exchange for explanations of views that cover much of the two outputs.
+Privacy adds no measurable running time, and computing the statistics in grouped passes makes the pipeline about eight times faster.
 
 % ---------------------------------------------------------------
 \subsection{Setup}
@@ -157,34 +160,6 @@ Among them, women are more often outside the labour force ($52\%$ against $46\%$
 \subsection{Explanation Quality}
 \label{subsec:quality}
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/exp/view_stage.pdf}
-\caption{The view stage alone: overlap of the $\tau$ retained views with the exact top-$\tau$ by $\Use$ ($40$ runs per point).}
-\label{fig:view-stage}
-\end{figure}
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/exp/quality.pdf}
-\caption{Quality against the privacy budget (top) and against $\gamma$ as a multiple of Eq.~\eqref{eq:gamma-rule} (bottom): ApproxRatio of \textsf{PrivExpl}, \Bone{} and \textsf{SingleStage} against \textsf{BF}, and attribute@k of \textsf{PrivExpl}; mean over the pairs of each dataset (number in parentheses), $40$ runs per pair and point. Shaded: defaults; the leftmost point of the bottom row is $\gamma=0$.}
-\label{fig:quality}
-\end{figure*}
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/exp/attrs.pdf}
-\caption{The number of explanation attributes, from $2$ to every attribute of Table~\ref{tab:attributes}; views and reference attributes fixed. Each run draws its own random order of the attributes and keeps a prefix, so a point averages over random attribute sets of that size, not the default set. Top: running time (median of ten runs; dashed: \Btwo{} at $k=7$, $\tau=21$). Bottom: ApproxRatio and attribute@k of \textsf{PrivExpl} against \textsf{BF} over the same attributes ($40$ runs per pair and point).}
-\label{fig:attrs}
-\end{figure*}
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/exp/runtime_grid.pdf}
-\caption{End-to-end running time (median of ten runs, mean over the pairs of the dataset), one parameter varied at a time. A cross marks a point stopped at the $30$-minute limit (three runs).}
-\label{fig:scalability}
-\end{figure*}
-
 \begin{table}[t]
 \centering
 \footnotesize
@@ -209,70 +184,123 @@ All $44$ pairs & 0.60 & 0.70 & 0.92 & 0.12 & 0.75 (0.38) & 0.90 & 0.24 & 0.14 \\
 \end{tabular}
 \end{table}
 
-\paragraph{\textsf{PrivExpl} reaches $0.60$ of the brute force, and the view stage accounts for most of the gap.}
-At the defaults \textsf{PrivExpl} reaches $0.60$ of \textsf{BF} over all $44$ pairs, from $0.21$ on Tax-dirty to $0.85$ on Adult (Table~\ref{tab:quality}).
-Without noise the same two stages (\Bone{}) reach $0.70$: keeping the explanations on the $15$ most useful views costs $30\%$, and the noise another $15\%$.
-\textsf{SingleStage}, which skips the view stage, reaches $0.92$ and scores higher on $43$ of the $44$ pairs; \textsf{Random} reaches $0.12$ ($0.25$ on IPUMS-CPS, where many candidates score alike).
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{ApproxRatio of \textsf{PrivExpl} against \textsf{BF} when one parameter varies and the others stay at their defaults (bold); mean over all $44$ pairs, $40$ runs per pair and point. $\tau$ is capped at $|\mathcal{P}|$. For $\lambda$, also the number of distinct attributes among the five explanations. Budget splits $(\epsilon_P,\epsilon_S,\epsilon_H)/\epsilon$: $(0.05,0.6,0.35)$, $(0.1,0.55,0.35)$, $(0.2,0.4,0.4)$, $(1/3,1/3,1/3)$, $(0.5,0.25,0.25)$.}
+\label{tab:params}
+\setlength{\tabcolsep}{2.6pt}
+\begin{tabular}{@{}lcccccccccc@{}}
+\toprule
+$\tau$ & 5 & 10 & \textbf{15} & 30 & 60 & 120 & 250 & 500 & 1000 & all\\
+ApproxRatio & 0.51 & 0.57 & 0.60 & 0.69 & 0.74 & 0.78 & 0.81 & 0.84 & 0.86 & 0.88\\
+\midrule
+$\lambda$ & 0 & 0.25 & \textbf{0.5} & 0.75 & 1 &&&&&\\
+ApproxRatio & 0.60 & 0.60 & 0.60 & 0.59 & 0.57 &&&&&\\
+Distinct attributes & 4.8 & 4.7 & 4.1 & 3.3 & 2.1 &&&&&\\
+\midrule
+$\epsilon_P/\epsilon$ & 0.05 & 0.10 & 0.20 & \textbf{0.33} & 0.50 &&&&&\\
+ApproxRatio & 0.53 & 0.56 & 0.59 & 0.60 & 0.61 &&&&&\\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\paragraph{The explanations differ from those of the brute force, but their attributes mostly agree.}
-\textsf{PrivExpl} shares few (view, attribute) pairs with \textsf{BF}: precision@k is $0.39$ on Adult and at most $0.15$ elsewhere.
-Its attribute@k is $0.75$ against a chance level of $0.38$, so it explains the same attributes through neighbouring views, as in D1, where every release explains the state through one of three views.
-Tax-dirty is the exception ($0.26$, below its chance level of $0.44$).
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/exp/view_stage.pdf}
+\caption{The view stage alone: overlap of the $\tau$ retained views with the exact top-$\tau$ by $\Use$ ($40$ runs per point).}
+\label{fig:view-stage}
+\end{figure}
 
-\paragraph{The view stage keeps the explanations on views that cover the outputs; $\tau$ sets the trade-off.}
-The views \textsf{PrivExpl} explains have a mean coverage of $0.24$, against $0.14$ for \textsf{SingleStage}, whose views are three to five times smaller on ACSIncome, Tax, Tax-dirty and IPUMS-CPS; only on Hospital do they cover more.
-Retaining more views closes the gap: the ApproxRatio rises from $0.60$ at $\tau=15$ to $0.69$ at $\tau=30$ and $0.88$ when every view is retained ($0.99$ on Adult and Tax), at a cost in running time (Section~\ref{subsec:scalability}).
-This is the cost of the view stage that Section~\ref{subsec:two-stages} leaves open.
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/exp/quality.pdf}
+\caption{Quality against the privacy budget (top) and against $\gamma$ as a multiple of Eq.~\eqref{eq:gamma-rule} (bottom): ApproxRatio of \textsf{PrivExpl}, \Bone{} and \textsf{SingleStage} against \textsf{BF} (top: also \textsf{PrivExpl} with $\gamma$ fixed at its default value), and attribute@k of \textsf{PrivExpl}; mean over the pairs of each dataset (number in parentheses), $40$ runs per pair and point. Shaded: defaults; the leftmost point of the bottom row is $\gamma=0$.}
+\label{fig:quality}
+\end{figure*}
 
-\paragraph{Small outputs, small differences and small data are hard.}
-On ACSIncome the noise costs most on the three pairs with outputs under $4{,}400$ tuples (S7, S8, S10: \Bone{} $0.67$--$1.00$, \textsf{PrivExpl} $0.29$--$0.36$), and the view stage on four of the others (\Bone{} $0.28$--$0.52$).
-On Tax-dirty both stages lose ($0.34$ without noise, $0.21$ with it): its best candidate scores $\HD_\gamma=0.62$ (median), below the separation $2\ln|C_i|/((1+\gamma)\epsilon_i)\approx0.96$ the mechanism resolves, against $3.7$--$11$ elsewhere, and its pairs differ in $0.9$k--$2.3$k tuples, against $8.8$k--$58$k on Tax.
-On Hospital ($N=1{,}000$) \Bone{} matches \textsf{BF}, but the noisy view stage keeps only $0.09$ of the exact top-$\tau$ (Figure~\ref{fig:view-stage}), against $0.91$ or more elsewhere, as expected from a sensitivity of $4/\bar N$.
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/exp/attrs.pdf}
+\caption{The number of explanation attributes, from $2$ to every attribute of Table~\ref{tab:attributes}; views and reference attributes fixed. Each run draws its own random order of the attributes and keeps a prefix, so a point averages over random attribute sets of that size, not the default set. Top: running time (median of ten runs; dashed: \Btwo{} at $k=7$, $\tau=21$). Bottom: ApproxRatio and attribute@k of \textsf{PrivExpl} against \textsf{BF} over the same attributes ($40$ runs per pair and point).}
+\label{fig:attrs}
+\end{figure*}
 
-\paragraph{More budget helps only up to the view stage.}
-From $\epsilon=0.1$ to $1$ the ApproxRatio rises from $0.46$ to $0.60$ and then levels off at $0.64$ (top row of Figure~\ref{fig:quality}), below the $0.70$ of \Bone{}, which no budget can exceed.
-With $\gamma$ fixed at its default value instead of following Eq.~\eqref{eq:gamma-rule}, which lowers it as $\epsilon$ grows, it reaches $0.70$ from $\epsilon=10$.
-Hospital is the exception: its view stage needs the budget, and the ratio climbs from $0.07$ at $\epsilon=0.1$ to $0.92$.
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/exp/runtime_grid.pdf}
+\caption{End-to-end running time (median of ten runs, mean over the pairs of the dataset), one parameter varied at a time. A cross marks a point stopped at the $30$-minute limit (three runs).}
+\label{fig:scalability}
+\end{figure*}
 
-\paragraph{Data with large bins need more smoothing than Eq.~\eqref{eq:gamma-rule} gives.}
-Selecting without smoothing gives $0.28$, the default $0.60$, and three to ten times the default $0.63$--$0.64$ (bottom row of Figure~\ref{fig:quality}).
-The gain is largest on ACSIncome ($0.49\rightarrow0.60$ at $10\times$), whose median bin holds about $700$ tuples, against $17$ on Adult, where the default is best: the rule ignores the size of a bin, and on ACSIncome and Tax the default $\gamma$ is far below the ceiling $m/b$ of Remark~\ref{rem:gamma-window}.
+\paragraph{Comparison with the brute force and the variants.}
+We first ask how much of the best attainable difference score a release keeps, and which part of the algorithm loses the rest.
+All parameters are at their defaults ($\epsilon=1$); we run \textsf{PrivExpl}, \Bone{}, \textsf{SingleStage} and \textsf{Random} $40$ times on each pair and score them against \textsf{BF}.
+Table~\ref{tab:quality} shows the ApproxRatio, attribute@k and coverage per dataset.
+\textsf{PrivExpl} reaches an ApproxRatio of $0.60$ over all $44$ pairs, from $0.21$ on Tax-dirty to $0.85$ on Adult.
+Without noise the same two stages (\Bone{}) reach $0.70$, and \textsf{Random} reaches $0.12$ ($0.25$ on IPUMS-CPS, where many candidates score alike).
+Restricting the explanations to the $15$ views with the highest $\Use$ thus costs $30\%$ of the score, and the noise another $15\%$.
+\textsf{SingleStage} reaches $0.92$, but it optimises a different objective: it ignores representativeness and coverage, and the views it explains have a mean coverage of $0.14$, against $0.24$ for \textsf{PrivExpl}; on ACSIncome, Tax, Tax-dirty and IPUMS-CPS they are three to five times smaller.
+The view stage gives up difference score to keep the explanations on views that cover much of the two outputs; on Hospital, whose view stage fails (see below), \textsf{SingleStage} is better on both counts.
 
-\paragraph{More explanation attributes raise the score; wide attributes take the explanations.}
+\paragraph{Agreement with the brute force.}
+A high ApproxRatio does not mean the same explanations.
+In the same runs, \textsf{PrivExpl} shares few (view, attribute) pairs with \textsf{BF} (precision@k $0.39$ on Adult and at most $0.15$ elsewhere), but its attribute@k is $0.75$ against a chance level of $0.38$ (Table~\ref{tab:quality}).
+The explained attributes mostly agree with those of \textsf{BF}; the views differ, typically a view against its specialization by one more condition, as in D1, where every release explains the state through one of three views.
+Tax-dirty is the exception: its attribute@k ($0.26$) is below its chance level ($0.44$).
+
+\paragraph{Number of retained views $\tau$.}
+To measure what the view stage costs, we vary $\tau$ from $5$ to all views, with the other parameters at their defaults and $\gamma$ following Eq.~\eqref{eq:gamma-rule}.
+Table~\ref{tab:params} (top) shows the ApproxRatio against \textsf{BF}.
+It rises from $0.60$ at the default $\tau=15$ to $0.69$ at $\tau=30$ and $0.88$ when every view is retained ($0.99$ on Adult and Tax), at a cost in running time (Section~\ref{subsec:scalability}).
+$\tau$ therefore sets how much difference score the view stage gives up for coverage, the cost that Section~\ref{subsec:two-stages} leaves open.
+
+\paragraph{Accuracy of the view stage.}
+We run the view stage alone, varying its budget $\epsilon_P$ from $0.01$ to $10$, and measure the overlap of the $\tau$ retained views with the exact top-$\tau$ by $\Use$ ($40$ runs per point).
+Figure~\ref{fig:view-stage} shows the results.
+At the default $\epsilon_P=1/3$ the overlap is $0.91$ or more on every dataset but Hospital ($0.09$; $0.92$ at $\epsilon_P=10$), and IPUMS-CPS reaches $0.97$ already at $\epsilon_P=0.03$.
+The sensitivity of $\Use$ shrinks as $4/\bar N$, so the view stage is accurate on all but the smallest dataset ($N=1{,}000$).
+This explains Hospital in Table~\ref{tab:quality}: without noise its view stage matches \textsf{BF} (\Bone{} $1.00$), but with noise \textsf{PrivExpl} reaches only $0.53$.
+The explanation stage behaves differently, because the sensitivity of $\HD_\gamma$, $1/(1+\gamma)$, does not shrink with $N$.
+On Tax-dirty the view stage is accurate ($0.92$), yet the best candidate scores only $\HD_\gamma=0.62$ (median over runs), below the separation $2\ln|C_i|/((1+\gamma)\epsilon_i)\approx0.96$ that the mechanism resolves at the defaults, against $3.7$--$11$ on the other datasets: the pairs of Tax-dirty differ in $0.9$k--$2.3$k tuples, against $8.8$k--$58$k on Tax.
+On ACSIncome the noise costs most on the three pairs with outputs under $4{,}400$ tuples (S7, S8, S10: \Bone{} $0.67$--$1.00$, \textsf{PrivExpl} $0.29$--$0.36$).
+
+\paragraph{Privacy budget $\epsilon$.}
+We vary $\epsilon$ from $0.1$ to $20$, split equally between the three stages, with $\gamma$ either following Eq.~\eqref{eq:gamma-rule}, which lowers it as $\epsilon$ grows, or fixed at its default value; the other parameters are at their defaults.
+Figure~\ref{fig:quality} (top) shows the ApproxRatio of \textsf{PrivExpl}, \Bone{} and \textsf{SingleStage} and the attribute@k of \textsf{PrivExpl}.
+With the rule, the ApproxRatio rises from $0.46$ at $\epsilon=0.1$ to $0.60$ at $\epsilon=1$ and levels off at $0.64$; with $\gamma$ fixed it reaches $0.70$ from $\epsilon=10$, the level of \Bone{}, which no budget can exceed.
+Hospital is the exception: its view stage needs the budget, and the ratio climbs from $0.07$ to $0.92$.
+More budget therefore helps only up to the limit set by the view stage, and less so when the rule takes the smoothing away.
+
+\paragraph{Smoothing $\gamma$.}
+The previous experiment changes $\gamma$ together with $\epsilon$; here we vary $\gamma$ alone, from $0$ to $30$ times the value of Eq.~\eqref{eq:gamma-rule}, at $\epsilon=1$.
+Figure~\ref{fig:quality} (bottom) shows the results.
+Selecting without smoothing gives an ApproxRatio of $0.28$, the default $0.60$, and three or ten times the default $0.63$--$0.64$ (means over all $44$ pairs).
+The default is best on Adult, whose median bin holds $17$ tuples, while ACSIncome, with about $700$ tuples per bin, gains most from more smoothing ($0.49\rightarrow0.60$ at $10\times$).
+Eq.~\eqref{eq:gamma-rule} ignores the size of a bin; on data with large bins the default $\gamma$ sits far below the ceiling $m/b$ of Remark~\ref{rem:gamma-window}.
+
+\paragraph{Number of explanation attributes.}
 \label{subsec:attrs}
-From two attributes to all of Table~\ref{tab:attributes} (Figure~\ref{fig:attrs}), the ApproxRatio rises on ACSIncome ($0.48\rightarrow0.66$), Tax ($0.47\rightarrow0.74$), Tax-dirty ($0.19\rightarrow0.35$) and Hospital ($0.46\rightarrow0.57$), and stays within $0.06$ on Adult and IPUMS-CPS; with $\gamma$ fixed the curves move by at most $0.02$.
-On ACSIncome the place of birth ($224$ values) and the state ($51$) take $74\%$ of the explanations when all twelve attributes are available; grouping such values, as Erica does for occupation codes, keeps the histograms readable.
+We vary $|\Attrs|$ from two attributes to all those of Table~\ref{tab:attributes}, which adds \texttt{nativeCountry} and the two capital attributes on Adult, the state and the place of birth on ACSIncome, and the area code on Tax and Tax-dirty; views and reference attributes stay fixed, and each run draws its own random order of the attributes.
+Figure~\ref{fig:attrs} (bottom) shows the ApproxRatio and attribute@k against \textsf{BF} over the same attributes.
+The ApproxRatio rises on ACSIncome ($0.48\rightarrow0.66$), Tax ($0.47\rightarrow0.74$), Tax-dirty ($0.19\rightarrow0.35$) and Hospital ($0.46\rightarrow0.57$) and stays within $0.06$ on Adult and IPUMS-CPS; with $\gamma$ fixed the curves move by at most $0.02$.
+More attributes thus do not hurt the score, but attributes with many values attract the explanations: on ACSIncome the place of birth ($224$ values) and the state ($51$) take $74\%$ of them when all twelve attributes are available, and grouping such values, as Erica does for occupation codes, keeps the histograms readable.
 \alon{Decide whether wide attributes should be capped in the datasets of the paper, or $\HD_\gamma$ normalised by the number of bins.}
 
-\paragraph{Other parameters.}
-$\lambda$ controls diversity without changing the score: from $\lambda=0$ to $1$ the number of distinct attributes in a release falls from $4.8$ to $2.1$, while the ApproxRatio stays between $0.57$ and $0.60$.
-Of five budget splits, those that give the view stage $0.2$--$0.5$ of $\epsilon$ reach $0.59$--$0.61$, and $10\%$ or $5\%$ lower this to $0.56$ and $0.53$; our measures ignore $\epsilon_H$, so this compares only the two selection stages.
+\paragraph{Diversity weight $\lambda$ and budget split.}
+We vary $\lambda$ from $0$ to $1$, and the share of the budget given to the view stage from $5\%$ to $50\%$, with the other parameters at their defaults.
+Table~\ref{tab:params} (middle and bottom) shows the results.
+From $\lambda=0$ to $1$ the number of distinct attributes among the five explanations falls from $4.8$ to $2.1$, while the ApproxRatio stays between $0.57$ and $0.60$: $\lambda$ controls diversity at almost no cost in score.
+Giving the view stage $20$--$50\%$ of the budget yields $0.59$--$0.61$, and $10\%$ or $5\%$ lowers this to $0.56$ and $0.53$; since our measures ignore $\epsilon_H$, this compares only the two selection stages.
 
 % ---------------------------------------------------------------
-\subsection{Performance}
+\subsection{Runtime}
 \label{subsec:scalability}
 
-\paragraph{Privacy adds no measurable running time.}
-At the defaults \textsf{PrivExpl} and its noiseless variant \Bone{} are within $1\%$ of each other on every pair: $96$--$99\%$ of the time is the $\Use$ pass they share.
-As Section~\ref{subsec:complexity-analysis} predicts, the time grows linearly with $N$ ($11\times$ from $10\%$ to all of ACSIncome and IPUMS-CPS) and with $|\mathcal{P}|$, is flat in $k$, $\epsilon$ and $\gamma$, and grows by at most $18\%$ over the range of $|\Attrs|$ and by $18$--$41\%$ when every view is retained (Figures~\ref{fig:scalability} and~\ref{fig:attrs}).
-Exhaustive search (\Btwo{}) is exponential in $k$: it takes $15$--$61$\,s at $k=6$ and $2.4$--$17$ minutes at $k=7$, and exceeds the $30$-minute limit from $k=8$ on all $44$ pairs ($2.9\times10^{10}$ subsets).
-At $k=7$ its time roughly doubles with every added attribute and reaches the limit at $11$ attributes on ACSIncome and Adult (Figure~\ref{fig:attrs}).
-
-\paragraph{Grouped passes make the pipeline about $8\times$ faster with identical output.}
-\textsf{OptPrivExpl} computes the same statistics in grouped passes: one pass per set of view attributes yields the statistics of every view on that set, and the explanation histograms are built only for the retained views.
-With the same randomness it released exactly what \textsf{PrivExpl} released in all $440$ runs compared, and it is $5.8$--$11.4\times$ faster end to end (median $8.4\times$; ACSIncome $26.8\rightarrow3.0$\,s and IPUMS-CPS $13.0\rightarrow1.9$\,s, means over the pairs).
+We measure the end-to-end running time of \textsf{PrivExpl}, its variants and \textsf{OptPrivExpl} on all $44$ pairs, varying one parameter at a time from the defaults (ten runs per point, a $30$-minute limit); Figure~\ref{fig:scalability} shows the results, and the top row of Figure~\ref{fig:attrs} the time against $|\Attrs|$.
+Privacy adds no measurable time: \textsf{PrivExpl} and \Bone{} are within $1\%$ of each other on every pair, since $96$--$99\%$ of the time is the $\Use$ pass they share.
+As Section~\ref{subsec:complexity-analysis} predicts, the time grows linearly with $N$ ($11\times$ from $10\%$ to all of ACSIncome and IPUMS-CPS) and with $|\mathcal{P}|$, is flat in $k$, $\epsilon$ and $\gamma$, and grows by at most $18\%$ over the range of $|\Attrs|$ and by $18$--$41\%$ when every view is retained.
+Exhaustive search (\Btwo{}) is exponential in $k$: it takes $15$--$61$\,s at $k=6$ and $2.4$--$17$ minutes at $k=7$, exceeds the limit from $k=8$ on all $44$ pairs ($2.9\times10^{10}$ subsets), and at $k=7$ its time roughly doubles with every added attribute until it reaches the limit at $11$ attributes on ACSIncome and Adult.
+Computing the statistics in grouped passes (\textsf{OptPrivExpl}) released exactly the same output in all $440$ runs compared and is $5.8$--$11.4\times$ faster (median $8.4\times$; ACSIncome $26.8\rightarrow3.0$\,s and IPUMS-CPS $13.0\rightarrow1.9$\,s, means over the pairs).
 Its time hardly grows with $|\mathcal{P}|$ (ACSIncome $2.6\rightarrow3.0$\,s from $10\%$ to all views, against $3.1\rightarrow27$\,s for \textsf{PrivExpl}), but it grows with $\tau$ ($3.2$--$4.6\times$ up to $\tau=|\mathcal{P}|$), because it builds the histograms of every retained view, and with $|\Attrs|$ ($12$--$39\%$).
-It gains nothing when there are few views per set of view attributes.
 
-% ---------------------------------------------------------------
-\subsection{Summary}
-\label{subsec:experiments-summary}
-
-\begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
-  \item In the four case studies, the release shows how a refinement, a repair or a contrast changes the population, which the queries and the constraint do not state.
-  \item At $\epsilon=1$ \textsf{PrivExpl} keeps $0.60$ of the score of the brute force, explaining mostly the same attributes through other views. The view stage costs more than the noise: it keeps the explanations on views that cover much of the outputs, and a larger $\tau$ trades that for score.
-  \item Small outputs, small differences and small data are hard; data with large bins need more smoothing than Eq.~\eqref{eq:gamma-rule} gives. Privacy adds no measurable running time, and grouped passes make the pipeline about eight times faster.
-\end{itemize}
-
-% flush the figures of this section before Related Work
-\clearpage

@@ -119,6 +119,7 @@ def _curve(df: pd.DataFrame, x: str, col: str) -> pd.DataFrame:
 # (source, x column, value column, label, colour, marker, linestyle)
 BF_SERIES_EPS = [("e2", "value", "ratio_BF", "PrivExpl", P.BLUE, "o", "-"),
                  ("e2_b1", "value", "ratio_BF", "B1 (no noise)", P.BLUE, "o", ":"),
+                 ("fixed", "epsilon", "ratio_BF", r"PrivExpl, $\gamma$ fixed", P.MAGENTA, "D", "--"),
                  ("single", "epsilon", "ratio_BF", "SingleStage", P.AQUA, "^", "--"),
                  ("e2", "value", "attr_at_k_BF", "attribute@k (PrivExpl)", P.ORANGE, "s", "-")]
 BF_SERIES_GAMMA = [("e6", "value", "ratio_BF", "PrivExpl", P.BLUE, "o", "-"),
@@ -131,6 +132,7 @@ def fig_quality() -> Path:
     src = {"e2": _rescored("e2"), "e2_b1": _rescored("e2_b1"), "e6": _rescored("e6"), "e6_b1": _rescored("e6_b1")}
     comp = _rescored("e8_competitors")
     src["single"] = comp[comp.method == "SingleStage"]
+    src["fixed"] = _rescored("e8_fixed_gamma")
     dss = _datasets(src["e2"])
     fig, axes = plt.subplots(2, len(dss), figsize=(7.05, 2.75), squeeze=False, sharex="row")
     rows = [(BF_SERIES_EPS, r"privacy budget $\epsilon$", [0.1, 1, 10], ["0.1", "1", "10"]),
@@ -156,7 +158,7 @@ def fig_quality() -> Path:
             ax.set_xlabel(xlabel)
         axes[r, 0].set_ylabel("score")
     h, l = axes[0, 0].get_legend_handles_labels()
-    fig.legend(h, l, loc="upper center", ncol=4, bbox_to_anchor=(0.5, 1.06))
+    fig.legend(h, l, loc="upper center", ncol=5, bbox_to_anchor=(0.5, 1.06))
     fig.tight_layout(h_pad=0.6, w_pad=0.4)
     return _save(fig, "quality")
 
