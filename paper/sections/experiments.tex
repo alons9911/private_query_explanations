@@ -1,14 +1,13 @@
 \section{Experiments}
 \label{sec:experiments}
 
-We evaluate the algorithm of Section~\ref{sec:solution}, which we call \textsf{PrivExpl} here, on six datasets and $44$ query pairs covering query refinement, consistent query answering and contrasts; $27$ of the pairs come from earlier work.
-The experiments answer three questions:
-(1)~do the released explanations show an analyst something the two queries and the constraint do not (Section~\ref{sec:usecase-results});
+We evaluate the algorithm of Section~\ref{sec:solution}, \textsf{PrivExpl}, on six datasets and $44$ query pairs ($27$ from earlier work) and ask:
+(1)~do the explanations show an analyst something the queries and the constraint do not (Section~\ref{sec:usecase-results});
 (2)~how close do they come to the best non-private selection, and what limits them (Section~\ref{subsec:quality});
-(3)~what does the algorithm cost in time (Section~\ref{subsec:scalability}).
-In short, the released explanations show how a refinement, a repair or a contrast changes the population, which neither the queries nor the constraint state.
-At $\epsilon=1$ \textsf{PrivExpl} keeps $0.60$ of the score of the non-private brute force and mostly explains the same attributes; its view stage, more than the noise, accounts for the gap, in exchange for explanations of views that cover much of the two outputs.
-Privacy adds no measurable running time, and computing the statistics in grouped passes makes the pipeline about eight times faster.
+(3)~what do they cost in time (Section~\ref{subsec:scalability}).
+In short, the explanations show how a refinement, a repair or a contrast changes the population.
+At $\epsilon=1$ \textsf{PrivExpl} keeps $0.60$ of the score of a non-private brute force and mostly explains the same attributes; the view stage, more than the noise, accounts for the gap, in exchange for explanations of views that cover much of the outputs.
+Privacy adds no measurable running time, and grouped statistics make the pipeline about eight times faster.
 
 % ---------------------------------------------------------------
 \subsection{Setup}
@@ -35,7 +34,7 @@ IPUMS-CPS~\cite{TaoGMR22}        & 1{,}146{,}552 & 8 & 746--1{,}124 & contrast  
 \end{table}
 
 \paragraph{Datasets.}
-Table~\ref{tab:datasets} summarises the six datasets, and Table~\ref{tab:attributes} (appendix) lists their attributes.
+Table~\ref{tab:datasets} summarises the datasets and Table~\ref{tab:attributes} (appendix) their attributes.
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
   \item \textbf{Adult}~\cite{adult-uci}: $48{,}842$ census records.
   \item \textbf{ACSIncome}~\cite{DingHMS21}: $1{,}664{,}500$ records of the American Community Survey, the dataset of Erica~\cite{LMSJ23,ERICA}.
@@ -44,56 +43,48 @@ Table~\ref{tab:datasets} summarises the six datasets, and Table~\ref{tab:attribu
   \item \textbf{Hospital}~\cite{rekatsinas2017}: HoloClean's $1{,}000$-tuple file of hospital records with injected errors.
   \item \textbf{IPUMS-CPS}~\cite{TaoGMR22}: the extract of the Current Population Survey used by DPXPlain~\cite{TaoGMR22}, $1{,}146{,}552$ tuples.
 \end{itemize}
-Numeric attributes are bucketed into equal-width bins with rounded edges (ages and weekly hours by decade, a separate bin for $0$ where most values are $0$); in the dirty files, missing and out-of-domain values go to \texttt{NA} and \texttt{Other} bins.
-Views are conjunctions of at most two conditions.
+Numeric attributes are bucketed into equal-width bins (e.g.\ ages by decade), missing and out-of-domain values into \texttt{NA} and \texttt{Other} bins, and views are conjunctions of at most two conditions.
 
 \paragraph{Query pairs.}
-The $44$ pairs come from three sources (Table~\ref{tab:pairs} in the appendix lists them all; Section~\ref{sec:usecase-results} details one pair of each).
+The pairs come from three sources (all listed in Table~\ref{tab:pairs}, appendix; one of each is detailed in Section~\ref{sec:usecase-results}):
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
-  \item \emph{Query refinement}: $Q_2$ changes predicates of $Q_1$ so that its output meets a representation constraint. Ten pairs are the queries, constraints and refinements of Erica~\cite{LMSJ23} on ACSIncome; eleven more, on Adult and Tax, we generated with a similar search over refinements of one or two predicates.
-  \item \emph{Contrasts}: $Q_1$ and $Q_2$ select two disjoint groups of a table. These are the $17$ questions of DPXPlain~\cite{TaoGMR22} on IPUMS-CPS.
-  \item \emph{Consistent query answering}: $Q_2=Q_\Sigma$ is the consistent answer of a selection $Q_1$ under the integrity constraints of the data, the Tax rules of Ni et~al.~\cite{NiMZWLY24} on Tax-dirty and three functional dependencies on Hospital (six pairs of ours).
+  \item \emph{Query refinement}: $Q_2$ changes predicates of $Q_1$ to meet a representation constraint. Ten pairs are Erica's~\cite{LMSJ23} on ACSIncome; eleven on Adult and Tax we generated by a similar search.
+  \item \emph{Contrasts}: $Q_1$ and $Q_2$ select two disjoint groups; the $17$ questions of DPXPlain~\cite{TaoGMR22} on IPUMS-CPS.
+  \item \emph{Consistent query answering}: $Q_2=Q_\Sigma$ is the consistent answer of a selection $Q_1$, under the Tax rules of Ni et~al.~\cite{NiMZWLY24} on Tax-dirty and three functional dependencies on Hospital.
 \end{itemize}
-The explanations depend only on the two selections, not on the aggregate the analyst compares.
 
 \paragraph{Baseline and algorithm variants.}
-No earlier system explains the difference between two query outputs with histograms under differential privacy; the closest, DPXPlain~\cite{TaoGMR22}, explains the difference between two group aggregates with predicates, an output our measures cannot score.
-Our baseline is therefore the non-private \emph{brute force} (\textsf{BF}): the best set of $k$ candidates over the candidates of all views, in one stage, which by Proposition~\ref{prop:greedy-exact} greedy selection finds exactly.
-We also compare variants of \textsf{PrivExpl}:
+No earlier system explains the difference between two query outputs privately with histograms; DPXPlain~\cite{TaoGMR22} explains the difference between two group aggregates with predicates, which our measures cannot score.
+Our baseline is the non-private \emph{brute force} (\textsf{BF}), the best $k$ candidates over all views, which greedy selection finds exactly (Proposition~\ref{prop:greedy-exact}).
+The variants of \textsf{PrivExpl} are:
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
-  \item \Bone{} (no noise): the exact top-$\tau$ views by $\Use$, then $k$ greedy rounds by $\HD_\gamma\cdot\DivS$; it shows what the noise costs.
-  \item \textsf{SingleStage} (no view stage): Algorithm~\ref{alg:topk} on the candidates of all views, with $\epsilon_P+\epsilon_S$ for the selection, $\epsilon_H$ for the release and $\gamma$ from Eq.~\eqref{eq:gamma-rule} for $|\mathcal{P}||\Attrs|$ candidates; it shows what the view stage costs, and ignores representativeness and coverage.
-  \item \textsf{Random}: $k$ candidates drawn uniformly, with no budget spent on the selection.
-  \item \textsf{OptPrivExpl}: \textsf{PrivExpl} with its statistics computed in grouped passes, for running time only (Section~\ref{subsec:scalability}).
+  \item \Bone{}: no noise (exact top-$\tau$ views, then greedy by $\HD_\gamma\cdot\DivS$).
+  \item \textsf{SingleStage}: no view stage; Algorithm~\ref{alg:topk} over all candidates with $\epsilon_P+\epsilon_S$ for the selection. It ignores representativeness and coverage.
+  \item \textsf{Random}: $k$ uniformly drawn candidates.
+  \item \textsf{OptPrivExpl} (grouped statistics) and \Btwo{} (exhaustive search over the retained views, which returns the greedy set): for running time only.
 \end{itemize}
-Exhaustive search over the candidates of the retained views (\Btwo{}) returns the greedy set, as the proposition guarantees; we use it only for running time.
 
 \paragraph{Metrics.}
-All measures use exact histograms, so the Laplace noise of the release does not enter them.
+All measures use exact histograms, so the release noise does not enter them.
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
-  \item \emph{ApproxRatio}: $F_\lambda(E)/F_\lambda(\textsf{BF})$, where $F_\lambda$ is the objective $F_w$ of Definition~\ref{def:setobj} with $w_j=\lambda^{j-1}$ and $\HD_\gamma$ at the pair's default $\gamma$ (Eq.~\eqref{eq:gamma-rule}, $\approx150$), kept fixed when a run uses another $\gamma$. It says how much of the best attainable difference score a release keeps, measured with the smoothing the method itself optimises; without smoothing the measure would reward changes in bins of a few tuples.
-  \item \emph{Precision@k}: the share of \textsf{BF}'s (view, attribute) pairs in the release, the usual measure of top-$k$ selection, also used by DPXPlain. It suits our setting poorly: many views are near-duplicates, such as a view and its refinement by one more condition, that show the same trend, so a release can explain what \textsf{BF} explains while sharing few of its pairs.
-  \item \emph{Attribute@k}: we therefore compare the explained attributes instead, as the overlap of the two multisets of attributes divided by $k$, and read it against its chance level for $k$ random candidates.
-  \item \emph{Coverage}: the mean $\Cov$ (Eq.~\eqref{eq:coverage-proxy}) of the explained views, i.e.\ how much of the two outputs the explanations describe; an explanation of a view that holds few output tuples tells the analyst little.
+  \item \emph{ApproxRatio}: the ratio $F_\lambda(E)/F_\lambda(\textsf{BF})$, where $F_\lambda$ is the objective of Definition~\ref{def:setobj} with $w_j=\lambda^{j-1}$ and $\HD_\gamma$ at the pair's default $\gamma\approx150$, fixed across runs. It is the share of the best attainable difference score a release keeps; without smoothing it would reward changes in bins of a few tuples.
+  \item \emph{Precision@k}, the share of \textsf{BF}'s (view, attribute) pairs in the release, is the usual measure of top-$k$ selection, but suits our setting poorly: many views are near-duplicates, such as a view and its specialization by one more condition, so a release can explain what \textsf{BF} explains with different pairs.
+  \item \emph{Attribute@k} therefore compares the explained attributes (multiset overlap divided by $k$), read against its chance level for $k$ random candidates.
+  \item \emph{Coverage}: the mean $\Cov$ (Eq.~\eqref{eq:coverage-proxy}) of the explained views; a view that holds few output tuples tells the analyst little.
 \end{itemize}
 
-\paragraph{Default setting and runs.}
-Unless stated otherwise: the whole dataset, every view, $k=5$, $\lambda=0.5$, $\epsilon=1$ split equally ($\epsilon_P=\epsilon_S=\epsilon_H=1/3$), $\gamma_R=N/100$, $\tau=15$ and $\gamma\approx150$ from Eqs.~\eqref{eq:tau-rule} and~\eqref{eq:gamma-rule}, and $\bar N=|D|$; derived constants follow their rules when $k$, $\epsilon$ or $\tau$ vary.
-\begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
-  \item \emph{Accuracy}: a point of a pair averages $40$ private runs, and a point of a dataset averages its pairs; a mean over all $44$ pairs weights each dataset by its number of pairs ($17$ on IPUMS-CPS). Each experiment draws its own runs, so the default point can differ between experiments in the second decimal.
-  \item \emph{Running time}: measured end to end, ten times per point, on all $44$ pairs; the methods of a pair always ran on the same machine. A run is stopped at $30$ minutes, and a point that reaches the limit is run three times.
-\end{itemize}
+\paragraph{Default setting.}
+Unless stated otherwise: the whole dataset and every view, $k=5$, $\lambda=0.5$, $\epsilon=1$ split equally, $\gamma_R=N/100$, $\tau=15$ and $\gamma\approx150$ (Eqs.~\eqref{eq:tau-rule} and~\eqref{eq:gamma-rule}), and $\bar N=|D|$.
+An accuracy point averages $40$ runs per pair and then the pairs of a dataset (or all $44$ pairs, where stated).
+Running time is measured end to end, ten runs per point, with all methods of a pair on one machine; a run is stopped at $30$ minutes, and a point that reaches the limit is run three times.
 
 % ---------------------------------------------------------------
 \subsection{Case Studies}
 \label{sec:usecase-results}
 
-We take one pair per setting: the running example (A2), the first query--constraint combination of Erica (S1), the first Tax-dirty pair (D1) and DPXPlain's default question (I1).
-For each we made ten releases at the defaults.
-Each figure shows the five explanations of the first release.
-Bars are released values and black ticks exact counts, which are not released; each panel shows at most the six bins with the largest exact difference, and its title gives how many of the ten releases contain the same explanation.
-The percentages below are computed from exact counts.
-The released values carry noise with a standard deviation of about $42$ per bar, small against most bars of S1, D1 and I1 but not against the smaller bars of A2.
+We take one pair per setting, A2, S1, D1 and I1, and make ten releases of each at the defaults.
+Each figure shows the five explanations of the first release: released values as bars, exact counts (not released) as ticks, at most the six bins with the largest exact difference, and in each title the number of releases that contain the explanation.
+Percentages below are exact; the release noise (standard deviation about $42$ per bar) is small against the bars of S1, D1 and I1, but not against the smaller bars of A2.
 
 \begin{figure*}[t]
 \centering
@@ -103,12 +94,9 @@ The released values carry noise with a standard deviation of about $42$ per bar,
 \end{figure*}
 
 \paragraph{Refinement (A2): the Master's holders of the refined output differ in occupation, sector and marital status.}
-A2 is the running example of Section~\ref{sec:introduction}: $Q_1$ selects Bachelor's and Master's holders who work $50$ hours or more, and the refinement $Q_2$ keeps only Master's holders and lowers the threshold to $30$ hours, which meets the constraint of at least $25\%$ women by raising the female share from $19.5\%$ to $30.6\%$.
-The output shrinks from $3{,}055$ to $2{,}453$ tuples, and its Master's part grows from $874$ to all $2{,}453$.
-Every release explains the Master's holders by occupation, relationship and workclass; the explanations of Figure~\ref{fig:case-a2} recur in two to seven of the ten releases.
-Among them, the refined output has more professional-specialty workers ($41\%\rightarrow49\%$) and fewer executives ($41\%\rightarrow31\%$), more local and state government employees ($25\%\rightarrow30\%$), and fewer married members ($66\%\rightarrow59\%$ among white Master's holders).
-The largest change, the $2{,}181$ Bachelor's holders that $Q_2$ drops ($71\%$ of $Q_1$), appears in only three releases, by hours worked.
-$\HD_\gamma$ measures the change in each bin relative to the bin's support in the view, and $Q_1$ held only $27\%$ of the Bachelor's holders, while $Q_2$ adds $59\%$ of the Master's holders.
+In the running example of Section~\ref{sec:introduction}, $Q_1$ selects Bachelor's and Master's holders working $50$ hours or more, and $Q_2$ keeps only Master's holders and lowers the threshold to $30$ hours, which meets the constraint of at least $25\%$ women ($19.5\%\rightarrow30.6\%$).
+Every release explains the Master's holders by occupation, relationship and workclass (Figure~\ref{fig:case-a2}): the refined output has more professional-specialty workers ($41\%\rightarrow49\%$), fewer executives ($41\%\rightarrow31\%$), more government employees ($25\%\rightarrow30\%$) and fewer married members ($66\%\rightarrow59\%$ among white Master's holders).
+The dropped Bachelor's holders ($71\%$ of $Q_1$) appear in only three releases: $\HD_\gamma$ measures change relative to a bin's support, and $Q_1$ held only $27\%$ of all Bachelor's holders, while $Q_2$ adds $59\%$ of the Master's holders.
 
 \begin{figure*}[t]
 \centering
@@ -118,14 +106,10 @@ $\HD_\gamma$ measures the change in each bin relative to the bin's support in th
 \end{figure*}
 
 \paragraph{Refinement from Erica (S1): the release describes the workers the refinement adds.}
-Erica~\cite{LMSJ23} computes minimal refinements of a query that meet cardinality constraints on groups.
-On ACSIncome we use its queries and constraint sets with the refinements it returns, keeping the ten of its twelve query--constraint combinations whose refinement satisfies the constraints.
-Where Erica returns several minimal refinements, we keep the one that most changes the attributes neither the query nor the constraints mention, which favours pairs with something to explain.
-In S1, $Q_1$ selects government employees (local, state or federal) who work $40$ hours or more and have at least some college; the constraints ask for at least $48{,}884$ married women and $15{,}719$ Black workers.
-Erica meets them by adding the private sector to $Q_2$, and the output grows from $141{,}100$ to $587{,}712$.
-In every release all five explanations are on private-sector views, which $Q_1$ does not meet (Figure~\ref{fig:case-acs}).
-Among the added workers who work $40$--$49$ hours, $13\%$ are in office support, $13\%$ in management and $10\%$ in sales, $39\%$ hold a bachelor's degree, and $55\%$ are reference persons of their household.
-An analyst comparing the incomes of the two outputs learns who was added, which the query, a change of one predicate, does not say.
+Erica~\cite{LMSJ23} computes minimal refinements that meet cardinality constraints on groups; we keep the ten of its twelve query--constraint combinations whose refinement satisfies the constraints, and, where it returns several, the one that most changes the attributes the query and the constraints do not mention.
+In S1, $Q_1$ selects government employees with at least some college who work $40$ hours or more, and the constraints ask for at least $48{,}884$ married women and $15{,}719$ Black workers; Erica adds the private sector, and the output grows from $141{,}100$ to $587{,}712$.
+All explanations of every release are on private-sector views, which $Q_1$ does not meet (Figure~\ref{fig:case-acs}): among the added workers with $40$--$49$ weekly hours, $13\%$ are in office support, $13\%$ in management and $10\%$ in sales, $39\%$ hold a bachelor's degree and $55\%$ head their household.
+The analyst learns who was added, which the one-predicate change does not say.
 
 \begin{figure*}[t]
 \centering
@@ -135,13 +119,10 @@ An analyst comparing the incomes of the two outputs learns who was added, which 
 \end{figure*}
 
 \paragraph{CQA (D1): the consistent answer loses half of Alaska, which raises the average rate.}
-The consistent answer of a query under integrity constraints keeps the answers that hold in every repair~\cite{chomicki2004}; for a selection under subset repair (Definition~\ref{def:consistent-answer}), $Q_\Sigma(D)$ is $Q_1(D)$ minus the tuples in a conflict.
-On Tax-dirty we use the Tax rules of Ni et~al.~\cite{NiMZWLY24} except $\texttt{AreaCode}\to\texttt{State}$, a rule written for cell repair that under subset repair puts $82\%$ of the tuples in conflict; with the other seven rules $3.9\%$ of the tuples are in conflict, unevenly across states.
-Each of our CQA queries, on Tax-dirty and Hospital, is a selection whose consistent answer drops $10$--$90\%$ of its output, far more for some values than for others.
-In D1, $Q_1$ selects the five Pacific states ($\texttt{State IN (AK, CA, HI, OR, WA)}$) and the analyst compares $\texttt{AVG(Rate)}$: it is $4.74$ on $Q_1(D)$ and $5.23$ on $Q_\Sigma(D)$, although $Q_\Sigma$ drops only $12\%$ of the tuples.
-All ten releases explain the state, through one of three views (\texttt{HasChild}=\texttt{N} in six): Alaska loses half of its tuples, and $71\%$ of those with $\texttt{HasChild}=\texttt{N}$ and $\texttt{ChildExemp}=0$, while the other states lose at most $7\%$ (Figure~\ref{fig:case-c1}).
-Every Alaska tuple has rate $0$, so dropping half of them raises the average.
-Four releases also explain the rate: the lowest bin shrinks by $16$--$34\%$, the highest by at most $4\%$.
+For a selection under subset repair (Definition~\ref{def:consistent-answer}), $Q_\Sigma(D)$ is $Q_1(D)$ minus the tuples in a conflict~\cite{chomicki2004}.
+We use the Tax rules of Ni et~al.~\cite{NiMZWLY24} without $\texttt{AreaCode}\to\texttt{State}$, a cell-repair rule that puts $82\%$ of the tuples in conflict; the other seven put $3.9\%$ in conflict, unevenly across states, and our CQA queries are selections whose consistent answer drops $10$--$90\%$ of the output.
+In D1, $Q_1$ selects the five Pacific states, and $\texttt{AVG(Rate)}$ rises from $4.74$ to $5.23$ although $Q_\Sigma$ drops only $12\%$ of the tuples.
+All ten releases explain the state (Figure~\ref{fig:case-c1}): Alaska, where every tuple has rate $0$, loses half of its tuples and the other states at most $7\%$, so dropping them raises the average.
 
 \begin{figure*}[t]
 \centering
@@ -151,10 +132,9 @@ Four releases also explain the rate: the lowest bin shrinks by $16$--$34\%$, the
 \end{figure*}
 
 \paragraph{Contrast (I1): low-income women are more often spouses and outside the labour force than low-income men.}
-In a contrast, $Q_1$ and $Q_2$ select two disjoint groups of the same table, the classical setting of contrast-set mining~\cite{BayPazzani01,DongLi99}, and the framework applies unchanged.
-We use all $17$ questions of DPXPlain~\cite{TaoGMR22} on its IPUMS-CPS extract and remove the attribute that defines the two groups from the views and the explanation attributes, since it separates the groups by definition.
-DPXPlain's default question, I1, compares $\texttt{AVG(INCTOT)}$ of men ($Q_1$) and women ($Q_2$). Every release includes views on incomes under $25{,}000$, where women outnumber men $1.6$ to $1$ (Figure~\ref{fig:case-i1}).
-Among them, women are more often outside the labour force ($52\%$ against $46\%$) and, among white respondents, the householder's spouse ($25\%$ against $14\%$); slightly more of them hold a bachelor's degree ($13\%$ against $9\%$).
+Contrasts are the classical setting of contrast-set mining~\cite{BayPazzani01,DongLi99}; we remove the attribute that defines the two groups from the views and explanation attributes, since it separates them by definition.
+DPXPlain's default question, I1, compares $\texttt{AVG(INCTOT)}$ of men and women.
+Every release includes views on incomes under $25{,}000$, where women outnumber men $1.6$ to $1$ (Figure~\ref{fig:case-i1}); there, women are more often outside the labour force ($52\%$ against $46\%$) and, among white respondents, the householder's spouse ($25\%$ against $14\%$), and slightly more of them hold a bachelor's degree ($13\%$ against $9\%$).
 
 % ---------------------------------------------------------------
 \subsection{Explanation Quality}
@@ -163,7 +143,7 @@ Among them, women are more often outside the labour force ($52\%$ against $46\%$
 \begin{table}[t]
 \centering
 \footnotesize
-\caption{Quality at the defaults ($\epsilon=1$) against the brute force \textsf{BF}: mean over the pairs of each dataset of the per-pair mean over $40$ runs. Attribute@k: chance level in parentheses. Coverage: mean $\Cov$ of the explained views.}
+\caption{Quality at the defaults against \textsf{BF}, mean over the pairs of each dataset. Attribute@k: chance level in parentheses. Coverage: mean $\Cov$ of the explained views.}
 \label{tab:quality}
 \setlength{\tabcolsep}{2.2pt}
 \begin{tabular}{@{}lcccccccc@{}}
@@ -187,7 +167,7 @@ All $44$ pairs & 0.60 & 0.70 & 0.92 & 0.12 & 0.75 (0.38) & 0.90 & 0.24 & 0.14 \\
 \begin{table}[t]
 \centering
 \footnotesize
-\caption{ApproxRatio of \textsf{PrivExpl} against \textsf{BF} when one parameter varies and the others stay at their defaults (bold); mean over all $44$ pairs, $40$ runs per pair and point. $\tau$ is capped at $|\mathcal{P}|$. For $\lambda$, also the number of distinct attributes among the five explanations. Budget splits $(\epsilon_P,\epsilon_S,\epsilon_H)/\epsilon$: $(0.05,0.6,0.35)$, $(0.1,0.55,0.35)$, $(0.2,0.4,0.4)$, $(1/3,1/3,1/3)$, $(0.5,0.25,0.25)$.}
+\caption{ApproxRatio of \textsf{PrivExpl} against \textsf{BF} when one parameter varies (defaults in bold); mean over all $44$ pairs. For $\lambda$, also the distinct attributes per release. Splits $(\epsilon_P,\epsilon_S,\epsilon_H)/\epsilon$: $(0.05,0.6,0.35)$, $(0.1,0.55,0.35)$, $(0.2,0.4,0.4)$, $(1/3,1/3,1/3)$, $(0.5,0.25,0.25)$.}
 \label{tab:params}
 \setlength{\tabcolsep}{2.6pt}
 \begin{tabular}{@{}lcccccccccc@{}}
@@ -208,99 +188,77 @@ ApproxRatio & 0.53 & 0.56 & 0.59 & 0.60 & 0.61 &&&&&\\
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/exp/view_stage.pdf}
-\caption{The view stage alone: overlap of the $\tau$ retained views with the exact top-$\tau$ by $\Use$ ($40$ runs per point).}
+\caption{The view stage alone: overlap of the retained views with the exact top-$\tau$ by $\Use$.}
 \label{fig:view-stage}
 \end{figure}
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/exp/quality.pdf}
-\caption{Quality against the privacy budget (top) and against $\gamma$ as a multiple of Eq.~\eqref{eq:gamma-rule} (bottom): ApproxRatio of \textsf{PrivExpl}, \Bone{} and \textsf{SingleStage} against \textsf{BF} (top: also \textsf{PrivExpl} with $\gamma$ fixed at its default value), and attribute@k of \textsf{PrivExpl}; mean over the pairs of each dataset (number in parentheses), $40$ runs per pair and point. Shaded: defaults; the leftmost point of the bottom row is $\gamma=0$.}
+\caption{ApproxRatio against \textsf{BF} and attribute@k, against $\epsilon$ (top) and against $\gamma$ as a multiple of its default (bottom; leftmost point $\gamma=0$); mean over the pairs of each dataset (number in parentheses). Shaded: defaults.}
 \label{fig:quality}
 \end{figure*}
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/exp/attrs.pdf}
-\caption{The number of explanation attributes, from $2$ to every attribute of Table~\ref{tab:attributes}; views and reference attributes fixed. Each run draws its own random order of the attributes and keeps a prefix, so a point averages over random attribute sets of that size, not the default set. Top: running time (median of ten runs; dashed: \Btwo{} at $k=7$, $\tau=21$). Bottom: ApproxRatio and attribute@k of \textsf{PrivExpl} against \textsf{BF} over the same attributes ($40$ runs per pair and point).}
+\caption{Number of explanation attributes (random attribute sets of each size). Top: running time (median of ten runs; dashed: \Btwo{} at $k=7$). Bottom: ApproxRatio and attribute@k against \textsf{BF} over the same attributes.}
 \label{fig:attrs}
 \end{figure*}
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/exp/runtime_grid.pdf}
-\caption{End-to-end running time (median of ten runs, mean over the pairs of the dataset), one parameter varied at a time. A cross marks a point stopped at the $30$-minute limit (three runs).}
+\caption{End-to-end running time (median of ten runs, mean over the pairs), one parameter varied at a time; crosses: runs stopped at $30$ minutes.}
 \label{fig:scalability}
 \end{figure*}
 
 \paragraph{Comparison with the brute force and the variants.}
-We first ask how much of the best attainable difference score a release keeps, and which part of the algorithm loses the rest.
-All parameters are at their defaults ($\epsilon=1$); we run \textsf{PrivExpl}, \Bone{}, \textsf{SingleStage} and \textsf{Random} $40$ times on each pair and score them against \textsf{BF}.
-Table~\ref{tab:quality} shows the ApproxRatio, attribute@k and coverage per dataset.
-\textsf{PrivExpl} reaches an ApproxRatio of $0.60$ over all $44$ pairs, from $0.21$ on Tax-dirty to $0.85$ on Adult.
-Without noise the same two stages (\Bone{}) reach $0.70$, and \textsf{Random} reaches $0.12$ ($0.25$ on IPUMS-CPS, where many candidates score alike).
-Restricting the explanations to the $15$ views with the highest $\Use$ thus costs $30\%$ of the score, and the noise another $15\%$.
-\textsf{SingleStage} reaches $0.92$, but it optimises a different objective: it ignores representativeness and coverage, and the views it explains have a mean coverage of $0.14$, against $0.24$ for \textsf{PrivExpl}; on ACSIncome, Tax, Tax-dirty and IPUMS-CPS they are three to five times smaller.
-The view stage gives up difference score to keep the explanations on views that cover much of the two outputs; on Hospital, whose view stage fails (see below), \textsf{SingleStage} is better on both counts.
-
-\paragraph{Agreement with the brute force.}
-A high ApproxRatio does not mean the same explanations.
-In the same runs, \textsf{PrivExpl} shares few (view, attribute) pairs with \textsf{BF} (precision@k $0.39$ on Adult and at most $0.15$ elsewhere), but its attribute@k is $0.75$ against a chance level of $0.38$ (Table~\ref{tab:quality}).
-The explained attributes mostly agree with those of \textsf{BF}; the views differ, typically a view against its specialization by one more condition, as in D1, where every release explains the state through one of three views.
-Tax-dirty is the exception: its attribute@k ($0.26$) is below its chance level ($0.44$).
+How much of the best attainable score does a release keep, and which stage loses the rest?
+At the defaults we run \textsf{PrivExpl}, \Bone{}, \textsf{SingleStage} and \textsf{Random} $40$ times per pair; Table~\ref{tab:quality} shows their ApproxRatio, attribute@k and coverage against \textsf{BF}.
+\textsf{PrivExpl} reaches an ApproxRatio of $0.60$ ($0.21$ on Tax-dirty to $0.85$ on Adult), \Bone{} $0.70$ and \textsf{Random} $0.12$: the view stage costs $30\%$ of the score and the noise another $15\%$.
+\textsf{SingleStage} reaches $0.92$ but ignores coverage: its views cover $0.14$ of the outputs on average against $0.24$, three to five times less on four datasets; only on Hospital, whose view stage fails (below), is it better on both counts.
+The explanations differ from those of \textsf{BF} (precision@k at most $0.39$), but their attributes mostly agree with it (attribute@k $0.75$ against a chance level of $0.38$), through neighbouring views, as in D1; Tax-dirty is the exception ($0.26$, below its chance level of $0.44$).
+The view stage thus gives up difference score to keep the explanations on views that cover the outputs.
 
 \paragraph{Number of retained views $\tau$.}
-To measure what the view stage costs, we vary $\tau$ from $5$ to all views, with the other parameters at their defaults and $\gamma$ following Eq.~\eqref{eq:gamma-rule}.
-Table~\ref{tab:params} (top) shows the ApproxRatio against \textsf{BF}.
-It rises from $0.60$ at the default $\tau=15$ to $0.69$ at $\tau=30$ and $0.88$ when every view is retained ($0.99$ on Adult and Tax), at a cost in running time (Section~\ref{subsec:scalability}).
-$\tau$ therefore sets how much difference score the view stage gives up for coverage, the cost that Section~\ref{subsec:two-stages} leaves open.
+We vary $\tau$ from $5$ to all views (Table~\ref{tab:params}, top).
+The ApproxRatio rises from $0.60$ at $\tau=15$ to $0.69$ at $30$ and $0.88$ with every view ($0.99$ on Adult and Tax), at a cost in running time (Section~\ref{subsec:scalability}): $\tau$ sets the trade-off between score and coverage that Section~\ref{subsec:two-stages} leaves open.
 
 \paragraph{Accuracy of the view stage.}
-We run the view stage alone, varying its budget $\epsilon_P$ from $0.01$ to $10$, and measure the overlap of the $\tau$ retained views with the exact top-$\tau$ by $\Use$ ($40$ runs per point).
-Figure~\ref{fig:view-stage} shows the results.
-At the default $\epsilon_P=1/3$ the overlap is $0.91$ or more on every dataset but Hospital ($0.09$; $0.92$ at $\epsilon_P=10$), and IPUMS-CPS reaches $0.97$ already at $\epsilon_P=0.03$.
-The sensitivity of $\Use$ shrinks as $4/\bar N$, so the view stage is accurate on all but the smallest dataset ($N=1{,}000$).
-This explains Hospital in Table~\ref{tab:quality}: without noise its view stage matches \textsf{BF} (\Bone{} $1.00$), but with noise \textsf{PrivExpl} reaches only $0.53$.
-The explanation stage behaves differently, because the sensitivity of $\HD_\gamma$, $1/(1+\gamma)$, does not shrink with $N$.
-On Tax-dirty the view stage is accurate ($0.92$), yet the best candidate scores only $\HD_\gamma=0.62$ (median over runs), below the separation $2\ln|C_i|/((1+\gamma)\epsilon_i)\approx0.96$ that the mechanism resolves at the defaults, against $3.7$--$11$ on the other datasets: the pairs of Tax-dirty differ in $0.9$k--$2.3$k tuples, against $8.8$k--$58$k on Tax.
-On ACSIncome the noise costs most on the three pairs with outputs under $4{,}400$ tuples (S7, S8, S10: \Bone{} $0.67$--$1.00$, \textsf{PrivExpl} $0.29$--$0.36$).
+We run the view stage alone with $\epsilon_P$ from $0.01$ to $10$ and measure the overlap of the retained views with the exact top-$\tau$ (Figure~\ref{fig:view-stage}).
+At the default $\epsilon_P=1/3$ the overlap is at least $0.91$ everywhere but on Hospital ($0.09$), as expected from the sensitivity $4/\bar N$ of $\Use$; this explains Hospital in Table~\ref{tab:quality} (\Bone{} $1.00$, \textsf{PrivExpl} $0.53$).
+The explanation stage does not improve with $N$, since $\HD_\gamma$ has sensitivity $1/(1+\gamma)$ at any size: on Tax-dirty the view stage is accurate, but the best candidate scores $\HD_\gamma=0.62$, below the $0.96$ the mechanism can resolve (others: $3.7$--$11$), and its pairs differ in only $0.9$k--$2.3$k tuples ($8.8$k--$58$k on Tax); likewise, on ACSIncome the noise costs most on the three pairs with outputs under $4{,}400$ tuples.
 
 \paragraph{Privacy budget $\epsilon$.}
-We vary $\epsilon$ from $0.1$ to $20$, split equally between the three stages, with $\gamma$ either following Eq.~\eqref{eq:gamma-rule}, which lowers it as $\epsilon$ grows, or fixed at its default value; the other parameters are at their defaults.
-Figure~\ref{fig:quality} (top) shows the ApproxRatio of \textsf{PrivExpl}, \Bone{} and \textsf{SingleStage} and the attribute@k of \textsf{PrivExpl}.
-With the rule, the ApproxRatio rises from $0.46$ at $\epsilon=0.1$ to $0.60$ at $\epsilon=1$ and levels off at $0.64$; with $\gamma$ fixed it reaches $0.70$ from $\epsilon=10$, the level of \Bone{}, which no budget can exceed.
-Hospital is the exception: its view stage needs the budget, and the ratio climbs from $0.07$ to $0.92$.
-More budget therefore helps only up to the limit set by the view stage, and less so when the rule takes the smoothing away.
+We vary $\epsilon$ from $0.1$ to $20$, with $\gamma$ following Eq.~\eqref{eq:gamma-rule} (which lowers it as $\epsilon$ grows) or fixed at its default (Figure~\ref{fig:quality}, top).
+With the rule, the ApproxRatio rises from $0.46$ to $0.60$ at $\epsilon=1$ and levels off at $0.64$; with $\gamma$ fixed it reaches $0.70$, the level of \Bone{}, from $\epsilon=10$.
+More budget thus helps only up to the limit of the view stage, except on Hospital ($0.07\rightarrow0.92$), whose view stage needs it.
 
 \paragraph{Smoothing $\gamma$.}
-The previous experiment changes $\gamma$ together with $\epsilon$; here we vary $\gamma$ alone, from $0$ to $30$ times the value of Eq.~\eqref{eq:gamma-rule}, at $\epsilon=1$.
-Figure~\ref{fig:quality} (bottom) shows the results.
-Selecting without smoothing gives an ApproxRatio of $0.28$, the default $0.60$, and three or ten times the default $0.63$--$0.64$ (means over all $44$ pairs).
-The default is best on Adult, whose median bin holds $17$ tuples, while ACSIncome, with about $700$ tuples per bin, gains most from more smoothing ($0.49\rightarrow0.60$ at $10\times$).
-Eq.~\eqref{eq:gamma-rule} ignores the size of a bin; on data with large bins the default $\gamma$ sits far below the ceiling $m/b$ of Remark~\ref{rem:gamma-window}.
+Separating $\gamma$ from $\epsilon$, we vary it from $0$ to $30$ times its default at $\epsilon=1$ (Figure~\ref{fig:quality}, bottom).
+The ApproxRatio is $0.28$ without smoothing, $0.60$ at the default and $0.63$--$0.64$ at three to ten times the default.
+The default is best on Adult (median bin $17$ tuples), while ACSIncome (about $700$) gains most ($0.49\rightarrow0.60$): Eq.~\eqref{eq:gamma-rule} ignores the bin size and stays far below the ceiling $m/b$ of Remark~\ref{rem:gamma-window} on data with large bins.
 
 \paragraph{Number of explanation attributes.}
 \label{subsec:attrs}
-We vary $|\Attrs|$ from two attributes to all those of Table~\ref{tab:attributes}, which adds \texttt{nativeCountry} and the two capital attributes on Adult, the state and the place of birth on ACSIncome, and the area code on Tax and Tax-dirty; views and reference attributes stay fixed, and each run draws its own random order of the attributes.
-Figure~\ref{fig:attrs} (bottom) shows the ApproxRatio and attribute@k against \textsf{BF} over the same attributes.
-The ApproxRatio rises on ACSIncome ($0.48\rightarrow0.66$), Tax ($0.47\rightarrow0.74$), Tax-dirty ($0.19\rightarrow0.35$) and Hospital ($0.46\rightarrow0.57$) and stays within $0.06$ on Adult and IPUMS-CPS; with $\gamma$ fixed the curves move by at most $0.02$.
-More attributes thus do not hurt the score, but attributes with many values attract the explanations: on ACSIncome the place of birth ($224$ values) and the state ($51$) take $74\%$ of them when all twelve attributes are available, and grouping such values, as Erica does for occupation codes, keeps the histograms readable.
+We vary $|\Attrs|$ from two to all attributes of Table~\ref{tab:attributes}, in random orders, with views and reference attributes fixed (Figure~\ref{fig:attrs}, bottom).
+The ApproxRatio rises on ACSIncome ($0.48\rightarrow0.66$), Tax ($0.47\rightarrow0.74$), Tax-dirty and Hospital, and stays within $0.06$ elsewhere; fixing $\gamma$ moves it by at most $0.02$.
+More attributes do not hurt, but attributes with many values attract the explanations: on ACSIncome the place of birth ($224$ values) and the state take $74\%$ of them, which grouping values, as Erica does for occupations, would avoid.
 \alon{Decide whether wide attributes should be capped in the datasets of the paper, or $\HD_\gamma$ normalised by the number of bins.}
 
 \paragraph{Diversity weight $\lambda$ and budget split.}
-We vary $\lambda$ from $0$ to $1$, and the share of the budget given to the view stage from $5\%$ to $50\%$, with the other parameters at their defaults.
-Table~\ref{tab:params} (middle and bottom) shows the results.
-From $\lambda=0$ to $1$ the number of distinct attributes among the five explanations falls from $4.8$ to $2.1$, while the ApproxRatio stays between $0.57$ and $0.60$: $\lambda$ controls diversity at almost no cost in score.
-Giving the view stage $20$--$50\%$ of the budget yields $0.59$--$0.61$, and $10\%$ or $5\%$ lowers this to $0.56$ and $0.53$; since our measures ignore $\epsilon_H$, this compares only the two selection stages.
+We vary $\lambda$ from $0$ to $1$ and the view stage's share of the budget from $5\%$ to $50\%$ (Table~\ref{tab:params}).
+From $\lambda=0$ to $1$ the distinct attributes per release fall from $4.8$ to $2.1$ at an ApproxRatio of $0.57$--$0.60$, so $\lambda$ controls diversity at almost no cost.
+Shares of $20$--$50\%$ give $0.59$--$0.61$, and $5$--$10\%$ only $0.53$--$0.56$ (our measures ignore $\epsilon_H$).
 
 % ---------------------------------------------------------------
 \subsection{Runtime}
 \label{subsec:scalability}
 
-We measure the end-to-end running time of \textsf{PrivExpl}, its variants and \textsf{OptPrivExpl} on all $44$ pairs, varying one parameter at a time from the defaults (ten runs per point, a $30$-minute limit); Figure~\ref{fig:scalability} shows the results, and the top row of Figure~\ref{fig:attrs} the time against $|\Attrs|$.
-Privacy adds no measurable time: \textsf{PrivExpl} and \Bone{} are within $1\%$ of each other on every pair, since $96$--$99\%$ of the time is the $\Use$ pass they share.
-As Section~\ref{subsec:complexity-analysis} predicts, the time grows linearly with $N$ ($11\times$ from $10\%$ to all of ACSIncome and IPUMS-CPS) and with $|\mathcal{P}|$, is flat in $k$, $\epsilon$ and $\gamma$, and grows by at most $18\%$ over the range of $|\Attrs|$ and by $18$--$41\%$ when every view is retained.
-Exhaustive search (\Btwo{}) is exponential in $k$: it takes $15$--$61$\,s at $k=6$ and $2.4$--$17$ minutes at $k=7$, exceeds the limit from $k=8$ on all $44$ pairs ($2.9\times10^{10}$ subsets), and at $k=7$ its time roughly doubles with every added attribute until it reaches the limit at $11$ attributes on ACSIncome and Adult.
-Computing the statistics in grouped passes (\textsf{OptPrivExpl}) released exactly the same output in all $440$ runs compared and is $5.8$--$11.4\times$ faster (median $8.4\times$; ACSIncome $26.8\rightarrow3.0$\,s and IPUMS-CPS $13.0\rightarrow1.9$\,s, means over the pairs).
-Its time hardly grows with $|\mathcal{P}|$ (ACSIncome $2.6\rightarrow3.0$\,s from $10\%$ to all views, against $3.1\rightarrow27$\,s for \textsf{PrivExpl}), but it grows with $\tau$ ($3.2$--$4.6\times$ up to $\tau=|\mathcal{P}|$), because it builds the histograms of every retained view, and with $|\Attrs|$ ($12$--$39\%$).
+We time all methods on all $44$ pairs, one parameter varied at a time (Figure~\ref{fig:scalability}; Figure~\ref{fig:attrs}, top, for $|\Attrs|$).
+Privacy adds no measurable time: \textsf{PrivExpl} and \Bone{} are within $1\%$ on every pair, since $96$--$99\%$ of the time is the $\Use$ pass they share.
+As Section~\ref{subsec:complexity-analysis} predicts, the time is linear in $N$ and $|\mathcal{P}|$, flat in $k$, $\epsilon$ and $\gamma$, and grows by at most $18\%$ with $|\Attrs|$ and $18$--$41\%$ with $\tau=|\mathcal{P}|$.
+Exhaustive search (\Btwo{}) is exponential: $15$--$61$\,s at $k=6$, $2.4$--$17$ minutes at $k=7$ and over the limit from $k=8$; at $k=7$ it doubles with each added attribute and reaches the limit at $11$ attributes.
+Grouped statistics (\textsf{OptPrivExpl}) give identical output in all $440$ runs compared and are $5.8$--$11.4\times$ faster (median $8.4\times$; ACSIncome $26.8\rightarrow3.0$\,s); their time hardly grows with $|\mathcal{P}|$ but grows with $\tau$ ($3.2$--$4.6\times$ at $\tau=|\mathcal{P}|$), since they build the histograms of every retained view.
 
