@@ -2,6 +2,20 @@
 
 Keeps the state of the work outside the chat context.
 
+## 2026-11-26: third reviewer pass of Section 5 (user: apply all 34 comments; N-bar option A)
+* experiments.tex rewritten per the review: numbers given their measure, aggregation and source;
+  setup moved out of the case studies; 5.3 reordered (comparison, view stage, where the noise
+  costs, tau, split, eps, gamma, lambda, |Attrs|, runtime); Runtime stays a paragraph (user).
+* N-bar = |D| (option A): the Default setting says the dataset size is treated as public, as under
+  the bounded relation of Sec. 3 (subsec:ideal-sensitivity).
+* Figures: runtime_grid and attrs show OptPrivExpl instead of the undefined B3.
+* scripts/review_numbers.py (resumable) writes results/rescored/review_numbers.csv and
+  coverage_tau.csv: coverage of BF and per tau, best HD_gamma of the exact top-tau, output sizes,
+  median bin support.  The chapter's placeholders (CBF*, COVTAU, BFCOVSENTENCE, TAUCOVSENTENCE,
+  HDTAXDIRTY, HDOTHERS, DROPTD, DIFFTAX, SMALLACS, BINADULT, BINACS) are filled from them.
+* The old "median bin 17 tuples" on Adult does not reproduce (median bin support of the explained
+  candidates is ~456); replaced by the computed statistic.
+
 ## 2026-11-25 ~02:10 UTC: running time on all 44 pairs merged
 Shards all44-* (8 cloud workers, the 22 pairs not timed before) done; results/e4, results/e5 and
 results/e7/raw/runtime*.csv now cover all 44 pairs (`merge_shards.py --shard 'eqbins-*' --shard
