@@ -3,8 +3,7 @@
 
 We evaluate the algorithm of Section~\ref{sec:solution}, \textsf{PrivExpl}, on six datasets and $44$ query pairs ($27$ from earlier work) and ask:
 (1)~do the explanations show an analyst something the queries and the constraint do not (Section~\ref{sec:usecase-results});
-(2)~how close do they come to the best non-private selection, and what limits them (Section~\ref{subsec:quality});
-(3)~what do they cost in time (Section~\ref{subsec:scalability}).
+(2)~how close do they come to the best non-private selection and what limits them, and (3)~what do they cost in time (both in Section~\ref{subsec:quality}).
 In short, the explanations show how a refinement, a repair or a contrast changes the population.
 At $\epsilon=1$ \textsf{PrivExpl} keeps $0.60$ of the score of a non-private brute force and mostly explains the same attributes; the view stage, more than the noise, accounts for the gap, in exchange for explanations of views that cover much of the outputs.
 Privacy adds no measurable running time, and grouped statistics make the pipeline about eight times faster.
@@ -223,7 +222,7 @@ The view stage thus gives up difference score to keep the explanations on views 
 
 \paragraph{Number of retained views $\tau$.}
 We vary $\tau$ from $5$ to all views (Table~\ref{tab:params}, top).
-The ApproxRatio rises from $0.60$ at $\tau=15$ to $0.69$ at $30$ and $0.88$ with every view ($0.99$ on Adult and Tax), at a cost in running time (Section~\ref{subsec:scalability}): $\tau$ sets the trade-off between score and coverage that Section~\ref{subsec:two-stages} leaves open.
+The ApproxRatio rises from $0.60$ at $\tau=15$ to $0.69$ at $30$ and $0.88$ with every view ($0.99$ on Adult and Tax), at a cost in running time (see Runtime below): $\tau$ sets the trade-off between score and coverage that Section~\ref{subsec:two-stages} leaves open.
 
 \paragraph{Accuracy of the view stage.}
 We run the view stage alone with $\epsilon_P$ from $0.01$ to $10$ and measure the overlap of the retained views with the exact top-$\tau$ (Figure~\ref{fig:view-stage}).
@@ -252,10 +251,8 @@ We vary $\lambda$ from $0$ to $1$ and the view stage's share of the budget from 
 From $\lambda=0$ to $1$ the distinct attributes per release fall from $4.8$ to $2.1$ at an ApproxRatio of $0.57$--$0.60$, so $\lambda$ controls diversity at almost no cost.
 Shares of $20$--$50\%$ give $0.59$--$0.61$, and $5$--$10\%$ only $0.53$--$0.56$ (our measures ignore $\epsilon_H$).
 
-% ---------------------------------------------------------------
-\subsection{Runtime}
+\paragraph{Runtime.}
 \label{subsec:scalability}
-
 We time all methods on all $44$ pairs, one parameter varied at a time (Figure~\ref{fig:scalability}; Figure~\ref{fig:attrs}, top, for $|\Attrs|$).
 Privacy adds no measurable time: \textsf{PrivExpl} and \Bone{} are within $1\%$ on every pair, since $96$--$99\%$ of the time is the $\Use$ pass they share.
 As Section~\ref{subsec:complexity-analysis} predicts, the time is linear in $N$ and $|\mathcal{P}|$, flat in $k$, $\epsilon$ and $\gamma$, and grows by at most $18\%$ with $|\Attrs|$ and $18$--$41\%$ with $\tau=|\mathcal{P}|$.
