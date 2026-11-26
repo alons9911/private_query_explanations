@@ -188,7 +188,7 @@ def fig_view_stage() -> Path:
 SWEEPS = [("k", r"$k$", False), ("data_fraction", r"$N$ (fraction)", False), ("epsilon", r"$\epsilon$", True),
           ("view_fraction", r"$|\mathcal{P}|$ (fraction)", False), ("tau", r"$\tau$", True),
           ("gamma_mult", r"$\gamma$ / Eq. (14)", True)]
-RT_METHODS = ("PRIV_EXPL", "B1", "B2", "B3")
+RT_METHODS = ("PRIV_EXPL", "B1", "B2", "OPT_PRIV_EXPL")  # B3 is not used in the paper
 RT_LABEL = {"PRIV_EXPL": "PrivExpl", "B1": "B1", "B2": "B2", "B3": "B3", "OPT_PRIV_EXPL": "OptPrivExpl"}
 
 
@@ -201,7 +201,7 @@ def _rt_panel(ax, sub: pd.DataFrame, x: str, logx: bool, limit: float):
         c, mk = P.METHOD_COLORS[m], P.METHOD_MARKERS[m]
         ax.plot(d[x][~to], d.total_s[~to], color=c, marker=mk, label=RT_LABEL[m],
                 linewidth=1.8 if m == "PRIV_EXPL" else 1.2, zorder=3 if m == "PRIV_EXPL" else 2,
-                linestyle="--" if m == "B3" else "-")
+                linestyle="-")
         if to.any():
             xs = list(d[x][~to].tail(1)) + list(d[x][to])
             ys = list(d.total_s[~to].tail(1)) + [limit] * int(to.sum())
