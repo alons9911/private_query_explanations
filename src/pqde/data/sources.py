@@ -628,7 +628,8 @@ def load_meps(raw_dir: Path | None = None) -> tuple[pd.DataFrame, dict]:
         df["UTILIZATION"] = raw[MEPS_VISITS].clip(lower=0).sum(axis=1)
         df.to_csv(cached, index=False)
     df = pd.read_csv(cached)
-    for c in df.columns:
+    for c in df.columns:  # SAS transport stores 0 as a tiny float (~5e-79): round, then drop negative codes
+        df[c] = df[c].round(2)
         df[c] = df[c].where(df[c] >= 0)
     for c, codes in MEPS_CODES.items():
         df[c] = df[c].map(codes).astype("string")
