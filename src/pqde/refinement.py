@@ -187,9 +187,110 @@ class RefinementResult:
         }
 
 
+def _satisfies(mask: np.ndarray, constraints: list[Constraint], groups: list[np.ndarray], min_size: int) -> bool:
+    n = int(mask.sum())
+    if n < max(min_size, 1):
+        return False
+    return all(bool(c.satisfied_counts(np.array([(g & mask).sum()]), np.array([n]))[0]) for c, g in zip(constraints, groups))
+
+
+def _closer_options(a0: Atom, a1: Predicate | None, df: pd.DataFrame) -> list[tuple[bool, Predicate | None, np.ndarray]]:
+    """Every condition between the original atom ``a0`` and its refinement ``a1`` (None = dropped), each
+    with a flag "strictly closer to a0 than a1" (Erica's domination, per condition), over all data values."""
+    n = len(df)
+    if a0.op in ("<", "<=", ">", ">="):
+        x = pd.to_numeric(df[a0.attr], errors="coerce").to_numpy(dtype=float)
+        c0 = float(a0.value)
+        if a1 is None:
+            c1 = float(np.nanmin(x)) if a0.op in (">", ">=") else float(np.nanmax(x))
+        else:
+            c1 = float(a1.value)
+        lo, hi = sorted((c0, c1))
+        vals = sorted(set(np.unique(x[(x >= lo) & (x <= hi) & ~np.isnan(x)]).tolist()) | {c0, c1},
+                      key=lambda v: abs(v - c0))
+        out = []
+        for v in vals:
+            if abs(v - c0) > abs(c1 - c0) + 1e-12:
+                continue
+            strict = abs(v - c0) < abs(c1 - c0) - 1e-12
+            if a1 is None and not strict:
+                out.append((False, None, np.ones(n, dtype=bool)))
+                continue
+            v = int(v) if float(v).is_integer() else v
+            a = Atom(a0.attr, a0.op, v)
+            out.append((strict, a, a.evaluate(df)))
+        return out
+    cur = set(map(str, a0.values))
+    new = set(map(str, a1.values)) if a1 is not None else set(df[a0.attr].dropna().astype(str).unique())
+    add, rem = sorted(new - cur), sorted(cur - new)
+    col = df[a0.attr].astype(str)
+    out = []
+    for ra in range(len(add) + 1):
+        for rr in range(len(rem) + 1):
+            for A_ in combinations(add, ra):
+                for R_ in combinations(rem, rr):
+                    vals = (cur - set(R_)) | set(A_)
+                    if not vals:
+                        continue
+                    full = (ra, rr) == (len(add), len(rem))
+                    pred = None if (full and a1 is None) else (
+                        Atom(a0.attr, "=", sorted(vals)[0]) if len(vals) == 1 else Atom(a0.attr, "IN", tuple(sorted(vals))))
+                    mask = np.ones(len(df), dtype=bool) if pred is None else col.isin(vals).to_numpy()
+                    out.append((not full, pred, mask))
+    return out
+
+
+def dominating_refinements(original: str | Predicate, refined: str | Predicate, constraints: list[Constraint],
+                           df: pd.DataFrame, *, min_size: int = 1, limit: int = 200_000) -> int:
+    """Number of refinements that dominate ``refined`` in Erica's sense (at least as close to ``original``
+    on every condition, strictly closer on one) and still satisfy the constraints, over all data values.
+    0 means that ``refined`` is a minimal refinement (Li et al., PVLDB 17(2), 2023, Section 2)."""
+    q0 = parse(original)
+    a1s = {} if str(refined).strip() == "TRUE" else {a.attr: a for a in conjuncts(parse(refined))}
+    opts = [_closer_options(a, a1s.get(a.attr), df) for a in conjuncts(q0)]
+    groups = [c.group_mask(df) for c in constraints]
+    count = 0
+    for i, combo in enumerate(product(*opts)):
+        if i >= limit:
+            raise RuntimeError("too many dominating candidates to enumerate")
+        if not any(s for s, _, _ in combo):
+            continue
+        mask = np.logical_and.reduce([m for _, _, m in combo])
+        count += _satisfies(mask, constraints, groups, min_size)
+    return count
+
+
+def tighten(original: str | Predicate, refined: str | Predicate, constraints: list[Constraint], df: pd.DataFrame,
+            *, min_size: int = 1) -> Predicate:
+    """Move each changed condition of ``refined`` back towards ``original`` as far as the constraints allow,
+    one condition at a time over all data values, until no condition can move.  The grid search of
+    :func:`refine` tries at most ``max_thresholds`` thresholds per attribute; this step makes the result
+    minimal over every value of the data (checked by :func:`dominating_refinements`)."""
+    q0 = parse(original)
+    atoms0 = conjuncts(q0)
+    cur = {} if str(refined).strip() == "TRUE" else {a.attr: a for a in conjuncts(parse(refined))}
+    cur = [cur.get(a.attr) for a in atoms0]  # None = dropped
+    groups = [c.group_mask(df) for c in constraints]
+    masks = [np.ones(len(df), dtype=bool) if c is None else c.evaluate(df) for c in cur]
+    moved = True
+    while moved:
+        moved = False
+        for i, a0 in enumerate(atoms0):
+            rest = np.logical_and.reduce([m for j, m in enumerate(masks) if j != i]) if len(masks) > 1 \
+                else np.ones(len(df), dtype=bool)
+            for strict, pred, m in _closer_options(a0, cur[i], df):  # closest to the original first
+                if not strict:
+                    break
+                if _satisfies(rest & m, constraints, groups, min_size):
+                    cur[i], masks[i], moved = pred, m, True
+                    break
+    parts = [c for c in cur if c is not None]
+    return TrueP() if not parts else (parts[0] if len(parts) == 1 else And(parts))
+
+
 def refine(query: str | Predicate, constraints: list[Constraint], df: pd.DataFrame, *, max_set_edits: int = 2,
            max_thresholds: int = 60, allow_drop: bool = True, min_size: int = 1, max_changed: int | None = None,
-           allow_replace: bool = True) -> RefinementResult:
+           allow_replace: bool = True, exact: bool = True) -> RefinementResult:
     """Minimal-distance refinement of a conjunctive query satisfying all constraints.
 
     Candidates are scored in blocks: for the last two conditions every
@@ -257,5 +358,23 @@ def refine(query: str | Predicate, constraints: list[Constraint], df: pd.DataFra
     refined = And([options[i][c].pred for i, c in enumerate(combo)])
     parts = conjuncts(refined)
     refined = TrueP() if not parts else (parts[0] if len(parts) == 1 else refined)
+    if exact:  # the grid may miss a closer threshold: tighten over every data value
+        refined = tighten(q, refined, constraints, df, min_size=min_size)
+        mask = refined.evaluate(df)
+        a1s = {a.attr: a for a in conjuncts(refined)} if not isinstance(refined, TrueP) else {}
+        dist = 0.0
+        for a0 in atoms:
+            a1 = a1s.get(a0.attr)
+            if a1 is None:
+                dist += 1.0
+            elif a0.op in ("<", "<=", ">", ">="):
+                x = pd.to_numeric(df[a0.attr], errors="coerce").to_numpy(dtype=float)
+                dist += abs(float(a1.value) - float(a0.value)) / ((np.nanmax(x) - np.nanmin(x)) or 1.0)
+            else:
+                c0, c1 = set(map(str, a0.values)), set(map(str, a1.values))
+                dist += len(c0 ^ c1) / len(c0 | c1)
+        inter = int((mask & q_mask).sum())
+        union = int(mask.sum()) + n_q - inter
+        jd = 1 - inter / union if union else 0.0
     shares1 = {c.describe(): c.share(df, mask) for c in constraints}
     return RefinementResult(q, refined, dist, jd, shares0, shares1, n_eval, n_q, int(mask.sum()))

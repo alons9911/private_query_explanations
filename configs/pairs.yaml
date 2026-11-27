@@ -12,13 +12,13 @@
 #              {where: <predicate>, ...}.
 
 A1:
-  source: "paper (Table 2): query and refined query as reported in the draft"
+  source: "ours: replaces the draft's pair (Q' dropped a condition: not a minimal refinement); Q' from our exact ERICA-style search"
   dataset: adult
   kind: refinement
   q1: "occupation = 'Craft-repair' AND hoursPerWeek >= 40"
-  q2: "hoursPerWeek >= 40"
-  constraints: [{attr: gender, value: Female, min_share: 0.25}]
-  paper: {share_q1: 0.047, share_q2: 0.269}
+  q2: "occupation IN ('Adm-clerical', 'Craft-repair') AND hoursPerWeek >= 40"
+  constraints: [{attr: "gender", value: "Female", min_share: 0.25}]
+  paper: {size_q1: 5447, size_q2: 9445, share_q1: 0.047, share_q2: 0.295}
 
 A2:
   source: "paper (Table 2): the running example of the draft"
@@ -38,13 +38,13 @@ A3:  # TBD in the paper: chosen here, Q' produced by the refinement search
   constraints: [{attr: gender, value: Female, min_share: 0.25}]
 
 T1:
-  source: "paper (Table 2)"
+  source: "ours: replaces the draft's pair (its Q satisfied its constraint); Q' from our exact ERICA-style search"
   dataset: tax
   kind: refinement
-  q1: "MaritalStatus = 'M' AND Rate <= 5"
-  q2: "Rate <= 5"
-  constraints: [{attr: HasChild, value: "Y", min_share: 0.30}]
-  paper: {share_q1: 0.035, share_q2: 0.501}
+  q1: "Rate >= 6 AND HasChild = 'Y'"
+  q2: "Rate >= 5 AND HasChild = 'Y'"
+  constraints: [{where: "Salary <= 40000", min_share: 0.3}]
+  paper: {size_q1: 33138, size_q2: 48007, share_q1: 0.279, share_q2: 0.308}
 
 T2:  # TBD in the paper (sanity check: the refinement must bring in parents)
   source: "ours: query chosen for this stack, Q' from our ERICA-style search (TBD in the draft)"
@@ -155,7 +155,7 @@ R5:  # low-income, low-tax filers; at least half must pay some tax
   role: surprising
   aggregate: Salary
   q1: "Salary <= 30000 AND Rate <= 2"
-  q2: "Salary <= 30000 AND Rate <= 3.2016153"
+  q2: "Salary <= 30000 AND Rate <= 3.1799998"  # tightened to the exact minimal threshold (was Salary <= 30000 AND Rate <= 3.2016153)
   constraints: [{where: "Rate > 0", min_share: 0.50}]
 
 R6:  # sanity check: dropping HasChild brings in parents and nothing else
@@ -529,7 +529,7 @@ L3:
   dataset: law
   kind: refinement
   q1: "sander_index >= 0.8 AND region_first IN ('NE', 'GL')"
-  q2: "sander_index >= 0.619047619 AND region_first IN ('NE', 'GL')"
+  q2: "sander_index >= 0.629761905 AND region_first IN ('NE', 'GL')"  # tightened to the exact minimal threshold (was sander_index >= 0.619047619 AND region_first IN ('NE', 'GL'))
   constraints: [{attr: "race", values: ["Black", "Hispanic", "Mexican", "Puertorican", "Amerindian"], min_share: 0.06}]
   paper: {size_q1: 2897, size_q2: 7691, share_q1: 0.022, share_q2: 0.064}
 
@@ -547,7 +547,7 @@ L5:
   dataset: law
   kind: refinement
   q1: "sander_index >= 0.8 AND region_first IN ('FW', 'SE', 'SC')"
-  q2: "sander_index >= 0.6473940678474576 AND region_first IN ('FW', 'SE', 'SC')"
+  q2: "sander_index >= 0.651190476 AND region_first IN ('FW', 'SE', 'SC')"  # tightened to the exact minimal threshold (was sander_index >= 0.6473940678474576 AND region_first IN ('FW', 'SE', 'SC'))
   constraints: [{attr: "race", value: "Black", min_share: 0.03}]
   paper: {size_q1: 2896, size_q2: 7066, share_q1: 0.008, share_q2: 0.030}
 
@@ -565,7 +565,7 @@ M2:
   dataset: meps
   kind: refinement
   q1: "TOTEXP >= 5000 AND HIBPDX = 'yes'"
-  q2: "TOTEXP >= 484 AND HIBPDX = 'yes'"
+  q2: "TOTEXP >= 523 AND HIBPDX = 'yes'"  # tightened to the exact minimal threshold (was TOTEXP >= 484 AND HIBPDX = 'yes')
   constraints: [{attr: "SEX", value: "M", min_share: 0.44}]
   paper: {size_q1: 3119, size_q2: 6792, share_q1: 0.420, share_q2: 0.440}
 
@@ -592,6 +592,6 @@ M5:
   dataset: meps
   kind: refinement
   q1: "TOTEXP >= 5000 AND INSCOV = 'public only'"
-  q2: "TOTEXP >= 1984 AND INSCOV = 'public only'"
+  q2: "TOTEXP >= 2019 AND INSCOV = 'public only'"  # tightened to the exact minimal threshold (was TOTEXP >= 1984 AND INSCOV = 'public only')
   constraints: [{where: "AGE < 45", min_share: 0.35}]
   paper: {size_q1: 2375, size_q2: 3857, share_q1: 0.284, share_q2: 0.351}

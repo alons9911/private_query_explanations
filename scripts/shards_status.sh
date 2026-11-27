@@ -8,6 +8,17 @@
 #        scripts/shards_status.sh new     (running time on the 15 new refinement pairs: 6 shards new-<n>)
 cd "$(dirname "$0")/.."
 n_done=0
+if [ "${1:-}" = "fix" ]; then   # running time on the 7 replaced pairs: 3 shards fix-<n>
+  for n in 1 2 3; do
+    b=claude/git-repo-experiments-f0705v-fix-$n; dir=fix-$n
+    if git fetch -q origin "$b" 2>/dev/null && git cat-file -e "FETCH_HEAD:results_shards/$dir/DONE" 2>/dev/null; then
+      echo "$dir done"; n_done=$((n_done+1))
+    else
+      echo "$dir running ($(git log -1 --format=%cd --date=format-local:%H:%M FETCH_HEAD 2>/dev/null) last push)"
+    fi
+  done
+  [ "$n_done" -eq 3 ]; exit $?
+fi
 if [ "${1:-}" = "new" ]; then   # running time on the 15 new refinement pairs: 6 shards new-<n>
   for n in 1 2 3 4 5 6; do
     b=claude/git-repo-experiments-f0705v-new-$n; dir=new-$n
