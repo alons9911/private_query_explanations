@@ -1,0 +1,42 @@
+\section{Exact Greedy Selection}
+\label{app:greedy}
+
+\begin{proposition}[The rounds are exact greedy]
+\label{prop:greedy-exact}
+Fix a candidate set $\mathcal{E}'\subseteq\mathcal{E}$ and a smoothing constant $\gamma$, and let $w_j=\lambda^{\,j-1}$.
+\begin{enumerate}[label=(\roman*),leftmargin=*]
+\item The score $\HD_\gamma(p,A)\cdot\lambda^{Counts[A]}$ that line~4 of Algorithm~\ref{alg:topk} assigns a remaining candidate is exactly its marginal gain in $F_w$, so selecting the highest-scoring candidate is one step of greedy on $F_w$.
+\item For any non-increasing $w$, selecting $E\subseteq\mathcal{E}'$ with $|E|=k$ maximising $F_w(E)$ is solvable in polynomial time, and greedy returns an optimal solution.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) In a given round all candidates carrying an attribute $A$ share the factor $\lambda^{Counts[A]}$, so whenever a round selects from that group it selects the member of largest $\HD_\gamma$; after $c$ selections from $A$ the members taken are therefore its $c$ highest-scoring ones.
+Every remaining candidate of $A$ thus scores no higher than any already taken, so adding it places it at rank $c+1$ of its group and leaves the ranks of the existing members unchanged.
+The group term of Eq.~\eqref{eq:set-objective} gains exactly $w_{c+1}h=\lambda^{c}h$, which is the score of line~4, and no other group term changes.
+
+(ii) By Definition~\ref{def:setobj}, $F_w(E)=\sum_A g_A(E)$ where $g_A$ depends only on the members of $E$ whose attribute is $A$.
+There is therefore no interaction between groups, and a solution is determined by how many candidates $n_A\ge0$ it takes from each group, subject to $\sum_A n_A=k$, together with which ones.
+For a fixed $n_A$, the best choice within group $A$ is its $n_A$ highest-scoring candidates, since $w$ is non-increasing and the scores are ranked (rearrangement inequality).
+Hence the value of taking $g$ candidates from group $A$ is
+\[
+f_A(g)=\sum_{j=1}^{g} w_j\, h^A_{(j)},
+\]
+whose successive marginal gains are $f_A(g)-f_A(g-1)=w_g\,h^A_{(g)}$.
+These are non-increasing in $g$, because $w_g$ is non-increasing by assumption and $h^A_{(g)}$ is non-increasing by construction; so each $f_A$ is concave.
+
+Maximising a separable sum of concave functions subject to a cardinality constraint is exactly the problem solved by the greedy rule of repeatedly taking the largest remaining marginal gain, which is optimal for separable concave resource allocation.
+Since each marginal gain is computable in constant time after sorting each group, the total cost is $O(|\mathcal{E}'|\log|\mathcal{E}'|)$ for $|\mathcal{E}'|$ candidates.
+With (i), the $k$ rounds of Algorithm~\ref{alg:topk} run exactly this procedure.
+\end{proof}
+
+
+
+\begin{example}[Greedy and the optimum agree]
+\label{ex:greedy}
+Let $\lambda=\tfrac12$ and $k=3$, and let five candidates carry the scores $9$ and $4$ on one attribute and $7$, $6$ and $2$ on another.
+The marginal gains available are $9$ and $\tfrac12\cdot4=2$ in the first group, and $7$, $\tfrac12\cdot6=3$ and $\tfrac14\cdot2=0.5$ in the second.
+Greedy takes $9$, then $7$, then $3$, for a total of $19$.
+These are the three largest gains in the list, so no set of three candidates can do better, and enumerating all ten subsets confirms that $19$ is the optimum.
+Taking the two best scores of the first group instead, $9$ and $4$, together with $7$, gives $18$: the second copy of an attribute is discounted, which is what makes the greedy order follow the discounted gains rather than the raw scores.
+\end{example}

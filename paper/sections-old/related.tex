@@ -1,0 +1,49 @@
+\section{Related Work}
+\label{sec:related}
+\paragraph{Differential privacy and explanations.}
+DPXPlain~\cite{TaoGMR22} explains aggregate query answers under differential privacy.
+The user compares the aggregate values of two groups in a group-by query, DPXPlain checks with a confidence interval whether the comparison could be an artefact of the noise, and then releases the top-$k$ explanation predicates under a low-sensitivity influence measure, selected with the one-shot top-$k$ mechanism~\cite{DurfeeRogers19}.
+DPClustX~\cite{DPClustX} explains the result of a clustering under differential privacy by selecting attributes that characterise each cluster and releasing noisy histograms of them, again after replacing its quality measures with low-sensitivity versions.
+We follow the same general recipe, private selection on low-sensitivity scores followed by a noisy release, and, like DPClustX, we explain with histograms.
+What we explain is different: the difference between two query outputs that may overlap or be nested, located in a region of the data and described by an attribute, and our measures are defined for this comparison (Section~\ref{sec:explanation-quality}).
+The output of DPXPlain, a ranked list of predicates with their influence on the difference between two aggregate values, answers a different question from ours and cannot be scored by our measures, so we do not compare with it directly; the group comparisons it studies are one of the three settings in our experiments (Section~\ref{sec:experiments}).
+Private SQL systems~\cite{mcsherry2009,JNS18,JNHS20} answer aggregate queries but, as noted in~\cite{TaoGMR22}, do not produce explanations.
+APEx~\cite{GeHIM19} supports interactive data exploration under differential privacy by translating queries with accuracy bounds into private mechanisms, and Patel et al.~\cite{PatelSZ22} make feature-based explanations of machine-learning models differentially private; neither explains the difference between query outputs.
+Another option is to release a differentially private synthetic copy of the database~\cite{McKennaMSM22} and run a non-private explanation method on it.
+Synthetic data is fitted to a workload of low-order marginals chosen in advance, whereas the histogram of an attribute inside a view, under each of the two query predicates, is a higher-order marginal that the workload would have to anticipate.
+Our algorithms are built from standard mechanisms: the exponential mechanism~\cite{mcsherry2007}, one-shot top-$k$ selection~\cite{DurfeeRogers19} and the Laplace mechanism~\cite{DMNS2006}.
+To bound the sensitivity of scores that are ratios of counts, we add a public constant to their denominators, as is done in differentially private decision-tree induction~\cite{FriedmanSchuster10}.
+Smooth sensitivity~\cite{NissimRS07} and propose-test-release~\cite{DworkLei09} instead calibrate the noise to the database at hand; we use a fixed constant, which keeps the guarantee at pure $\epsilon$-differential privacy (Section~\ref{subsec:prelim-dp}).
+
+\paragraph{Query refinement and consistent query answering.}
+Many of the pairs of outputs we explain come from systems that modify a query or the data it runs on.
+Early work on query refinement relaxed queries that return too few answers or none~\cite{chu1994structured,muslea2005online,KoudasLTV06}, and later work refined queries so that the size of the output meets a cardinality constraint~\cite{MK09}.
+More recent systems refine queries to satisfy diversity and representation constraints.
+Erica~\cite{LMSJ23,ERICA} finds minimal refinements of a selection query whose output meets cardinality constraints on several groups, and uses provenance annotations to evaluate candidate refinements without rerunning the query.
+Shetiya et al.~\cite{SSAD22} look for a fair range query close to the one the user wrote, and Campbell et al.~\cite{CSSM24} refine the selection conditions of a top-$k$ query so that its top-$k$ result satisfies diversity constraints.
+Provenance has also been used to detect and mitigate bias in data-driven tools~\cite{MLJ22}.
+Consistent query answering returns the answers that hold in every repair of a database that violates a set of integrity constraints~\cite{arenas1999,bertossi2006,bertossi2011,chomicki2004}, while data-cleaning systems such as HoloClean~\cite{rekatsinas2017} produce a single repaired instance (see~\cite{NiMZWLY24} for an experimental comparison of repair methods).
+These systems report the refined query or the repaired answer, and say little about how the selected population has changed.
+Our framework is complementary to them.
+It takes both queries as input and treats the mechanism that produced the second one as a black box (Section~\ref{subsec:prelim-settings}), and in our experiments the refinements of Erica serve as one source of query pairs.
+
+\paragraph{Explaining query answers.}
+Much work in data management explains the answer to a single query.
+Provenance~\cite{buneman2001,cheney2009,herschel2017} records which input tuples contributed to an output tuple and how.
+Intervention-based methods explain an aggregate answer by predicates whose removal from the input changes the answer the most~\cite{RoyS14}, and Scorpion~\cite{wu2013} finds predicates that account for outliers in the result of an aggregate query.
+CAPE~\cite{MZGR19} explains an outlier by related values that deviate in the opposite direction, why-not methods~\cite{CJ09,tran2010conquer} explain why expected tuples are missing from a result, and explanation tables~\cite{ExplanationTables} summarise how a binary outcome varies across patterns of attribute values.
+These methods explain one answer, or a deviation within it, rather than how two outputs differ.
+The closest work in this line is that of Miao et al.~\cite{MiaoRY19}, which explains why two queries differ by finding a small subset of the database on which their results differ, in order to help users debug wrong queries.
+Such an explanation consists of database tuples, and many of the methods above also reason about individual tuples, which cannot be released under differential privacy~\cite{TaoGMR22}.
+
+\paragraph{Explaining differences between populations.}
+Closer to our setting is work that describes how two sets of tuples differ.
+Contrast-set mining~\cite{BayPazzani01} and emerging patterns~\cite{DongLi99} look for conjunctions of attribute values whose support differs between groups or datasets, and subgroup discovery~\cite{Wrobel97,HerreraCGJ11} looks for regions in which a target variable is distributed differently than in the whole population.
+MacroBase~\cite{MacroBase} ranks combinations of attribute values by their relative risk among outliers and inliers, and DIFF~\cite{DIFF} offers this kind of explanation as a relational operator.
+In data exploration, SeeDB~\cite{SeeDB} recommends visualisations in which the distribution of an attribute on a target subset deviates most from its distribution on a reference subset, and FEDEX~\cite{FEDEX} explains an exploration step by the attributes whose distribution the step changes the most.
+Li et al.~\cite{ICDE23} detect groups, defined by patterns over the attributes, whose representation in the top-$k$ of a ranking is biased, and Explain-Da-V~\cite{ShragaM23} explains the changes between two versions of a dataset by data transformations.
+The interestingness, coverage, representativeness and diversity criteria that we adapt come from this line of work; we recast them as low-sensitivity measures in Section~\ref{sec:explanation-quality}.
+Our setting differs in two respects.
+The two populations are the outputs of two queries, which may overlap or be nested, and a region of interest may be reached by only one of them, in which case a distance between two distributions is undefined.
+In addition, all of these methods compute on the exact data, and the measures that score distributional explanations are too sensitive to individual tuples to be optimised under differential privacy as they are (Section~\ref{subsec:ideal-sensitivity}).
+

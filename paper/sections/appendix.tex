@@ -1,21 +1,138 @@
-\section{Exact Greedy Selection}
-\label{app:greedy}
+\section{Proofs}
+\label{app:proofs}
 
-\begin{proposition}[The rounds are exact greedy]
-\label{prop:greedy-exact}
-Fix a candidate set $\mathcal{E}'\subseteq\mathcal{E}$ and a smoothing constant $\gamma$, and let $w_j=\lambda^{\,j-1}$.
-\begin{enumerate}[label=(\roman*),leftmargin=*]
-\item The score $\HD_\gamma(p,A)\cdot\lambda^{Counts[A]}$ that line~4 of Algorithm~\ref{alg:topk} assigns a remaining candidate is exactly its marginal gain in $F_w$, so selecting the highest-scoring candidate is one step of greedy on $F_w$.
-\item For any non-increasing $w$, selecting $E\subseteq\mathcal{E}'$ with $|E|=k$ maximising $F_w(E)$ is solvable in polynomial time, and greedy returns an optimal solution.
-\end{enumerate}
+This appendix contains the proofs and the supporting statements that were deferred from the body of the paper, in the order in which they are used.
+
+\subsection{The Range of Smoothed Representativeness}
+\label{app:proof-rep-range}
+
+Section~\ref{sec:explanation-quality} sets the smoothing constant of representativeness to $\gamma_R=\alpha N$.
+We give here the analysis behind this choice.
+A larger $\gamma_R$ makes the score more stable, but it also lowers the fidelity $\theta=m/(m+\gamma_R)$ of every view, and to choose it we need to know how well the score can still tell views apart at a given $\gamma_R$.
+The following proposition answers this by giving the exact range of the score over all views of a given size.
+
+\begin{proposition}[Range of smoothed representativeness]
+\label{prop:rep-range}
+Fix a database size $N$, a view size $m\le N$ and a reference attribute $A$ with at least two bins, and let $M=m+\gamma_R$.
+Consider all databases of size $N$ and all views of size $m$, that is, all non-negative integer vectors $(c^A_v)_v$ and $(d^A_v)_v$ with $\sum_v c^A_v=N$, $\sum_v d^A_v=m$ and $d^A_v\le c^A_v$.
+If $M<N$, the values of $\Rep^A_{\gamma_R}$ lie in the interval
+\[
+\Big[\,\frac12-\frac{m}{2M}+\frac{m}{N},\;\; \frac12+\frac{m}{2M}\,\Big],
+\]
+whose length is $\frac{m}{M}\big(1-\frac{M}{N}\big)$, and both of its ends are attained.
+If $M\ge N$, they all equal $\frac12+\frac{m}{2M}$.
+The same holds for $\Rep_{\gamma_R}$.
 \end{proposition}
 
 \begin{proof}
-(i) In a given round all candidates carrying an attribute $A$ share the factor $\lambda^{Counts[A]}$, so whenever a round selects from that group it selects the member of largest $\HD_\gamma$; after $c$ selections from $A$ the members taken are therefore its $c$ highest-scoring ones.
-Every remaining candidate of $A$ thus scores no higher than any already taken, so adding it places it at rank $c+1$ of its group and leaves the ranks of the existing members unchanged.
-The group term of Eq.~\eqref{eq:set-objective} gains exactly $w_{c+1}h=\lambda^{c}h$, which is the score of line~4, and no other group term changes.
+Write $x_v=c^A_v/N$ and $y_v=d^A_v/M$, so $\sum_v x_v=1$ and $\sum_v y_v=m/M$, and put
+\[
+S=\sum_v\min(x_v,y_v) .
+\]
+Since $\sum_v|x_v-y_v|=\sum_v x_v+\sum_v y_v-2S$, Eq.~\eqref{eq:representativeness-proxy} reads
+\[
+\Rep^A_{\gamma_R}=\frac{1-m/M}{2}+S ,
+\]
+an increasing affine function of $S$, so it is enough to bound the overlap $S$ above and
+below and to exhibit integer profiles that attain both bounds.
 
-(ii) By Definition~\ref{def:setobj}, $F_w(E)=\sum_A g_A(E)$ where $g_A$ depends only on the members of $E$ whose attribute is $A$.
+\emph{Above.} $\min(x_v,y_v)\le y_v$ gives $S\le m/M$, with equality exactly when $y_v\le x_v$ for
+every $v$. It is attained, for instance, when $A$ takes a single value on $D$, since
+then $y=m/M\le1=x$; a view drawn in proportion to the database, $d^A_v=m\,c^A_v/N$, attains it too
+whenever those counts are integers.
+
+\emph{Below.} From $d^A_v\le c^A_v$ we get $y_v\le c^A_v/M=(N/M)\,x_v$, so $x_v\ge(M/N)\,y_v$; and
+$y_v\ge(M/N)\,y_v$ whenever $M\le N$. Hence $\min(x_v,y_v)\ge(M/N)\,y_v$ for every $v$, and
+summing, $S\ge(M/N)(m/M)=m/N$. A view sitting on a single value attains it: let one value occur
+exactly $m$ times in $D$ with all of its tuples inside the view, so that
+$S=\min(m/N,\,m/M)=m/N$.
+
+So $S$ lies in $[m/N,\,m/M]$ and attains both ends, an interval of length $\tfrac{m}{M}-\tfrac{m}{N}=\tfrac mM(1-\tfrac MN)$.
+If instead $M\ge N$ then $y_v\le c^A_v/M\le c^A_v/N=x_v$ for every $v$, so $S=m/M$ always and the
+interval is a point.
+Substituting the two ends of the range of $S$ into the expression for $\Rep^A_{\gamma_R}$ gives the interval of the statement, and $S=m/M$ gives the value $\tfrac12+\tfrac{m}{2M}$ for $M\ge N$.
+
+For $\Rep_{\gamma_R}$, every term of the average lies in the same interval, and both ends are attained on all reference attributes at once: by a database in which every reference attribute takes a single value, and by a database in which the $m$ tuples of the view share one value on every reference attribute and all other tuples share another.
+\end{proof}
+
+Proposition~\ref{prop:rep-range} shows what smoothing costs: the scores of all views of size $m$ fit in an interval whose length is at most the fidelity $\theta=m/M$.
+If we chose $\gamma_R=N$, the interval would collapse to a single value for every view at once, and the score would no longer depend on the reference attributes.
+With $\gamma_R=\alpha N$, in contrast, a view is read at fidelity $\tfrac12$ once it holds an $\alpha$ fraction of the database.
+In the running example, the view $\texttt{education}=\texttt{Masters}$ has a representativeness of $0.80$, where the upper end of the interval for a view of its size is $0.92$; with $\gamma_R=N$, every view of this size would score $0.53$ whatever its profile.
+The upper end of the interval gives a bound that the sensitivity analysis uses, and we record it separately.
+
+\begin{corollary}[A ceiling on representativeness]
+\label{cor:rep-upper}
+For every view predicate $p$ with $m=|\pD|$,
+\begin{equation}
+\Rep_{\gamma_R}(p,D)\;\le\;1-\frac{\gamma_R}{2(m+\gamma_R)} .
+\label{eq:rep-upper}
+\end{equation}
+For $\gamma_R=\alpha N$, the right-hand side is at most $\frac{2+\alpha}{2(1+\alpha)}<1$, with equality when the view is the whole database.
+\end{corollary}
+
+In other words, smoothing keeps even a perfectly typical view strictly below $1$, and the smaller the view, the lower its ceiling.
+
+\begin{proof}
+In the notation of the previous proof, $\Rep^A_{\gamma_R}=\frac{1-m/M}{2}+S$ and $S\le m/M$, so
+\[
+\Rep^A_{\gamma_R}\;\le\;\frac{1+m/M}{2}\;=\;1-\frac{\gamma_R}{2(m+\gamma_R)} ,
+\]
+and the average over the reference attributes inherits the bound.
+For $\gamma_R=\alpha N$, the fact that $m\le N$ gives $m+\gamma_R\le(1+\alpha)N$, so $\frac{\gamma_R}{2(m+\gamma_R)}\ge\frac{\alpha}{2(1+\alpha)}$ and the right-hand side is at most $\frac{2+\alpha}{2(1+\alpha)}$.
+When the view is the whole database, $m=N$ and $d^A_v=c^A_v$ for every $v$, hence $y_v\le x_v$, $S=m/M$, and both inequalities hold with equality.
+\end{proof}
+
+\subsection{The Set-Level Utility and the Sequential Discount}
+\label{app:proof-setobj}
+
+\begin{proposition}[The set-level utility agrees with the sequential discount]
+\label{prop:setobj}
+Order $E$ arbitrarily and write $S_{<c}$ for the candidates that precede $c$, so that the discount of Eq.~\eqref{eq:diversity-score} awards $E$ the total $\sum_{c\in E}\HD_\gamma(c)\cdot\DivS(A_c,S_{<c})$.
+Then $F_\lambda(E)$ equals this total under the ordering that maximises it, and is an upper bound on it under every ordering.
+\end{proposition}
+
+\begin{proof}
+Since $\mathrm{count}(A,S)$ counts only the members of $S$ that carry $A$, the weight a candidate receives depends on its position within its own attribute group and not on how the groups are interleaved.
+The total therefore splits into independent per-group totals, and an ordering is free to choose each group's internal order.
+Within the group of $A$, an ordering that places a member $j$-th awards it $\lambda^{\,j-1}$, so the group total is $\sum_j \lambda^{\,j-1}h_{\sigma(j)}$ for the induced permutation $\sigma$.
+The weights are non-increasing, so by the rearrangement inequality this is maximised by pairing the largest weight with the largest score, that is by visiting the group in decreasing $\HD_\gamma$, and the maximum is $\sum_j \lambda^{\,j-1}h^A_{(j)}$.
+Summing over groups gives Eq.~\eqref{eq:set-objective}, and no ordering gives more.
+The special cases $\lambda=0$ and $\lambda=1$ recover a group maximum and a modular sum respectively.
+\end{proof}
+
+\subsection{Proof of Proposition~\ref{prop:sensitivity-itemized}}
+\label{app:proof-classical}
+
+\begin{proof}
+(1) Let $Q_1(\pD)=\{t\}$ with $t[A]=v_1$, and let all tuples of $Q_2(\pD)$ fall in a bin $v_2\ne v_1$, so that the two distributions are point masses at $v_1$ and at $v_2$ and their distance is $1$.
+Add one tuple of the view that only $Q_1$ selects and whose $A$-value is $v_2$: the first distribution becomes uniform on $\{v_1,v_2\}$ and the distance drops to $\tfrac12$.
+The rest of $D$ is unconstrained, so a change of $\tfrac12$ is available at every database size.
+
+(2) Let $D$ hold one tuple of the view carrying the value $v_1$ on every attribute of $\mathcal{A}_R(p)$, together with $N-1$ tuples outside the view carrying $v_2$.
+The view distribution is then a point mass at $v_1$ while the database gives $v_1$ weight $\tfrac1N$, so the measure is $\tfrac1N$.
+Adding one tuple of the view with value $v_2$ makes the view distribution uniform on $\{v_1,v_2\}$ and the measure $\tfrac{N+3}{2(N+1)}$.
+The change is $\tfrac{N+3}{2(N+1)}-\tfrac1N$, which exceeds $\tfrac12-\tfrac1N$ because $\tfrac{N+3}{2(N+1)}>\tfrac12$.
+
+(3) Write $o_j=|Q_j(\pD)|$ for $j=1,2$; by Eq.~\eqref{eq:view-restriction} both are at most $m=|\pD|\le N$.
+A tuple of the view selected by both queries sends $o_1o_2$ to $(o_1+1)(o_2+1)$, a change of
+\[
+(o_1+1)(o_2+1)-o_1o_2=o_1+o_2+1\;\le\;2N+1 .
+\]
+Equality holds at $o_1=o_2=m=N$, that is when the view is the whole database and both queries select all of it.
+\end{proof}
+
+\subsection{Proof of Proposition~\ref{prop:greedy-exact}}
+\label{app:greedy}
+
+\begin{proof}
+Let $w_j=\lambda^{\,j-1}$. We prove (1)~that the score of Line~4 is the marginal gain of its candidate in $F_w$, and (2)~that the greedy algorithm maximises $F_w$ over the subsets of $\mathcal{E}'$ of size $k$, for every non-increasing $w$.
+
+(1) In a given round all candidates carrying an attribute $A$ share the factor $\lambda^{Counts[A]}$, and every round selects a candidate of the highest score, so whenever a round selects from that group it selects the member of largest $\HD_\gamma$; after $c$ selections from $A$ the members taken are therefore its $c$ highest-scoring ones.
+Every remaining candidate of $A$ thus scores no higher than any already taken, so adding it places it at rank $c+1$ of its group and leaves the ranks of the existing members unchanged.
+The group term of Eq.~\eqref{eq:set-objective} gains exactly $w_{c+1}h=\lambda^{c}h$, which is the score of Line~4, and no other group term changes.
+
+(2) By Definition~\ref{def:setobj}, $F_w(E)=\sum_A g_A(E)$ where $g_A$ depends only on the members of $E$ whose attribute is $A$.
 There is therefore no interaction between groups, and a solution is determined by how many candidates $n_A\ge0$ it takes from each group, subject to $\sum_A n_A=k$, together with which ones.
 For a fixed $n_A$, the best choice within group $A$ is its $n_A$ highest-scoring candidates, since $w$ is non-increasing and the scores are ranked (rearrangement inequality).
 Hence the value of taking $g$ candidates from group $A$ is
@@ -27,10 +144,8 @@ These are non-increasing in $g$, because $w_g$ is non-increasing by assumption a
 
 Maximising a separable sum of concave functions subject to a cardinality constraint is exactly the problem solved by the greedy rule of repeatedly taking the largest remaining marginal gain, which is optimal for separable concave resource allocation.
 Since each marginal gain is computable in constant time after sorting each group, the total cost is $O(|\mathcal{E}'|\log|\mathcal{E}'|)$ for $|\mathcal{E}'|$ candidates.
-With (i), the $k$ rounds of Algorithm~\ref{alg:topk} run exactly this procedure.
+With part~(1), the $k$ rounds of Algorithm~\ref{alg:topk} run exactly this procedure.
 \end{proof}
-
-
 
 \begin{example}[Greedy and the optimum agree]
 \label{ex:greedy}
@@ -40,6 +155,503 @@ Greedy takes $9$, then $7$, then $3$, for a total of $19$.
 These are the three largest gains in the list, so no set of three candidates can do better, and enumerating all ten subsets confirms that $19$ is the optimum.
 Taking the two best scores of the first group instead, $9$ and $4$, together with $7$, gives $18$: the second copy of an attribute is discounted, which is what makes the greedy order follow the discounted gains rather than the raw scores.
 \end{example}
+
+\subsection{Proof of Proposition~\ref{prop:utility}}
+\label{app:proof-utility}
+
+\begin{proof}
+Fix the retained views, write $\mathcal{E}'$ for the set of their candidates and $h_c=\HD_\gamma(c)$ for the score of a candidate $c$, and let $c_i$ be the candidate selected in round $i$, $u_i$ the utility of Line~4 and $C_i$ the candidate set of that round, so that $|C_i|\le\tau|\Attrs|$.
+
+\emph{Each round.}
+Round $i$ applies the exponential mechanism with budget $\epsilon_i$ and sensitivity parameter $1/(1+\gamma)$.
+By the utility guarantee of the exponential mechanism~\cite{mcsherry2007,TheAlgFoundDP2014}, for every history of the previous rounds, with probability at least $1-\beta/k$,
+\begin{align*}
+u_i(c_i)&\;\ge\;\max_{c\in C_i}u_i(c)-\frac{2}{(1+\gamma)\,\epsilon_i}\Big(\ln|C_i|+\ln\frac{k}{\beta}\Big)\\
+&\;\ge\;\max_{c\in C_i}u_i(c)-\eta .
+\end{align*}
+By a union bound, this holds in all $k$ rounds with probability at least $1-\beta$, which is the first claim.
+We assume this event in the rest of the proof.
+
+\emph{The best candidate of a round.}
+Let $E^*\subseteq\mathcal{E}'$ be a set of $k$ candidates with $F_\lambda(E^*)=\mathit{OPT}$, let $n_A$ be the number of its candidates with attribute $A$ and $h^{*A}_{(1)}\ge h^{*A}_{(2)}\ge\cdots$ their scores, so that $\mathit{OPT}$ is the sum of the $k$ terms $T_{A,j}=\lambda^{\,j-1}h^{*A}_{(j)}$ with $j\le n_A$, and let $t_1\ge t_2\ge\dots\ge t_k$ be these terms in decreasing order.
+We claim that $\max_{c\in C_i}u_i(c)\ge t_i$ for every round $i$.
+At the beginning of round $i$, let $m_A$ be the number of released candidates with attribute $A$, so that $\sum_A m_A=i-1$.
+For an attribute $A$ with $m_A<n_A$, at most $m_A$ of the $m_A+1$ highest-scoring candidates of $E^*$ with attribute $A$ were released, so one of them is in $C_i$; its score is at least $h^{*A}_{(m_A+1)}$ and its utility in round $i$ is at least $\lambda^{m_A}h^{*A}_{(m_A+1)}=T_{A,m_A+1}$.
+The terms of an attribute are non-increasing in $j$, so $\max_{c\in C_i}u_i(c)\ge T_{A,j}$ for every term with $j>m_A$.
+The remaining terms, those with $j\le m_A$, number at most $\sum_A m_A=i-1$, so at least one of the $i$ largest terms $t_1,\dots,t_i$ satisfies $j>m_A$, and the claim follows.
+
+\emph{The released set.}
+Order the released set $E$ by the round of selection.
+The discount of Eq.~\eqref{eq:diversity-score} then awards $E$ the total $\sum_i u_i(c_i)$, and by Proposition~\ref{prop:setobj}, $F_\lambda(E)$ is an upper bound on this total.
+Hence
+\begin{align*}
+F_\lambda(E)&\;\ge\;\sum_{i=1}^{k}u_i(c_i)\;\ge\;\sum_{i=1}^{k}\Big(\max_{c\in C_i}u_i(c)-\eta\Big)\\
+&\;\ge\;\sum_{i=1}^{k}t_i-k\eta\;=\;\mathit{OPT}-k\eta .
+\end{align*}
+Finally, Eq.~\eqref{eq:gamma-rule} gives $(1+\gamma)\,\epsilon_i>2\ln(\tau|\Attrs|)$, hence $\eta<\ln(k\tau|\Attrs|/\beta)/\ln(\tau|\Attrs|)=1+\ln(k/\beta)/\ln(\tau|\Attrs|)$.
+\end{proof}
+
+\subsection{Proof of Proposition~\ref{prop:stage-sensitivity}}
+\label{app:proof-stage}
+
+We prove the proposition through three lemmas.
+Lemma~\ref{lem:hd-sensitivity} establishes the sensitivity of the smoothed histogram distance, Lemma~\ref{lem:usefulness} is the first part of the proposition, and Lemma~\ref{lem:selection-utility} completes the second part.
+Throughout, a prime marks a quantity on the neighbouring database.
+
+\begin{lemma}[Sensitivity of Smoothed Histogram Distance]
+\label{lem:hd-sensitivity}
+$\Delta_{\HD_\gamma}=\dfrac{1}{1+\gamma}$.
+\end{lemma}
+
+\begin{proof}
+Let $D'=D\cup\{t\}$.
+If $t$ does not satisfy $p$ nothing changes.
+Otherwise $t$ falls into exactly one bin $v^*$ of $A$, and every other term of Eq.~\eqref{eq:hd-definition} is unchanged, so only that term has to be bounded.
+Write $n=\hist{\pD}{A}(v^*)$ for the support of the view in that bin and $q_j=\hist{Q_j(\pD)}{A}(v^*)$ for $j=1,2$ for the two output counts in it, and let $n'=\hist{p(D')}{A}(v^*)$ and $q_j'=\hist{Q_j(p(D'))}{A}(v^*)$ be the same quantities on $D'$.
+The numerators of the term before and after are $x=|q_1-q_2|$ and $x'=|q_1'-q_2'|$; since $Q_j(\pD)\subseteq\pD$ by Eq.~\eqref{eq:view-restriction}, $0\le x\le n$.
+Each query either selects $t$ or not, so $q_j'=q_j+\delta_j$ with $\delta_j\in\{0,1\}$, and $n'=n+1$ because $t$ satisfies $p$ and falls in $v^*$.
+Substituting these,
+\[
+x'=|q_1'-q_2'|=\big|(q_1+\delta_1)-(q_2+\delta_2)\big|=\big|(q_1-q_2)+(\delta_1-\delta_2)\big| ,
+\]
+whereas $x=|q_1-q_2|$.
+Both $x$ and $x'$ are absolute values, so by the reverse triangle inequality their difference is at most the absolute value of the difference of their arguments:
+\[
+|x'-x|\;\le\;\big|\,[(q_1-q_2)+(\delta_1-\delta_2)]-(q_1-q_2)\,\big|\;=\;|\delta_1-\delta_2|\;\le\;1 ,
+\]
+the last step because $\delta_1,\delta_2\in\{0,1\}$.
+The term therefore moves from $x/(n+\gamma)$ to $x'/(n+1+\gamma)$.
+If $n=\gamma=0$ the bin is excluded from the sum on $D$ by the restriction in Definition~\ref{def:hd} and present in it on $D'$, so the comparison is between an absent term and one of value $x'\le1=\frac{1}{1+\gamma}$.
+Otherwise put $K=(n+\gamma)(n+1+\gamma)>0$ and bound the two directions separately.
+Upwards, using in turn $x'\le x+1$, a common denominator, the cancellation of $xn+x\gamma$, then $x\ge0$ and $n\ge0$:
+\begin{align*}
+\frac{x'}{n+1+\gamma}-\frac{x}{n+\gamma}
+&\;\le\;\frac{x+1}{n+1+\gamma}-\frac{x}{n+\gamma}\\[2pt]
+&\;=\;\frac{(x+1)(n+\gamma)-x(n+1+\gamma)}{K}\\[2pt]
+&\;=\;\frac{n+\gamma-x}{K}\\[2pt]
+&\;\le\;\frac{n+\gamma}{K}\;=\;\frac{1}{n+1+\gamma}\\[2pt]
+&\;\le\;\frac{1}{1+\gamma}.
+\end{align*}
+Downwards, using in turn $x'\ge x-1$, a common denominator, the same cancellation, then $x\le n$ and the step $(\star)$ below:
+\begin{align*}
+\frac{x}{n+\gamma}-\frac{x'}{n+1+\gamma}
+&\;\le\;\frac{x}{n+\gamma}-\frac{x-1}{n+1+\gamma}\\[2pt]
+&\;=\;\frac{x(n+1+\gamma)-(x-1)(n+\gamma)}{K}\\[2pt]
+&\;=\;\frac{x+n+\gamma}{K}\\[2pt]
+&\;\le\;\frac{2n+\gamma}{K}\\[2pt]
+&\;\overset{(\star)}{\le}\;\frac{1}{1+\gamma}.
+\end{align*}
+Step $(\star)$ is the only one that is not immediate.
+It asserts $(2n+\gamma)/K\le 1/(1+\gamma)$.
+Since $K>0$ and $1+\gamma>0$, cross-multiplying preserves the inequality, so the claim is equivalent to $K-(2n+\gamma)(1+\gamma)\ge0$.
+Expanding both products,
+\begin{align*}
+(2n+\gamma)(1+\gamma)&=2n+2n\gamma+\gamma+\gamma^2,\\[2pt]
+K=(n+\gamma)(n+1+\gamma)&=n^2+n+2n\gamma+\gamma+\gamma^2 .
+\end{align*}
+The terms $2n\gamma+\gamma+\gamma^2$ occur in both lines and cancel, leaving $n^2+n$ from the second and $2n$ from the first, so
+\[
+K-(2n+\gamma)(1+\gamma)=(n^2+n)-2n=n(n-1),
+\]
+which is non-negative for every integer $n\ge0$, vanishing only at $n=0$ and $n=1$.
+Equality holds for a bin holding one tuple of the view selected by $Q_1$ only, whose term is $\frac{1}{1+\gamma}$: adding a tuple of the same bin selected by $Q_2$ only makes the two counts equal and the term $0$.
+\end{proof}
+
+Step $(\star)$ is an equality exactly when $n(n-1)=0$, that is for $n\in\{0,1\}$: a bin the new tuple populates from empty, or one already holding a single tuple of the view.
+For $n\ge2$ the bound $(2n+\gamma)/\big((n+\gamma)(n+1+\gamma)\big)$ is strictly smaller, and it falls as $n$ grows.
+The sensitivity is therefore dictated by the sparsest bins of any view, whereas the candidates that make good explanations rest on well-populated ones.
+
+\begin{lemma}[Sensitivity of View Usefulness]
+\label{lem:usefulness}
+Let $\gamma_R=\alpha N$ for a public $\alpha\in(0,1]$, as in Eq.~\eqref{eq:gammaR-rule}.
+Then, for every $N\ge1/\alpha$,
+\[ \Delta_{\Use}(N)\;\le\;\frac{4}{N}. \]
+\end{lemma}
+
+\begin{proof}
+Write $m=|\pD|$ for the view size, $M=m+\gamma_R$ for the smoothed view size, and
+$s=|Q_1(\pD)|+|Q_2(\pD)|$ for the evidence the two outputs place in the view, so that
+$0\le s\le2m\le2N$ by Eq.~\eqref{eq:view-restriction} and $\Cov=s/N$.
+For a reference attribute $A$ let $x^A_v=c^A_v/N$ and $y^A_v=d^A_v/M$ be the two profiles it
+compares, and write $\theta=\sum_v y^A_v=m/M$, the same for every $A$.
+A prime marks a quantity on a neighbour of size $N+1$, and we write $\chg g=g'-g$ for the change of a quantity $g$.
+We bound the change to such a neighbour first and collect the two directions at the end.
+So let $D'=D\cup\{t\}$, let $v(t)$ be the $A$-value of $t$, and set
+\[
+w^A=\chg y^A-\chg x^A ,
+\]
+the relative movement of the two profiles.
+
+\emph{Step 1: the two factors.}
+Since $\Use=\Rep_{\gamma_R}\cdot\Cov$ and
+$\chg(\Rep_{\gamma_R}\Cov)=\Cov\,\chg\Rep_{\gamma_R}+\Rep'_{\gamma_R}\chg\Cov$,
+\begin{equation}
+|\chg\Use|\;\le\;\Cov\,|\chg\Rep_{\gamma_R}|+\Rep'_{\gamma_R}\,|\chg\Cov| .
+\label{eq:use-split}
+\end{equation}
+
+\emph{Step 2: representativeness moves no more than the profiles do.}
+By Eq.~\eqref{eq:representativeness-proxy}, $\Rep^A_{\gamma_R}=1-\tfrac12\|x^A-y^A\|_1$, so the
+reverse triangle inequality for the $L_1$ norm gives
+\begin{align*}
+|\chg\Rep^A_{\gamma_R}|&=\tfrac12\Big|\,\|x'^A-y'^A\|_1-\|x^A-y^A\|_1\Big|\\
+&\le\;\tfrac12\big\|(x'^A-y'^A)-(x^A-y^A)\big\|_1\;=\;\tfrac12\|w^A\|_1 .
+\end{align*}
+What matters is that $w^A$ stays whole: when the view mirrors the database the arrival of $t$
+rescales both profiles in step and $w^A$ nearly cancels, which bounding $\|\chg y^A\|_1$ and
+$\|\chg x^A\|_1$ apart would hide.
+
+\emph{Step 3: how the profiles move.}
+Both cases are one computation.
+Write $\Lambda=M'-M\ge0$ for the growth of the smoothed view size and
+\[
+\kappa=\frac{\Lambda\,(N+1)}{M'} .
+\]
+Away from $v(t)$ neither count changes and only the denominators move, which gives
+\[
+w^A_v=\frac{c^A_v}{N(N+1)}-\frac{d^A_v\Lambda}{MM'}=\frac{x^A_v-\kappa\,y^A_v}{N+1} .
+\]
+At $v=v(t)$ the arrival of $t$ adds a further $\rho$ to this, where
+\[
+\rho=\begin{cases}-1/(N+1), & t\text{ outside the view},\\[2pt]
+1/M'-1/(N+1), & t\text{ inside}.\end{cases}
+\]
+Both $\kappa$ and $\rho$ are the same for every $A$.
+Since $x^A$ and $y^A$ are non-negative with $\sum_v x^A_v=1$ and $\sum_v y^A_v=\theta$, we have
+$\sum_v|x^A_v-\kappa y^A_v|\le\sum_v x^A_v+\kappa\sum_v y^A_v=1+\kappa\theta$, so summing the two
+displays over $v$ and averaging over $\mathcal{A}_R(p)$,
+\begin{equation}
+|\chg\Rep_{\gamma_R}|\;\le\;\tfrac12\|w\|_1\;\le\;\frac{1+\kappa\theta}{2(N+1)}+\frac{|\rho|}{2} ,
+\label{eq:w-move}
+\end{equation}
+where $\|w\|_1$ denotes the average of $\|w^A\|_1$ over $\mathcal{A}_R(p)$.
+Recall also $\Cov\le2m/N$ and $\Rep'_{\gamma_R}\le\frac{2+\alpha}{2(1+\alpha)}$ from
+Eq.~\eqref{eq:rep-upper}.
+
+\emph{Step 4: $t$ falls outside the view.}
+Then $m$, $s$ and every $d^A_v$ stay put, $\Lambda=\alpha$ and $M'=M+\alpha$, while
+$|\rho|=1/(N+1)$ and $\chg\Cov=-s/(N(N+1))$ gives $|\chg\Cov|\le2m/(N(N+1))$.
+Putting these into Eqs.~\eqref{eq:w-move} and~\eqref{eq:use-split} and collecting over the common
+factor $m/(N(N+1))$, which uses $2+\tfrac{2+\alpha}{1+\alpha}=\tfrac{4+3\alpha}{1+\alpha}$,
+\[
+|\chg\Use|\;\le\;\frac{m}{N(N+1)}\cdot\frac{4+3\alpha}{1+\alpha}\;+\;\frac{\alpha\,m^2}{N\,M\,M'},
+\]
+the second term being $\Cov\cdot\kappa\theta/\big(2(N+1)\big)$ written out.
+Both increase in $m$, so both are largest at $m=N$, where the view is all of $D$:
+\[
+|\chg\Use|\;\le\;\frac{4+3\alpha}{(1+\alpha)(N+1)}
++\frac{\alpha}{(1+\alpha)\big(N(1+\alpha)+\alpha\big)} .
+\]
+Subtracting this from $4/N$ leaves
+\[
+\frac{4}{N(N+1)}+\frac{\alpha\big[\alpha(N+1)-1\big]}
+{(1+\alpha)(N+1)\big(N(1+\alpha)+\alpha\big)} ,
+\]
+and the second term is at least $-1/\big(N(N+1)\big)$, since $\alpha\le1$ and
+$N(1+\alpha)+\alpha\ge N$. The difference is therefore at least $3/\big(N(N+1)\big)>0$.
+Step~6 needs the sharper $4/(N+1)$. Multiplied by $N+1$, the bound is
+\[
+4-\frac{\alpha\big[\alpha(N+1)-1\big]}{(1+\alpha)\big(N(1+\alpha)+\alpha\big)} ,
+\]
+so $|\chg\Use|\le4/(N+1)$ exactly when $\alpha(N+1)\ge1$.
+
+\emph{Step 5: $t$ falls inside the view.}
+Now $m$ becomes $m+1$ and $d^A_{v(t)}$ becomes $d^A_{v(t)}+1$, while $s$ becomes $s+\delta$ with
+$\delta\in\{0,1,2\}$.
+The range of $\delta$ is the number of the two queries that select $t$: an output is
+$\sigma_\varphi(D)$ (Section~\ref{subsec:prelim-db-queries}), decided tuple by tuple, so $t$
+cannot change whether any other tuple is selected.
+Here $\Lambda=1+\alpha$ and $|\rho|=|1/M'-1/(N+1)|$, while $|\chg\Cov|=|\delta N-s|/(N(N+1))$
+is at most $\max(2N-s,\,s)/(N(N+1))$, which ties it to $\Cov=s/N$ rather than letting both reach
+their extremes at once.
+Multiplying Eqs.~\eqref{eq:w-move} and~\eqref{eq:use-split} by $N+1$ splits
+$(N+1)|\chg\Use|$ into three terms, which we bound in turn.
+First, $\Cov(1+\kappa\theta)/2\le\Cov/2+1/(1+\alpha)$: by $\Cov\le2m/N$,
+$\Cov\,\kappa\theta/2\le\frac{(1+\alpha)(N+1)}{N}\cdot\frac{m}{M}\cdot\frac{m}{M'}$, and both ratios
+increase in $m$, so they are at most their values $\frac1{1+\alpha}$ and
+$\frac{N}{(1+\alpha)(N+1)}$ at $m=N$.
+Second, $\Cov\,(N+1)|\rho|/2=\frac{\Cov}{2}\big|\frac{N+1}{M'}-1\big|$.
+If $M'\le N+1$ this is at most $\frac{\Cov}{2}\cdot\frac{N-m}{m}\le1-\frac{\Cov}{2}$, using
+$M'\ge m+1$ and then $\Cov/2\le m/N$; if $M'>N+1$ it is at most
+$\frac{\Cov}{2}\cdot\frac{\alpha}{1+\alpha}$, since $M'\le(1+\alpha)(N+1)$.
+Third, $\Rep'_{\gamma_R}(N+1)|\chg\Cov|\le\frac{2+\alpha}{2(1+\alpha)}\max(2-\Cov,\Cov)$.
+If $\Cov\ge1$ and $M'>N+1$ the three sum to at most
+$\frac{\Cov}{2}\cdot\frac{1+2\alpha}{1+\alpha}+\frac1{1+\alpha}+\frac{2+\alpha}{2(1+\alpha)}\Cov$,
+which increases in $\Cov$ and equals $\frac{4+3\alpha}{1+\alpha}$ at $\Cov=2$.
+In every other case the second term is at most $1-\Cov/2$ (for $\Cov<1$ the alternative bound is
+smaller), so the first two sum to at most $1+\frac1{1+\alpha}$, the third is at most
+$\frac{2+\alpha}{1+\alpha}$, and the total is at most $\frac{4+2\alpha}{1+\alpha}$.
+Hence, for every $N$,
+\[
+(N+1)\,|\chg\Use|\;\le\;\frac{4+3\alpha}{1+\alpha}\;=\;3+\frac{1}{1+\alpha}\;<\;4 .
+\]
+The estimates reach this value at $m=N$ and $\Cov=2$; it is $3.99$ at $\alpha=\tfrac1{100}$ and
+rises towards $4$ as $\alpha$ falls.
+
+\emph{Step 6: the two directions.}
+A neighbour of a database of size $N$ has size $N+1$ or $N-1$.
+Steps 4 and 5 bound the change to a size-$(N+1)$ neighbour by $4/(N+1)$, Step~4 when
+$\alpha(N+1)\ge1$ and Step~5 always.
+Run at base size $N-1$ they bound the change to a size-$(N-1)$ neighbour by $4/N$, now
+when $\alpha N\ge1$: the
+computation is unchanged, because $\gamma_R=\alpha n$ leaves $\alpha$ fixed as the base size $n$
+varies, and every bound above carries $n+1$ in its denominator.
+The second is the larger of the two, and it is what fixes the constant and the
+condition $N\ge1/\alpha$.
+\end{proof}
+
+\begin{lemma}[Sensitivity of the selection utility]
+\label{lem:selection-utility}
+$\Delta_{\widetilde{U}_i}\le 1/(1+\gamma)$.
+\end{lemma}
+
+\begin{proof}
+Condition on the history $S_{i-1}$ of previously released outputs, which is legitimate under adaptive composition.
+Given that history, $\DivS(A,S_{i-1})$ is a constant in $[0,1]$ determined entirely by released values, so it acts as a bounded multiplier on the data-dependent factor and cannot increase its sensitivity.
+The claim follows from Lemma~\ref{lem:hd-sensitivity}.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:stage-sensitivity}]
+Part~(1) is Lemma~\ref{lem:usefulness}, and part~(2) is Lemmas~\ref{lem:hd-sensitivity} and~\ref{lem:selection-utility}.
+\end{proof}
+
+\subsection{Sensitivity of the Released Histograms}
+\label{app:proof-hist}
+
+The proof of Theorem~\ref{thm:framework-dp} uses the following bound on how much one tuple can change the two histograms of a candidate.
+
+\begin{lemma}[Sensitivity of the released histograms]
+\label{prop:histogram-release-sensitivity}
+Fix a candidate $(p,A)$ and write $H^j=\hist{Q_j(\pD)}{A}$ for $j=1,2$.
+The pair $(H^1,H^2)$ has $L_1$-sensitivity at most $2$, and the difference $H^1-H^2$ has $L_1$-sensitivity at most $1$.
+\end{lemma}
+
+\begin{proof}
+Since $Q_1$ and $Q_2$ are selections, one added tuple joins at most one bin of $A$, and it may be selected by both queries, by one of them, or by neither.
+It therefore changes each of the two histograms in at most one coordinate and by at most $1$, which gives $2$ for the pair.
+For the difference, the affected coordinate changes by $d_1-d_2$ with $d_1,d_2\in\{0,1\}$, so by at most $1$, and all other coordinates are unchanged.
+\end{proof}
+
+\subsection{Proof of Theorem~\ref{thm:framework-dp}}
+\label{app:proof-privacy}
+
+\begin{proof}
+Take Algorithm~\ref{alg:topk} first.
+Each round invokes the exponential mechanism with budget $\epsilon_S/k$ on a utility of sensitivity $1/(1+\gamma)$ (Lemma~\ref{lem:selection-utility}), which is $(\epsilon_S/k)$-DP, and the Laplace mechanism with budget $\epsilon_H/k$ on a pair of histograms of $L_1$-sensitivity $2$ (Lemma~\ref{prop:histogram-release-sensitivity}), which is $(\epsilon_H/k)$-DP.
+Both calibrations are legitimate because $\gamma$ is a constant of the mechanism rather than a function of the input: by Eq.~\eqref{eq:gamma-rule} it is determined by $k$, $|\views|$, $|\Attrs|$ and the budget, all of which are fixed before the data is read, so the sensitivity bound it induces holds uniformly over all databases.
+The rounds are adaptive, since $u_i$ depends on the attributes already selected, but adaptive sequential composition applies~\cite{DBLP:series/synthesis/2016Li} and gives $k(\epsilon_S/k+\epsilon_H/k)=\epsilon_S+\epsilon_H$.
+The conditioning covers the candidate set as well as the utility: $C_i$ is fixed by $\widehat{\mathcal{P}}$ and by what has already been released, both of them outputs of earlier steps, so for a fixed history it is the same set on neighbouring databases.
+
+For Algorithm~\ref{alg:main}, view selection is $\epsilon_P$-DP by the guarantee of the one-shot top-$\tau$ mechanism~\cite{DurfeeRogers19} together with the bound $4/\bar N$ that the algorithm passes to the mechanism: on a neighbouring pair of sizes $n$ and $n+1$, both at least $\bar N$, Lemma~\ref{lem:usefulness} at base size $n+1\ge1/\alpha$ bounds the change of $\Use$ by $4/(n+1)\le4/\bar N$.
+This is the one place the hypothesis on $\bar N$ is used, and it is used for the calibration rather than for the bound: Lemma~\ref{lem:usefulness} already covers neighbours of different sizes, but the guarantee being invoked compares a \emph{single} mechanism on two inputs, and a $\Delta$ recomputed from each input would make the runs on $D$ and on $D'$ two different mechanisms.
+A $\Delta$ fixed from $\bar N$ before $D$ is read is the same on both.
+Candidate construction is post-processing.
+Sequential composition over the two stages gives $\epsilon_P+\epsilon_S+\epsilon_H=\epsilon$, so the pipeline as a whole is $\epsilon$-differentially private.
+\end{proof}
+
+\paragraph{Remarks on the public bound and on the release.}
+The size $N=|D|$ still appears inside the measures, in $\Cov$ and in $\gamma_R$, and Proposition~\ref{prop:stage-sensitivity} accounts for its change between neighbouring databases, so only $\bar N$ is assumed to be public.
+The size of a dataset is often published with it, as for the datasets of our experiments, where we set $\bar N=|D|$.
+When only a rough size is known, a conservative bound costs little, since with $\bar N=|D|/2$ the noise of the view stage doubles and the other two steps are unaffected.
+For the histograms, one tuple changes each of the two histograms of a candidate in at most one bin and by at most one, which gives the scale $2k/\epsilon_H$ of Line~7 of Algorithm~\ref{alg:topk}.
+Releasing only the difference of the two histograms would halve this scale (Lemma~\ref{prop:histogram-release-sensitivity}), at the price of hiding the two profiles from the analyst.
+
+\subsection{Proof of Proposition~\ref{prop:cqa-sensitivity}}
+\label{app:proof-cqa}
+
+\begin{proof}
+Let $D'=D\cup\{t\}$ with $|D|=N$, and let $\Gamma(t)\subseteq D$ be the set of tuples that are in a violation with $t$, so that $|\Gamma(t)|\le c$.
+The constraints are denial constraints, so every violation of $D'$ that is not a violation of $D$ involves $t$.
+Hence the tuples of $D$ that are involved in a violation in $D'$ are those involved in a violation in $D$ together with $\Gamma(t)$, and
+\[
+Q_\Sigma(D')=\big(Q_\Sigma(D)\setminus\Gamma(t)\big)\cup T ,
+\]
+where $T=\{t\}$ if $\Gamma(t)=\emptyset$ and $Q$ selects $t$, and $T=\emptyset$ otherwise.
+We go from $D$ to $D'$ in two steps.
+Step~A keeps the database and the first output and replaces the second output $Q_\Sigma(D)$ by $O=Q_\Sigma(D)\setminus\Gamma(t)$, which removes at most $c$ tuples; if $\Gamma(t)=\emptyset$, nothing changes in this step.
+Step~B adds $t$ to the database, to the first output if $Q$ selects it, and to the second output if $t\in T$.
+
+In step~B each output changes by at most the tuple $t$, and both outputs are subsets of the view before and after it.
+This is all that the proofs of Lemmas~\ref{lem:hd-sensitivity} and~\ref{lem:usefulness} and of Lemma~\ref{prop:histogram-release-sensitivity} use about the two outputs, so in step~B the usefulness of a view changes by at most $4/N$, the smoothed histogram distance of a candidate by at most $1/(1+\gamma)$, and its pair of histograms by at most $2$ in $L_1$ norm, and by at most $1$ if $\Gamma(t)\neq\emptyset$, since $t$ then does not enter the second output.
+
+In step~A, the removal of a tuple $u$ from the second output inside a view changes only the bin of $u$ in the second histogram, by one.
+The numerator of that bin in Eq.~\eqref{eq:hd-definition} changes by at most one, and its denominator is unchanged and at least $1+\gamma$, since $u$ belongs to the view; over at most $c$ removals, the smoothed histogram distance changes by at most $c/(1+\gamma)$ and the second histogram by at most $c$ in $L_1$ norm.
+Coverage decreases by at most $c/N$, and representativeness does not depend on the outputs and is at most $1$, so the usefulness changes by at most $c/N$.
+
+Adding the two steps gives $(4+c)/N$ for the usefulness and $(c+1)/(1+\gamma)$ for the smoothed histogram distance.
+For the pair of histograms it gives $c+1$ if $\Gamma(t)\neq\emptyset$, and $2\le c+1$ otherwise.
+\end{proof}
+
+\subsection{Proof of Proposition~\ref{prop:contrast-sensitivity}}
+\label{app:proof-contrast}
+
+\begin{proof}
+A tuple satisfies at most one of the two conditions.
+In the notation of the proof of Lemma~\ref{lem:usefulness}, the evidence $s=|Q_1(\pD)|+|Q_2(\pD)|$ therefore satisfies $s\le m$, so that $\Cov\le m/N\le1$, and a tuple that is added to the view changes $s$ by $\delta\in\{0,1\}$.
+
+\emph{Part (1).}
+We follow the proof of Lemma~\ref{lem:usefulness}, whose Steps~1 to~3 do not involve the outputs.
+Step~4 uses the outputs only through $\Cov\le2m/N$ and $|\chg\Cov|\le2m/(N(N+1))$, which are now $m/N$ and $m/(N(N+1))$.
+Each term of Eq.~\eqref{eq:use-split} carries one of these two factors, so the bound of Step~4 is halved, and $|\chg\Use|\le2/(N+1)$ when $\alpha(N+1)\ge1$.
+In Step~5, $(N+1)|\chg\Use|$ is again split into three terms.
+The first, $\Cov(1+\kappa\theta)/2$, is at most $\Cov/2+\frac{1}{2(1+\alpha)}$, by the same computation with $\Cov\le m/N$.
+The second, $\frac{\Cov}{2}\big|\frac{N+1}{M'}-1\big|$, is at most $\frac{\Cov}{2}\cdot\frac{N-m}{m}\le\frac{N-m}{2N}\le\frac12-\frac{\Cov}{2}$ if $M'\le N+1$, and at most $\frac{\Cov}{2}\cdot\frac{\alpha}{1+\alpha}$ otherwise.
+For the third, $|\chg\Cov|=|\delta N-s|/(N(N+1))\le\max(N-s,s)/(N(N+1))$, so it is at most $\frac{2+\alpha}{2(1+\alpha)}\max(1-\Cov,\Cov)$.
+If $M'\le N+1$, the three terms sum to at most
+\[
+\frac12+\frac{1}{2(1+\alpha)}+\frac{2+\alpha}{2(1+\alpha)}=\frac{2+\alpha}{1+\alpha} .
+\]
+If $M'>N+1$, they sum to at most
+\[
+\frac{\Cov}{2}\cdot\frac{1+2\alpha}{1+\alpha}+\frac{1}{2(1+\alpha)}+\frac{2+\alpha}{2(1+\alpha)}\max(1-\Cov,\Cov) ,
+\]
+which is convex in $\Cov\in[0,1]$ and hence largest at an endpoint, where it equals $\frac{3+\alpha}{2(1+\alpha)}$ for $\Cov=0$ and $\frac{4+3\alpha}{2(1+\alpha)}$ for $\Cov=1$.
+In every case $(N+1)|\chg\Use|\le\frac{4+3\alpha}{2(1+\alpha)}<2$, half of the general bound, and Step~6 gives $\Delta_{\Use}(N)\le2/N$ for $N\ge1/\alpha$.
+
+\emph{Part (2).}
+The upper bound is Lemma~\ref{lem:hd-sensitivity}.
+It is attained as in the proof of that lemma, by a bin that holds one tuple of the view, selected by $Q_1$ only, to which a tuple selected by $Q_2$ only is added, a configuration that mutually exclusive conditions allow.
+
+\emph{Part (3).}
+An added tuple falls in one bin of $A$ and is selected by at most one of the two queries, so it changes one coordinate of at most one of the two histograms, by one.
+\end{proof}
+
+\section{Additional Details}
+\label{app:details}
+
+\subsection{The Usable Range of the Smoothing Constant}
+\label{app:gamma-window}
+
+\begin{remark}[The usable range of $\gamma$]
+\label{rem:gamma-window}
+Eq.~\eqref{eq:gamma-rule} is a lower bound on a useful $\gamma$, and the measure imposes an upper bound.
+A bin $v$ in which the view holds $n_v=\hist{\pD}{A}(v)$ tuples contributes $\delta_v/(n_v+\gamma)$ to $\HD_\gamma$, where $\delta_v\le n_v$ is the disagreement between the two outputs in the bin.
+For $\gamma\ll n_v$ this is the relative disagreement $\delta_v/n_v$ that the measure is meant to report, but for $\gamma\gg n_v$ it becomes $\delta_v/\gamma$, and the bin is nearly silenced however strongly it changed.
+For a view of $m$ tuples spread over $b$ bins, the smoothing constant should therefore satisfy
+\begin{equation}
+\frac{2\ln(\tau|\Attrs|)}{\epsilon_i}\;\le\;\gamma\;\le\;\frac{m}{b},
+\label{eq:gamma-window}
+\end{equation}
+which is possible only if $m\ge 2b\ln(\tau|\Attrs|)/\epsilon_i$.
+A smaller view cannot yield a visible explanation at any $\gamma$; this is the resolution limit of \sys{}.
+\end{remark}
+
+\subsection{Complexity}
+\label{app:complexity}
+
+Let $|\mathcal{P}|$ be the number of candidate views, $a=|\Attrs|$ the number of explanation attributes, $r=|\mathcal{A}_R|$ the number of reference attributes, $b$ the maximum number of bins per attribute, and $N=|D|$.
+Computing $\Use$ for every view costs $O(|\mathcal{P}|\,r\,N)$ by the direct route of one pass over $D$ per view, since $\Rep_{\gamma_R}$ averages over the reference attributes and every view needs its own histogram on each of them; the one-shot top-$\tau$ mechanism adds $O(|\mathcal{P}|\log\tau)$, one Gumbel draw per view and a heap of size $\tau$.
+Materialising the bin vectors of the $\tau$ retained views over the $a$ explanation attributes costs $O(\tau a N)$.
+Scoring is then paid once rather than once per round.
+Because $\gamma$ is fixed by Eq.~\eqref{eq:gamma-rule}, $\HD_\gamma(p,A)$ is the same number in every round, so the $\tau a$ values are computed once in $O(\tau a b)$; a round only rescales each of them by its diversity factor, samples, and perturbs the two histograms of the winner, which is $O(\tau a+b)$.
+The total is
+\[
+O\!\left(|\mathcal{P}|\,r\,N + \tau a\, N + \tau a b + k(\tau a + b)\right)
+= O\!\left(\big(|\mathcal{P}|\,r + \tau a\big)N\right),
+\]
+because $b\le N$ and $k\le N$.
+The two data-dependent terms therefore absorb everything else, and the $k$ selection rounds cost $O(k(\tau a+b))$ and are independent of $N$.
+Of the two terms, only the first is independent of $k$ as well as of $\epsilon$; the second carries $\tau=\min(3k,|\mathcal{P}|)$.
+
+\subsection{Contrasts Between Groups: Details}
+\label{app:contrast-shares}
+
+We expand on Section~\ref{subsec:ext-contrast}.
+
+\paragraph{Setting.}
+DPXPlain~\cite{TaoGMR22} considers an analyst who receives noisy answers to a group-by query
+\[
+\texttt{SELECT } A_{gb},\, agg(A_{agg})
+\texttt{ FROM } D
+\texttt{ WHERE } \varphi
+\texttt{ GROUP BY } A_{gb} ,
+\]
+with $agg\in\{\texttt{COUNT},\texttt{SUM},\texttt{AVG}\}$, and asks why the aggregate value $o_1$ of a group $g_1$ is larger than the value $o_2$ of a group $g_2$.
+Instead of treating the group-by query as one query, we read it as one query per group, in which the aggregate is applied to the selection $\sigma_{\varphi\wedge A_{gb}=g}(D)$, as $Q_1$ of Example~\ref{ex:intro} applies \texttt{AVG} to a selection.
+The question is then the pair $Q_1=\sigma_{\varphi\wedge A_{gb}=g_1}$ and $Q_2=\sigma_{\varphi\wedge A_{gb}=g_2}$, and an explanation shows in which region of the data, and in which attribute, the two populations whose aggregate values differ are composed differently.
+
+\begin{example}
+\label{ex:contrast}
+DPXPlain's default question on its extract of the Current Population Survey asks why men have a higher average total income (\texttt{INCTOT}) than women; $Q_1$ selects the men and $Q_2$ the women.
+An explanation for this pair is, for instance, a view on a range of low incomes together with an attribute such as the employment status, whose two histograms show how the men and the women in this range differ in number and in employment.
+\end{example}
+
+\paragraph{Views and attributes.}
+A view that constrains $A_{gb}$ is reached by at most one output whatever the data, and a candidate with the attribute $A_{gb}$ places the two outputs in different bins, so such candidates would obtain the highest scores while stating only the definition of the groups.
+We therefore remove $A_{gb}$ from the attributes of the views and from $\Attrs$, a choice that depends on the query alone.
+The aggregated attribute, in contrast, is kept, bucketised if it is numerical: a view on a range of $A_{agg}$ in which one group outnumbers the other, as in Example~\ref{ex:contrast}, or a candidate with the attribute $A_{agg}$, relates the explanation directly to the two aggregate values.
+
+\paragraph{The question and its privacy cost.}
+The question is posed on noisy aggregate values, whose release is outside \sys{}, like the refinement mechanism, and whose privacy cost composes with ours.
+Because of the noise, the observed order of the two values may not hold in the data; DPXPlain tests this with a confidence interval for $o_1-o_2$ that it derives from the noisy answers at no privacy cost~\cite{TaoGMR22}, and the same test can precede \sys{}.
+
+\paragraph{Other questions.}
+A comparison of a group with all the others is the pair $Q_1=\sigma_{\varphi\wedge A_{gb}=g_1}$ and $Q_2=\sigma_{\varphi\wedge A_{gb}\neq g_1}$, whose conditions are again mutually exclusive, so Proposition~\ref{prop:contrast-sensitivity} applies to it as well.
+
+\paragraph{Reading aggregate values from a release.}
+The released histograms relate an explanation to the aggregate by post-processing, at no privacy cost: the bars of a group in a view sum to an estimate of its \texttt{COUNT} in the view, and when the attribute of the candidate is $A_{agg}$, its histogram gives estimates of the \texttt{SUM} and the \texttt{AVG} of the group in the view, exactly up to the noise if $A_{agg}$ is categorical and up to the width of the buckets otherwise.
+
+\paragraph{Counts and shares.}
+The smoothed histogram distance compares the two histograms in counts.
+This suits a refinement, where the question is which tuples left and entered the output, and questions on \texttt{COUNT} and \texttt{SUM}, which the number of tuples drives.
+An \texttt{AVG} question concerns instead the \emph{shares} of the two groups that fall in a bin, and when the groups differ in size the counts reflect the size as well: if $Q_1(D)$ is three times as large as $Q_2(D)$ and the two are distributed identically, every non-empty bin of every view still contributes to $\HD_\gamma$.
+Normalising each histogram by the size of its group would bring back the ratios of Proposition~\ref{prop:sensitivity-itemized}.
+A remedy that keeps the sensitivity low is to name the larger group $Q_1$ and to weight the counts of $Q_2$ by a public constant $\rho\ge1$ that approximates $|Q_1(D)|/|Q_2(D)|$, for example the ratio of the noisy group counts when these were released.
+The numerator of every bin in Eq.~\eqref{eq:hd-definition} becomes $|\hist{\Qone(\pD)}{A}(v)-\rho\,\hist{\Qtwo(\pD)}{A}(v)|$, which for an exact $\rho$ is $|Q_1(D)|$ times the difference between the shares of the two groups that fall in the bin.
+The sensitivity of the resulting score is at most $\rho/(1+\gamma)$, for any two selection queries.
+Indeed, in the notation of the proof of Lemma~\ref{lem:hd-sensitivity}, the numerators are now $x=|q_1-\rho q_2|$ and $x'=|q_1'-\rho q_2'|$, so that $0\le x\le\rho n$ and $|x'-x|\le|\delta_1-\rho\delta_2|\le\rho$.
+The two chains of that proof become
+\[
+\frac{x+\rho}{n+1+\gamma}-\frac{x}{n+\gamma}=\frac{\rho(n+\gamma)-x}{K}\le\frac{\rho}{n+1+\gamma}
+\]
+and
+\[
+\frac{x}{n+\gamma}-\frac{x-\rho}{n+1+\gamma}=\frac{x+\rho(n+\gamma)}{K}\le\frac{\rho(2n+\gamma)}{K} ,
+\]
+and both are at most $\rho/(1+\gamma)$, the second by step~$(\star)$; in the case $n=\gamma=0$ the new term is $x'\le\rho$.
+The exponential mechanism is then calibrated to $\rho/(1+\gamma)$, and the released histograms are unchanged.
+We have not evaluated this variant.
+
+\paragraph{Privacy accounting.}
+DPXPlain uses the same unbounded neighbouring relation as we do.
+Its accounting uses zero-concentrated differential privacy~\cite{bun2016}, which $\epsilon$-differential privacy implies with parameter $\epsilon^2/2$, so the cost of \sys{} can be added to that of the noisy answers in either framework.
+The explanations of \sys{} do not depend on the direction of the comparison, since $\HD_\gamma$ is symmetric in the two outputs.
+
+\subsection{Consistent Query Answering: Details}
+\label{app:cqa-details}
+
+We expand on Section~\ref{subsec:ext-cqa}.
+
+\paragraph{Background.}
+Given a set $\Sigma$ of denial constraints that $D$ violates, such as functional dependencies, a \emph{repair} of $D$ is a maximal subset of $D$ that satisfies $\Sigma$, and the \emph{consistent answer} $Q_\Sigma(D)$ to a query $Q$ is the set of tuples that $Q$ returns on every repair~\cite{arenas1999,bertossi2006,bertossi2011}; for a selection query, these are the tuples of $Q(D)$ that are involved in no violation~\cite{chomicki2004}.
+The pair to explain is $(Q(D),Q_\Sigma(D))$: the analyst wants to know which part of the selected population the inconsistencies remove, and whether they remove it evenly.
+
+\begin{example}
+\label{ex:cqa}
+In the dirty version of the Tax file of Section~\ref{sec:experiments}~\cite{MahdaviAFMOST19}, the consistent answer to a query that selects the taxpayers of the five Pacific states drops $12\%$ of the selected tuples under seven integrity rules, but Alaska loses half of its tuples and every other state at most $7\%$, which raises the average tax rate from $4.74$ to $5.23$.
+% (with the CQA experiments) In the Tax-dirty dataset of Section~\ref{sec:experiments}, ... from $4.74$ to $5.23$ (Figure~\ref{fig:case-c1}).
+\end{example}
+
+\paragraph{Why the analysis does not carry over.}
+For selections, adding a tuple $t$ to $D$ changes each output by at most $t$.
+For the consistent answer, let $\Gamma(t)\subseteq D$ be the set of tuples that are in a violation with $t$.
+Adding $t$ creates no violation among the other tuples, so $Q_\Sigma(D\cup\{t\})$ is $Q_\Sigma(D)\setminus\Gamma(t)$, together with $t$ itself if $\Gamma(t)=\emptyset$ and $Q$ selects $t$.
+A single tuple can thus remove $|\Gamma(t)|$ tuples from the second output: under $\texttt{AreaCode}\to\texttt{State}$, for instance, one tuple with an existing area code and a different state puts every tuple with that area code in conflict.
+Since $|\Gamma(t)|$ is unbounded, the sensitivities of Proposition~\ref{prop:stage-sensitivity} no longer hold.
+
+\paragraph{Option 1: the algorithm under bounded conflicts.}
+The algorithms adapt by a change of scales only: the view stage is calibrated to $(4+c)/\bar N$, the exponential mechanism of the explanation stage to $(c+1)/(1+\gamma)$, so that Eq.~\eqref{eq:gamma-rule} becomes $\gamma=2(c+1)\ln(\tau|\Attrs|)/\epsilon_i$, and the Laplace noise has scale $(c+1)k/\epsilon_H$.
+Theorem~\ref{thm:framework-dp} then holds over the databases of size at least $\bar N$ that satisfy the bound.
+The price is noise that grows linearly with $c$, which is acceptable for small $c$, whereas a dependency whose left-hand side is shared by many tuples admits no small bound.
+The bound then has to be enforced, for example by projecting the conflict graph onto a graph of bounded degree, as is done under node differential privacy~\cite{KasiviswanathanNRS13,DayLL16} and for measures of inconsistency~\cite{MohapatraGHK25}; we leave the analysis of such a projection for future work.
+
+\paragraph{Option 2: the annotated database.}
+The server holds the database $D^\Sigma$ in which every tuple carries a Boolean attribute that states whether it is involved in a violation, and the second query selects the tuples that $Q$ selects and that are not flagged.
+Both outputs are then selections over $D^\Sigma$, so the measures, the sensitivities and the algorithms apply unchanged.
+What changes is the guarantee: \sys{} is $\epsilon$-differentially private with respect to neighbouring \emph{annotated} databases, so it protects the presence of a tuple given the flags of the other tuples, but not the effect of the tuple on those flags, whose privacy cost belongs to the annotation step and composes with ours.
+
+\section{Attributes of the Datasets}
+\label{app:attributes}
 
 \input{sections/attributes_table}
 \input{sections/pairs_table}

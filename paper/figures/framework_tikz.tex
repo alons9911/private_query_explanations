@@ -1,0 +1,42 @@
+% Architecture of PEEQ (Figure 1). Single-column TikZ replacement for
+% figures/framework.png. Requires tikz with the libraries positioning,
+% arrows.meta, fit and backgrounds (loaded in main.tex).
+\definecolor{peeqblue}{RGB}{45,95,150}
+\definecolor{peeqorange}{RGB}{196,88,32}
+\begin{tikzpicture}[
+  font=\scriptsize,
+  >={Stealth[length=1.5mm,width=1.2mm]},
+  stage/.style={draw=peeqblue, line width=0.5pt, rounded corners=1.5pt, fill=white,
+                align=center, inner xsep=1.5pt, inner ysep=2.5pt, minimum height=11mm},
+  flow/.style={->, line width=0.5pt, draw=black!75},
+]
+% --- the three private steps inside the server ---
+\node[stage, text width=19mm] (view)
+  {\textbf{View stage}\\ top-$\tau$ views\\ by $\Use$ \,{\color{peeqblue}($\epsilon_P$)}};
+\node[stage, text width=26mm, right=3mm of view] (expl)
+  {\textbf{Explanation stage}\\ $k$ rounds by $\HD_\gamma\cdot\DivS$\\ {\color{peeqblue}($\epsilon_S$)}};
+\node[stage, text width=19mm, right=3mm of expl, draw=peeqorange, fill=peeqorange!10] (rel)
+  {\textbf{Release}\\ noisy pairs of\\ histograms \,{\color{peeqorange}($\epsilon_H$)}};
+\draw[flow] (view) -- (expl);
+\draw[flow] (expl) -- (rel);
+% --- trusted server ---
+\node[anchor=south west, inner sep=0pt, text=peeqblue] (srvlabel)
+  at ([yshift=1.8mm]view.north west)
+  {\textbf{Trusted server} (holds $D$),\; $\epsilon=\epsilon_P+\epsilon_S+\epsilon_H$};
+\begin{scope}[on background layer]
+\node[draw=peeqblue!70, dashed, line width=0.5pt, rounded corners=3pt, fill=peeqblue!6,
+      inner xsep=1.5mm, inner ysep=1.5mm, fit=(view)(expl)(rel)(srvlabel)] (server) {};
+\end{scope}
+% --- analyst and the origin of Q2 ---
+\path (expl.north |- server.north) ++(0,8.5mm)
+  node[draw=black!75, line width=0.5pt, rounded corners=1.5pt, inner xsep=4pt, inner ysep=2.5pt]
+  (analyst) {\textbf{Analyst}};
+\node[draw=black!45, dashed, rounded corners=1.5pt, inner sep=2pt, text=black!65, align=center,
+      anchor=west] (origin) at (server.west |- analyst) {refinement\\ mechanism};
+\draw[flow, dashed, draw=black!55] (origin) -- node[above, inner sep=1.5pt, text=black!65] {$Q_2$} (analyst);
+% --- what crosses the boundary of the server ---
+\draw[flow] (analyst.south) -- (analyst.south |- server.north)
+  node[midway, left, inner sep=2pt] {$Q_1,\,Q_2,\,\views,\,\Attrs,\,k,\,\epsilon$};
+\draw[flow, draw=peeqorange, line width=0.7pt] (rel.north) |- (analyst.east)
+  node[pos=0.75, above, inner sep=1.5pt, text=peeqorange] {$k$ explanations};
+\end{tikzpicture}%

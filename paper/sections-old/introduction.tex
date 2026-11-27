@@ -1,0 +1,131 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Several lines of work in data management change the result of a query to meet a requirement that the query itself does not state.
+Query-refinement systems rewrite the selection predicates of a query so that its output satisfies diversity or representation constraints~\cite{LMSJ23,ERICA,SSAD22,CSSM24}, and consistent query answering evaluates a query over the repairs of a database that violates its integrity constraints~\cite{arenas1999,bertossi2006,bertossi2011}.
+In both cases the analyst ends up with two related outputs over the same data and has to decide whether the second one still serves the purpose of the first.
+The two queries show which predicates changed, but not which tuples left the output, which ones entered it, or how the selected population differs as a result.
+The same question arises when an analyst compares two groups of a table directly~\cite{BayPazzani01,TaoGMR22}, or two versions of a query written by hand.
+We next illustrate the problem with an example.
+
+\begin{example}[Refinement on the Adult dataset]
+\label{ex:intro}
+An analyst studies income among highly educated people who work long hours, using the Adult census dataset~\cite{adult-uci}.
+Table~\ref{tab:intro-records} shows five simplified records.
+
+\begin{center}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{c|c|c|c|c|c}
+id & gender & education & occupation & hoursPerWeek & income \\
+\hline
+1 & Male   & Bachelors & Exec-managerial & 60 & 1 \\
+2 & Male   & Bachelors & Prof-specialty  & 55 & 1 \\
+3 & Female & Masters   & Prof-specialty  & 40 & 0 \\
+4 & Female & Masters   & Adm-clerical    & 35 & 0 \\
+5 & Male   & Masters   & Exec-managerial & 52 & 1 \\
+\end{tabular}%
+}
+\captionof{table}{Simplified Adult records. The attribute
+\texttt{income} is $1$ for people earning more than 50K a year and $0$
+otherwise.}
+\label{tab:intro-records}
+\end{center}
+
+\noindent The analyst's query $Q_1$ computes the fraction of high earners:
+
+\begin{lstlisting}
+SELECT AVG(income) AS highIncomeRate
+FROM Adult
+WHERE education IN ('Bachelors','Masters')
+  AND hoursPerWeek >= 50;
+\end{lstlisting}
+
+\noindent The analyst also requires that at least $25\%$ of the selected people be women.
+The output of $Q_1$ contains $19.5\%$ women, so a refinement mechanism rewrites the predicate, giving the query $Q_2$ (changes in bold):
+
+\begin{lstlisting}[escapeinside={(*@}{@*)}]
+SELECT AVG(income) AS highIncomeRate
+FROM Adult
+WHERE education = (*@\textbf{'Masters'}@*)
+  AND hoursPerWeek >= (*@\textbf{30}@*);
+\end{lstlisting}
+
+\noindent The share of women in the output of $Q_2$ is $30.6\%$, and the constraint is met.
+On the records of Table~\ref{tab:intro-records}, $Q_1$ selects tuples $1$, $2$ and $5$, and $Q_2$ selects $3$, $4$ and $5$: the refinement drops the two Bachelor's degree holders and adds two women with Master's degrees who work $35$ and $40$ hours a week.
+The rate of high earners falls from $1$ to $1/3$, which reflects a change in who is counted rather than in anyone's income.
+We use $Q_1$ and $Q_2$ as a running example throughout the paper.
+\end{example}
+
+% NOTE: the counts and percentages in this section are those of pair A2 in
+% Section~\ref{sec:usecase-results}; keep the two in sync.
+The refined query differs from the original in two constants, yet most of the people in each output are not in the other.
+On the full dataset the refinement removes $2{,}181$ of the $3{,}055$ people selected by $Q_1$, all of them Bachelor's degree holders, and adds $1{,}579$ Master's degree holders who work between $30$ and $49$ hours a week; only $874$ people are selected by both queries.
+Comparing the two rates of high earners therefore means comparing two different populations.
+Before relying on the refined query, the analyst would want to know how these populations differ apart from gender: whether the Master's degree holders it adds resemble those it already selected, and what kind of people it removes.
+Answering these questions requires statistics over the census records of individual people.
+
+Such data is sensitive, as is much of the data to which refinement and repair are applied, such as demographic, financial, medical or employment records.
+Organisations that hold such data are increasingly interested in letting external analysts explore it without seeing the records~\cite{GeHIM19}, and in that setting an explanation computed from exact counts is itself a release of information about the data.
+A histogram over a small region of the database can disclose information about the few people in it, and an analyst who receives several explanations, possibly for several query pairs, can combine them.
+Differential privacy (DP)~\cite{DMNS2006,TheAlgFoundDP2014} addresses this risk with a formal guarantee: the distribution of what is released changes only slightly when the record of any one person is added to or removed from the database.
+The U.S.\ Census Bureau adopted it for the publications of the 2020 Census~\cite{Abowd18}, and private query systems answer aggregate SQL queries under it~\cite{mcsherry2009,JNS18,JNHS20}.
+
+Explaining query results has been studied extensively in data management.
+Explanations of aggregate answers have been based on intervention~\cite{RoyS14,wu2013}, counterbalancing patterns~\cite{MZGR19} and provenance~\cite{buneman2001,herschel2017}, and work on data exploration and data mining describes how a subset of the data differs from a reference, by the distributions of its attributes~\cite{SeeDB,FEDEX} or by patterns whose support differs between the two~\cite{BayPazzani01,MacroBase} (see Section~\ref{sec:related}).
+Closer to our setting, work on query debugging explains why two queries differ by a small part of the database on which their results differ~\cite{MiaoRY19}.
+These methods compute their explanations from exact statistics over the data, and some of them return tuples of the database.
+DPXPlain~\cite{TaoGMR22} and DPClustX~\cite{DPClustX} provide explanations under DP, the first for why the aggregate values of two groups in a group-by query differ, and the second for the clusters of a clustering.
+Neither addresses a pair of outputs in which one is derived from the other.
+Such outputs usually overlap, one may contain the other, and the question is how the composition of the selected population changed, not why one aggregate value is larger than another.
+
+We are not aware of prior work that, under DP, explains how the tuples selected by two queries differ, rather than why two aggregate values differ, and the problem raises several challenges.
+First, an explanation has to describe what changed rather than what the two outputs share, and much of the change may lie in regions of the data that only one output reaches, such as the Bachelor's degree holders in Example~\ref{ex:intro}.
+The measures used in prior work break down in such regions: a distance between the distributions an attribute takes in the two outputs~\cite{SeeDB,FEDEX} is undefined there, and a two-sided support, the product of the two output counts, is zero.
+Second, these measures are ratios whose denominators are the sizes of the groups being compared, and these groups can be small.
+A single tuple can move the distance between two distributions by half of its range, and the representativeness of a region by almost half of its range, however large the database (Section~\ref{subsec:ideal-sensitivity}).
+A private selection mechanism calibrates its noise to this worst case, and at that scale it cannot tell good candidates from poor ones.
+Third, a useful explanation has to meet several criteria at once: a large difference inside the region, a region that holds much of the two outputs and resembles the rest of the database, and an attribute that other explanations have not already used.
+Combining criteria into one score is costly under DP, since the sensitivity of a product depends on the level of each factor and not only on how much each one can move, and returning several explanations splits the budget across several selections.
+
+In this paper, we propose a framework for explaining the difference between two query outputs under $\epsilon$-DP.
+A trusted server holds the database and receives the two queries, and only the released explanations leave it (Figure~\ref{fig:framework}).
+The second query is an input to the framework: if the mechanism that produced it read the database, its privacy cost adds to ours and is outside the scope of this paper (Section~\ref{subsec:private-query-difference-setting}).
+An explanation consists of a \emph{view}, a predicate of a few conditions that selects a region of the database, and an attribute.
+It is released as the two noisy histograms of the attribute over the two outputs restricted to the view, and so says where the outputs differ and in what respect, also when only one of them meets the view.
+To rank candidate explanations, we adapt four criteria from the explanation literature (interestingness, representativeness, coverage and diversity) to a pair of outputs, and smooth them so that their sensitivity is low.
+The framework then selects explanations in two private stages.
+It first retains a small set of views by representativeness and coverage, which do not depend on the attribute, and then selects explanations from the retained views by interestingness, discounting attributes that have already been used, and releases their histograms with Laplace noise.
+We illustrate the framework on the running example.
+
+\begin{example}[Explanations for the running example]
+\label{ex:intro-output}
+The analyst submits $Q_1$ and $Q_2$ together with the candidate views, more than a thousand conjunctions of at most two conditions, ten explanation attributes, $k=5$ and a budget of $\epsilon=1$.
+In the first stage the server retains $15$ views.
+Views on Master's degree holders are retained in every release; the two outputs together place $3{,}327$ tuples in the view $\texttt{education}=\texttt{Masters}$.
+Figure~\ref{fig:case-a2} in Section~\ref{sec:usecase-results} shows the five explanations of one release.
+The first describes Master's degree holders by \texttt{occupation}.
+In the refined output, $49\%$ of them work in professional-specialty occupations and $31\%$ as executives or managers, against $41\%$ and $41\%$ in the original output, so the refinement also changes the occupational mix of this group.
+Once \texttt{occupation} has been used, the following rounds discount it.
+The remaining explanations describe the same group by \texttt{relationship} and by \texttt{workclass}, where the refined output has more local and state government employees, and white Master's degree holders by \texttt{age} and by \texttt{maritalStatus}.
+The bars are noisy, with a standard deviation of about $42$ per bar, so the large bars can be read and the smallest ones cannot.
+Repeated releases differ.
+Every release explains Master's degree holders by \texttt{occupation}, \texttt{relationship} and \texttt{workclass}, although not always through the same view, and the exact explanations of Figure~\ref{fig:case-a2} recur in two to seven of ten releases.
+The largest change, the removal of the Bachelor's degree holders, appears in only three of the ten releases, for reasons we discuss in Section~\ref{sec:usecase-results}.
+\end{example}
+
+The guarantee has a cost, and the example already shows part of it.
+Noise calibrated to the worst case hides changes in small regions, and the framework favours changes that are large relative to the support of each bin, which are not always the changes an analyst would look at first.
+Selecting views before explanations keeps the explanations on regions that hold much of both outputs, at the price of a lower difference score than a selection over all views would reach (Section~\ref{subsec:quality}).
+
+\paragraph{Contributions and roadmap.}
+After giving background and notation in Section~\ref{sec:preliminaries}, we make the following contributions.
+\begin{itemize}[leftmargin=*]
+\item We formalise the problem of explaining the difference between two query outputs over the same private database under DP (Section~\ref{subsec:private-query-difference-setting}). The mechanism that produced the second query is treated as a black box, so the same formulation covers query refinement, consistent query answering and the comparison of two groups.
+\item We define measures of explanation quality for a pair of outputs and analyse their sensitivity (Sections~\ref{sec:explanation-quality}--\ref{subsec:two-stages}). We show that the forms used in prior work have a global sensitivity that does not decrease with the size of the database, and give smoothed forms whose sensitivity is $1/(1+\gamma)$ for the interestingness of a candidate and at most $4/N$ for the score of a view.
+\item We present a two-stage algorithm that selects views, then explanations, and releases noisy histograms (Section~\ref{sec:solution}). It satisfies $\epsilon$-DP on databases of at least a public size $\bar N$, and the number of retained views and the smoothing constant are derived from public quantities, so the analyst does not need to tune them. Without noise, its second stage returns an exact maximiser of the set-level objective over the retained candidates (Appendix~\ref{app:greedy}).
+% NOTE: numbers from Section~\ref{subsec:quality} and Section~\ref{subsec:scalability};
+% update after the running-time experiments are rerun.
+\item We evaluate the framework on six datasets and $44$ query pairs, $27$ of them taken from Erica~\cite{LMSJ23} and DPXPlain~\cite{TaoGMR22}, with case studies in each of the three settings (Section~\ref{sec:experiments}). At $\epsilon=1$ it reaches $0.91$--$0.96$ of the best non-private selection over the same candidate views on three of the datasets, and outside consistent query answering it agrees with that selection on $72$--$87\%$ of the explained attributes, against $32$--$46\%$ by chance. Small differences and small databases remain harder. Privacy adds no measurable running time.
+\end{itemize}
+
+\noindent Section~\ref{sec:related} discusses related work.

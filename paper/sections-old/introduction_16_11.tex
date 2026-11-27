@@ -1,0 +1,235 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Modern data-management systems increasingly modify query results
+in order to satisfy external requirements such as fairness,
+representation, diversity, consistency, and data-quality constraints.
+Examples include fairness-aware query refinement systems that modify
+query predicates to satisfy demographic constraints
+\cite{ERICA,MK09},
+provenance-based frameworks for bias analysis and mitigation
+\cite{LMSJ23},
+and consistent query answering (CQA) systems that repair
+inconsistent databases before evaluating queries
+\cite{arenas1999,bertossi2006,bertossi2011}.
+Although these approaches successfully enforce the desired constraints,
+they often introduce substantial semantic changes whose consequences
+are difficult for users to understand.
+
+To illustrate the problem, consider the following aggregate query over
+the Adult dataset. The query computes the average capital gain among
+highly educated individuals who work long hours. \ag{Revise queries to have AVG or SUM, add example tuples for the dataset, highlight the changes in the query, and place in an example enviroment.} \alon{Addressed: income- based aggregation, example tuples and highlighting the changes in the query}
+\begin{example}[Query refinement over the Adult dataset]
+Consider the following simplified records from the Adult dataset:
+
+\begin{center}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{c|c|c|c|c|c}
+id & gender & education & occupation & hoursPerWeek & income \\
+\hline
+1 & Male   & Bachelors & Exec-managerial & 60 & 1 \\
+2 & Male   & Bachelors & Prof-specialty  & 55 & 1 \\
+3 & Female & Masters   & Prof-specialty  & 40 & 0 \\
+4 & Female & Masters   & Adm-clerical    & 35 & 0 \\
+5 & Male   & Masters   & Exec-managerial & 52 & 1 \\
+\end{tabular}%
+}
+\captionof{table}{Simplified Adult records. The binary attribute
+\texttt{income} equals 1 for individuals earning more than 50K and 0
+otherwise.}
+\end{center}
+
+The original query computes the fraction of high-income individuals
+among highly educated employees who work long hours:
+
+\begin{lstlisting}
+SELECT AVG(income) AS highIncomeRate
+FROM Adult
+WHERE education IN ('Bachelors','Masters')
+  AND hoursPerWeek >= 50;
+\end{lstlisting}
+
+Suppose that the population selected by this query violates a
+representation constraint requiring at least 25\% female records.
+A query-refinement mechanism may therefore produce the following
+refined query, where the modified predicate values are shown in bold:
+
+\begin{lstlisting}[escapeinside={(*@}{@*)}]
+SELECT AVG(income) AS highIncomeRate
+FROM Adult
+WHERE education = (*@\textbf{'Masters'}@*)
+  AND hoursPerWeek >= (*@\textbf{30}@*);
+\end{lstlisting}
+
+The refined query changes the population over which the aggregate is
+computed. In the simplified records above, ids 1 and 2 may be removed
+because their education level is Bachelors, while ids 3 and 4 may be
+added because the hours-per-week threshold was relaxed. Thus, the
+refinement does not merely change the aggregate value; it changes the
+underlying population whose income distribution is being summarized.
+
+For example, the refinement may increase female representation from
+19.5\% to 30.6\%, thereby satisfying the representation constraint.
+However, understanding why the refinement succeeds is more difficult
+than verifying that the constraint is satisfied. Did the refinement
+simply introduce more women into the result? Did it alter the
+occupational composition of the selected population? Did it change the
+income distribution? Did it affect particular demographic groups?
+\end{example}
+
+As we show later, the refinement succeeds not merely because it
+increases female representation, but because it replaces a
+population dominated by high-income workers with intensive work
+schedules by a substantially different population with distinct
+occupational and economic characteristics.
+Understanding and communicating such semantic changes is the
+central goal of this work.
+
+Although existing refinement systems provide the modified query,
+they offer limited support for explaining the semantic consequences
+of the refinement \cite{ERICA,MK09}.
+
+The same challenge arises beyond query refinement.
+In consistent query answering, the answer produced from a repaired
+database may differ substantially from the answer obtained from the
+original inconsistent database
+\cite{arenas1999,bertossi2006,bertossi2011}.
+Similarly, data-cleaning pipelines, provenance-based bias-mitigation
+frameworks, and fairness-aware analytics frequently generate multiple
+related query outputs whose semantic differences must be understood
+and justified \cite{LMSJ23,MLJ22}.
+
+A natural solution is to provide explanations describing the
+semantic differences between two query outputs.
+However, generating such explanations is challenging.
+
+First, multiple semantic factors may simultaneously contribute
+to the observed difference between two query outputs.
+Changes in demographic composition, education levels, occupations,
+income distributions, or family characteristics may all contribute
+to the observed transformation.
+Identifying the most informative factors is therefore non-trivial.
+
+Second, explanations must characterize the \emph{difference}
+between two outputs rather than the properties of either output
+in isolation.
+Many characteristics may be common to both outputs and therefore
+irrelevant to understanding the observed change.
+
+Third, explanations are often derived from sensitive demographic,
+financial, medical, or employment data.
+Releasing exact explanation statistics may inadvertently reveal
+information about specific individuals.
+Consequently, explanation generation must provide meaningful
+insight while satisfying strong privacy guarantees
+\cite{TheAlgFoundDP2014}.
+
+Existing work studied query refinement under diversity constraints
+\cite{ERICA,MK09},
+fairness-aware data processing and bias mitigation
+\cite{MLJ22,LMSJ23,barocas-hardt-narayanan},
+and database repairs and consistent query answering
+\cite{arenas1999,bertossi2006,bertossi2011}.
+
+The database community has also developed several approaches for
+explaining query results and data transformations.
+Examples include provenance-based explanations,
+interactive explanation systems such as FEDEX \cite{FEDEX},
+Tableau Explain Data \cite{TabEE},
+and recent differentially private explanation frameworks such as
+DPXPlain \cite{TaoGMR22}.
+
+However, these approaches focus primarily on explaining a single
+query result, a prediction, or a data transformation.
+They do not address the problem of explaining the semantic
+differences between two related query outputs, such as an original
+query and its refined version or a query evaluated before and after
+a database repair.
+
+Furthermore, existing explanation systems typically assume direct
+access to the underlying statistics or focus on releasing local
+explanations.
+To the best of our knowledge, no prior work provides a framework
+for generating \emph{differentially private explanations of semantic
+differences between related query outputs}.
+
+In this paper, we address this gap by introducing a framework for
+generating differentially private explanations of query-output
+differences.
+Rather than explaining a query result in isolation, we focus on
+explaining the semantic changes between two related outputs,
+such as an original query and its refined version or a query
+evaluated before and after a database repair.
+
+Our framework identifies informative explanations through a
+two-stage process.
+
+First, it privately selects promising semantic regions of the
+data according to two complementary criteria:
+
+\begin{itemize}
+
+\item \textbf{Representativeness},
+which favors regions supported by statistically meaningful
+portions of the underlying dataset.
+
+\item \textbf{Coverage},
+which measures the amount of query-output evidence contained in
+a region and favors regions supported by substantial numbers of
+tuples from the compared query outputs.
+
+\end{itemize}
+
+The framework then privately selects explanations from the chosen
+regions according to two additional criteria:
+
+\begin{itemize}
+
+\item \textbf{Interestingness},
+which measures the extent to which an attribute distribution
+differs between the two query outputs.
+
+\item \textbf{Diversity},
+which encourages the selected explanations to highlight different
+attributes and therefore provide multiple perspectives on the
+observed query transformation.
+
+\end{itemize}
+
+The framework first privately selects promising semantic regions
+of the data, then privately chooses explanation candidates using
+their interestingness and diversity contribution, and finally
+releases noisy histogram summaries using standard differential
+privacy mechanisms \cite{TheAlgFoundDP2014}.
+
+The resulting explanations provide meaningful insight into the
+effects of query refinements and repairs while preserving
+individual privacy.
+
+Although motivated by fairness-aware query refinement, the
+proposed framework naturally generalizes to a broad range of
+data-management tasks, including data cleaning, provenance
+analysis, query debugging, and consistent query answering.
+Our main contributions are as follows:
+
+\begin{itemize}
+
+\item We introduce the problem of generating differentially private
+explanations for semantic differences between related query outputs.
+
+\item We propose a view-based explanation model and a utility
+framework that combines representativeness, coverage,
+interestingness, and diversity.
+
+\item We develop a differentially private explanation-generation
+algorithm that combines private view selection, private explanation
+selection, and noisy histogram release.
+
+\item We provide formal privacy guarantees for the complete
+explanation pipeline.
+
+\item We experimentally evaluate the framework on multiple
+real-world datasets and demonstrate that it produces informative
+and interpretable explanations while preserving privacy.
+
+\end{itemize}

@@ -155,21 +155,13 @@ pages = {3854–3868},
 numpages = {15}
 }
 
-@article{ICDE23,
-  author       = {Yuval Moskovitch and
-                  Jinyang Li and
-                  H. V. Jagadish},
-  title        = {Detection of Groups with Biased Representation in Ranking},
-  journal      = {CoRR},
-  volume       = {abs/2301.00719},
-  year         = {2023},
-  url          = {https://doi.org/10.48550/arXiv.2301.00719},
-  doi          = {10.48550/arXiv.2301.00719},
-  eprinttype    = {arXiv},
-  eprint       = {2301.00719},
-  timestamp    = {Tue, 10 Jan 2023 15:10:12 +0100},
-  biburl       = {https://dblp.org/rec/journals/corr/abs-2301-00719.bib},
-  bibsource    = {dblp computer science bibliography, https://dblp.org}
+@inproceedings{ICDE23,
+  author    = {Jinyang Li and Yuval Moskovitch and H. V. Jagadish},
+  title     = {Detection of Groups with Biased Representation in Ranking},
+  booktitle = {39th {IEEE} International Conference on Data Engineering, {ICDE} 2023},
+  pages     = {2167--2179},
+  year      = {2023},
+  doi       = {10.1109/ICDE55515.2023.00168}
 }
 
 @article{CMR23,
@@ -778,6 +770,120 @@ numpages = {197}
   volume  = {17},
   number  = {10},
   year    = {2024}
+}
+
+@inproceedings{Abowd18,
+  author    = {John M. Abowd},
+  title     = {The {U.S.} Census Bureau Adopts Differential Privacy},
+  booktitle = {Proceedings of the 24th {ACM} {SIGKDD} International Conference on Knowledge Discovery {\&} Data Mining},
+  pages     = {2867},
+  year      = {2018},
+  doi       = {10.1145/3219819.3226070}
+}
+
+@inproceedings{MiaoRY19,
+  author    = {Zhengjie Miao and Sudeepa Roy and Jun Yang},
+  title     = {Explaining Wrong Queries Using Small Examples},
+  booktitle = {Proceedings of the 2019 International Conference on Management of Data, {SIGMOD} Conference 2019},
+  pages     = {503--520},
+  year      = {2019},
+  doi       = {10.1145/3299869.3319866}
+}
+
+@article{ShragaM23,
+  author    = {Roee Shraga and Ren{\'{e}}e J. Miller},
+  title     = {Explaining Dataset Changes for Semantic Data Versioning with {Explain-Da-V}},
+  journal   = {Proc. {VLDB} Endow.},
+  volume    = {16},
+  number    = {6},
+  year      = {2023},
+  doi       = {10.14778/3583140.3583169}
+}
+
+@inproceedings{PatelSZ22,
+  author    = {Neel Patel and Reza Shokri and Yair Zick},
+  title     = {Model Explanations with Differential Privacy},
+  booktitle = {2022 {ACM} Conference on Fairness, Accountability, and Transparency, {FAccT} '22},
+  pages     = {1895--1904},
+  year      = {2022},
+  doi       = {10.1145/3531146.3533235}
+}
+
+@inproceedings{GeHIM19,
+  author    = {Chang Ge and Xi He and Ihab F. Ilyas and Ashwin Machanavajjhala},
+  title     = {{APEx}: Accuracy-Aware Differentially Private Data Exploration},
+  booktitle = {Proceedings of the 2019 International Conference on Management of Data, {SIGMOD} Conference 2019},
+  pages     = {177--194},
+  year      = {2019},
+  doi       = {10.1145/3299869.3300092}
+}
+
+@misc{fullversion,
+  author       = {Anonymous Authors},
+  title        = {{PEEQ}: Privately Explaining Query Differences (Full Version)},
+  year         = {2026},
+  howpublished = {Full version with appendix; available from the authors},
+  note         = {Under submission}
+}
+
+@inproceedings{KasiviswanathanNRS13,
+  author    = {Shiva Prasad Kasiviswanathan and Kobbi Nissim and Sofya Raskhodnikova and Adam D. Smith},
+  title     = {Analyzing Graphs with Node Differential Privacy},
+  booktitle = {Theory of Cryptography Conference (TCC)},
+  pages     = {457--476},
+  year      = {2013}
+}
+
+@inproceedings{DayLL16,
+  author    = {Wei{-}Yen Day and Ninghui Li and Min Lyu},
+  title     = {Publishing Graph Degree Distribution with Node Differential Privacy},
+  booktitle = {SIGMOD},
+  pages     = {123--138},
+  year      = {2016}
+}
+
+@article{MohapatraGHK25,
+  author    = {Shubhankar Mohapatra and Amir Gilad and Xi He and Benny Kimelfeld},
+  title     = {Computing Inconsistency Measures Under Differential Privacy},
+  journal   = {Proc. {ACM} Manag. Data ({SIGMOD})},
+  year      = {2025}
+}
+
+@inproceedings{HacohenMS25,
+  author       = {Eldar Hacohen and
+                  Yuval Moskovitch and
+                  Amit Somech},
+  editor       = {Volker Markl and
+                  Joseph M. Hellerstein and
+                  Azza Abouzied},
+  title        = {OmniTune: {A} Universal Framework for Query Refinement via LLMs},
+  booktitle    = {Companion of the 2025 International Conference on Management of Data,
+                  {SIGMOD/PODS} 2025, Berlin, Germany, June 22-27, 2025},
+  pages        = {111--114},
+  publisher    = {{ACM}},
+  year         = {2025},
+  url          = {https://doi.org/10.1145/3722212.3725121},
+  doi          = {10.1145/3722212.3725121},
+  timestamp    = {Sun, 02 Nov 2025 21:27:21 +0100},
+  biburl       = {https://dblp.org/rec/conf/sigmod/HacohenMS25.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{CampbellSM24,
+  author       = {Felix S. Campbell and
+                  Julia Stoyanovich and
+                  Yuval Moskovitch},
+  title        = {Rodeo: Making Refinements for Diverse Top-k Queries},
+  journal      = {Proc. {VLDB} Endow.},
+  volume       = {17},
+  number       = {12},
+  pages        = {4341--4344},
+  year         = {2024},
+  url          = {https://www.vldb.org/pvldb/vol17/p4341-campbell.pdf},
+  doi          = {10.14778/3685800.3685870},
+  timestamp    = {Thu, 19 Dec 2024 16:40:20 +0100},
+  biburl       = {https://dblp.org/rec/journals/pvldb/CampbellSM24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
 }
 
 % --- datasets of the refinement-only experiments (2026-11-27)

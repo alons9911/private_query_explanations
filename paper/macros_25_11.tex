@@ -1,0 +1,52 @@
+% Guard: macros.tex is \input both by main.tex (after the packages it needs,
+% e.g. amsmath for \DeclareMathOperator) and by individual section files so
+% they remain compilable on their own. Loading it twice would redefine every
+% \newcommand and abort, so the second and later loads are no-ops.
+\ifdefined\PQRmacrosloaded\endinput\fi
+\let\PQRmacrosloaded\relax
+
+% --- 0. revision marking ---
+% Text added to Section 2 during the current revision is wrapped in \added{...}
+% so the advisors can see at a glance what is new. Redefine to \relax to print
+% the paper without the marking.
+\newcommand{\added}[1]{\textcolor{blue}{#1}}
+\long\def\added#1{\begingroup\color{blue}#1\endgroup}  % \long: may span paragraphs
+
+
+% --- A. operator-style score and function names ---
+\newcommand{\HD}{\mathit{HD}}                        % histogram distance; use \HD_\gamma
+\newcommand{\Attr}{\mathit{Attr}}                    % attribute set of a schema
+\newcommand{\Attrs}{\mathit{Attrs}}                  % attribute set argument
+% Abbreviated in MATH only; the prose still spells the names out in full.
+% Spelling them out inside formulas makes displayed equations far too wide
+% for a two-column layout (the product-rule step below overflowed by 200pt).
+\newcommand{\Use}{\mathit{Use}}
+\newcommand{\Cov}{\mathit{Cov}}
+\newcommand{\Rep}{\mathit{Rep}}
+\newcommand{\DivS}{\mathit{Div}}
+\newcommand{\TVD}{\mathit{TVD}}
+% Global sensitivity is written $\Delta_f$ in the standard way (no macro).
+% Change of a quantity between two neighbouring databases, g(D')-g(D); used in
+% the proofs. Deliberately not \Delta, which is reserved for global sensitivity.
+\newcommand{\chg}{\mathrm{d}}
+\DeclareMathOperator{\Dom}{Dom}
+\DeclareMathOperator{\Lap}{Laplace}
+
+% --- B. core objects ---
+\newcommand{\Qone}{Q_1}
+\newcommand{\Qtwo}{Q_2}
+\newcommand{\pD}{p(D)}
+\newcommand{\views}{\mathcal{P}}
+\newcommand{\hist}[2]{H_{#1,#2}}                     % \hist{\Qone(\pD)}{A}
+
+% --- C. system name ---
+% Write \sys{} in running text so that the following space is kept.
+\newcommand{\sys}{\textsf{PEEQ}}
+\newcommand{\sysopt}{\textsf{OptPEEQ}}                % grouped-pass implementation (experiments)
+
+% --- D. mechanisms ---
+\newcommand{\ExpMech}{\textsc{ExpMech}}
+% --- E. experiment baselines (used in sections/experiments.tex) ---
+\newcommand{\Bone}{\ensuremath{\mathsf{B1}}}
+\newcommand{\Btwo}{\ensuremath{\mathsf{B2}}}
+\newcommand{\Bthree}{\ensuremath{\mathsf{B3}}}

@@ -1,0 +1,57 @@
+\input{macros}
+\section{Extensions}
+\label{sec:extension}
+
+The analysis of \sys{} relies on a single property of the query pair, namely that both outputs are selections over $D$, so that a tuple changes each output by at most itself.
+We examine two other sources of query pairs in light of this property.
+For contrasts between groups the property holds and the outputs are moreover disjoint, whereas for consistent query answering it fails.
+
+\subsection{Contrasts Between Groups}
+\label{subsec:ext-contrast}
+
+DPXPlain~\cite{TaoGMR22} explains why, in the noisy answer to a group-by query with grouping attribute $A_{gb}$ and aggregate $agg(A_{agg})$, the value of a group $g_1$ is larger than that of a group $g_2$.
+We read the group-by query as one query per group, so the question becomes the pair of selections $Q_i=\sigma_{\varphi\wedge A_{gb}=g_i}$ for $i=1,2$, where $\varphi$ is the condition of the query, and an explanation shows where, and in which attribute, the two populations whose aggregate values differ are composed differently.
+Both outputs are selections, so \sys{} applies as it is.
+Since a tuple belongs to at most one of them, two of its bounds tighten.
+
+\begin{proposition}[Disjoint outputs]
+\label{prop:contrast-sensitivity}
+Let $Q_1,Q_2$ be selections with mutually exclusive conditions and $\gamma_R=\alpha N$.
+Then (1)~$\Delta_{\Use}(N)\le 2/N$ for every $N\ge1/\alpha$, (2)~the sensitivity of $\HD_\gamma$ remains $1/(1+\gamma)$, and (3)~the two histograms of a candidate 
+% together 
+have $L_1$-sensitivity $1$.
+\end{proposition}
+
+Intuitively, a tuple now contributes to one output only, so the view stage can be calibrated to $2/\bar N$ and the Laplace noise to scale $k/\epsilon_H$, which halves the noise of both steps.
+This choice depends on the queries alone.
+The model changes in two respects (proof and details in \ifpaper the full version~\cite{fullversion}\else \Cref{app:proof-contrast,app:contrast-shares}\fi).
+First, $A_{gb}$ is removed from the views and from $\Attrs$, since it separates the outputs by definition, whereas $A_{agg}$ is kept, so that a view on one of its ranges relates an explanation to the aggregate.
+Second, \sys{} scores how the two populations differ and not, as DPXPlain does, how much a predicate contributes to the difference of the aggregate values.
+Its sensitivities therefore do not depend on the range of $A_{agg}$, but an explanation may be unrelated to the aggregate, and $\HD_\gamma$ compares counts, which differ from the shares that an \texttt{AVG} question concerns when the groups differ in size.
+
+\subsection{Consistent Query Answering}
+\label{subsec:ext-cqa}
+
+Given denial constraints $\Sigma$ that $D$ violates, the \emph{consistent answer} $Q_\Sigma(D)$ to a selection query $Q$ consists of the tuples of $Q(D)$ that are involved in no violation~\cite{arenas1999,bertossi2011,chomicki2004}, and the pair $(Q(D),Q_\Sigma(D))$ shows which part of the selected population the inconsistencies remove.
+Here the second output is not a selection, because a tuple that is added to $D$ removes from it every tuple with which it is in a violation.
+Under the dependency $\texttt{AreaCode}\to\texttt{State}$, for instance, one tuple with an existing area code and a different state removes all the tuples with that area code, so the sensitivities of Proposition~\ref{prop:stage-sensitivity} no longer hold.
+We see two ways to proceed (details in \ifpaper the full version~\cite{fullversion}\else \Cref{app:proof-cqa,app:cqa-details}\fi).
+
+\paratitle{Option 1 (bounded conflicts).}
+Assume a public bound $c\ge1$ on the number of tuples with which a tuple can be in a violation, as for a key constraint when at most $c+1$ tuples share a key value.
+
+\begin{proposition}[Bounded conflicts]
+\label{prop:cqa-sensitivity}
+Let $Q_1=Q$, $Q_2=Q_\Sigma$ and $\gamma_R=\alpha N$.
+Between neighboring databases that satisfy the bound $c$, the smaller of which has size $N\ge1/\alpha$, (1)~the usefulness of every view changes by at most $(4+c)/N$, (2)~the smoothed histogram distance of every candidate by at most $(c+1)/(1+\gamma)$, and (3)~its pair of histograms by at most $c+1$ in $L_1$ norm.
+\end{proposition}
+
+The algorithms adapt by using these scales, and Theorem~\ref{thm:framework-dp} then holds over the databases that satisfy the bound.
+The noise grows linearly with $c$.
+Enforcing a bound, for example by a projection to bounded degree~\cite{KasiviswanathanNRS13,DayLL16,MohapatraGHK25}, is left for future work.
+
+\paratitle{Option 2 (conflicts as part of the input).}
+The second option moves the difficulty outside \sys{}.
+The detection of conflicts is treated as part of the black box, like a refinement mechanism, so that every tuple carries a flag that states whether it is involved in a violation, and $Q_2$ selects the unflagged tuples of $Q(D)$.
+Both outputs are then selections and \sys{} applies unchanged, but its guarantee is with respect to neighboring \emph{annotated} databases and does not cover the effect of a tuple on the flags of the others, whose privacy cost belongs to the annotation step.
+Section~\ref{sec:experiments} uses this option.

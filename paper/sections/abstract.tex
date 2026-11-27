@@ -1,14 +1,12 @@
 \begin{abstract}
-Data-management systems increasingly modify the queries users run in order to satisfy external requirements: query-refinement systems rewrite selection predicates so that the output meets a representation constraint, and consistent query answering removes the tuples involved in integrity violations.
-The modified query meets the requirement but leaves the user with new questions.
-Which population does the new answer describe, and how does it differ from the one the original query selected?
-And when the data is sensitive, can such differences be explained without revealing information about individuals?
-To address these questions, we present a framework that, to the best of our knowledge, is the first to explain the difference between two query outputs with differential privacy (DP).
-An explanation is a pair of histograms of one attribute over the tuples of the two outputs that fall in a view, a conjunctive region of the data.
-We adapt the measures of explanation quality used in prior work, namely representativeness, coverage, interestingness and diversity, to this setting and bound their sensitivity.
-Building on them, the framework
-(a)~privately selects views that are representative of the data and cover the two outputs,
-(b)~privately selects from these views a diverse set of explanations whose distributions differ most between the outputs, and
-(c)~releases their histograms with noise,
-while guaranteeing DP in all steps.
+Differential privacy (DP) is widely used for analyzing sensitive data, but it leaves analysts with noisy answers and no access to the underlying records.
+We consider query refinement, in which a system rewrites a query so that its output meets a constraint set, for example on the representation of a group or an integrity constraint.
+The refined query may be close to the original and still select a very different population, so how do the two populations differ?
+Under DP, the analyst cannot inspect the tuples to find out, and an explanation computed from exact statistics would itself reveal information about individuals.
+We present \sys{}, the first framework to explain the difference between the outputs of two queries under DP.
+To explain the difference between the queries we utilize a pair of privatly-released histograms of one attribute over the tuples of the two outputs that fall in a view, a conjunctive region of the data, showing how the difference affects the distribution of the outputs.
+We adapt four measures of explanation quality, representativeness, coverage, interestingness and diversity, to this setting and bound their sensitivity.
+\sys{} privately selects views that are representative of the data and cover both outputs, privately selects from them a diverse set of explanations whose distributions differ most between the outputs, and releases their histograms with noise, guaranteeing DP throughout.
+% We also discuss an extension of our explanation model to consistent query answering.
+\ag{Alon: once the experiments are final, add one sentence of results here (datasets, number of query pairs, and the headline quality number at $\epsilon=1$), and replace ``bound their sensitivity'' by the two bounds, $1/(1+\gamma)$ for the interestingness of a candidate and $4/N$ for the score of a view. Keep the abstract within 200--220 words.}
 \end{abstract}

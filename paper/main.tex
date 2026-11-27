@@ -1,28 +1,36 @@
-% VLDB template version of 2020-08-03 enhances the ACM template, version 1.7.0:
-% https://www.acm.org/publications/proceedings-template
-% The ACM Latex guide provides further information about the ACM template
+% VLDB-Template (PVLDB Vol. 20 / VLDB 2027) enhances the ACM master template:
+% https://github.com/vldbproceedings/VLDB-Template
+% NOTE: the official template pins acmart.cls v2.19 (2026/06/27) and the
+% matching ACM-Reference-Format.bst; replace the copies in this folder with
+% the ones from the repository above before submitting.
 
-% \documentclass[sigconf,usenames,dvipsnames]{acmart}
-% \documentclass[sigconf]{acmart}
 \documentclass[sigconf, nonacm]{acmart}
 
+%%% do not modify the following VLDB block %%
+%%% VLDB block start %%%
+\usepackage{pvldb}% VLDB/PVLDB formatting overrides, see pvldb.sty for details.
+                      % Do not remove -- required for consistent proceedings
+                      % formatting across all VLDB submissions.
+%%% VLDB block end %%%
 
-% VLDB Specific
-%% The following content must be adapted for the final version
-% paper-specific
-\newcommand\vldbdoi{XX.XX/XXX.XX}
-\newcommand\vldbpages{XXX-XXX}
-% issue-specific
-\newcommand\vldbvolume{14}
-\newcommand\vldbissue{1}
-\newcommand\vldbyear{2020}
-% should be fine as it is
-\newcommand\vldbauthors{\authors}
-\newcommand\vldbtitle{\shorttitle} 
+% TEMPORARY compatibility shim. pvldb.sty assumes the acmart.cls v2.19 that the
+% official template bundles; the acmart.cls currently in this folder is v1.70
+% (2020), which already upper-cases section headings, so the override in
+% pvldb.sty would be applied twice and break the build. The shim is a no-op
+% with any acmart.cls newer than v1.70 -- delete it after replacing acmart.cls.
+\makeatletter
+\@ifclasslater{acmart}{2020/03/01}{}{%
+  \def\@secfont{\bfseries\Large\section@raggedright\MakeTextUppercase}}
+\makeatother
+
+%% The following must be set for each paper (values below are placeholders).
+%% Everything else (volume/issue/year defaults, the PVLDB Reference Format
+%% block, license footer, and Artifact Availability block) is handled by
+%% pvldb.sty.
+\renewcommand\vldbdoi{XX.XX/XXX.XX}
+\renewcommand\vldbpages{XXX-XXX}
 % leave empty if no availability url should be set
-\newcommand\vldbavailabilityurl{URL_TO_YOUR_ARTIFACTS}
-% whether page numbers should be shown or not, use 'plain' for review versions, 'empty' for camera ready
-\newcommand\vldbpagestyle{plain} 
+\renewcommand\vldbavailabilityurl{URL_TO_YOUR_ARTIFACTS}
 
 %% Macros and packages
 \usepackage{cleveref}
@@ -37,6 +45,8 @@
 \usepackage{listings}
 \usepackage{array}
 \usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,backgrounds}
 
 \lstset{
   basicstyle=\ttfamily\footnotesize,
@@ -52,6 +62,10 @@
 
 \newif\iftechreport
 \techreporttrue
+
+\newif\ifpaper
+% \papertrue   %%conference version: no appendix, point to the full version
+\paperfalse    %%FULL VERSION: appendix included
 
 \newif\ifrevisionletter
 % \revisionlettertrue
@@ -122,11 +136,7 @@
 \subfile{revision_letter}
 \fi
 
-\iftechreport
-\title{Private Query Difference Explanations}
-\else
-\title{Private Query Explanations}
-\fi
+\title{PEEQ: Privately Explaining Query Differences}
 
 
 %%
@@ -141,14 +151,15 @@
 % }
 % \email{felixsal@post.bgu.ac.il}
 
-% \author{Alon Silberstein}
-% %\orcid{0000-0001-5109-3700}
-% \affiliation{%
-%   \institution{Ben-Gurion University of the Negev}
-%   \city{}
-%   \state{}
-% } 
-% \email{alons9911@gmail.com}
+\author{Alon Silberstein}
+%\orcid{0000-0001-5109-3700}
+\affiliation{%
+  \institution{Ben-Gurion University}
+  \city{}
+  \state{}
+  \country{Israel}
+} 
+\email{alons9911@gmail.com}
 
 % \author{Julia Stoyanovich}
 % \orcid{0000-0002-1587-0450}
@@ -161,11 +172,12 @@
 % \email{stoyanovich@nyu.edu}
 
 % \author{Yuval Moskovitch}
-% \orcid{0000-0002-0325-7392}
+% % \orcid{0000-0002-0325-7392}
 % \affiliation{%
-%   \institution{Ben-Gurion University of the Negev}
+%   \institution{Ben-Gurion University}
 %   \city{}
 %   \state{}
+%   \country{Israel}
 % }
 % \email{yuvalmos@bgu.ac.il}
 
@@ -219,44 +231,24 @@
 % \ccsdesc[100]{Do Not Use This Code~Generate the Correct Terms for Your Paper}
 
 %%
-\input{sections/abstract}
-
 %% Keywords. The author(s) should pick words that accurately describe
 %% the work being presented. Separate the keywords with commas.
-\keywords{Query refinement, diversity, provenance, ranking, top-k}
+\input{sections/abstract}
+% The PVLDB template has no keywords block (the old list was inherited from another paper).
+% \keywords{Query refinement, diversity, provenance, ranking, top-k}
 
 \maketitle
 
 %%% do not modify the following VLDB block %%
 %%% VLDB block start %%%
-\pagestyle{\vldbpagestyle}
-\begingroup\small\noindent\raggedright\textbf{PVLDB Reference Format:}\\
-\vldbauthors. \vldbtitle. PVLDB, \vldbvolume(\vldbissue): \vldbpages, \vldbyear.\\
-\href{https://doi.org/\vldbdoi}{doi:\vldbdoi}
-\endgroup
-\begingroup
-\renewcommand\thefootnote{}\footnote{\noindent
-This work is licensed under the Creative Commons BY-NC-ND 4.0 International License. Visit \url{https://creativecommons.org/licenses/by-nc-nd/4.0/} to view a copy of this license. For any use beyond those covered by this license, obtain permission by emailing \href{mailto:info@vldb.org}{info@vldb.org}. Copyright is held by the owner/author(s). Publication rights licensed to the VLDB Endowment. \\
-\raggedright Proceedings of the VLDB Endowment, Vol. \vldbvolume, No. \vldbissue\ %
-ISSN 2150-8097. \\
-\href{https://doi.org/\vldbdoi}{doi:\vldbdoi} \\
-}\addtocounter{footnote}{-1}\endgroup
-%%% VLDB block end %%%
-
-%%% do not modify the following VLDB block %%
-%% VLDB block start %%%
-\ifdefempty{\vldbavailabilityurl}{}{
-\vspace{.3cm}
-\begingroup\small\noindent\raggedright\textbf{PVLDB Artifact Availability:}\\
-The source code, data, and/or other artifacts have been made available at \url{\vldbavailabilityurl}.
-\endgroup
-}
+\vldbtopmatter
 %%% VLDB block end %%%
 
 \input{sections/introduction}
 \input{sections/preliminaries}
 \input{sections/model}
 \input{sections/solution}
+\input{sections/extension}
 \input{sections/experiments}
 \input{sections/related}
 
@@ -279,7 +271,11 @@ The source code, data, and/or other artifacts have been made available at \url{\
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{sections/bibliography}
+
+\ifpaper\else
+\appendix
 \input{sections/appendix}
+\fi
 
 \end{document}
 \endinput

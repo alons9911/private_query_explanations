@@ -26,6 +26,9 @@
 \newcommand{\DivS}{\mathit{Div}}
 \newcommand{\TVD}{\mathit{TVD}}
 \newcommand{\GS}{\mathit{GS}}                        % global sensitivity
+% Change of a quantity between two neighbouring databases, g(D')-g(D); used in
+% the proofs. Deliberately not \Delta, which denotes global sensitivity.
+\newcommand{\chg}{\mathrm{d}}
 \DeclareMathOperator{\Dom}{Dom}
 \DeclareMathOperator{\Lap}{Laplace}
 
@@ -37,6 +40,14 @@
 \newcommand{\hist}[2]{H_{#1,#2}}                     % \hist{\Qone(\pD)}{A}
 \newcommand{\dhist}{\Delta H}
 \newcommand{\nhist}{\widetilde{\Delta H}}            % the released noisy object
+
+% --- run-in paragraph titles (Sections 3--5) ---
+\newcommand{\paratitle}[1]{\vspace{1mm}\noindent\textbf{{#1}}}
+
+% --- system name ---
+% Write \sys{} in running text so that the following space is kept.
+\newcommand{\sys}{\textsf{PEEQ}}
+\newcommand{\sysopt}{\textsf{OptPEEQ}}
 
 % --- C. privacy budget and parameters ---
 \newcommand{\eps}{\epsilon}

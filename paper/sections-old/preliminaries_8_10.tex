@@ -1,0 +1,570 @@
+\input{macros}
+\section{Preliminaries}
+\label{sec:preliminaries}
+
+In this work, we study the problem of generating differentially private explanations
+for semantic differences between query outputs.
+This section introduces the formal concepts and notation used throughout the paper.
+
+\subsection{Databases, Queries, and Predicate Views}
+\label{subsec:prelim-db-queries}
+
+\paragraph{Databases.}
+Let $D$ be a relational database over schema $\mathcal{R}$~\cite{Foundations}.
+Each tuple $t \in D$ corresponds to an individual entity or record, and we write
+$N=|D|$ for the number of tuples.
+We denote by $\Attr(D)=\{A_1,\ldots,A_m\}$ the set of attributes appearing in the
+schema of $D$.
+Each attribute $A$ has a domain $\Dom(A)$, which may be categorical or numerical,
+and each tuple $t\in D$ assigns a value $t[A]\in\Dom(A)$ to every attribute $A$.
+Throughout, $\Dom(A)$ is the domain declared by the schema and is therefore
+\emph{public}, since it does not depend on the contents of $D$.
+This distinction matters once privacy enters the picture, since a domain read off
+the data at hand would itself disclose information about the data
+(Section~\ref{subsec:prelim-dp}).
+
+\paragraph{Queries.}
+We consider SQL-style selection and projection queries together with aggregate
+queries, all of them having Boolean selection predicates over a single
+relational table $D$.
+A query $Q$ consists of a selection predicate $\varphi$ over $\Attr(D)$, and
+aggregate queries have the form
+\[
+\texttt{SELECT } agg(A)
+\texttt{ FROM } D
+\texttt{ WHERE } \varphi ,
+\]
+where $agg \in \{\texttt{COUNT},\texttt{SUM},\texttt{AVG}\}$ and
+$\varphi$ is a Boolean combination of \emph{atomic conditions}, namely numerical
+comparisons such as $A \leq c$ or $A \geq c$, categorical equality predicates
+such as $A = v$, and categorical set-membership predicates such as $A \in S$.
+
+Our explanations describe the \emph{population} a query selects rather than the
+scalar it may return, since it is the population whose composition changes when a
+query is refined or a database is repaired, and an aggregate value alone admits no
+distributional summary.
+We therefore write
+\[
+Q(D) \;=\; \sigma_{\varphi}(D) \;=\; \{t \in D \mid \varphi(t)=\texttt{true}\}
+\]
+for the \emph{output} of $Q$ on $D$, that is, the set of tuples selected by $Q$.
+For an aggregate query the reported value is a function of $Q(D)$, and all
+statistics defined below are taken over $Q(D)$.
+
+\paragraph{Predicate views.}
+To explain semantic differences between query outputs, our framework analyzes
+subsets of the data defined by predicates.
+Predicate-defined subpopulations are commonly used in explanation and
+query-analysis frameworks to localize meaningful changes in the
+data~\cite{FEDEX,TaoGMR22,wu2013}.
+
+\begin{definition}[Predicate View]
+\label{def:predicate-view}
+Given a database $D$ and a predicate $p$, the predicate view induced by $p$ is
+\[
+p(D)=\{t\in D \mid p(t)=\texttt{true}\}.
+\]
+\end{definition}
+
+The framework is given a finite collection $\views$ of view predicates, which
+localize the explanations to specific semantic regions of the data.
+We take $\views$ to consist of conjunctions of at most $\ell$ atomic conditions over
+a designated set of view attributes, with $\ell$ small (in our experiments
+$\ell\le 2$); its members are enumerated from the public schema and domain
+metadata, so both $\views$ and its size $|\views|$ are fixed independently of the
+contents of $D$.
+Two further public attribute sets are used.
+The \emph{explanation attributes} $\Attrs\subseteq\Attr(D)$ are those whose
+distributions may be reported, and the \emph{reference attributes}
+$\mathcal{A}_R\subseteq\Attr(D)$ are those against which a view is compared to the
+full database in Section~\ref{sec:explanation-quality}.
+
+Evaluating a query inside a view is the basic operation of the framework, and the
+following identity is what makes it well behaved.
+
+\begin{proposition}[View restriction]
+\label{prop:view-restriction}
+For every query $Q$ with selection predicate $\varphi$ and every view predicate $p$,
+\[
+Q(p(D)) \;=\; \sigma_{\varphi\wedge p}(D) \;=\; Q(D)\cap p(D).
+\]
+In particular $Q(p(D)) \subseteq p(D)$ and $Q(p(D)) \subseteq Q(D)$.
+\end{proposition}
+
+\begin{proof}
+Both $Q$ and $p$ act on the same single relation by selection, and selections
+compose, so that $t\in\sigma_\varphi(\sigma_p(D))$ holds iff $t\in D$, $p(t)$ and $\varphi(t)$,
+which is the definition of $\sigma_{\varphi\wedge p}(D)$, and also of
+$\sigma_\varphi(D)\cap\sigma_p(D)$.
+The two containments are immediate.
+\end{proof}
+
+The containment $Q(p(D))\subseteq p(D)$ is used repeatedly.
+It is why the histogram
+of a query output inside a view is supported on the bins of the view itself
+(Definition~\ref{def:hd}), and why coverage inside a view is bounded by the view
+size (Section~\ref{sec:explanation-quality}).
+
+Throughout the paper we study pairs of related queries $(Q_1,Q_2)$ evaluated over
+the same database $D$, and our goal is to explain the semantic differences between
+the outputs $Q_1(D)$ and $Q_2(D)$.
+The next subsection describes two application settings that naturally give rise to
+such pairs.
+
+\begin{example}[Running example]
+\label{ex:running}
+We use the Adult refinement of Section~\ref{sec:introduction} as a running example.
+The database $D$ holds census records over attributes including
+\texttt{gender}, \texttt{education}, \texttt{occupation}, \texttt{hoursPerWeek} and
+\texttt{income}.
+The original query $\Qone$ and its refinement $\Qtwo$ have selection
+predicates
+\begin{align*}
+\varphi_1 &\;=\; \texttt{education} \in \{\texttt{Bachelors},\texttt{Masters}\}\\
+          &\hphantom{\;=\;} \wedge\; \texttt{hoursPerWeek} \ge 50 ,\\[3pt]
+\varphi_2 &\;=\; \texttt{education} = \texttt{Masters}
+              \;\wedge\; \texttt{hoursPerWeek} \ge 30 .
+\end{align*}
+so that $\Qone(D)$ and $\Qtwo(D)$ are the two populations to be compared.
+A view predicate such as $p = (\texttt{education}=\texttt{Masters})$ isolates a
+semantic region of $D$, and by Proposition~\ref{prop:view-restriction},
+$\Qone(\pD)$ is exactly the set of Master's-degree holders working at least
+$50$ hours per week.
+\end{example}
+
+\subsection{Query Refinement and Consistent Query Answering}
+\label{subsec:prelim-settings}
+
+Both settings we consider derive a second output from an original query, and it is
+the resulting pair that our framework takes as input. We state them formally.
+
+\paragraph{Query refinement.}
+Refinement modifies a query so that its output meets a set of constraints on the
+composition of the result while staying close to the original query
+\cite{MK09,LMSJ23,ERICA,CSSM24}.
+
+\begin{definition}[Output constraint]
+\label{def:output-constraint}
+Let $G\subseteq\Attr(D)$ be a set of grouping attributes and let $g$ be an
+assignment of values to $G$, identifying a group of tuples. A \emph{cardinality
+constraint} is a triple $\langle g,\alpha,\beta\rangle$, satisfied by a set of
+tuples $T$ when
+\[
+\alpha \;\le\; |\{t\in T \mid t[G]=g\}| \;\le\; \beta ,
+\]
+and a \emph{proportional constraint} replaces this count by its fraction of $|T|$.
+For a set $\mathcal{C}$ of such constraints we write $T\models\mathcal{C}$ when $T$
+satisfies every member of $\mathcal{C}$.
+\end{definition}
+
+\begin{definition}[Query refinement]
+\label{def:refinement}
+Let $Q$ have selection predicate $\varphi$, and let $\Phi_\varphi$ be the space of
+predicates obtained from $\varphi$ by relaxing, tightening, removing or replacing
+its atomic conditions. Given $D$, a constraint set $\mathcal{C}$ and a deviation
+measure $d$ on predicates, a \emph{refinement} of $Q$ is a query $Q'$ with
+predicate $\varphi'\in\Phi_\varphi$ such that $Q'(D)\models\mathcal{C}$. A
+refinement mechanism returns such a $Q'$, typically one minimizing
+$d(\varphi,\varphi')$.
+\end{definition}
+
+\paragraph{Consistent query answering.}
+CQA evaluates a query over a database that may violate a set of integrity
+constraints, by reference to the instances that repair those violations
+\cite{arenas1999,bertossi2006,bertossi2011}.
+
+\begin{definition}[Repair]
+\label{def:repair}
+Let $\Sigma$ be a set of integrity constraints. An instance $D'$ is a
+\emph{repair} of $D$ with respect to $\Sigma$ if $D'\subseteq D$,
+$D'\models\Sigma$, and no proper superset of $D'$ contained in $D$ satisfies
+$\Sigma$. We write $\mathsf{Repairs}(D,\Sigma)$ for the set of all repairs of $D$.
+\end{definition}
+
+\begin{definition}[Consistent answer]
+\label{def:consistent-answer}
+The \emph{consistent answer} to a query $Q$ over $D$ with respect to $\Sigma$ is
+\[
+Q_\Sigma(D)=\bigcap_{D'\in \mathsf{Repairs}(D,\Sigma)} Q(D') ,
+\]
+the set of tuples returned by $Q$ on every repair of $D$.
+\end{definition}
+
+We take repairs to be subsets of $D$, as in Definition~\ref{def:repair}, so that
+$Q_\Sigma(D)\subseteq Q(D)\subseteq D$ and the consistent answer is again a
+subpopulation of $D$ that the histograms of
+Section~\ref{subsec:prelim-histograms} can summarize.
+
+\paragraph{The induced pair.}
+Each of the two settings supplies the framework with a pair of outputs over the
+same database,
+\[
+(Q(D),Q'(D))
+\qquad\text{and}\qquad
+(Q(D),Q_\Sigma(D)) ,
+\]
+for refinement and for CQA respectively.
+The framework requires only that each element of the pair is
+a subset of $D$, and it takes the restriction of an output $T\subseteq D$ to a view
+$p$ to be $T\cap p(D)$, which coincides with $Q(p(D))$ by
+Proposition~\ref{prop:view-restriction} whenever $T=Q(D)$ for a selection query
+$Q$. Our goal is not to compute refinements, repairs or consistent answers. The
+mechanism producing the second element is treated as a black box, and the task is
+to explain the difference between the two elements while preserving privacy.
+
+\subsection{Histograms and Distributions}
+\label{subsec:prelim-histograms}
+
+Our explanations are based on distributions of attributes over query outputs and
+predicate views.
+Both are sets of tuples, so we define the basic statistics for an arbitrary finite
+set $T$ of tuples over $\Attr(D)$; the cases of interest are $T=D$, $T=p(D)$, and
+$T=Q_i(p(D))$.
+
+\begin{definition}[Histogram]
+\label{def:histogram}
+Given a finite set of tuples $T$ and an attribute $A \in \Attr(D)$, the
+histogram of $A$ over $T$ is the function
+\[
+H_{T,A}: \Dom(A)\rightarrow \mathbb{N},
+\qquad
+H_{T,A}(v) = |\{t\in T \mid t[A]=v\}| ,
+\]
+so that $H_{T,A}(v)$ is the number of tuples in $T$ whose value for $A$ equals $v$.
+\end{definition}
+
+\begin{definition}[Empirical distribution]
+\label{def:empirical-distribution}
+For a non-empty finite set of tuples $T$ and an attribute $A$, the empirical
+distribution of $A$ over $T$ is
+\[
+P_{T,A}(v) = \frac{H_{T,A}(v)}{|T|},
+\qquad v\in\Dom(A),
+\]
+equivalently $P_{T,A}(v)=\Pr\left(t[A]=v \mid t\in T\right)$ for $t$ drawn uniformly
+from $T$. It is undefined for $T=\emptyset$; the convention for an empty view is fixed in
+Section~\ref{sec:explanation-quality}.
+\end{definition}
+
+In the standard statistical sense, a marginal distribution is obtained by
+projecting a joint distribution onto a subset of attributes. In this
+paper, we use one-way marginals, namely marginals over a single
+attribute.
+For a query output $Q(D)$ and an attribute $A$, the one-way marginal of
+$A$ is $P_{Q(D),A}$.
+These one-way marginals are the basic objects used in our explanations, since
+comparing $H_{Q_1(D),A}$ and $H_{Q_2(D),A}$, or their normalized counterparts,
+summarizes how the two query outputs differ with respect to attribute $A$.
+Such distributional summaries are also widely used in privacy-preserving data
+analysis and release mechanisms~\cite{TheAlgFoundDP2014}.
+
+For ease of presentation, we assume that the attribute values used in
+histograms and predicate views are categorical. Numerical attributes are
+incorporated by rendering them categorical, e.g., by bucketizing their
+domains into ranges, a common practice when presenting aggregate
+results. Thus, for categorical attributes the histogram bins are the
+attribute values, while for numerical attributes the bins correspond to
+the chosen ranges.
+In either case the bins are fixed in advance from the public schema and domain
+metadata and never from the data at hand, so that the set of bins carries no
+information about $D$; we write $\Dom(D[A])$ for this public set of bins of
+attribute $A$ and use it as the index set of every histogram over $A$.
+
+\alon{Done: formal Bucketing definition removed and replaced with
+an explanation and motivation for using buckets for numerical
+attributes.}
+
+\alon{Done: unified with the statistics discussion above.}
+
+To quantify semantic differences between query outputs, we use statistical distance
+measures between distributions.
+
+\begin{definition}[Total Variation Distance]
+\label{def:tvd}
+Given two distributions $P_1$ and $P_2$ over the same domain $\Omega$, the Total
+Variation Distance (TVD) between them is
+\[
+\TVD(P_1,P_2)
+=
+\frac{1}{2}
+\sum_{x\in\Omega}
+|P_1(x)-P_2(x)| \; \in [0,1].
+\]
+\end{definition}
+
+TVD is commonly used to measure similarity between distributions and is used
+throughout our framework for view filtering and representativeness analysis.
+We reserve the symbols $Q$, $Q_1$ and $Q_2$ for queries and use $P_1,P_2$ for
+generic distributions.
+
+\subsection{Explanation Quality Measures}
+\label{subsec:prelim-quality}
+
+The criteria our framework optimizes, namely \emph{interestingness},
+\emph{coverage}, \emph{representativeness} and \emph{diversity}, are not new to
+this paper.
+Each has an established meaning in data mining, data exploration and query
+explanation.
+Our contribution is to instantiate them for a \emph{pair} of query outputs over the
+same database, and to replace them by low-sensitivity counterparts that can be
+optimized under differential privacy (Section~\ref{sec:solution}).
+We review the classical forms here; the specific definitions used in this paper
+appear in Section~\ref{sec:explanation-quality}.
+
+\paragraph{Interestingness.}
+A pattern is interesting when it deviates from what a reference model would lead one
+to expect; this is the \emph{unexpectedness} view of interestingness introduced by
+Silberschatz and Tuzhilin~\cite{SilberschatzT96} and surveyed, together with the
+many objective measures instantiating it, by Geng and
+Hamilton~\cite{GengHamilton06} and by Tan et al.~\cite{TanKS02}.
+In data management the same idea appears as deviation from an expected value in the
+discovery-driven exploration of OLAP cubes~\cite{Sarawagi98}, and as
+deviation between distributions in visualization recommendation, where SeeDB scores a
+candidate view by the distance between the distribution it induces on a target
+subset and the distribution it induces on a reference subset~\cite{SeeDB}, and
+FEDEX scores an exploration step by how much it changes the distribution of an
+attribute~\cite{FEDEX}.
+A complementary line measures the \emph{influence} of tuples or predicates on an
+aggregate answer rather than the movement of a distribution~\cite{wu2013,RoyS14}.
+Our interestingness (Section~\ref{sec:explanation-quality}) is of the
+distributional kind, with the two compared populations being the two query outputs
+$Q_1(p(D))$ and $Q_2(p(D))$ rather than a subset and its complement.
+It compares their histograms bin by bin, normalizing each bin's difference by the
+size of that bin in the region, so that it remains defined, and measures a
+difference, even when only one of the outputs meets the region.
+
+\paragraph{Coverage.}
+A deviation observed on a handful of tuples is not evidence, and every explanation
+framework therefore pairs a deviation measure with a mass measure.
+The oldest form is the \emph{support} of association-rule
+mining~\cite{AgrawalIS93}; the same role is played by the support threshold that
+MacroBase applies to its risk-ratio explanations~\cite{MacroBase}, by the support
+predicate of the \textsc{Diff} operator~\cite{DIFF}, by the \emph{coverage} of an
+anchor rule in model explanation~\cite{Anchors}, and by the size budget of
+explanation tables~\cite{ExplanationTables}.
+Coverage is also studied as a first-class property of a dataset in fairness-aware
+data preparation~\cite{AsudehJJ19}.
+Our coverage differs from all of these in counting the evidence of \emph{both}
+outputs jointly.
+Since the object being explained is a comparison, a region is useful when the two
+outputs together place enough tuples in it, including when only one of them does:
+a region that one output fills and the other leaves empty is where a refinement or
+repair adds or removes part of the population wholesale, the largest difference a
+region can show.
+This is what motivates the form of coverage in Section~\ref{sec:explanation-quality}.
+
+\paragraph{Representativeness.}
+Subgroup discovery makes explicit the tension between how unusual a subgroup is and
+how general it is, and resolves it with quality functions that multiply the two,
+the Klösgen family $n^{a}(p-p_0)$ and weighted relative accuracy being the canonical
+examples~\cite{Wrobel97,HerreraCGJ11}.
+Our representativeness plays the same role with the direction of the requirement
+reversed.
+Because the deviation we report is the \emph{change} inside a region, the
+region itself should be typical of the database rather than exceptional, so a view
+is scored by the closeness of its attribute distributions to the global ones.
+This guards against explanations that are dramatic only because they describe an
+idiosyncratic corner of the data.
+
+\paragraph{Diversity.}
+When several results are returned together, their marginal value depends on what has
+already been shown; maximal marginal relevance~\cite{MMR} is the classical
+formulation and the axiomatic treatment of Gollapudi and Sharma~\cite{GollapudiS09}
+and the survey of Drosou and Pitoura~\cite{DrosouP10} develop it for query and
+search results.
+The same principle is applied to sets of explanations in data
+exploration~\cite{FEDEX,ICDE23}.
+Diversity objectives of this shape are typically submodular, and are optimized
+greedily~\cite{LinBilmes11}; the resulting guarantee is recalled below.
+
+\paragraph{Set-level selection.}
+Because our framework releases $k$ explanations rather than one, its objective is a
+set function, and the structural property that makes greedy selection defensible is
+submodularity.
+
+\begin{definition}[Monotone submodular set function]
+\label{def:submodular}
+Let $C$ be a finite ground set. A function $f:2^{C}\rightarrow\mathbb{R}_{\ge 0}$ is
+\emph{monotone} if $f(S)\le f(T)$ whenever $S\subseteq T\subseteq C$, and
+\emph{submodular} if for all $S\subseteq T\subseteq C$ and every $c\in C\setminus T$,
+\[
+f(S\cup\{c\})-f(S) \;\ge\; f(T\cup\{c\})-f(T).
+\]
+\end{definition}
+
+Maximizing a monotone submodular function subject to a cardinality constraint is
+NP-hard in general, but the greedy rule that repeatedly adds the element of largest
+marginal gain achieves a $(1-1/e)$ approximation~\cite{NemhauserWF78}, which is the
+best possible in polynomial time under standard
+assumptions~\cite{Feige98}.
+Section~\ref{subsec:non-private-hardness} shows that the particular set objective
+used here admits a stronger guarantee.
+
+\paragraph{Quality measures under differential privacy.}
+None of the measures above is designed with privacy in mind, and each is a ratio or
+a product of counts whose value can be moved substantially by a single tuple.
+Making them usable inside a private selection mechanism is therefore a design
+problem in its own right, addressed for aggregate-query explanations by
+DPXPlain~\cite{TaoGMR22} and for cluster explanations by
+DPClustX~\cite{DPClustX}, both of which replace their natural quality measures by
+low-sensitivity surrogates.
+Section~\ref{subsec:ideal-sensitivity} quantifies the difficulty in our setting and
+Section~\ref{sec:explanation-quality} constructs the measures we use.
+
+\subsection{Differential Privacy}
+\label{subsec:prelim-dp}
+Because explanations are derived from sensitive data, our framework relies on
+differential privacy to ensure that released explanations reveal little about any
+particular individual~\cite{TheAlgFoundDP2014}. A differentially private mechanism
+behaves almost the same on two databases that differ in one tuple, so whether a
+single individual is included in the database has only a limited effect on the
+distribution of the released output. The parameter $\epsilon$ controls the privacy
+loss, and smaller values give stronger privacy at the cost of more noise.
+
+\begin{definition}[Neighboring Datasets~\cite{DMNS2006}]
+\label{def:neighboring}
+Two datasets $D,D'$ are neighboring, written $D\sim D'$, if one is obtained
+from the other by adding or removing a single tuple, that is, if
+$D'=D\cup\{t\}$ or $D'=D\setminus\{t\}$ for some~$t$.
+\end{definition}
+
+We adopt this \emph{unbounded} form of the relation throughout, and all sensitivity
+statements in Sections~\ref{sec:model} and~\ref{sec:solution} are with respect to
+it.
+
+\begin{definition}[Differential Privacy~\cite{DMNS2006,TheAlgFoundDP2014}]
+A randomized mechanism $\mathcal{M}$ satisfies $\epsilon$-differential privacy if for
+every pair of neighboring datasets $D\sim D'$ and every subset of outputs $S$,
+\[
+Pr[\mathcal{M}(D)\in S]
+\leq
+\exp(\epsilon)
+Pr[\mathcal{M}(D')\in S].
+\]
+\end{definition}
+
+The noise a mechanism must add is calibrated to the sensitivity of the quantity it
+releases.
+
+\begin{definition}[Global Sensitivity~\cite{TheAlgFoundDP2014}]
+\label{def:global-sensitivity}
+The global sensitivity of a function $f:\mathcal{D}\rightarrow\mathbb{R}^d$ is
+\[
+\Delta f
+=
+\max_{D\sim D'}
+\|f(D)-f(D')\|_1 .
+\]
+\end{definition}
+
+\begin{definition}[Laplace Mechanism~\cite{DMNS2006,TheAlgFoundDP2014}]
+\label{def:laplace-mechanism}
+Given a function $f:\mathcal{D}\rightarrow\mathbb{R}^d$ with global sensitivity
+$\Delta f$, the Laplace mechanism releases
+\[
+f(D)+\left(Y_1,\ldots,Y_d\right),
+\qquad
+Y_1,\ldots,Y_d \stackrel{\text{i.i.d.}}{\sim} \Lap(\Delta f/\epsilon),
+\]
+where $\Lap(b)$ denotes the zero-mean Laplace distribution with scale $b$, whose
+density is $\frac{1}{2b}\exp(-|x|/b)$.
+\end{definition}
+
+Thus, functions with lower sensitivity require less noise for the same
+privacy budget, which motivates the low-sensitivity form of the measures used in
+our algorithm.
+When the released object is a histogram, $d$ is the number of bins and the noise is
+drawn independently per bin.
+
+\begin{definition}[Exponential Mechanism~\cite{mcsherry2007,TheAlgFoundDP2014}]
+\label{def:exponential-mechanism}
+Given a dataset $D$, a set of candidate outputs $Y$, a utility function
+$u:Y\times D\rightarrow\mathbb{R}$, and privacy budget $\epsilon$, the exponential
+mechanism selects an output $y\in Y$ with probability proportional to
+\[
+\exp\left(
+\frac{\epsilon u(y,D)}
+{2\Delta u}
+\right),
+\]
+where $\Delta u$ is the global sensitivity of the utility function.
+\end{definition}
+
+The exponential mechanism enables private selection of high-quality explanation
+candidates while preserving differential privacy.
+
+Our algorithms select not one candidate but the top $k$, which the following mechanism does in a single pass.
+
+\begin{definition}[One-Shot Top-$k$ Mechanism~\cite{DurfeeRogers19}]
+\label{def:oneshot-topk}
+Given a dataset $D$, candidates $Y$, a utility function $u$ with global sensitivity $\Delta u$, a budget $\epsilon$ and an integer $k$, the mechanism perturbs every candidate score once,
+\[
+\tilde{u}(y)=u(y,D)+\mathrm{Gumbel}\!\left(\tfrac{2k\,\Delta u}{\epsilon}\right),
+\]
+where $\mathrm{Gumbel}(b)$ is the zero-location Gumbel distribution with scale $b$
+and the draws are independent across candidates,
+and returns the $k$ candidates with the largest $\tilde{u}$, in that order.
+\end{definition}
+
+\begin{theorem}[\cite{DurfeeRogers19}]
+\label{thm:oneshot-topk}
+The one-shot top-$k$ mechanism satisfies $\epsilon$-differential privacy.
+\end{theorem}
+
+The guarantee follows because the mechanism is distributionally identical to applying the exponential mechanism $k$ times without replacement, each with budget $\epsilon/k$, so sequential composition (Theorem~\ref{thm:sequential-composition}) applies; the practical gain is that the scores are perturbed once rather than recomputed in each of the $k$ rounds.
+The same mechanism is used for private top-$k$ selection by DPXPlain~\cite{TaoGMR22} and by the clustering-explanation framework of~\cite{DPClustX}.
+
+
+Differential privacy satisfies several important composition properties, enabling
+complex privacy-preserving analytical workflows constructed from multiple private
+mechanisms \cite{mcsherry2009,DBLP:series/synthesis/2016Li,bun2016}.
+These properties are central to the privacy analysis of our algorithms, which combine
+private view selection, private candidate selection, and noisy histogram release.
+
+\begin{theorem}[Sequential Composition~\cite{TheAlgFoundDP2014,DBLP:series/synthesis/2016Li}]
+\label{thm:sequential-composition}
+Let $\mathcal{M}_1,\ldots,\mathcal{M}_k$ be randomized mechanisms such that
+$\mathcal{M}_i$ satisfies $\epsilon_i$-differential privacy for every
+$i \in \{1,\ldots,k\}$.
+Then the mechanism that releases the joint output
+\[
+\mathcal{M}(D)
+=
+\left(
+\mathcal{M}_1(D),
+\ldots,
+\mathcal{M}_k(D)
+\right)
+\]
+satisfies
+\[
+\left(\sum_{i=1}^{k}\epsilon_i\right)
+\text{-differential privacy}.
+\]
+The statement holds in the \emph{adaptive} setting as well.
+If the choice of $\mathcal{M}_i$ may depend on the outputs of $\mathcal{M}_1,\dots,\mathcal{M}_{i-1}$, the same bound $\sum_i\epsilon_i$ applies.
+\end{theorem}
+
+We rely on the adaptive form, since the utility optimised in each round of Algorithm~\ref{alg:topk} depends on the explanations released in earlier rounds.
+
+Sequential composition allows us to account for the total privacy loss of an algorithm
+that invokes multiple differentially private subroutines by summing their individual
+privacy budgets.
+
+\begin{theorem}[Post-Processing~\cite{TheAlgFoundDP2014,DBLP:series/synthesis/2016Li}]
+\label{thm:post-processing}
+Let $\mathcal{M}$ be an $\epsilon$-differentially private mechanism,
+and let $f$ be any randomized mapping that does not access the private database
+except through the output of $\mathcal{M}$.
+Then the mechanism
+\[
+f(\mathcal{M}(D))
+\]
+also satisfies $\epsilon$-differential privacy.
+\end{theorem}
+
+The post-processing property implies that any deterministic or randomized computation
+performed only on already-private outputs does not incur additional privacy loss.
+In particular, the per-round parameters $\tau_i$ and $\gamma_i$ of
+Equation~\eqref{eq:adaptive-params}, being functions of the public accountant alone,
+consume no privacy budget.
