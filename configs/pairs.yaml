@@ -595,3 +595,85 @@ M5:
   q2: "TOTEXP >= 2019 AND INSCOV = 'public only'"  # tightened to the exact minimal threshold (was TOTEXP >= 1984 AND INSCOV = 'public only')
   constraints: [{where: "AGE < 45", min_share: 0.35}]
   paper: {size_q1: 2375, size_q2: 3857, share_q1: 0.284, share_q2: 0.351}
+
+# --- pilot (2026-11-27): Erica's stored minimal refinements on Adult, COMPAS, Healthcare (not in the experiments);
+#     scripts/erica_pilot_pairs.py, results/erica_pilot/pairs.csv
+EA1:
+  source: "Erica's stored refinement: Experiment/adult/query_change_2/Q1C1_1/query1.json + constraint1.json"
+  dataset: adult_erica
+  kind: refinement
+  q1: "education_num >= 12 AND hours_per_week >= 21 AND capital_gain >= 5501"
+  q2: "education_num >= 12 AND hours_per_week >= 21 AND capital_gain >= 2580"
+  constraints: [{where: "sex = 'Female'", min_count: 200}]
+
+EA2:
+  source: "Erica's stored refinement: Experiment/adult/query_change_2/Q1C1_1/query2.json + constraint1.json"
+  dataset: adult_erica
+  kind: refinement
+  q1: "education_num >= 14 AND hours_per_week >= 21 AND capital_gain >= 5501"
+  q2: "education_num >= 14 AND hours_per_week >= 21 AND capital_gain >= 0"
+  constraints: [{where: "sex = 'Female'", min_count: 200}]
+
+EA4:
+  source: "Erica's stored refinement: Experiment/adult/query_change_2/Q1C2_2/query1.json + constraint2.json"
+  dataset: adult_erica
+  kind: refinement
+  q1: "education_num >= 9 AND hours_per_week >= 21 AND capital_gain >= 5501"
+  q2: "education_num >= 9 AND hours_per_week >= 41 AND capital_gain >= 15025"
+  constraints: [{where: "sex = 'Female'", max_count: 20}, {where: "sex = 'Male' AND race = 'White'", max_count: 180}]
+
+EC1:
+  source: "Erica's stored refinement: Experiment/compas/query_change_2/Q1C1_1/query1.json + constraint1.json"
+  dataset: compas_erica
+  kind: refinement
+  q1: "juv_fel_count >= 1 AND decile_score >= 1 AND r_charge_degree = 'F'"
+  q2: "juv_fel_count >= 0 AND decile_score >= 1 AND r_charge_degree = 'F'"
+  constraints: [{where: "race = 'Caucasian'", min_count: 23}, {where: "age_cat = 'Greater than 45'", min_count: 15}]
+
+EC2:
+  source: "Erica's stored refinement: Experiment/compas/query_change_2/Q1C1_1/query5.json + constraint1.json"
+  dataset: compas_erica
+  kind: refinement
+  q1: "juv_fel_count >= 1 AND decile_score >= 5 AND r_charge_degree = 'F'"
+  q2: "juv_fel_count >= 0 AND decile_score >= 5 AND r_charge_degree = 'F'"
+  constraints: [{where: "race = 'Caucasian'", min_count: 23}, {where: "age_cat = 'Greater than 45'", min_count: 15}]
+
+EC3:
+  source: "Erica's stored refinement: Experiment/compas/constraint_change/Q2C1_1/query2.json + constraint11.json"
+  dataset: compas_erica
+  kind: refinement
+  q1: "juv_fel_count <= 4 AND decile_score >= 8 AND c_charge_degree = 'O'"
+  q2: "juv_fel_count <= 4 AND decile_score >= 7 AND c_charge_degree = 'O'"
+  constraints: [{where: "race = 'Caucasian'", min_count: 10}, {where: "age_cat = 'Greater than 45'", min_count: 15}]
+
+EH1:
+  source: "Erica's stored refinement: Experiment/healthcare/constraint_change2/Q1C1/query1.json + constraint11.json"
+  dataset: healthcare_erica
+  kind: refinement
+  q1: "income >= 200 AND num_children >= 3 AND county IN ('county2', 'county3')"
+  q2: "income >= 182 AND num_children >= 3 AND county IN ('county2', 'county3')"
+  constraints: [{where: "race = 'race3'", min_count: 10}, {where: "race = 'race1' AND age_group = 'group1'", min_count: 3}]
+
+EH2:
+  source: "Erica's stored refinement: Experiment/healthcare/constraint_change2/Q2C1/query2.json + constraint11.json"
+  dataset: healthcare_erica
+  kind: refinement
+  q1: "income >= 150 AND num_children <= 4 AND complications <= 8 AND county IN ('county2', 'county4')"
+  q2: "income >= 135 AND num_children <= 4 AND complications <= 8 AND county IN ('county2', 'county4')"
+  constraints: [{where: "race = 'race2'", min_count: 37}, {where: "race = 'race1' AND age_group = 'group1'", min_count: 14}]
+
+EH3:
+  source: "Erica's stored refinement: Experiment/healthcare/constraint_change2/Q3C1/query3.json + constraint11.json"
+  dataset: healthcare_erica
+  kind: refinement
+  q1: "income <= 100 AND complications >= 5 AND num_children >= 4"
+  q2: "income <= 134 AND complications >= 5 AND num_children >= 4"
+  constraints: [{where: "race = 'race2'", min_count: 8}, {where: "age_group = 'group1'", min_count: 13}]
+
+EH5:
+  source: "Erica's stored refinement: Experiment/healthcare/constraint_change2/Q1C2/query1.json + constraint21.json"
+  dataset: healthcare_erica
+  kind: refinement
+  q1: "income >= 200 AND num_children >= 3 AND county IN ('county2', 'county3')"
+  q2: "income >= 318 AND num_children >= 3 AND county IN ('county2', 'county3')"
+  constraints: [{where: "race = 'race2'", max_count: 5}, {where: "age_group = 'group2'", max_count: 283}]

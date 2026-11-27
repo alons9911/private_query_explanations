@@ -636,7 +636,66 @@ def load_meps(raw_dir: Path | None = None) -> tuple[pd.DataFrame, dict]:
     return df.reset_index(drop=True), meta
 
 
+# --------------------------------------------------------------------------- Erica's copies (pilot, 2026-11-27)
+
+ERICA_RAW = {
+    "adult_erica": "https://raw.githubusercontent.com/alons9911/Query_refinement/master/InputData/Adult/adult.data",
+    "compas_erica": "https://raw.githubusercontent.com/alons9911/Query_refinement/master/InputData/Compas/compas-scores.csv",
+    "healthcare_erica": "https://raw.githubusercontent.com/JinyangLi01/query_refinement/master/InputData/Healthcare/incomeK/before_selection_incomeK.csv",
+}
+ERICA_ADULT_COLS = ("age,workclass,fnlwgt,education,education-num,marital-status,occupation,relationship,race,sex,"
+                    "capital-gain,capital-loss,hours-per-week,native-country,income").split(",")
+
+
+def _erica_file(name: str, raw_dir: Path | None) -> Path:
+    raw_dir = Path(raw_dir or DEFAULT_RAW_DIR)
+    path = raw_dir / "erica" / Path(ERICA_RAW[name]).name
+    if not path.exists():
+        _download(ERICA_RAW[name], path)
+    return path
+
+
+def load_adult_erica(raw_dir: Path | None = None) -> tuple[pd.DataFrame, dict]:
+    """Adult as in the Erica experiments: UCI adult.data (32,561 rows); hyphens in names become underscores."""
+    path = _erica_file("adult_erica", raw_dir)
+    df = pd.read_csv(path, header=None, names=ERICA_ADULT_COLS, skipinitialspace=True)
+    df.columns = [c.replace("-", "_") for c in df.columns]
+    for c in ("age", "education_num", "capital_gain", "capital_loss", "hours_per_week"):
+        df[c] = pd.to_numeric(df[c], errors="coerce")
+    df = df.dropna(subset=["age"]).drop(columns=["fnlwgt"])
+    for c in ("workclass", "education", "marital_status", "occupation", "relationship", "race", "sex", "native_country", "income"):
+        df[c] = df[c].astype("string").str.strip()
+    return df.reset_index(drop=True), {"source": str(path), "synthetic": False}
+
+
+def load_compas_erica(raw_dir: Path | None = None) -> tuple[pd.DataFrame, dict]:
+    """COMPAS as in the Erica experiments (ProPublica's compas-scores.csv, raw codes kept)."""
+    path = _erica_file("compas_erica", raw_dir)
+    df = pd.read_csv(path)
+    df.columns = [c.replace("-", "_") for c in df.columns]
+    keep = ["sex", "age", "age_cat", "race", "juv_fel_count", "juv_misd_count", "priors_count", "c_charge_degree",
+            "r_charge_degree", "is_recid", "decile_score"]
+    df = df[keep].copy()
+    for c in ("sex", "age_cat", "race", "c_charge_degree", "r_charge_degree"):
+        df[c] = df[c].astype("string")
+    df["is_recid"] = df["is_recid"].astype(str)
+    return df.reset_index(drop=True), {"source": str(path), "synthetic": False}
+
+
+def load_healthcare_erica(raw_dir: Path | None = None) -> tuple[pd.DataFrame, dict]:
+    """The Healthcare data of the Erica paper (887 patients, from the mlinspect example pipelines)."""
+    path = _erica_file("healthcare_erica", raw_dir)
+    df = pd.read_csv(path).drop(columns=["id"])
+    df.columns = [c.replace("-", "_") for c in df.columns]
+    for c in ("smoker", "county", "race", "age_group", "label"):
+        df[c] = df[c].astype(str)
+    return df.reset_index(drop=True), {"source": str(path), "synthetic": False}
+
+
 LOADERS = {
+    "adult_erica": load_adult_erica,
+    "compas_erica": load_compas_erica,
+    "healthcare_erica": load_healthcare_erica,
     "compas": load_compas,
     "law": load_law,
     "meps": load_meps,

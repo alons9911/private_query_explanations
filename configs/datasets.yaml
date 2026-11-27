@@ -227,3 +227,51 @@ meps:
   ref_attrs: [AGE, SEX, RACE, MARRY, POVCAT, INSCOV, EMPST, RTHLTH, DIABDX, UTILIZATION]
   view_attrs: [AGE, SEX, RACE, POVCAT, INSCOV, REGION, RTHLTH, ACTLIM]
 
+# --- Erica's copies of the data, for the pilot on Erica's stored refinements (not in the experiments) ---
+adult_erica:
+  loader: adult_erica
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [age, hours_per_week, capital_gain, capital_loss, education_num]
+  bins:
+    age: {cuts: [20, 30, 40, 50, 60, 70], labels: ['<20', '20-29', '30-39', '40-49', '50-59', '60-69', '70+']}
+    hours_per_week: {cuts: [20, 30, 40, 50, 60], labels: ['<20', '20-29', '30-39', '40-49', '50-59', '60+']}
+    capital_gain: {cuts: [1, 5000, 10000, 15000], labels: ['0', '1-4999', '5000-9999', '10000-14999', '15000+']}
+    capital_loss: {cuts: [1, 1000, 2000], labels: ['0', '1-999', '1000-1999', '2000+']}
+    education_num: {cuts: [9, 10, 13, 14], labels: ['<9', '9', '10-12', '13', '14+']}
+  categorical: [workclass, education, marital_status, occupation, relationship, race, sex, income, native_country]
+  explain_attrs: [age, workclass, education, marital_status, occupation, relationship, race, sex, hours_per_week, income]
+  ref_attrs: [age, workclass, education, marital_status, occupation, relationship, race, sex, hours_per_week, income]
+  view_attrs: [workclass, education, occupation, race, sex, hours_per_week]
+
+compas_erica:
+  loader: compas_erica
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [age, priors_count, juv_fel_count, juv_misd_count, decile_score]
+  bins:
+    age: {cuts: [25, 35, 45, 55, 65], labels: ['<25', '25-34', '35-44', '45-54', '55-64', '65+']}
+    priors_count: {cuts: [1, 2, 4, 7, 11], labels: ['0', '1', '2-3', '4-6', '7-10', '11+']}
+    juv_fel_count: {cuts: [1, 2], labels: ['0', '1', '2+']}
+    juv_misd_count: {cuts: [1, 2], labels: ['0', '1', '2+']}
+    decile_score: {cuts: [3, 5, 7, 9], labels: ['<3', '3-4', '5-6', '7-8', '9-10']}
+  categorical: [sex, age_cat, race, c_charge_degree, r_charge_degree, is_recid]
+  top_values: {race: 4}
+  explain_attrs: [sex, age, race, priors_count, juv_fel_count, juv_misd_count, c_charge_degree, r_charge_degree, is_recid, decile_score]
+  ref_attrs: [sex, age, race, priors_count, juv_fel_count, juv_misd_count, c_charge_degree, r_charge_degree, is_recid, decile_score]
+  view_attrs: [sex, age, race, c_charge_degree, priors_count, decile_score, is_recid]
+
+healthcare_erica:
+  loader: healthcare_erica
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [num_children, income, complications]
+  bins:
+    num_children: {cuts: [1, 2, 3, 4], labels: ['0', '1', '2', '3', '4+']}
+    income: {cuts: [50, 100, 150, 200, 300], labels: ['<50', '50-99', '100-149', '150-199', '200-299', '300+']}
+    complications: {cuts: [2, 4, 6, 8], labels: ['<2', '2-3', '4-5', '6-7', '8+']}
+  categorical: [smoker, county, race, age_group, label]
+  explain_attrs: [smoker, county, num_children, race, income, age_group, complications, label]
+  ref_attrs: [smoker, county, num_children, race, income, age_group, complications, label]
+  view_attrs: [smoker, county, race, age_group, num_children, income, complications]
+
