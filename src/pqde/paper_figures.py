@@ -39,8 +39,10 @@ def _method_names() -> dict[str, str]:
 NAME = _method_names()
 OUT = ROOT / "paper" / "figures" / "exp"
 
-DS_ORDER = ["adult", "acsincome", "tax", "tax_dirty", "hospital", "ipums"]
-DS_TITLE = {"adult": "Adult", "acsincome": "ACSIncome", "tax": "Tax", "tax_dirty": "Tax-dirty (CQA)",
+DS_ORDER = ["adult", "acsincome", "tax", "compas", "law", "meps"]  # refinement pairs only (2026-11-27)
+# CQA and contrast datasets, out of the experiments for now: "tax_dirty", "hospital", "ipums"
+DS_TITLE = {"adult": "Adult", "acsincome": "ACSIncome", "tax": "Tax", "compas": "COMPAS", "law": "Law Students",
+            "meps": "MEPS", "tax_dirty": "Tax-dirty (CQA)",
             "hospital": "Hospital (CQA)", "ipums": "IPUMS-CPS (contrast)"}
 SURF = "#ffffff"
 # C4 is a copy of H1 and R6 a copy of T2 (two searches returned the same pair); each is counted once
@@ -482,11 +484,14 @@ def fig_case(pid: str, rounds: list[int] | None, name: str, q_names=("Q", "Q'"),
 
 
 CASES = [("A2", "case_a2", ("$Q_1$", "$Q_2$")), ("ACS_Q1C1", "case_acs", ("$Q_1$", "$Q_2$")),
-         ("C1", "case_c1", ("$Q_1$", r"$Q_2=Q_\Sigma$")), ("I1", "case_i1", ("$Q_1$ (men)", "$Q_2$ (women)"))]
+         ("CO1", "case_co1", ("$Q_1$", "$Q_2$"))]
+# CQA and contrast case studies, out of the chapter for now:
+# CASES = [("A2", "case_a2", ("$Q_1$", "$Q_2$")), ("ACS_Q1C1", "case_acs", ("$Q_1$", "$Q_2$")),
+#          ("C1", "case_c1", ("$Q_1$", r"$Q_2=Q_\Sigma$")), ("I1", "case_i1", ("$Q_1$ (men)", "$Q_2$ (women)"))]
 
 
 def fig_cases() -> list[Path]:
-    """The four case-study figures: all explanations of the first of the ten releases."""
+    """The case-study figures: all explanations of the first of the ten releases."""
     return [fig_case(pid, None, name, q_names=q) for pid, name, q in CASES]
 
 

@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import sys
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -57,4 +58,9 @@ for pid in pairs:
         rows.append({"pair": pid, "dataset": opt.loc[pid, "dataset"], "set": name, "runs": len(sels), "gamma": gamma,
                      **prof.to_dict()})
     print(pid, flush=True)
-    pd.DataFrame(rows).to_csv("results/e8/view_profile.csv", index=False)
+    out = pd.DataFrame(rows)
+    f = Path("results/e8/view_profile.csv")
+    if f.exists():  # keep the rows of the pairs not profiled in this run
+        old = pd.read_csv(f)
+        out = pd.concat([old[~old["pair"].isin(set(pairs))], out], ignore_index=True)
+    out.to_csv(f, index=False)

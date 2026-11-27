@@ -3,6 +3,19 @@
 Keeps the state of the work outside the chat context.
 
 ## 2026-11-27: refinement-only experiments (user: query refinement is the main use case)
+* Later the same day (user: 1 yes, 2 replace, 3 a, 4 replace): refine() now tightens every changed
+  condition over all data values and dominating_refinements() checks Erica's minimality; L3, L5, M2,
+  M5, T4 (R5) tightened, A1 and T1 replaced (A1's draft Q' dropped a condition; T1's Q satisfied its
+  constraint).  A2 is not minimal either (education unchanged and hoursPerWeek >= 40 dominates it):
+  user chose (a), keep A2 and change the introduction's wording (not "Erica produced Q2") -- the
+  intro lives in the user's Overleaf, so the sentence is given to the user to paste.
+* Quality of the 7 pairs: scripts/fix_pairs_quality.sh (results_fix/, appended); runtime: shards
+  fix-1..3 (tag pqde-fix7), `scripts/shards_status.sh fix`; their stale rows were dropped from
+  results/e4, e5 and e7 runtime CSVs.  Merge later with priority to fix-*.
+* Chapter: refinement only (36 pairs, 6 datasets), CQA/contrast commented out (not deleted); case
+  studies A2, S1, C1 (CO1); experiments.yaml pairs = 36 refinement pairs (old list commented);
+  figures/tables from DS_ORDER = adult, acsincome, tax, compas, law, meps.  Numbers from
+  scripts/chapter_numbers.py.  B1 at eps = 1 is e2_b1 rows with value == 1 (the file has one row per eps).
 * User decisions: COMPAS with our pairs, MEPS (healthcare), Law Students yes, Erica's Adult pairs no,
   keep Tax.  Contrast (IPUMS) and CQA (Tax-dirty, Hospital) pairs leave the experiments.
 * Prior-work pairs checked (Erica repos JinyangLi01/query_refinement, alons9911/Query_refinement;
