@@ -198,6 +198,12 @@ def fetch(name: str, raw_dir: Path | None = None, force: bool = False) -> dict:
                 )
         if target.exists():
             out["files"][target.name] = sha256(target)
+    elif name in ERICA_RAW:  # Erica's copies (data files only)
+        try:
+            target = _erica_file(name, raw_dir)
+            out["files"][target.name] = sha256(target)
+        except Exception as e:  # noqa: BLE001
+            out["errors"].append(str(e))
     else:
         raise KeyError(f"unknown dataset {name!r}")
     return out
