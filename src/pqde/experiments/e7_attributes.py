@@ -36,7 +36,7 @@ from ..baselines import b1, b2, b3, objective
 from ..data import dataset_config
 from ..metrics import release_metrics, set_metrics
 from ..pairs import resolve_pair
-from ..runner import METHODS, time_methods
+from ..runner import runtime_methods, time_methods
 from ..stats import build_cache
 from ..views import enumerate_views
 from .accuracy import BASELINES, summarise
@@ -90,7 +90,7 @@ def run_runtime(cfg: dict, pairs: list[str] | None = None, base=None, quick: boo
                     continue  # measured before an interruption
                 n_to: dict = {}
                 for r, order in enumerate(orders):
-                    methods = tuple(x for x in METHODS if n_to.get(x, 0) < timeout_reps)
+                    methods = tuple(x for x in runtime_methods(False) if n_to.get(x, 0) < timeout_reps)
                     if not methods:
                         break
                     ds_m = replace(pair.dataset, explain_attrs=order[:m])
@@ -106,7 +106,7 @@ def run_runtime(cfg: dict, pairs: list[str] | None = None, base=None, quick: boo
                                      "b2_subsets": out.extra.get("subsets", out.extra.get("subsets_total"))})
                 print(f"    |Attrs|={m}: " + "  ".join(
                     f"{x} {np.median([w['total_s'] for w in rows if w['pair'] == pid and w['value'] == m and w['method'] == x]):.3g}s"
-                    for x in METHODS), flush=True)
+                    for x in runtime_methods(False)), flush=True)
                 write_raw(pd.DataFrame(rows), EXP, raw_name, base)
     write_json(run_metadata(cfg, experiment="e7t" if k is None else f"e7t-k{k}", orders=n_orders, timeout_s=timeout_s),
                out_dir(EXP, base) / f"metadata_{raw_name}.json")

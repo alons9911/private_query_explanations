@@ -1,6 +1,6 @@
 """E5 -- what privacy, exhaustiveness and the optimisations cost, end to end (Section 5.3.2, Figure 8).
 
-(a) every pair at the defaults: end-to-end time of PRIV_EXPL, OPT_PRIV_EXPL, B1, B2, B3;
+(a) every pair at the defaults: end-to-end time of every method of :mod:`pqde.runner`;
 (b) identity: OPT_PRIV_EXPL releases exactly what PRIV_EXPL releases with the same randomness;
 (c) B2 against the size of its candidate pool (end to end: statistics + enumeration);
 (d) the statistics routes on PRIV_EXPL: original (Section 4.2), O1 alone, O1 + O3.
@@ -20,7 +20,7 @@ from .. import plotting, timeouts
 from ..algorithm import explain
 from ..baselines import b2_candidates, exhaustive_best
 from ..pairs import resolve_pair
-from ..runner import METHODS, ORIGINAL_ROUTE, OPT_ROUTE, run_method, time_methods
+from ..runner import METHODS, ORIGINAL_ROUTE, OPT_ROUTE, run_method, runtime_methods, time_methods
 from ..stats import build_cache
 from .common import (make_params, out_dir, pairs_by_dataset, read_raw, run_metadata, to_markdown, write_csv,
                      write_json, write_raw)
@@ -102,13 +102,15 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
             # (a method that hits the time limit: timeout_repeats runs)
             n_to: dict = {}
             for r in range(repeats):
-                methods = tuple(m for m in METHODS if n_to.get(m, 0) < timeout_reps)
+                methods = tuple(m for m in runtime_methods(True) if n_to.get(m, 0) < timeout_reps)
                 for out in time_methods(ds, q1, q2, params, methods=methods, seed=seed, repeat=r,
                                         gamma_eval=float(d["gamma_eval"]), timeout_s=timeout_s):
                     n_to[out.method] = n_to.get(out.method, 0) + int(out.timeout)
                     dp_rows.append({"dataset": ds_name, "synthetic": syn, "pair": pid, "method": out.method, "repeat": r,
                                     "build_s": out.build_s, "mech_s": out.mech_s, "total_s": out.total_s,
-                                    "timeout": out.timeout})
+                                    "timeout": out.timeout, "inferred": bool(out.extra.get("estimated", False)),
+                                    "estimated_s": out.extra.get("estimated_seconds"),
+                                    "subsets": out.extra.get("subsets", out.extra.get("subsets_total"))})
             # (b) identical releases
             id_rows.append({"dataset": ds_name, "pair": pid,
                             **_identical(ds, q1, q2, params, seed, 2 if quick else int(e.get("identity_runs", 10)))})

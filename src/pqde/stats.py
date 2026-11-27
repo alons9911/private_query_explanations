@@ -32,6 +32,10 @@ is the same whichever is used.
     materialised per view on demand, as in the direct route (``O(tau a N)``).
     ``hist="eager"`` computes them for every view inside the grouped pass.
 
+``rep="none"``  (methods without a view stage: OPT, SingleStage, the exhaustive searches over all views)
+    No view statistics at all (``m, s1, s2, rep`` stay zero, so ``use`` is meaningless); only the
+    explanation histograms are materialised, lazily, by the method itself.
+
 ``rep="closed_form"``  (only valid at gamma_R = N, the setting of earlier drafts; not usable at Eq. (4))
     At ``gamma_R = N`` every summand of Eq. (2) is non-negative, so
     ``Rep_N(p, D) = (2m + N) / (2(m + N))`` (Eq. (10)) for every view: the
@@ -54,7 +58,7 @@ from .views import View, enumerate_views
 GAMMA_R_ALPHA = 0.01
 
 STATS_MODES = ("grouped", "direct")
-REP_MODES = ("general", "closed_form")
+REP_MODES = ("general", "closed_form", "none")
 HIST_MODES = ("eager", "lazy")
 
 
@@ -221,7 +225,7 @@ def build_cache(
     global_counts = {a: np.bincount(ds.codes[a], minlength=ds.domain_size(a)).astype(float) for a in ref_attrs}
 
     if mode == "direct":
-        for i, v in enumerate(views):
+        for i, v in enumerate(views if rep != "none" else []):
             timeouts.check()
             pm = v.mask(ds)
             m[i] = pm.sum()

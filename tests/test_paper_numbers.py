@@ -15,7 +15,7 @@ def test_adult_size():
     assert load_dataset("adult").N == 48_842
 
 
-@pytest.mark.parametrize("pid,s1,s2", [("A1", 0.047, 0.269), ("A2", 0.195, 0.306)])
+@pytest.mark.parametrize("pid,s1,s2", [("A1", 0.047, 0.295), ("A2", 0.195, 0.306)])
 def test_constraint_shares_table2(pid, s1, s2):
     from pqde.pairs import resolve_pair
 

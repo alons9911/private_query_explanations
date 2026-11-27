@@ -80,6 +80,7 @@ e4:
     gamma_mult: [0.0, 0.1, 0.3, 1.0, 3.0, 10.0]
   extra_data_fraction:
     tax: [2.5]             # 500k rows, the size quoted in the paper (re-sampled)
+  naive_sweeps: [k]        # EXH_NAIVE (exhaustive over every candidate, no pruning) runs only here and in E5 (a)
 
 # E5 -- end-to-end cost per pair at the defaults, B2 growth, statistics routes
 e5:

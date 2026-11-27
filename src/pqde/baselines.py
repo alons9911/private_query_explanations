@@ -13,6 +13,13 @@ B2  (exhaustive)        Every size-k subset of the candidates built from the exa
                         attribute.
 B3  (non-private greedy) Exact top-tau views by Use, then k greedy rounds on
                         HD_{gamma_eval} * lambda^Counts[A] (Algorithm 2 without noise).
+
+Methods without a view stage (running-time experiments; the candidates of every view):
+OPT          greedy over every candidate: the exact optimum of F_lambda (Prop. greedy-exact).
+SingleStage  one private selection over every candidate (Algorithm 2 without the view stage),
+             eps_P + eps_S for the selection, gamma by Eq. (12) with |P||Attrs| candidates.
+EXH_ALL      exhaustive search over every candidate, with the lossless top-k-per-attribute pruning.
+EXH_NAIVE    exhaustive search over every candidate, without pruning: C(|P||Attrs|, k) subsets.
 """
 
 from __future__ import annotations
@@ -24,7 +31,7 @@ from itertools import combinations, islice
 import numpy as np
 
 from . import timeouts
-from .algorithm import Params, Result, choose_tau, explain
+from .algorithm import Params, Result, choose_tau, explain, find_top_k_explanations
 from .measures import set_objective, smoothed_hd
 from .stats import StatsCache
 
@@ -118,7 +125,8 @@ def _score_block(idx: np.ndarray, scores: np.ndarray, aidx: np.ndarray, lam: flo
 
 
 def exhaustive_best(scores: np.ndarray, aidx: np.ndarray, k: int, lam: float, chunk: int = 400_000,
-                    max_subsets: int | None = None) -> tuple[float, tuple[int, ...], int, dict]:
+                    max_subsets: int | None = None,
+                    time_budget: float | None = None) -> tuple[float, tuple[int, ...], int, dict]:
     """Enumerate every size-k subset; candidates must be sorted by (attribute, score desc).
 
     Inside a subset (indices ascending) members of one attribute appear in
@@ -127,7 +135,9 @@ def exhaustive_best(scores: np.ndarray, aidx: np.ndarray, k: int, lam: float, ch
 
     When ``C(n, k)`` exceeds ``max_subsets`` the enumeration is not run: one
     calibration block is timed and the full running time is extrapolated
-    (``info["estimated"] = True``, no subset returned).
+    (``info["estimated"] = True``, no subset returned).  With ``time_budget`` (seconds), the
+    first block is timed and, when the whole enumeration would take longer than the budget at
+    that rate, the enumeration stops there and is estimated the same way.
 
     Returns ``(best F, best subset, #subsets, info)``.
     """
@@ -160,6 +170,10 @@ def exhaustive_best(scores: np.ndarray, aidx: np.ndarray, k: int, lam: float, ch
         b = int(np.argmax(f))
         if f[b] > best:
             best, best_set = float(f[b]), tuple(int(x) for x in idx[b])
+        if time_budget is not None and total == len(idx) and total < n_total:  # after the first block
+            est = n_total * (time.perf_counter() - t_start) / total
+            if est > time_budget:
+                return float("nan"), (), n_total, {"estimated": True, "estimated_seconds": est}
     return best, best_set, total, {"estimated": False}
 
 
@@ -173,3 +187,54 @@ def b2(cache: StatsCache, params: Params, gamma_eval: float = 0.0, tau: int | No
     if return_info:
         return sel, {"pool_size": len(cands), "subsets": total, "F": best, "seconds": time.perf_counter() - t0, **extra}
     return sel
+
+
+# ----------------------------------------------------------------------------- methods without a view stage
+
+def opt_all(cache: StatsCache, params: Params, gamma_eval: float = 0.0) -> list[tuple[int, str]]:
+    """OPT: greedy over the candidates of every view, the exact optimum of F_lambda (Prop. greedy-exact)."""
+    return greedy(cache, np.arange(cache.n_views), params.k, params.lam, gamma_eval)
+
+
+def single_stage_gamma(n_views: int, n_attrs: int, k: int, eps_sel: float) -> float:
+    """Eq. (12) with |P||Attrs| candidates and the selection budget eps_P + eps_S."""
+    return 2.0 * math.log(max(n_views * n_attrs, 2)) * k / eps_sel
+
+
+def single_stage(cache: StatsCache, params: Params, rng: np.random.Generator):
+    """SingleStage: one private selection over the candidates of every view, then the release."""
+    eps_P, eps_S, eps_H = params.budgets()
+    nv = cache.n_views
+    g = single_stage_gamma(nv, len(cache.explain_attrs), params.k, eps_P + eps_S)
+    return find_top_k_explanations(cache, np.arange(nv), k=params.k, lam=params.lam, gamma=g, eps_S=eps_P + eps_S,
+                                   eps_H=eps_H, rng=rng, release=params.release)
+
+
+def all_candidates(cache: StatsCache, gamma_eval: float = 0.0) -> tuple[list[tuple[int, str]], np.ndarray, np.ndarray]:
+    """Every candidate (p, A) of every view, unpruned, sorted by (attribute, score desc)."""
+    rows = np.arange(cache.n_views)
+    hd = cache.hd_matrix(gamma_eval, rows)
+    cands, scores, aidx = [], [], []
+    for a, attr in enumerate(cache.explain_attrs):
+        col = hd[:, a]
+        ok = np.flatnonzero(~np.isnan(col))
+        for r in ok[np.argsort(-col[ok], kind="stable")]:
+            cands.append((int(rows[r]), attr))
+            scores.append(float(col[r]))
+            aidx.append(a)
+    return cands, np.asarray(scores), np.asarray(aidx)
+
+
+def exhaustive_naive(cache: StatsCache, params: Params, gamma_eval: float = 0.0, time_budget: float | None = None):
+    """EXH_NAIVE: every size-k subset of every candidate, no pruning.
+
+    With ``time_budget`` the enumeration is run only when the rate of its first block says it
+    fits in the budget; otherwise its time is extrapolated (``info["estimated"]``, no selection).
+    Returns ``(selection or None, info)``.
+    """
+    t0 = time.perf_counter()
+    cands, scores, aidx = all_candidates(cache, gamma_eval)
+    budget = None if time_budget is None else max(time_budget - (time.perf_counter() - t0), 0.0)
+    best, best_set, total, extra = exhaustive_best(scores, aidx, params.k, params.lam, time_budget=budget)
+    sel = None if extra["estimated"] else [cands[i] for i in best_set]
+    return sel, {"pool_size": len(cands), "subsets": total, "F": best, **extra}

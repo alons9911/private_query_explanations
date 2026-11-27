@@ -1,4 +1,4 @@
-"""E4 -- end-to-end running time of PRIV_EXPL, OPT_PRIV_EXPL, B1, B2, B3 (Section 5.3.2, Figure 7).
+"""E4 -- end-to-end running time of every method of :mod:`pqde.runner` (Section 5.3.2).
 
 For every dataset and every one of its pairs, one parameter is varied at a time
 (k, N, eps, |P|, tau, gamma) with all others at their defaults.  Each timing is
@@ -6,7 +6,9 @@ end to end, from ``(D, Q1(D), Q2(D))`` to the selected explanations (see
 :func:`pqde.runner.time_methods`).  Every run has the time limit
 ``defaults.timeout_s``.  Every method is timed ``e4.repeats`` times at every
 point; a method that hits the limit is run ``defaults.timeout_repeats`` times at
-that point and then no more.  Nothing is inferred: every recorded run was run.
+that point and then no more.  EXH_NAIVE runs only in the sweeps ``e4.naive_sweeps`` (default k);
+its time is extrapolated (``inferred``) when its first block says it would not fit in the limit.
+Every other recorded run was run.
 
 Raw data: ``results/e4/raw/runtime.csv`` (one row per timed run).  The figure of
 a dataset is one row of panels with the four methods in each (``pqde plot e4``).
@@ -19,7 +21,7 @@ import pandas as pd
 
 from .. import plotting
 from ..pairs import pair_on_sample, resolve_pair
-from ..runner import METHODS, time_methods
+from ..runner import runtime_methods, time_methods
 from ..views import enumerate_views
 from .common import (make_params, out_dir, pairs_by_dataset, point_key, read_raw, resume_rows, run_metadata,
                      write_csv, write_json, write_raw)
@@ -98,8 +100,9 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
                     # every method is timed in every repeat; a method that hits the time limit
                     # is run timeout_repeats times at this point and then no more
                     n_timeouts: dict = {}
+                    point_methods = runtime_methods(sweep in e.get("naive_sweeps", ["k"]))
                     for r in range(repeats):
-                        methods = tuple(m for m in METHODS if n_timeouts.get(m, 0) < timeout_reps)
+                        methods = tuple(m for m in point_methods if n_timeouts.get(m, 0) < timeout_reps)
                         if not methods:
                             break
                         outs = time_methods(ds, q1, q2, params, methods=methods, views=views, seed=seed, repeat=r,
@@ -111,12 +114,12 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
                                          "method": out.method, "repeat": r, "N": ds.N, "P": n_views, "k": params.k,
                                          "epsilon": params.epsilon, "tau": params.tau, "gamma": params.gamma,
                                          "build_s": out.build_s, "mech_s": out.mech_s, "total_s": out.total_s,
-                                         "timeout": out.timeout, "inferred": False,
+                                         "timeout": out.timeout, "inferred": bool(out.extra.get("estimated", False)),
                                          "b2_subsets": out.extra.get("subsets", out.extra.get("subsets_total")),
                                          "b2_estimated_s": out.extra.get("estimated_seconds")})
                     print(f"    {sweep}={val}: " + "  ".join(
                         f"{m} {np.median([x['total_s'] for x in rows if x['pair'] == pid and x['sweep'] == sweep and x['value'] == val and x['method'] == m]):.3g}s"
-                        for m in METHODS), flush=True)
+                        for m in point_methods), flush=True)
                     write_raw(pd.DataFrame(rows), EXP, "runtime", base)  # checkpoint after every point
     write_json(run_metadata(cfg, experiment=EXP, repeats=repeats, timeout_s=timeout_s), out_dir(EXP, base) / "metadata.json")
     plot(cfg, base)

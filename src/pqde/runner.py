@@ -10,16 +10,26 @@ OPT_PRIV_EXPL  the same algorithm with optimisations O1 (grouped pass) and O3
 B1             Algorithm 1 with every mechanism noiseless, tau and gamma kept
 B2             exhaustive optimum over the candidates of the exact top-tau views
 B3             exact top-tau views by Use, then greedy (Algorithm 2 without noise)
+OPT            greedy over the candidates of every view (exact optimum, no view stage)
+SINGLE_STAGE   one private selection over the candidates of every view (no view stage)
+EXH_ALL        exhaustive optimum over the candidates of every view, top-k-per-attribute pruning
+EXH_NAIVE      exhaustive optimum over the candidates of every view, no pruning
 =============  =============================================================
 
 PRIV_EXPL, B1, B2 and B3 use the original (direct) route; only OPT_PRIV_EXPL
-uses the optimised one.
+uses the optimised one.  The four methods without a view stage use the direct
+route without view statistics (``rep="none"``): they do not compute Use, and
+materialise the explanation histograms of every view themselves.
 
 Timing (:func:`time_methods`).  The four methods on the original route do the
 same statistics build, so it is timed once per repeat; each method then runs
 on a fresh copy of the cache (lazily materialised histograms discarded) and
 pays for its own work, histograms included.  A method's end-to-end time is
-``build + own work``.  OPT_PRIV_EXPL is timed separately with its own build.
+``build + own work``.  The methods without a view stage share their own build
+in the same way.  OPT_PRIV_EXPL is timed separately with its own build.
+EXH_NAIVE runs its enumeration only when the rate of its first block says it
+fits in the remaining time; otherwise it is recorded as a timeout whose time is
+extrapolated (``extra["estimated"]``, ``extra["estimated_seconds"]``).
 Every timed run is subject to a cooperative time limit; a run that hits it is
 recorded as ``timeout`` with ``total_s`` = the limit.
 """
@@ -33,14 +43,21 @@ import numpy as np
 
 from . import timeouts
 from .algorithm import Params, explain
-from .baselines import b1, b2, b3
+from .baselines import b1, b2, b3, exhaustive_naive, opt_all, single_stage
 from .data.encode import EncodedDataset
 from .stats import StatsCache, build_cache
 from .views import View
 
-METHODS = ("PRIV_EXPL", "OPT_PRIV_EXPL", "B1", "B2", "B3")
+METHODS = ("PRIV_EXPL", "OPT_PRIV_EXPL", "B1", "B2", "B3", "OPT", "SINGLE_STAGE", "EXH_ALL", "EXH_NAIVE")
+NO_VIEW_STAGE = ("OPT", "SINGLE_STAGE", "EXH_ALL", "EXH_NAIVE")
 ORIGINAL_ROUTE = {"mode": "direct", "rep": "general", "hist": "lazy"}
 OPT_ROUTE = {"mode": "grouped", "rep": "general", "hist": "lazy"}
+NO_VIEW_ROUTE = {"mode": "direct", "rep": "none", "hist": "lazy"}
+
+
+def runtime_methods(naive: bool) -> tuple[str, ...]:
+    """The methods of a running-time point; EXH_NAIVE only where ``naive`` (the k sweep, the default point)."""
+    return tuple(m for m in METHODS if naive or m != "EXH_NAIVE")
 
 
 @dataclass
@@ -54,7 +71,20 @@ class RunOutput:
     extra: dict = field(default_factory=dict)
 
 
-def _run_on_cache(method: str, cache: StatsCache, params: Params, rng, gamma_eval: float) -> tuple[list, dict]:
+def _run_on_cache(method: str, cache: StatsCache, params: Params, rng, gamma_eval: float,
+                  time_budget: float | None = None) -> tuple[list, dict]:
+    if method == "OPT":
+        return opt_all(cache, params, gamma_eval), {}
+    if method == "SINGLE_STAGE":
+        rng = rng if isinstance(rng, np.random.Generator) else np.random.default_rng(rng)
+        return [(x.view, x.attr) for x in single_stage(cache, params, rng)], {}
+    if method == "EXH_ALL":
+        sel, info = b2(cache, params, gamma_eval, pool="all", return_info=True)
+        return sel, {"pool": info["pool_size"], "subsets": info["subsets"]}
+    if method == "EXH_NAIVE":
+        sel, info = exhaustive_naive(cache, params, gamma_eval, time_budget)
+        return sel, {"pool": info["pool_size"], "subsets": info["subsets"], "estimated": info["estimated"],
+                     "estimated_seconds": info.get("estimated_seconds")}
     if method in ("PRIV_EXPL", "OPT_PRIV_EXPL"):
         res = explain(cache, params, rng if isinstance(rng, np.random.Generator) else np.random.default_rng(rng))
         return res.selections, {"result": res}
@@ -72,16 +102,20 @@ def run_method(method: str, ds: EncodedDataset, q1: np.ndarray, q2: np.ndarray, 
                views: list[View] | None = None, rng=None, route: dict | None = None, gamma_eval: float = 0.0,
                timeout_s: float | None = None) -> RunOutput:
     """One method end to end (its own build)."""
-    route = route or (OPT_ROUTE if method == "OPT_PRIV_EXPL" else ORIGINAL_ROUTE)
+    route = route or (OPT_ROUTE if method == "OPT_PRIV_EXPL" else NO_VIEW_ROUTE if method in NO_VIEW_STAGE
+                      else ORIGINAL_ROUTE)
     t0 = time.perf_counter()
     try:
         with timeouts.deadline(timeout_s):
             cache = build_cache(ds, q1, q2, views, **route)
             t1 = time.perf_counter()
-            sel, extra = _run_on_cache(method, cache, params, rng, gamma_eval)
+            budget = None if timeout_s is None else max(timeout_s - (t1 - t0), 0.0)
+            sel, extra = _run_on_cache(method, cache, params, rng, gamma_eval, budget)
     except timeouts.RunTimeout as exc:
         return RunOutput(method, None, float("nan"), float("nan"), float(timeout_s), True, dict(exc.info))
     t2 = time.perf_counter()
+    if extra.get("estimated"):
+        return RunOutput(method, None, t1 - t0, t2 - t1, float(timeout_s), True, extra)
     return RunOutput(method, sel, t1 - t0, t2 - t1, t2 - t0, False, extra)
 
 
@@ -95,12 +129,15 @@ def time_methods(ds: EncodedDataset, q1: np.ndarray, q2: np.ndarray, params: Par
     """
     skip = skip or set()
     out: list[RunOutput] = []
-    shared = [m for m in methods if m != "OPT_PRIV_EXPL"]
-    if shared:
+    groups = ((ORIGINAL_ROUTE, [m for m in methods if m not in NO_VIEW_STAGE and m != "OPT_PRIV_EXPL"]),
+              (NO_VIEW_ROUTE, [m for m in methods if m in NO_VIEW_STAGE]))
+    for route, shared in groups:
+        if not shared:
+            continue
         t0 = time.perf_counter()
         try:
             with timeouts.deadline(timeout_s):
-                base = build_cache(ds, q1, q2, views, **ORIGINAL_ROUTE)
+                base = build_cache(ds, q1, q2, views, **route)
             build = time.perf_counter() - t0
         except timeouts.RunTimeout:
             base, build = None, None
@@ -114,9 +151,13 @@ def time_methods(ds: EncodedDataset, q1: np.ndarray, q2: np.ndarray, params: Par
             t1 = time.perf_counter()
             try:
                 with timeouts.deadline(remaining):
-                    sel, extra = _run_on_cache(m, cache, params, np.random.default_rng([seed, repeat]), gamma_eval)
+                    sel, extra = _run_on_cache(m, cache, params, np.random.default_rng([seed, repeat]), gamma_eval,
+                                               remaining)
                 own = time.perf_counter() - t1
-                out.append(RunOutput(m, sel, build, own, build + own, False, extra))
+                if extra.get("estimated"):  # EXH_NAIVE: would not fit in the time limit (extrapolated)
+                    out.append(RunOutput(m, None, build, own, float(timeout_s), True, extra))
+                else:
+                    out.append(RunOutput(m, sel, build, own, build + own, False, extra))
             except timeouts.RunTimeout as exc:
                 out.append(RunOutput(m, None, build, float("nan"), float(timeout_s), True, dict(exc.info)))
     if "OPT_PRIV_EXPL" in methods:
