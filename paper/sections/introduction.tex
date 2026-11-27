@@ -67,7 +67,7 @@ WHERE education IN ('Bachelors','Masters') AND hoursPerWeek >= 50;
 \end{lstlisting}
 
 \noindent She also requires that at least $25\%$ of the selected people be women.
-The output of $Q_1$ contains $19.5\%$ women, so she refines it into the query $Q_2$, which changes only the selection condition (in bold):
+The output of $Q_1$ contains $19.5\%$ women, so the refinement method of Li et al.~\cite{LMSJ23} produces the query $Q_2$, which changes only the selection condition (in bold):
 
 \begin{lstlisting}[escapeinside={(*@}{@*)}]
 WHERE education = (*@\textbf{'Masters'}@*) AND hoursPerWeek >= (*@\textbf{30}@*);

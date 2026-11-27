@@ -132,14 +132,14 @@ def _curve(df: pd.DataFrame, x: str, col: str) -> pd.DataFrame:
 
 
 # (source, x column, value column, label, colour, marker, linestyle)
-BF_SERIES_EPS = [("e2", "value", "ratio_BF", NAME["PrivExpl"], P.BLUE, "o", "-"),
+BF_SERIES_EPS = [("e2", "value", "ratio_BF", NAME["sys"], P.BLUE, "o", "-"),
                  ("e2_b1", "value", "ratio_BF", f"{NAME['Bone']} (no noise)", P.BLUE, "o", ":"),
-                 ("fixed", "epsilon", "ratio_BF", NAME["PrivExpl"] + r", $\gamma$ fixed", P.MAGENTA, "D", "--"),
+                 ("fixed", "epsilon", "ratio_BF", NAME["sys"] + r", $\gamma$ fixed", P.MAGENTA, "D", "--"),
                  ("single", "epsilon", "ratio_BF", NAME["SingleStage"], P.AQUA, "^", "--"),
-                 ("e2", "value", "attr_at_k_BF", f"attribute@k ({NAME['PrivExpl']})", P.ORANGE, "s", "-")]
-BF_SERIES_GAMMA = [("e6", "value", "ratio_BF", NAME["PrivExpl"], P.BLUE, "o", "-"),
+                 ("e2", "value", "attr_at_k_BF", f"attribute@k ({NAME['sys']})", P.ORANGE, "s", "-")]
+BF_SERIES_GAMMA = [("e6", "value", "ratio_BF", NAME["sys"], P.BLUE, "o", "-"),
                    ("e6_b1", "value", "ratio_BF", f"{NAME['Bone']} (no noise)", P.BLUE, "o", ":"),
-                   ("e6", "value", "attr_at_k_BF", f"attribute@k ({NAME['PrivExpl']})", P.ORANGE, "s", "-")]
+                   ("e6", "value", "attr_at_k_BF", f"attribute@k ({NAME['sys']})", P.ORANGE, "s", "-")]
 
 
 def fig_quality() -> Path:
@@ -204,8 +204,8 @@ SWEEPS = [("k", r"$k$", False), ("data_fraction", r"$N$ (fraction)", False), ("e
           ("view_fraction", r"$|\mathcal{P}|$ (fraction)", False), ("tau", r"$\tau$", True),
           ("gamma_mult", r"$\gamma$ / Eq. (14)", True)]
 RT_METHODS = ("PRIV_EXPL", "B1", "B2", "OPT_PRIV_EXPL")  # B3 is not used in the paper
-RT_LABEL = {"PRIV_EXPL": NAME["PrivExpl"], "B1": NAME["Bone"], "B2": NAME["Btwo"], "B3": NAME["Bthree"],
-            "OPT_PRIV_EXPL": NAME["OptPrivExpl"]}
+RT_LABEL = {"PRIV_EXPL": NAME["sys"], "B1": NAME["Bone"], "B2": NAME["Btwo"], "B3": NAME["Bthree"],
+            "OPT_PRIV_EXPL": NAME["sysopt"]}
 
 
 def _rt_panel(ax, sub: pd.DataFrame, x: str, logx: bool, limit: float):
@@ -384,8 +384,8 @@ def fig_attrs() -> Path:
             ax.set_ylabel("time (s)")
         ax = axes[1, j]
         sub = asum[asum.dataset == ds].groupby("value", as_index=False).mean(numeric_only=True).sort_values("value")
-        for col, lab, c, mk in (("ratio_BF", f"ApproxRatio ({NAME['PrivExpl']})", P.BLUE, "o"),
-                                ("attr_at_k_BF", f"attribute@k ({NAME['PrivExpl']})", P.ORANGE, "s")):
+        for col, lab, c, mk in (("ratio_BF", f"ApproxRatio ({NAME['sys']})", P.BLUE, "o"),
+                                ("attr_at_k_BF", f"attribute@k ({NAME['sys']})", P.ORANGE, "s")):
             ax.plot(sub.value, sub[col], color=c, marker=mk, label=lab)
         ax.set_ylim(0, 1.1)
         ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
