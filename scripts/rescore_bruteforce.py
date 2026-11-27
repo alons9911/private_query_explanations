@@ -140,5 +140,10 @@ for pid in pairs:
             acc[name].append(out)
     for name, rows in acc.items():
         if rows:
-            pd.DataFrame(rows).to_csv(OUT / f"{name}.csv", index=False)
+            new = pd.DataFrame(rows)
+            f = OUT / f"{name}.csv"
+            if f.exists():  # keep the rows of the pairs not rescored in this run
+                old = pd.read_csv(f)
+                new = pd.concat([old[~old["pair"].isin(set(pairs))], new], ignore_index=True)
+            new.to_csv(f, index=False)
     print(pid, flush=True)

@@ -2,6 +2,27 @@
 
 Keeps the state of the work outside the chat context.
 
+## 2026-11-27: refinement-only experiments (user: query refinement is the main use case)
+* User decisions: COMPAS with our pairs, MEPS (healthcare), Law Students yes, Erica's Adult pairs no,
+  keep Tax.  Contrast (IPUMS) and CQA (Tax-dirty, Hospital) pairs leave the experiments.
+* Prior-work pairs checked (Erica repos JinyangLi01/query_refinement, alons9911/Query_refinement;
+  Rodeo): COMPAS |Q1| ~100, Healthcare N = 887 (|Q1| 42-178), Erica's Adult 295-1,379 -- too small
+  under DP.  Loaders: compas (ProPublica, PII dropped), law (Rodeo; sex 2 = male), meps (HC-181,
+  both 2015 panels, 35,427; meps.ahrq.gov allowed in the environment).
+* 15 new pairs approved: CO1-CO5 (COMPAS), L1-L5 (Law), M1-M5 (MEPS) in configs/pairs.yaml, from
+  scripts/search_refinement_pairs.py (selection by data criteria only; view-stage accuracy reported,
+  not used to select).
+* Quality on the new pairs: run with --out results_new, appended by scripts/append_pairs.py (e2, e3,
+  e6, e8 done; e7a/e7g running locally); rescore_bruteforce.py now merges per pair.
+* Runtime: 6 cloud shards new-1..6 (tag pqde-new15), `scripts/shards_status.sh new`:
+  new-1 session_01U646mZVd7ZErMCHn9UWHWn, new-2 session_01U646mcHVCxjAemRBgYmV4k,
+  new-3 session_01U646mYyVPmimbNYMgLTJ9k, new-4 session_01U646mcocfvcRXhaE2z57iq,
+  new-5 session_01U646ma1dAXokDXoQexKbF1, new-6 session_01U646mckYdZacLKVbLrkuNF.
+  When done: fetch the branches into results_shards/, `python scripts/merge_shards.py --shard
+  'eqbins-*' --shard 'all44-*' --shard 'new-*' e4 e5 e7t e7t7`, redraw.
+* Then: experiments.yaml pairs/datasets to the 36 refinement pairs, case studies (A2, S1 + COMPAS),
+  chapter update (remove IPUMS-CPS, Tax-dirty, Hospital; new headline numbers).
+
 ## 2026-11-26: third reviewer pass of Section 5 (user: apply all 34 comments; N-bar option A)
 * experiments.tex rewritten per the review: numbers given their measure, aggregation and source;
   setup moved out of the case studies; 5.3 reordered (comparison, view stage, where the noise
