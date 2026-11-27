@@ -1,0 +1,1051 @@
+{
+  "pair": {
+    "pair": "L1",
+    "dataset": "law",
+    "synthetic_data": false,
+    "N": 21791,
+    "kind": "refinement",
+    "Q1": "LSAT >= 40 AND region_first IN ('NE', 'GL')",
+    "Q2": "LSAT >= 29 AND region_first IN ('NE', 'GL')",
+    "|Q1|": 2602,
+    "|Q2|": 7541,
+    "|Q1 & Q2|": 2602,
+    "constraint: >= 6% with race IN ('Black', 'Hispanic', 'Mexican', 'Puertorican', 'Amerindian')": {
+      "share_Q1": 0.0311,
+      "share_Q2": 0.0613
+    },
+    "paper_reported": {
+      "size_q1": 2602,
+      "size_q2": 7541,
+      "share_q1": 0.031,
+      "share_q2": 0.061
+    }
+  },
+  "parameters": {
+    "k": 5,
+    "lambda": 0.5,
+    "epsilon": 1.0,
+    "eps_P": 0.333333333,
+    "eps_S": 0.333333333,
+    "eps_H": 0.333333334,
+    "tau": 15,
+    "gamma": 143.62475242708612,
+    "gamma_R": 217.91,
+    "|P|": 659,
+    "|Attrs|": 8,
+    "Delta_Use": 0.0001835620210178514,
+    "laplace_scale_per_bin": 29.999999940000002,
+    "sigma_of_released_difference": 59.999999880000004
+  },
+  "view_stage": {
+    "exact_top_tau": [
+      {
+        "rank": 1,
+        "view": "first_pf='1'",
+        "use": 0.42808968127870733,
+        "coverage": 0.4399063833692809,
+        "representativeness": 0.973138143620312
+      },
+      {
+        "rank": 2,
+        "view": "race='White'",
+        "use": 0.40373878292221305,
+        "coverage": 0.41833784589968337,
+        "representativeness": 0.9651022179308846
+      },
+      {
+        "rank": 3,
+        "view": "race='White' AND first_pf='1'",
+        "use": 0.3786514155360294,
+        "coverage": 0.39906383369280896,
+        "representativeness": 0.9488492405641233
+      },
+      {
+        "rank": 4,
+        "view": "sex='M'",
+        "use": 0.2679658504037063,
+        "coverage": 0.2735991923271075,
+        "representativeness": 0.9794102392061664
+      },
+      {
+        "rank": 5,
+        "view": "sex='M' AND first_pf='1'",
+        "use": 0.24855946425502595,
+        "coverage": 0.25873066862466154,
+        "representativeness": 0.9606880605855393
+      },
+      {
+        "rank": 6,
+        "view": "race='White' AND sex='M'",
+        "use": 0.2409483742178166,
+        "coverage": 0.25033270616309483,
+        "representativeness": 0.9625125614262955
+      },
+      {
+        "rank": 7,
+        "view": "region_first='NE'",
+        "use": 0.23937742371148785,
+        "coverage": 0.24734982332155478,
+        "representativeness": 0.9677687272907294
+      },
+      {
+        "rank": 8,
+        "view": "region_first='NE' AND first_pf='1'",
+        "use": 0.22437443089430262,
+        "coverage": 0.23243540911385435,
+        "representativeness": 0.9653194913361793
+      },
+      {
+        "rank": 9,
+        "view": "region_first='GL'",
+        "use": 0.2121088599160652,
+        "coverage": 0.21811757147446192,
+        "representativeness": 0.9724519601159219
+      },
+      {
+        "rank": 10,
+        "view": "race='White' AND region_first='NE'",
+        "use": 0.2090328832901147,
+        "coverage": 0.21678674682208252,
+        "representativeness": 0.9642327603249131
+      },
+      {
+        "rank": 11,
+        "view": "region_first='GL' AND first_pf='1'",
+        "use": 0.20025655534977424,
+        "coverage": 0.20747097425542654,
+        "representativeness": 0.9652268519413694
+      },
+      {
+        "rank": 12,
+        "view": "race='White' AND region_first='GL'",
+        "use": 0.19341758752189384,
+        "coverage": 0.20155109907760085,
+        "representativeness": 0.9596454120422561
+      },
+      {
+        "rank": 13,
+        "view": "UGPA='3.0-3.4'",
+        "use": 0.18973648548788796,
+        "coverage": 0.19572300491028405,
+        "representativeness": 0.969413307213732
+      },
+      {
+        "rank": 14,
+        "view": "sex='F'",
+        "use": 0.18627235544740936,
+        "coverage": 0.19186820246890918,
+        "representativeness": 0.9708349432084423
+      },
+      {
+        "rank": 15,
+        "view": "UGPA='3.0-3.4' AND first_pf='1'",
+        "use": 0.17722402082245037,
+        "coverage": 0.18525996971226652,
+        "representativeness": 0.9566233930497935
+      }
+    ],
+    "retained": [
+      {
+        "noisy_rank": 1,
+        "view": "first_pf='1'",
+        "exact_rank": 1,
+        "use": 0.42808968127870733,
+        "coverage": 0.4399063833692809,
+        "representativeness": 0.973138143620312
+      },
+      {
+        "noisy_rank": 2,
+        "view": "race='White'",
+        "exact_rank": 2,
+        "use": 0.40373878292221305,
+        "coverage": 0.41833784589968337,
+        "representativeness": 0.9651022179308846
+      },
+      {
+        "noisy_rank": 3,
+        "view": "race='White' AND first_pf='1'",
+        "exact_rank": 3,
+        "use": 0.3786514155360294,
+        "coverage": 0.39906383369280896,
+        "representativeness": 0.9488492405641233
+      },
+      {
+        "noisy_rank": 4,
+        "view": "sex='M'",
+        "exact_rank": 4,
+        "use": 0.2679658504037063,
+        "coverage": 0.2735991923271075,
+        "representativeness": 0.9794102392061664
+      },
+      {
+        "noisy_rank": 5,
+        "view": "region_first='NE'",
+        "exact_rank": 7,
+        "use": 0.23937742371148785,
+        "coverage": 0.24734982332155478,
+        "representativeness": 0.9677687272907294
+      },
+      {
+        "noisy_rank": 6,
+        "view": "sex='M' AND first_pf='1'",
+        "exact_rank": 5,
+        "use": 0.24855946425502595,
+        "coverage": 0.25873066862466154,
+        "representativeness": 0.9606880605855393
+      },
+      {
+        "noisy_rank": 7,
+        "view": "race='White' AND sex='M'",
+        "exact_rank": 6,
+        "use": 0.2409483742178166,
+        "coverage": 0.25033270616309483,
+        "representativeness": 0.9625125614262955
+      },
+      {
+        "noisy_rank": 8,
+        "view": "region_first='GL'",
+        "exact_rank": 9,
+        "use": 0.2121088599160652,
+        "coverage": 0.21811757147446192,
+        "representativeness": 0.9724519601159219
+      },
+      {
+        "noisy_rank": 9,
+        "view": "region_first='NE' AND first_pf='1'",
+        "exact_rank": 8,
+        "use": 0.22437443089430262,
+        "coverage": 0.23243540911385435,
+        "representativeness": 0.9653194913361793
+      },
+      {
+        "noisy_rank": 10,
+        "view": "race='White' AND UGPA='3.0-3.4'",
+        "exact_rank": 17,
+        "use": 0.17033842056558246,
+        "coverage": 0.1786517369556239,
+        "representativeness": 0.9534663556497835
+      },
+      {
+        "noisy_rank": 11,
+        "view": "race='White' AND region_first='NE'",
+        "exact_rank": 10,
+        "use": 0.2090328832901147,
+        "coverage": 0.21678674682208252,
+        "representativeness": 0.9642327603249131
+      },
+      {
+        "noisy_rank": 12,
+        "view": "race='White' AND region_first='GL'",
+        "exact_rank": 12,
+        "use": 0.19341758752189384,
+        "coverage": 0.20155109907760085,
+        "representativeness": 0.9596454120422561
+      },
+      {
+        "noisy_rank": 13,
+        "view": "UGPA='3.0-3.4'",
+        "exact_rank": 13,
+        "use": 0.18973648548788796,
+        "coverage": 0.19572300491028405,
+        "representativeness": 0.969413307213732
+      },
+      {
+        "noisy_rank": 14,
+        "view": "region_first='GL' AND first_pf='1'",
+        "exact_rank": 11,
+        "use": 0.20025655534977424,
+        "coverage": 0.20747097425542654,
+        "representativeness": 0.9652268519413694
+      },
+      {
+        "noisy_rank": 15,
+        "view": "sex='F' AND first_pf='1'",
+        "exact_rank": 16,
+        "use": 0.17500241815299775,
+        "coverage": 0.18117571474461933,
+        "representativeness": 0.965926467571422
+      }
+    ],
+    "overlap_with_exact_top_tau": 0.8666666666666667,
+    "retained_atom_counts": {
+      "first_pf='1'": 6,
+      "race='White'": 6,
+      "sex='M'": 3,
+      "region_first='NE'": 3,
+      "region_first='GL'": 3,
+      "UGPA='3.0-3.4'": 2,
+      "sex='F'": 1
+    },
+    "query_attribute_views": [
+      {
+        "view": "region_first='NE'",
+        "rank": 7,
+        "use": 0.23937742371148785,
+        "coverage": 0.24734982332155478,
+        "representativeness": 0.9677687272907294
+      },
+      {
+        "view": "region_first='GL'",
+        "rank": 9,
+        "use": 0.2121088599160652,
+        "coverage": 0.21811757147446192,
+        "representativeness": 0.9724519601159219
+      },
+      {
+        "view": "LSAT='40-44'",
+        "rank": 18,
+        "use": 0.16118277333336425,
+        "coverage": 0.18236886788123538,
+        "representativeness": 0.883828337621374
+      },
+      {
+        "view": "LSAT='35-39'",
+        "rank": 26,
+        "use": 0.12389588497800598,
+        "coverage": 0.13170575008030838,
+        "representativeness": 0.9407021705769089
+      },
+      {
+        "view": "LSAT='30-34'",
+        "rank": 48,
+        "use": 0.07846036156969055,
+        "coverage": 0.08668716442568032,
+        "representativeness": 0.9050977972287596
+      },
+      {
+        "view": "LSAT='45+'",
+        "rank": 77,
+        "use": 0.04627183114415041,
+        "coverage": 0.056445321462989306,
+        "representativeness": 0.8197637987497413
+      },
+      {
+        "view": "LSAT='25-29'",
+        "rank": 184,
+        "use": 0.00614884429848962,
+        "coverage": 0.008260290945803314,
+        "representativeness": 0.7443859228243739
+      },
+      {
+        "view": "LSAT='<25'",
+        "rank": 373,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.62849609120605
+      },
+      {
+        "view": "region_first='FW'",
+        "rank": 374,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.9233922209788069
+      },
+      {
+        "view": "region_first='SE'",
+        "rank": 375,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.9446518917441747
+      },
+      {
+        "view": "region_first='MS'",
+        "rank": 376,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.947350847855121
+      },
+      {
+        "view": "region_first='SC'",
+        "rank": 377,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.9321988455065585
+      },
+      {
+        "view": "region_first='Mt'",
+        "rank": 378,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.9140627096732938
+      },
+      {
+        "view": "region_first='NG'",
+        "rank": 379,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.9169183368997118
+      },
+      {
+        "view": "region_first='MW'",
+        "rank": 380,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.9154513419846033
+      },
+      {
+        "view": "region_first='NW'",
+        "rank": 381,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.7138602426082244
+      },
+      {
+        "view": "region_first='Other'",
+        "rank": 382,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.5022840436709151
+      }
+    ]
+  },
+  "explanations": [
+    {
+      "round": 1,
+      "view": "region_first='GL'",
+      "attr": "ZFYA",
+      "bins": [
+        "<-1",
+        "-1 to -0.5",
+        "-0.5 to 0",
+        "0 to 0.5",
+        "0.5 to 1",
+        "1+"
+      ],
+      "noisy_h1": [
+        75.275,
+        127.163,
+        163.932,
+        244.535,
+        112.493,
+        307.404
+      ],
+      "noisy_h2": [
+        274.004,
+        482.798,
+        726.46,
+        756.252,
+        529.567,
+        646.545
+      ],
+      "exact_n": [
+        442,
+        530,
+        740,
+        779,
+        647,
+        684
+      ],
+      "exact_h1": [
+        91,
+        123,
+        193,
+        242,
+        208,
+        316
+      ],
+      "exact_h2": [
+        356,
+        486,
+        686,
+        739,
+        633,
+        680
+      ],
+      "hd_gamma": 3.065355987025935,
+      "utility": 3.065355987025935,
+      "n_candidates": 96,
+      "bins_clearing_2sigma": [
+        "<-1",
+        "-1 to -0.5",
+        "-0.5 to 0",
+        "0 to 0.5",
+        "0.5 to 1",
+        "1+"
+      ],
+      "exact_share_q1": [
+        0.0776,
+        0.1049,
+        0.1645,
+        0.2063,
+        0.1773,
+        0.2694
+      ],
+      "exact_share_q2": [
+        0.0994,
+        0.1358,
+        0.1916,
+        0.2064,
+        0.1768,
+        0.1899
+      ],
+      "noisy_total_q1": 1030.802,
+      "noisy_total_q2": 3415.626,
+      "exact_total_q1": 1173,
+      "exact_total_q2": 3580,
+      "exact_abs_diff_total": 2407,
+      "share_of_releases_with_this_explanation": 0.6,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 2,
+      "view": "region_first='GL'",
+      "attr": "UGPA",
+      "bins": [
+        "<2.5",
+        "2.5-2.9",
+        "3.0-3.4",
+        "3.5+"
+      ],
+      "noisy_h1": [
+        0.0,
+        128.24,
+        459.687,
+        547.528
+      ],
+      "noisy_h2": [
+        160.714,
+        599.294,
+        1570.722,
+        1204.553
+      ],
+      "exact_n": [
+        134,
+        761,
+        1647,
+        1280
+      ],
+      "exact_h1": [
+        25,
+        184,
+        464,
+        500
+      ],
+      "exact_h2": [
+        107,
+        678,
+        1555,
+        1240
+      ],
+      "hd_gamma": 1.9705299422909843,
+      "utility": 1.9705299422909843,
+      "n_candidates": 95,
+      "bins_clearing_2sigma": [
+        "<2.5",
+        "2.5-2.9",
+        "3.0-3.4",
+        "3.5+"
+      ],
+      "exact_share_q1": [
+        0.0213,
+        0.1569,
+        0.3956,
+        0.4263
+      ],
+      "exact_share_q2": [
+        0.0299,
+        0.1894,
+        0.4344,
+        0.3464
+      ],
+      "noisy_total_q1": 1135.455,
+      "noisy_total_q2": 3535.2830000000004,
+      "exact_total_q1": 1173,
+      "exact_total_q2": 3580,
+      "exact_abs_diff_total": 2407,
+      "share_of_releases_with_this_explanation": 0.2,
+      "share_of_releases_explaining_this_attr": 0.9
+    },
+    {
+      "round": 3,
+      "view": "region_first='NE'",
+      "attr": "sander_index",
+      "bins": [
+        "<0.6",
+        "0.6-0.69",
+        "0.7-0.79",
+        "0.8-0.89",
+        "0.9+"
+      ],
+      "noisy_h1": [
+        35.478,
+        34.347,
+        223.17,
+        1008.071,
+        238.399
+      ],
+      "noisy_h2": [
+        -1.286,
+        645.658,
+        1797.856,
+        1222.976,
+        373.985
+      ],
+      "exact_n": [
+        191,
+        757,
+        1803,
+        1241,
+        310
+      ],
+      "exact_h1": [
+        0,
+        2,
+        202,
+        915,
+        310
+      ],
+      "exact_h2": [
+        24,
+        589,
+        1797,
+        1241,
+        310
+      ],
+      "hd_gamma": 1.778301722238422,
+      "utility": 1.778301722238422,
+      "n_candidates": 94,
+      "bins_clearing_2sigma": [
+        "0.6-0.69",
+        "0.7-0.79",
+        "0.8-0.89",
+        "0.9+"
+      ],
+      "exact_share_q1": [
+        0.0,
+        0.0014,
+        0.1414,
+        0.6403,
+        0.2169
+      ],
+      "exact_share_q2": [
+        0.0061,
+        0.1487,
+        0.4537,
+        0.3133,
+        0.0783
+      ],
+      "noisy_total_q1": 1539.4650000000001,
+      "noisy_total_q2": 4039.1890000000003,
+      "exact_total_q1": 1429,
+      "exact_total_q2": 3961,
+      "exact_abs_diff_total": 2532,
+      "share_of_releases_with_this_explanation": 0.3,
+      "share_of_releases_explaining_this_attr": 0.8
+    },
+    {
+      "round": 4,
+      "view": "region_first='NE' AND first_pf='1'",
+      "attr": "LSAT",
+      "bins": [
+        "<25",
+        "25-29",
+        "30-34",
+        "35-39",
+        "40-44",
+        "45+"
+      ],
+      "noisy_h1": [
+        16.037,
+        17.266,
+        -13.829,
+        3.82,
+        895.905,
+        405.283
+      ],
+      "noisy_h2": [
+        -26.734,
+        113.965,
+        854.269,
+        1330.901,
+        1031.85,
+        367.421
+      ],
+      "exact_n": [
+        65,
+        220,
+        852,
+        1335,
+        1022,
+        375
+      ],
+      "exact_h1": [
+        0,
+        0,
+        0,
+        0,
+        1022,
+        375
+      ],
+      "exact_h2": [
+        0,
+        84,
+        852,
+        1335,
+        1022,
+        375
+      ],
+      "hd_gamma": 1.9896174578841617,
+      "utility": 1.9896174578841617,
+      "n_candidates": 93,
+      "bins_clearing_2sigma": [
+        "30-34",
+        "35-39",
+        "40-44"
+      ],
+      "exact_share_q1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.7316,
+        0.2684
+      ],
+      "exact_share_q2": [
+        0.0,
+        0.0229,
+        0.2323,
+        0.364,
+        0.2786,
+        0.1022
+      ],
+      "noisy_total_q1": 1324.482,
+      "noisy_total_q2": 3671.6719999999996,
+      "exact_total_q1": 1397,
+      "exact_total_q2": 3668,
+      "exact_abs_diff_total": 2271,
+      "share_of_releases_with_this_explanation": 0.1,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 5,
+      "view": "race='White' AND region_first='NE'",
+      "attr": "ZFYA",
+      "bins": [
+        "<-1",
+        "-1 to -0.5",
+        "-0.5 to 0",
+        "0 to 0.5",
+        "0.5 to 1",
+        "1+"
+      ],
+      "noisy_h1": [
+        92.361,
+        164.882,
+        223.749,
+        283.005,
+        248.199,
+        314.499
+      ],
+      "noisy_h2": [
+        116.365,
+        478.998,
+        719.366,
+        728.236,
+        617.357,
+        674.144
+      ],
+      "exact_n": [
+        317,
+        457,
+        750,
+        760,
+        633,
+        670
+      ],
+      "exact_h1": [
+        73,
+        150,
+        231,
+        261,
+        258,
+        314
+      ],
+      "exact_h2": [
+        275,
+        432,
+        721,
+        734,
+        618,
+        657
+      ],
+      "hd_gamma": 2.86493650565428,
+      "utility": 1.43246825282714,
+      "n_candidates": 92,
+      "bins_clearing_2sigma": [
+        "-1 to -0.5",
+        "-0.5 to 0",
+        "0 to 0.5",
+        "0.5 to 1",
+        "1+"
+      ],
+      "exact_share_q1": [
+        0.0567,
+        0.1166,
+        0.1795,
+        0.2028,
+        0.2005,
+        0.244
+      ],
+      "exact_share_q2": [
+        0.08,
+        0.1257,
+        0.2098,
+        0.2136,
+        0.1798,
+        0.1912
+      ],
+      "noisy_total_q1": 1326.695,
+      "noisy_total_q2": 3334.4659999999994,
+      "exact_total_q1": 1287,
+      "exact_total_q2": 3437,
+      "exact_abs_diff_total": 2150,
+      "share_of_releases_with_this_explanation": 0.2,
+      "share_of_releases_explaining_this_attr": 1.0
+    }
+  ],
+  "releases": {
+    "n": 10,
+    "selections": [
+      [
+        [
+          "region_first='GL'",
+          "ZFYA"
+        ],
+        [
+          "region_first='GL'",
+          "UGPA"
+        ],
+        [
+          "region_first='NE'",
+          "sander_index"
+        ],
+        [
+          "region_first='NE' AND first_pf='1'",
+          "LSAT"
+        ],
+        [
+          "race='White' AND region_first='NE'",
+          "ZFYA"
+        ]
+      ],
+      [
+        [
+          "region_first='NE'",
+          "ZFYA"
+        ],
+        [
+          "race='White' AND region_first='GL'",
+          "ZFYA"
+        ],
+        [
+          "race='White' AND region_first='GL'",
+          "UGPA"
+        ],
+        [
+          "region_first='NE'",
+          "LSAT"
+        ],
+        [
+          "race='White' AND UGPA='3.0-3.4'",
+          "sander_index"
+        ]
+      ],
+      [
+        [
+          "region_first='GL' AND first_pf='1'",
+          "ZFYA"
+        ],
+        [
+          "region_first='GL' AND first_pf='1'",
+          "sex"
+        ],
+        [
+          "region_first='GL' AND first_pf='1'",
+          "LSAT"
+        ],
+        [
+          "region_first='GL'",
+          "ZFYA"
+        ],
+        [
+          "region_first='GL'",
+          "UGPA"
+        ]
+      ],
+      [
+        [
+          "region_first='NE'",
+          "ZFYA"
+        ],
+        [
+          "region_first='NE' AND first_pf='1'",
+          "UGPA"
+        ],
+        [
+          "region_first='GL'",
+          "LSAT"
+        ],
+        [
+          "race='White' AND region_first='NE'",
+          "ZFYA"
+        ],
+        [
+          "region_first='NE' AND first_pf='1'",
+          "sander_index"
+        ]
+      ],
+      [
+        [
+          "region_first='GL'",
+          "ZFYA"
+        ],
+        [
+          "region_first='NE'",
+          "LSAT"
+        ],
+        [
+          "first_pf='1'",
+          "UGPA"
+        ],
+        [
+          "region_first='NE' AND first_pf='1'",
+          "race"
+        ],
+        [
+          "region_first='NE' AND first_pf='1'",
+          "sander_index"
+        ]
+      ],
+      [
+        [
+          "region_first='GL'",
+          "ZFYA"
+        ],
+        [
+          "race='White' AND region_first='GL'",
+          "LSAT"
+        ],
+        [
+          "race='White' AND region_first='NE'",
+          "UGPA"
+        ],
+        [
+          "race='White' AND UGPA='3.0-3.4'",
+          "region_first"
+        ],
+        [
+          "region_first='NE'",
+          "sander_index"
+        ]
+      ],
+      [
+        [
+          "region_first='NE'",
+          "ZFYA"
+        ],
+        [
+          "first_pf='1'",
+          "region_first"
+        ],
+        [
+          "region_first='NE'",
+          "UGPA"
+        ],
+        [
+          "region_first='NE'",
+          "LSAT"
+        ],
+        [
+          "region_first='GL' AND first_pf='1'",
+          "race"
+        ]
+      ],
+      [
+        [
+          "region_first='GL' AND first_pf='1'",
+          "ZFYA"
+        ],
+        [
+          "race='White' AND region_first='GL'",
+          "LSAT"
+        ],
+        [
+          "race='White' AND region_first='GL'",
+          "ZFYA"
+        ],
+        [
+          "region_first='GL'",
+          "sander_index"
+        ],
+        [
+          "region_first='NE' AND first_pf='1'",
+          "UGPA"
+        ]
+      ],
+      [
+        [
+          "region_first='GL'",
+          "ZFYA"
+        ],
+        [
+          "region_first='NE'",
+          "sander_index"
+        ],
+        [
+          "race='White' AND region_first='GL'",
+          "sex"
+        ],
+        [
+          "region_first='GL' AND first_pf='1'",
+          "ZFYA"
+        ],
+        [
+          "region_first='NE'",
+          "LSAT"
+        ]
+      ],
+      [
+        [
+          "region_first='GL'",
+          "ZFYA"
+        ],
+        [
+          "region_first='NE' AND first_pf='1'",
+          "sander_index"
+        ],
+        [
+          "region_first='NE' AND first_pf='1'",
+          "race"
+        ],
+        [
+          "region_first='NE' AND first_pf='1'",
+          "UGPA"
+        ],
+        [
+          "region_first='GL'",
+          "LSAT"
+        ]
+      ]
+    ],
+    "retained_overlap_with_exact_top_tau": [
+      0.8666666666666667,
+      0.8666666666666667,
+      0.8666666666666667,
+      0.8,
+      0.8666666666666667,
+      0.8666666666666667,
+      0.8666666666666667,
+      0.8666666666666667,
+      0.9333333333333333,
+      0.9333333333333333
+    ]
+  },
+  "timings": {
+    "view_stage_ms": 0.13166299993372377,
+    "explanation_stage_ms": 4.967266999983622,
+    "mechanism_ms": 5.098929999917345,
+    "cache_build_s": 0.1707010379999474
+  },
+  "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
+}

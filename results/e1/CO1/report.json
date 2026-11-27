@@ -1,0 +1,981 @@
+{
+  "pair": {
+    "pair": "CO1",
+    "dataset": "compas",
+    "synthetic_data": false,
+    "N": 11757,
+    "kind": "refinement",
+    "Q1": "priors_count >= 7",
+    "Q2": "priors_count >= 2",
+    "|Q1|": 1825,
+    "|Q2|": 5374,
+    "|Q1 & Q2|": 1825,
+    "constraint: >= 30% with race = 'Caucasian'": {
+      "share_Q1": 0.2285,
+      "share_Q2": 0.3083
+    },
+    "paper_reported": {
+      "size_q1": 1825,
+      "size_q2": 5374,
+      "share_q1": 0.228,
+      "share_q2": 0.308
+    }
+  },
+  "parameters": {
+    "k": 5,
+    "lambda": 0.5,
+    "epsilon": 1.0,
+    "eps_P": 0.333333333,
+    "eps_S": 0.333333333,
+    "eps_H": 0.333333334,
+    "tau": 15,
+    "gamma": 150.31905897320672,
+    "gamma_R": 117.57000000000001,
+    "|P|": 407,
+    "|Attrs|": 10,
+    "Delta_Use": 0.0003402228459641065,
+    "laplace_scale_per_bin": 29.999999940000002,
+    "sigma_of_released_difference": 59.999999880000004
+  },
+  "view_stage": {
+    "exact_top_tau": [
+      {
+        "rank": 1,
+        "view": "sex='Male'",
+        "use": 0.5149213766641006,
+        "coverage": 0.5228374585353407,
+        "representativeness": 0.9848593826972232
+      },
+      {
+        "rank": 2,
+        "view": "c_charge_degree='felony'",
+        "use": 0.434511429235176,
+        "coverage": 0.4514757165943693,
+        "representativeness": 0.9624248066160445
+      },
+      {
+        "rank": 3,
+        "view": "sex='Male' AND c_charge_degree='felony'",
+        "use": 0.3669770395385773,
+        "coverage": 0.3857276516118057,
+        "representativeness": 0.951388986517101
+      },
+      {
+        "rank": 4,
+        "view": "race='African-American'",
+        "use": 0.35367273586582965,
+        "coverage": 0.3746704091179723,
+        "representativeness": 0.9439569479170395
+      },
+      {
+        "rank": 5,
+        "view": "is_recid='no'",
+        "use": 0.3064595492434312,
+        "coverage": 0.3203198094752063,
+        "representativeness": 0.9567299310820554
+      },
+      {
+        "rank": 6,
+        "view": "sex='Male' AND race='African-American'",
+        "use": 0.302317908337297,
+        "coverage": 0.3272093221059794,
+        "representativeness": 0.9239281643674553
+      },
+      {
+        "rank": 7,
+        "view": "is_recid='yes'",
+        "use": 0.2614926176297864,
+        "coverage": 0.2919962575486944,
+        "representativeness": 0.8955341408311676
+      },
+      {
+        "rank": 8,
+        "view": "race='African-American' AND c_charge_degree='felony'",
+        "use": 0.25780144565882646,
+        "coverage": 0.2799183465169686,
+        "representativeness": 0.9209880269251968
+      },
+      {
+        "rank": 9,
+        "view": "sex='Male' AND is_recid='no'",
+        "use": 0.25770457295495985,
+        "coverage": 0.26962660542655437,
+        "representativeness": 0.9557831748364237
+      },
+      {
+        "rank": 10,
+        "view": "age='25-34'",
+        "use": 0.24792987359240784,
+        "coverage": 0.2569533044143914,
+        "representativeness": 0.9648829936530748
+      },
+      {
+        "rank": 11,
+        "view": "c_charge_degree='felony' AND is_recid='no'",
+        "use": 0.22823844381977101,
+        "coverage": 0.2347537637152335,
+        "representativeness": 0.9722461536192202
+      },
+      {
+        "rank": 12,
+        "view": "sex='Male' AND is_recid='yes'",
+        "use": 0.22294756852589975,
+        "coverage": 0.25321085310878627,
+        "representativeness": 0.8804818821494804
+      },
+      {
+        "rank": 13,
+        "view": "sex='Male' AND age='25-34'",
+        "use": 0.20975491898030194,
+        "coverage": 0.22097473845368718,
+        "representativeness": 0.9492257823138606
+      },
+      {
+        "rank": 14,
+        "view": "c_charge_degree='felony' AND is_recid='yes'",
+        "use": 0.19031210696973302,
+        "coverage": 0.21672195287913584,
+        "representativeness": 0.8781394982900907
+      },
+      {
+        "rank": 15,
+        "view": "age='25-34' AND c_charge_degree='felony'",
+        "use": 0.17653856640796955,
+        "coverage": 0.18950412520200732,
+        "representativeness": 0.9315816540657531
+      }
+    ],
+    "retained": [
+      {
+        "noisy_rank": 1,
+        "view": "sex='Male'",
+        "exact_rank": 1,
+        "use": 0.5149213766641006,
+        "coverage": 0.5228374585353407,
+        "representativeness": 0.9848593826972232
+      },
+      {
+        "noisy_rank": 2,
+        "view": "c_charge_degree='felony'",
+        "exact_rank": 2,
+        "use": 0.434511429235176,
+        "coverage": 0.4514757165943693,
+        "representativeness": 0.9624248066160445
+      },
+      {
+        "noisy_rank": 3,
+        "view": "sex='Male' AND c_charge_degree='felony'",
+        "exact_rank": 3,
+        "use": 0.3669770395385773,
+        "coverage": 0.3857276516118057,
+        "representativeness": 0.951388986517101
+      },
+      {
+        "noisy_rank": 4,
+        "view": "is_recid='no'",
+        "exact_rank": 5,
+        "use": 0.3064595492434312,
+        "coverage": 0.3203198094752063,
+        "representativeness": 0.9567299310820554
+      },
+      {
+        "noisy_rank": 5,
+        "view": "race='African-American'",
+        "exact_rank": 4,
+        "use": 0.35367273586582965,
+        "coverage": 0.3746704091179723,
+        "representativeness": 0.9439569479170395
+      },
+      {
+        "noisy_rank": 6,
+        "view": "sex='Male' AND race='African-American'",
+        "exact_rank": 6,
+        "use": 0.302317908337297,
+        "coverage": 0.3272093221059794,
+        "representativeness": 0.9239281643674553
+      },
+      {
+        "noisy_rank": 7,
+        "view": "sex='Male' AND is_recid='no'",
+        "exact_rank": 9,
+        "use": 0.25770457295495985,
+        "coverage": 0.26962660542655437,
+        "representativeness": 0.9557831748364237
+      },
+      {
+        "noisy_rank": 8,
+        "view": "is_recid='yes'",
+        "exact_rank": 7,
+        "use": 0.2614926176297864,
+        "coverage": 0.2919962575486944,
+        "representativeness": 0.8955341408311676
+      },
+      {
+        "noisy_rank": 9,
+        "view": "race='African-American' AND c_charge_degree='felony'",
+        "exact_rank": 8,
+        "use": 0.25780144565882646,
+        "coverage": 0.2799183465169686,
+        "representativeness": 0.9209880269251968
+      },
+      {
+        "noisy_rank": 10,
+        "view": "age='25-34'",
+        "exact_rank": 10,
+        "use": 0.24792987359240784,
+        "coverage": 0.2569533044143914,
+        "representativeness": 0.9648829936530748
+      },
+      {
+        "noisy_rank": 11,
+        "view": "priors_count='2-3'",
+        "exact_rank": 16,
+        "use": 0.1751055461325381,
+        "coverage": 0.1818491111678149,
+        "representativeness": 0.9629167005988075
+      },
+      {
+        "noisy_rank": 12,
+        "view": "c_charge_degree='felony' AND is_recid='yes'",
+        "exact_rank": 14,
+        "use": 0.19031210696973302,
+        "coverage": 0.21672195287913584,
+        "representativeness": 0.8781394982900907
+      },
+      {
+        "noisy_rank": 13,
+        "view": "c_charge_degree='felony' AND is_recid='no'",
+        "exact_rank": 11,
+        "use": 0.22823844381977101,
+        "coverage": 0.2347537637152335,
+        "representativeness": 0.9722461536192202
+      },
+      {
+        "noisy_rank": 14,
+        "view": "race='African-American' AND is_recid='no'",
+        "exact_rank": 17,
+        "use": 0.17491615087285065,
+        "coverage": 0.18261461257123415,
+        "representativeness": 0.957843123340524
+      },
+      {
+        "noisy_rank": 15,
+        "view": "decile_score='5-6'",
+        "exact_rank": 28,
+        "use": 0.12288697390339909,
+        "coverage": 0.13022029429276175,
+        "representativeness": 0.9436852724900479
+      }
+    ],
+    "overlap_with_exact_top_tau": 0.8,
+    "retained_atom_counts": {
+      "c_charge_degree='felony'": 5,
+      "sex='Male'": 4,
+      "is_recid='no'": 4,
+      "race='African-American'": 4,
+      "is_recid='yes'": 2,
+      "age='25-34'": 1,
+      "priors_count='2-3'": 1,
+      "decile_score='5-6'": 1
+    },
+    "query_attribute_views": [
+      {
+        "view": "priors_count='2-3'",
+        "rank": 16,
+        "use": 0.1751055461325381,
+        "coverage": 0.1818491111678149,
+        "representativeness": 0.9629167005988075
+      },
+      {
+        "view": "priors_count='7-10'",
+        "rank": 23,
+        "use": 0.13712086744165994,
+        "coverage": 0.15922429191120183,
+        "representativeness": 0.8611805761279893
+      },
+      {
+        "view": "priors_count='11+'",
+        "rank": 30,
+        "use": 0.12222978456682465,
+        "coverage": 0.15122905503104533,
+        "representativeness": 0.8082427318066128
+      },
+      {
+        "view": "priors_count='4-6'",
+        "rank": 38,
+        "use": 0.10932569546311091,
+        "coverage": 0.12001360891383857,
+        "representativeness": 0.9109441541883735
+      },
+      {
+        "view": "priors_count='0'",
+        "rank": 313,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.9148291283858554
+      },
+      {
+        "view": "priors_count='1'",
+        "rank": 314,
+        "use": 0.0,
+        "coverage": 0.0,
+        "representativeness": 0.9481356722065283
+      }
+    ]
+  },
+  "explanations": [
+    {
+      "round": 1,
+      "view": "priors_count='2-3'",
+      "attr": "age",
+      "bins": [
+        "<25",
+        "25-34",
+        "35-44",
+        "45-54",
+        "55-64",
+        "65+"
+      ],
+      "noisy_h1": [
+        28.918,
+        -15.584,
+        34.409,
+        -38.272,
+        0.075,
+        7.099
+      ],
+      "noisy_h2": [
+        460.054,
+        816.177,
+        422.849,
+        274.056,
+        61.743,
+        -20.386
+      ],
+      "exact_n": [
+        488,
+        805,
+        391,
+        294,
+        126,
+        34
+      ],
+      "exact_h1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "exact_h2": [
+        488,
+        805,
+        391,
+        294,
+        126,
+        34
+      ],
+      "hd_gamma": 3.6316120828458622,
+      "utility": 3.6316120828458622,
+      "n_candidates": 128,
+      "bins_clearing_2sigma": [
+        "<25",
+        "25-34",
+        "35-44",
+        "45-54"
+      ],
+      "exact_share_q1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exact_share_q2": [
+        0.2283,
+        0.3765,
+        0.1829,
+        0.1375,
+        0.0589,
+        0.0159
+      ],
+      "noisy_total_q1": 16.644999999999996,
+      "noisy_total_q2": 2014.493,
+      "exact_total_q1": 0,
+      "exact_total_q2": 2138,
+      "exact_abs_diff_total": 2138,
+      "share_of_releases_with_this_explanation": 0.3,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 2,
+      "view": "priors_count='2-3'",
+      "attr": "decile_score",
+      "bins": [
+        "1-2",
+        "3-4",
+        "5-6",
+        "7-8",
+        "9-10",
+        "NA"
+      ],
+      "noisy_h1": [
+        -0.246,
+        18.532,
+        61.986,
+        4.783,
+        78.489,
+        -5.989
+      ],
+      "noisy_h2": [
+        726.341,
+        487.89,
+        543.599,
+        233.871,
+        208.235,
+        -2.456
+      ],
+      "exact_n": [
+        695,
+        488,
+        421,
+        305,
+        225,
+        4
+      ],
+      "exact_h1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "exact_h2": [
+        695,
+        488,
+        421,
+        305,
+        225,
+        4
+      ],
+      "hd_gamma": 3.6188441559115527,
+      "utility": 3.6188441559115527,
+      "n_candidates": 127,
+      "bins_clearing_2sigma": [
+        "1-2",
+        "3-4",
+        "5-6",
+        "7-8",
+        "9-10"
+      ],
+      "exact_share_q1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exact_share_q2": [
+        0.3251,
+        0.2283,
+        0.1969,
+        0.1427,
+        0.1052,
+        0.0019
+      ],
+      "noisy_total_q1": 157.55499999999998,
+      "noisy_total_q2": 2197.48,
+      "exact_total_q1": 0,
+      "exact_total_q2": 2138,
+      "exact_abs_diff_total": 2138,
+      "share_of_releases_with_this_explanation": 0.3,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 3,
+      "view": "priors_count='2-3'",
+      "attr": "race",
+      "bins": [
+        "African-American",
+        "Caucasian",
+        "Hispanic",
+        "Other"
+      ],
+      "noisy_h1": [
+        -26.45,
+        92.646,
+        22.044,
+        -2.46
+      ],
+      "noisy_h2": [
+        1058.276,
+        749.626,
+        185.832,
+        148.301
+      ],
+      "exact_n": [
+        1030,
+        796,
+        189,
+        123
+      ],
+      "exact_h1": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "exact_h2": [
+        1030,
+        796,
+        189,
+        123
+      ],
+      "hd_gamma": 2.7208207290534014,
+      "utility": 2.7208207290534014,
+      "n_candidates": 126,
+      "bins_clearing_2sigma": [
+        "African-American",
+        "Caucasian",
+        "Hispanic",
+        "Other"
+      ],
+      "exact_share_q1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exact_share_q2": [
+        0.4818,
+        0.3723,
+        0.0884,
+        0.0575
+      ],
+      "noisy_total_q1": 85.78,
+      "noisy_total_q2": 2142.035,
+      "exact_total_q1": 0,
+      "exact_total_q2": 2138,
+      "exact_abs_diff_total": 2138,
+      "share_of_releases_with_this_explanation": 0.3,
+      "share_of_releases_explaining_this_attr": 0.7
+    },
+    {
+      "round": 4,
+      "view": "sex='Male' AND is_recid='no'",
+      "attr": "priors_count",
+      "bins": [
+        "0",
+        "1",
+        "2-3",
+        "4-6",
+        "7-10",
+        "11+"
+      ],
+      "noisy_h1": [
+        19.894,
+        -41.925,
+        42.852,
+        -0.403,
+        343.245,
+        308.946
+      ],
+      "noisy_h2": [
+        -0.426,
+        -28.683,
+        1084.377,
+        649.634,
+        335.435,
+        302.722
+      ],
+      "exact_n": [
+        1976,
+        1224,
+        1086,
+        634,
+        377,
+        348
+      ],
+      "exact_h1": [
+        0,
+        0,
+        0,
+        0,
+        377,
+        348
+      ],
+      "exact_h2": [
+        0,
+        0,
+        1086,
+        634,
+        377,
+        348
+      ],
+      "hd_gamma": 1.686758527474745,
+      "utility": 1.686758527474745,
+      "n_candidates": 125,
+      "bins_clearing_2sigma": [
+        "2-3",
+        "4-6"
+      ],
+      "exact_share_q1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.52,
+        0.48
+      ],
+      "exact_share_q2": [
+        0.0,
+        0.0,
+        0.4442,
+        0.2593,
+        0.1542,
+        0.1423
+      ],
+      "noisy_total_q1": 672.609,
+      "noisy_total_q2": 2343.059,
+      "exact_total_q1": 725,
+      "exact_total_q2": 2445,
+      "exact_abs_diff_total": 1720,
+      "share_of_releases_with_this_explanation": 0.2,
+      "share_of_releases_explaining_this_attr": 1.0
+    },
+    {
+      "round": 5,
+      "view": "is_recid='no'",
+      "attr": "age",
+      "bins": [
+        "<25",
+        "25-34",
+        "35-44",
+        "45-54",
+        "55-64",
+        "65+"
+      ],
+      "noisy_h1": [
+        -0.334,
+        312.256,
+        251.799,
+        224.219,
+        110.494,
+        32.713
+      ],
+      "noisy_h2": [
+        288.612,
+        1089.582,
+        744.979,
+        466.91,
+        251.883,
+        84.811
+      ],
+      "exact_n": [
+        1315,
+        2563,
+        1563,
+        1144,
+        592,
+        158
+      ],
+      "exact_h1": [
+        26,
+        271,
+        237,
+        166,
+        103,
+        13
+      ],
+      "exact_h2": [
+        314,
+        1095,
+        712,
+        510,
+        263,
+        56
+      ],
+      "hd_gamma": 1.3982544652701447,
+      "utility": 0.6991272326350724,
+      "n_candidates": 124,
+      "bins_clearing_2sigma": [
+        "<25",
+        "25-34",
+        "35-44",
+        "45-54",
+        "55-64"
+      ],
+      "exact_share_q1": [
+        0.0319,
+        0.3321,
+        0.2904,
+        0.2034,
+        0.1262,
+        0.0159
+      ],
+      "exact_share_q2": [
+        0.1064,
+        0.3712,
+        0.2414,
+        0.1729,
+        0.0892,
+        0.019
+      ],
+      "noisy_total_q1": 931.147,
+      "noisy_total_q2": 2926.777,
+      "exact_total_q1": 816,
+      "exact_total_q2": 2950,
+      "exact_abs_diff_total": 2134,
+      "share_of_releases_with_this_explanation": 0.1,
+      "share_of_releases_explaining_this_attr": 1.0
+    }
+  ],
+  "releases": {
+    "n": 10,
+    "selections": [
+      [
+        [
+          "priors_count='2-3'",
+          "age"
+        ],
+        [
+          "priors_count='2-3'",
+          "decile_score"
+        ],
+        [
+          "priors_count='2-3'",
+          "race"
+        ],
+        [
+          "sex='Male' AND is_recid='no'",
+          "priors_count"
+        ],
+        [
+          "is_recid='no'",
+          "age"
+        ]
+      ],
+      [
+        [
+          "c_charge_degree='felony' AND priors_count='2-3'",
+          "age"
+        ],
+        [
+          "c_charge_degree='felony' AND priors_count='2-3'",
+          "decile_score"
+        ],
+        [
+          "race='African-American' AND priors_count='2-3'",
+          "is_violent_recid"
+        ],
+        [
+          "c_charge_degree='felony' AND priors_count='2-3'",
+          "race"
+        ],
+        [
+          "age='25-34'",
+          "priors_count"
+        ]
+      ],
+      [
+        [
+          "priors_count='2-3'",
+          "age"
+        ],
+        [
+          "priors_count='2-3'",
+          "decile_score"
+        ],
+        [
+          "priors_count='2-3'",
+          "race"
+        ],
+        [
+          "race='Caucasian'",
+          "priors_count"
+        ],
+        [
+          "priors_count='2-3'",
+          "is_recid"
+        ]
+      ],
+      [
+        [
+          "c_charge_degree='felony' AND priors_count='2-3'",
+          "decile_score"
+        ],
+        [
+          "c_charge_degree='felony' AND priors_count='2-3'",
+          "age"
+        ],
+        [
+          "is_recid='no'",
+          "priors_count"
+        ],
+        [
+          "c_charge_degree='felony' AND priors_count='2-3'",
+          "race"
+        ],
+        [
+          "c_charge_degree='felony' AND priors_count='2-3'",
+          "is_violent_recid"
+        ]
+      ],
+      [
+        [
+          "sex='Male' AND c_charge_degree='felony'",
+          "decile_score"
+        ],
+        [
+          "c_charge_degree='felony'",
+          "age"
+        ],
+        [
+          "sex='Male' AND age='25-34'",
+          "priors_count"
+        ],
+        [
+          "age='25-34'",
+          "priors_count"
+        ],
+        [
+          "is_recid='yes'",
+          "decile_score"
+        ]
+      ],
+      [
+        [
+          "priors_count='2-3'",
+          "age"
+        ],
+        [
+          "priors_count='2-3'",
+          "decile_score"
+        ],
+        [
+          "is_recid='yes'",
+          "priors_count"
+        ],
+        [
+          "priors_count='2-3'",
+          "race"
+        ],
+        [
+          "priors_count='2-3'",
+          "is_recid"
+        ]
+      ],
+      [
+        [
+          "sex='Male' AND c_charge_degree='felony'",
+          "decile_score"
+        ],
+        [
+          "c_charge_degree='felony'",
+          "age"
+        ],
+        [
+          "c_charge_degree='felony' AND is_recid='no'",
+          "priors_count"
+        ],
+        [
+          "sex='Male' AND race='African-American'",
+          "juv_misd_count"
+        ],
+        [
+          "sex='Male'",
+          "age"
+        ]
+      ],
+      [
+        [
+          "sex='Male' AND is_recid='no'",
+          "priors_count"
+        ],
+        [
+          "is_recid='yes'",
+          "decile_score"
+        ],
+        [
+          "sex='Male' AND is_recid='yes'",
+          "age"
+        ],
+        [
+          "race='African-American'",
+          "age"
+        ],
+        [
+          "is_recid='no'",
+          "race"
+        ]
+      ],
+      [
+        [
+          "priors_count='2-3' AND is_recid='no'",
+          "age"
+        ],
+        [
+          "priors_count='2-3' AND is_recid='no'",
+          "decile_score"
+        ],
+        [
+          "is_recid='yes'",
+          "priors_count"
+        ],
+        [
+          "priors_count='2-3' AND is_recid='no'",
+          "race"
+        ],
+        [
+          "sex='Male' AND decile_score='5-6'",
+          "juv_fel_count"
+        ]
+      ],
+      [
+        [
+          "sex='Male' AND age='25-34'",
+          "decile_score"
+        ],
+        [
+          "sex='Male' AND is_recid='yes'",
+          "age"
+        ],
+        [
+          "sex='Male' AND is_recid='yes'",
+          "priors_count"
+        ],
+        [
+          "sex='Male' AND is_recid='no'",
+          "age"
+        ],
+        [
+          "is_recid='no'",
+          "priors_count"
+        ]
+      ]
+    ],
+    "retained_overlap_with_exact_top_tau": [
+      0.8,
+      0.8666666666666667,
+      0.8,
+      0.8,
+      0.8666666666666667,
+      0.8,
+      0.8,
+      0.8666666666666667,
+      0.7333333333333333,
+      0.8666666666666667
+    ]
+  },
+  "timings": {
+    "view_stage_ms": 0.14053100005639863,
+    "explanation_stage_ms": 3.401789000008648,
+    "mechanism_ms": 3.5423200000650468,
+    "cache_build_s": 0.09493490199997723
+  },
+  "note": "exact_* fields are NOT differentially private; they are reported only to check the text."
+}
