@@ -77,6 +77,8 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
         if "data_fraction" in sweeps:
             sweeps["data_fraction"] = sorted(set(sweeps["data_fraction"])
                                              | set(e.get("extra_data_fraction", {}).get(ds_name, [])))
+        if e.get("only_sweeps"):  # one job per sweep (pqde run e4 --sweeps ...)
+            sweeps = {k: v for k, v in sweeps.items() if k in e["only_sweeps"]}
         if quick:
             sweeps = {k: [v[0], v[-1]] for k, v in sweeps.items()}
         for pid in pids:
@@ -106,7 +108,8 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
                         if not methods:
                             break
                         outs = time_methods(ds, q1, q2, params, methods=methods, views=views, seed=seed, repeat=r,
-                                            gamma_eval=float(d["gamma_eval"]), timeout_s=timeout_s)
+                                            gamma_eval=float(d["gamma_eval"]), timeout_s=timeout_s,
+                                            early_stop=d.get("early_stop_factor"))
                         for out in outs:
                             if out.timeout:
                                 n_timeouts[out.method] = n_timeouts.get(out.method, 0) + 1

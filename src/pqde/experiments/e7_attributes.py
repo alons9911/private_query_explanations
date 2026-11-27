@@ -96,13 +96,16 @@ def run_runtime(cfg: dict, pairs: list[str] | None = None, base=None, quick: boo
                     ds_m = replace(pair.dataset, explain_attrs=order[:m])
                     params = make_params(d, n_views, m, **over)
                     for out in time_methods(ds_m, pair.q1, pair.q2, params, methods=methods, seed=seed, repeat=r,
-                                            gamma_eval=float(d["gamma_eval"]), timeout_s=timeout_s):
+                                            gamma_eval=float(d["gamma_eval"]), timeout_s=timeout_s,
+                                            early_stop=d.get("early_stop_factor")):
                         n_to[out.method] = n_to.get(out.method, 0) + int(out.timeout)
                         rows.append({"dataset": ds_name, "pair": pid, "sweep": "n_attrs", "value": m, "order": r,
                                      "attrs": json.dumps(order[:m]), "method": out.method, "repeat": r,
                                      "N": pair.dataset.N, "P": n_views, "k": params.k, "tau": params.tau,
                                      "gamma": params.gamma, "build_s": out.build_s, "mech_s": out.mech_s,
                                      "total_s": out.total_s, "timeout": out.timeout,
+                                     "inferred": bool(out.extra.get("estimated", False)),
+                                     "estimated_s": out.extra.get("estimated_seconds"),
                                      "b2_subsets": out.extra.get("subsets", out.extra.get("subsets_total"))})
                 print(f"    |Attrs|={m}: " + "  ".join(
                     f"{x} {np.median([w['total_s'] for w in rows if w['pair'] == pid and w['value'] == m and w['method'] == x]):.3g}s"
