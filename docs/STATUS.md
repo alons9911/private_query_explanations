@@ -37,6 +37,16 @@ Read this section first.  The user writes in Hebrew and wants answers in Hebrew.
   When done: fetch the branches into results_shards/, merge (`scripts/merge_shards.py --shard 'rt-*'
   e4 e5 e7t e7t7`; keep Erica's pairs out of the paper's figures until the user decides), redraw Figure 11,
   rewrite the runtime paragraph, remove its \alon note.
+* PREVIEW of the runtime rerun, RUNNING since 2026-11-27 21:36 (user chose option a: results within ~10 h
+  for writing, the full rerun above continues and replaces them later): configs/experiments_preview.yaml
+  (3 repeats per point, E7 3 attribute orders, early_stop_factor 2 for B2/EXH_ALL: stop after the first
+  block when it says > 2x the time left; estimate within 10-16% of actual), E4 one job per (pair, sweep).
+  12 cloud shards pv-1..12 (tag pqde-pv, branches ...-pv-<n>, `scripts/shards_status.sh pv`, plan
+  scripts/plan_preview_shards.py, est. 6.3 h).  Sessions (prefix session_01U646): pv-1 mZEcyBPskN7uS4DVPG,
+  pv-2 md7GK7UDEASmAAJhqd, pv-3 mcuz9yCpjG9nksJqbR, pv-4 mYxUscqpdKa4YEdckX, pv-5 mbYNP3iA3JFiu5X8zc,
+  pv-6 maMmN7BAB8AT5c54wb, pv-7 maLftCki2CKHyPTUVk, pv-8 mbBoNLAB4KE9suQWvo, pv-9 mcAt5rKCemfxVBBAy6,
+  pv-10 mYy6pVpTo4PVkHpkpx, pv-11 mcsQseSvEMspNhYTNq, pv-12 mYwpgLnTpataST7z7o.  When done: merge into a
+  SEPARATE directory (not results/), draft the runtime paragraph and Figure 11 from it, marked provisional.
 * Still running (old 5-method runtime, superseded by the rerun above): shards new-3, fix-1..3
   (`scripts/shards_status.sh new|fix`).  Ask the user before stopping or archiving them.
 * Overleaf Git: credential for git.overleaf.com saved but refused (probably saved as a bearer token; needs
