@@ -459,3 +459,139 @@ ACS_Q4C8:
     - {where: "RAC1P = 1", max_count: 1862}
     - {where: "SEX = 'M'", max_count: 1727}
 
+# --- refinement-only experiments (approved 2026-11-27): Q' from our ERICA-style search
+#     (scripts/search_refinement_pairs.py; results/pair_search/refinement_<dataset>.csv).
+CO1:
+  source: "ours: Erica's COMPAS attributes and groups (github.com/alons9911/Query_refinement); Q' from our ERICA-style search"
+  dataset: compas
+  kind: refinement
+  q1: "priors_count >= 7"
+  q2: "priors_count >= 2"
+  constraints: [{attr: "race", value: "Caucasian", min_share: 0.3}]
+  paper: {size_q1: 1825, size_q2: 5374, share_q1: 0.228, share_q2: 0.308}
+
+CO2:
+  source: "ours: Erica's COMPAS attributes and groups (github.com/alons9911/Query_refinement); Q' from our ERICA-style search"
+  dataset: compas
+  kind: refinement
+  q1: "priors_count >= 4 AND c_charge_degree = 'felony'"
+  q2: "priors_count >= 1 AND c_charge_degree = 'felony'"
+  constraints: [{attr: "race", value: "Caucasian", min_share: 0.3}]
+  paper: {size_q1: 2442, size_q2: 5364, share_q1: 0.261, share_q2: 0.310}
+
+CO3:
+  source: "ours: Erica's COMPAS attributes and groups (github.com/alons9911/Query_refinement); Q' from our ERICA-style search"
+  dataset: compas
+  kind: refinement
+  q1: "decile_score >= 7 AND c_charge_degree = 'felony'"
+  q2: "decile_score >= 2 AND c_charge_degree = 'felony'"
+  constraints: [{attr: "race", value: "Caucasian", min_share: 0.3}]
+  paper: {size_q1: 2270, size_q2: 6034, share_q1: 0.210, share_q2: 0.303}
+
+CO4:
+  source: "ours: Erica's COMPAS attributes and groups (github.com/alons9911/Query_refinement); Q' from our ERICA-style search"
+  dataset: compas
+  kind: refinement
+  q1: "decile_score >= 7 AND is_recid = 'yes'"
+  q2: "decile_score >= 5"
+  constraints: [{attr: "sex", value: "Female", min_share: 0.18}]
+  paper: {size_q1: 1503, size_q2: 5135, share_q1: 0.131, share_q2: 0.189}
+
+CO5:
+  source: "ours: Erica's COMPAS attributes and groups (github.com/alons9911/Query_refinement); Q' from our ERICA-style search"
+  dataset: compas
+  kind: refinement
+  q1: "priors_count >= 2 AND is_recid = 'yes'"
+  q2: "priors_count >= 4 AND is_recid = 'yes'"
+  constraints: [{attr: "age_cat", value: "Greater than 45", min_share: 0.19}]
+  paper: {size_q1: 2424, size_q2: 1647, share_q1: 0.171, share_q2: 0.194}
+
+L1:
+  source: "ours: LSAC law students of Campbell et al. 2024 (Rodeo); Q' from our ERICA-style search"
+  dataset: law
+  kind: refinement
+  q1: "LSAT >= 40 AND region_first IN ('NE', 'GL')"
+  q2: "LSAT >= 29 AND region_first IN ('NE', 'GL')"
+  constraints: [{attr: "race", values: ["Black", "Hispanic", "Mexican", "Puertorican", "Amerindian"], min_share: 0.06}]
+  paper: {size_q1: 2602, size_q2: 7541, share_q1: 0.031, share_q2: 0.061}
+
+L2:
+  source: "ours: LSAC law students of Campbell et al. 2024 (Rodeo); Q' from our ERICA-style search"
+  dataset: law
+  kind: refinement
+  q1: "UGPA >= 3.5 AND region_first IN ('NE', 'GL')"
+  q2: "UGPA >= 2.9 AND region_first IN ('NE', 'GL')"
+  constraints: [{attr: "race", values: ["Black", "Hispanic", "Mexican", "Puertorican", "Amerindian"], min_share: 0.06}]
+  paper: {size_q1: 2658, size_q2: 6686, share_q1: 0.036, share_q2: 0.061}
+
+L3:
+  source: "ours: LSAC law students of Campbell et al. 2024 (Rodeo); Q' from our ERICA-style search"
+  dataset: law
+  kind: refinement
+  q1: "sander_index >= 0.8 AND region_first IN ('NE', 'GL')"
+  q2: "sander_index >= 0.619047619 AND region_first IN ('NE', 'GL')"
+  constraints: [{attr: "race", values: ["Black", "Hispanic", "Mexican", "Puertorican", "Amerindian"], min_share: 0.06}]
+  paper: {size_q1: 2897, size_q2: 7691, share_q1: 0.022, share_q2: 0.064}
+
+L4:
+  source: "ours: LSAC law students of Campbell et al. 2024 (Rodeo); Q' from our ERICA-style search"
+  dataset: law
+  kind: refinement
+  q1: "LSAT >= 40 AND region_first IN ('FW', 'SE', 'SC')"
+  q2: "LSAT >= 30 AND region_first IN ('FW', 'SE', 'SC')"
+  constraints: [{attr: "race", value: "Black", min_share: 0.03}]
+  paper: {size_q1: 2622, size_q2: 6970, share_q1: 0.010, share_q2: 0.030}
+
+L5:
+  source: "ours: LSAC law students of Campbell et al. 2024 (Rodeo); Q' from our ERICA-style search"
+  dataset: law
+  kind: refinement
+  q1: "sander_index >= 0.8 AND region_first IN ('FW', 'SE', 'SC')"
+  q2: "sander_index >= 0.6473940678474576 AND region_first IN ('FW', 'SE', 'SC')"
+  constraints: [{attr: "race", value: "Black", min_share: 0.03}]
+  paper: {size_q1: 2896, size_q2: 7066, share_q1: 0.008, share_q2: 0.030}
+
+M1:
+  source: "ours: MEPS 2015 HC-181; Q' from our ERICA-style search"
+  dataset: meps
+  kind: refinement
+  q1: "UTILIZATION >= 20"
+  q2: "UTILIZATION >= 8"
+  constraints: [{where: "AGE < 45", min_share: 0.35}]
+  paper: {size_q1: 2986, size_q2: 7483, share_q1: 0.272, share_q2: 0.356}
+
+M2:
+  source: "ours: MEPS 2015 HC-181; Q' from our ERICA-style search"
+  dataset: meps
+  kind: refinement
+  q1: "TOTEXP >= 5000 AND HIBPDX = 'yes'"
+  q2: "TOTEXP >= 484 AND HIBPDX = 'yes'"
+  constraints: [{attr: "SEX", value: "M", min_share: 0.44}]
+  paper: {size_q1: 3119, size_q2: 6792, share_q1: 0.420, share_q2: 0.440}
+
+M3:
+  source: "ours: MEPS 2015 HC-181; Q' from our ERICA-style search"
+  dataset: meps
+  kind: refinement
+  q1: "HIBPDX = 'yes' AND INSCOV = 'public only'"
+  q2: "HIBPDX = 'yes' AND INSCOV IN ('private', 'public only')"
+  constraints: [{attr: "SEX", value: "M", min_share: 0.44}]
+  paper: {size_q1: 3171, size_q2: 7737, share_q1: 0.395, share_q2: 0.464}
+
+M4:
+  source: "ours: MEPS 2015 HC-181; Q' from our ERICA-style search"
+  dataset: meps
+  kind: refinement
+  q1: "UTILIZATION >= 10 AND RTHLTH IN ('fair', 'poor')"
+  q2: "UTILIZATION >= 4 AND RTHLTH IN ('fair', 'poor')"
+  constraints: [{attr: "RACE", values: ["Black", "Hispanic"], min_share: 0.5}]
+  paper: {size_q1: 1802, size_q2: 2823, share_q1: 0.462, share_q2: 0.502}
+
+M5:
+  source: "ours: MEPS 2015 HC-181; Q' from our ERICA-style search"
+  dataset: meps
+  kind: refinement
+  q1: "TOTEXP >= 5000 AND INSCOV = 'public only'"
+  q2: "TOTEXP >= 1984 AND INSCOV = 'public only'"
+  constraints: [{where: "AGE < 45", min_share: 0.35}]
+  paper: {size_q1: 2375, size_q2: 3857, share_q1: 0.284, share_q2: 0.351}
