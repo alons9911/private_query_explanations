@@ -133,12 +133,12 @@ def _curve(df: pd.DataFrame, x: str, col: str) -> pd.DataFrame:
 
 # (source, x column, value column, label, colour, marker, linestyle)
 BF_SERIES_EPS = [("e2", "value", "ratio_BF", NAME["sys"], P.BLUE, "o", "-"),
-                 ("e2_b1", "value", "ratio_BF", f"{NAME['Bone']} (no noise)", P.BLUE, "o", ":"),
+                 ("e2_b1", "value", "ratio_BF", NAME['Bone'], P.BLUE, "o", ":"),
                  ("fixed", "epsilon", "ratio_BF", NAME["sys"] + r", $\gamma$ fixed", P.MAGENTA, "D", "--"),
                  ("single", "epsilon", "ratio_BF", NAME["SingleStage"], P.AQUA, "^", "--"),
                  ("e2", "value", "attr_at_k_BF", f"attribute@k ({NAME['sys']})", P.ORANGE, "s", "-")]
 BF_SERIES_GAMMA = [("e6", "value", "ratio_BF", NAME["sys"], P.BLUE, "o", "-"),
-                   ("e6_b1", "value", "ratio_BF", f"{NAME['Bone']} (no noise)", P.BLUE, "o", ":"),
+                   ("e6_b1", "value", "ratio_BF", NAME['Bone'], P.BLUE, "o", ":"),
                    ("e6", "value", "attr_at_k_BF", f"attribute@k ({NAME['sys']})", P.ORANGE, "s", "-")]
 
 
