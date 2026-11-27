@@ -56,6 +56,12 @@ URLS = {
     # IPUMS-CPS extract and codebook distributed with DPXPlain (Tao et al., PVLDB 16(1), 2022)
     "ipums": ["https://raw.githubusercontent.com/yuchaotao/Private-Explanation-System/main/data/ipums/cps_00005.csv.gz",
               "https://raw.githubusercontent.com/yuchaotao/Private-Explanation-System/main/data/ipums/cps_00005.xml"],
+    # COMPAS (ProPublica): the compas-scores file used by the Erica experiments (github.com/alons9911/Query_refinement)
+    "compas": ["https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores.csv"],
+    # LSAC Law Students as distributed with Rodeo (Campbell et al., PVLDB 17(12), 2024; github.com/fsalc/rodeo)
+    "law": ["https://raw.githubusercontent.com/fsalc/rodeo/main/backend/data/law_students.csv"],
+    # MEPS 2015 full-year consolidated file HC-181 (AHRQ), SAS transport format
+    "meps": ["https://meps.ahrq.gov/mepsweb/data_files/pufs/h181ssp.zip"],
 }
 
 ADULT_COLUMNS = [
@@ -152,6 +158,29 @@ def fetch(name: str, raw_dir: Path | None = None, force: bool = False) -> dict:
                     out["errors"].append(f"{target.name}: {e}")
             if target.exists():
                 out["files"][target.name] = sha256(target)
+    elif name in ("compas", "law"):
+        target = raw_dir / name / Path(URLS[name][0]).name
+        if not target.exists() or force:
+            try:
+                _download(URLS[name][0], target)
+            except Exception as e:  # noqa: BLE001
+                out["errors"].append(str(e))
+        if target.exists():
+            out["files"][target.name] = sha256(target)
+    elif name == "meps":
+        d = raw_dir / "meps"
+        target = d / "h181.ssp"
+        if not target.exists() or force:
+            try:
+                z = _download(URLS["meps"][0], d / "h181ssp.zip", timeout=600)
+                with zipfile.ZipFile(z) as zf:
+                    member = next(m for m in zf.namelist() if m.lower().endswith(".ssp"))
+                    with zf.open(member) as src, open(target, "wb") as dst:
+                        dst.write(src.read())
+            except Exception as e:  # noqa: BLE001
+                out["errors"].append(str(e))
+        if target.exists():
+            out["files"][target.name] = sha256(target)
     elif name == "stackoverflow":
         d = raw_dir / "stackoverflow"
         target = d / "survey_results_public.csv"
@@ -507,7 +536,109 @@ def load_stackoverflow(raw_dir: Path | None = None, allow_synthetic: bool = True
     return synthetic_stackoverflow(synthetic_rows, seed), {"source": "synthetic_stackoverflow", "synthetic": True, "seed": seed}
 
 
+# --------------------------------------------------------------------------- COMPAS (ProPublica)
+
+COMPAS_KEEP = ["sex", "age", "age_cat", "race", "juv_fel_count", "juv_misd_count", "juv_other_count", "priors_count",
+               "c_charge_degree", "is_recid", "is_violent_recid", "decile_score", "score_text", "v_decile_score",
+               "v_score_text"]
+
+
+def load_compas(raw_dir: Path | None = None) -> tuple[pd.DataFrame, dict]:
+    """ProPublica's compas-scores.csv (11,757 defendants), the file of the Erica COMPAS experiments.
+
+    Identifying columns (names, dates of birth, case numbers, dates) are dropped; scores of -1
+    (not assessed) become missing.
+    """
+    raw_dir = Path(raw_dir or DEFAULT_RAW_DIR)
+    path = raw_dir / "compas" / "compas-scores.csv"
+    if not path.exists():
+        fetch("compas", raw_dir)
+    df = pd.read_csv(path)[COMPAS_KEEP].copy()
+    for c in ("decile_score", "v_decile_score"):
+        df[c] = df[c].where(df[c] >= 1)
+    for c in ("score_text", "v_score_text"):
+        df[c] = df[c].where(df[c].isin(["Low", "Medium", "High"]))
+    df["c_charge_degree"] = df["c_charge_degree"].map({"F": "felony", "M": "misdemeanor", "O": "other"})
+    for c in ("is_recid", "is_violent_recid"):  # -1: no recidivism information
+        df[c] = df[c].map({1: "yes", 0: "no"})
+    for c in ("sex", "age_cat", "race", "score_text", "v_score_text", "c_charge_degree", "is_recid", "is_violent_recid"):
+        df[c] = df[c].astype("string")
+    return df.reset_index(drop=True), {"source": str(path), "synthetic": False}
+
+
+# --------------------------------------------------------------------------- LSAC Law Students (Rodeo)
+
+def load_law(raw_dir: Path | None = None) -> tuple[pd.DataFrame, dict]:
+    """LSAC law students (21,791 rows) as distributed with Rodeo.
+
+    ``sex`` is coded 1/2 without labels; 2 is taken as male (56% of the rows, the share of men in
+    the LSAC study).  ``first_pf`` = 1 if the student passed the bar exam on the first attempt.
+    """
+    raw_dir = Path(raw_dir or DEFAULT_RAW_DIR)
+    path = raw_dir / "law" / "law_students.csv"
+    if not path.exists():
+        fetch("law", raw_dir)
+    df = pd.read_csv(path, encoding="utf-8-sig").drop(columns=["id"])
+    df["sex"] = df["sex"].map({1: "F", 2: "M"}).astype("string")
+    df["first_pf"] = df["first_pf"].astype(int)
+    for c in ("race", "region_first"):
+        df[c] = df[c].astype("string")
+    return df.reset_index(drop=True), {"source": str(path), "synthetic": False}
+
+
+# --------------------------------------------------------------------------- MEPS 2015 (AHRQ HC-181)
+
+MEPS_CODES = {
+    "REGION": {1: "Northeast", 2: "Midwest", 3: "South", 4: "West"},
+    "SEX": {1: "M", 2: "F"},
+    "RACE": {1: "Hispanic", 2: "White", 3: "Black", 4: "Asian", 5: "other"},
+    "MARRY": {1: "married", 2: "widowed", 3: "divorced", 4: "separated", 5: "never-married", 6: "under-16"},
+    "EDUC": {1: "no degree", 2: "GED", 3: "high school", 4: "bachelor", 5: "master", 6: "doctorate",
+             7: "other degree", 8: "under-16"},
+    "POVCAT": {1: "poor", 2: "near poor", 3: "low income", 4: "middle income", 5: "high income"},
+    "INSCOV": {1: "private", 2: "public only", 3: "uninsured"},
+    "EMPST": {1: "employed", 2: "job to return to", 3: "job during year", 4: "not employed"},
+    "RTHLTH": {1: "excellent", 2: "very good", 3: "good", 4: "fair", 5: "poor"},
+    "MNHLTH": {1: "excellent", 2: "very good", 3: "good", 4: "fair", 5: "poor"},
+    "DIABDX": {1: "yes", 2: "no"}, "HIBPDX": {1: "yes", 2: "no"}, "ACTLIM": {1: "yes", 2: "no"},
+}
+MEPS_SOURCE = {"REGION": "REGION15", "AGE": "AGE15X", "SEX": "SEX", "RACE": "RACETHX", "MARRY": "MARRY15X",
+               "EDUC": "HIDEG", "POVCAT": "POVCAT15", "INSCOV": "INSCOV15", "EMPST": "EMPST31",
+               "RTHLTH": "RTHLTH31", "MNHLTH": "MNHLTH31", "DIABDX": "DIABDX", "HIBPDX": "HIBPDX",
+               "ACTLIM": "ACTLIM31", "TOTEXP": "TOTEXP15"}
+MEPS_VISITS = ["OBTOTV15", "OPTOTV15", "ERTOT15", "IPNGTD15", "HHTOTD15"]  # AIF360's UTILIZATION
+
+
+def load_meps(raw_dir: Path | None = None) -> tuple[pd.DataFrame, dict]:
+    """MEPS 2015 full-year consolidated file (HC-181): every person of panels 19 and 20 (35,427).
+
+    The attributes follow the MEPS tasks of the fairness literature (AIF360): UTILIZATION is the
+    total number of office, outpatient, emergency, inpatient-night and home-health visits.
+    Negative codes (inapplicable, refused, don't know, not ascertained) become missing.
+    """
+    raw_dir = Path(raw_dir or DEFAULT_RAW_DIR)
+    path = raw_dir / "meps" / "h181.ssp"
+    cached = raw_dir / "meps" / "meps2015.csv"
+    meta = {"source": "MEPS HC-181 (2015 full-year consolidated), meps.ahrq.gov", "synthetic": False}
+    if not cached.exists():
+        if not path.exists():
+            fetch("meps", raw_dir)
+        raw = pd.read_sas(path, format="xport", encoding="latin-1")
+        df = pd.DataFrame({k: raw[v] for k, v in MEPS_SOURCE.items()})
+        df["UTILIZATION"] = raw[MEPS_VISITS].clip(lower=0).sum(axis=1)
+        df.to_csv(cached, index=False)
+    df = pd.read_csv(cached)
+    for c in df.columns:
+        df[c] = df[c].where(df[c] >= 0)
+    for c, codes in MEPS_CODES.items():
+        df[c] = df[c].map(codes).astype("string")
+    return df.reset_index(drop=True), meta
+
+
 LOADERS = {
+    "compas": load_compas,
+    "law": load_law,
+    "meps": load_meps,
     "adult": load_adult,
     "tax": load_tax,
     "tax_dirty": load_tax_dirty,

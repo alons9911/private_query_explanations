@@ -160,3 +160,70 @@ hospital:
     - [HospitalName, ZipCode]
     - [HospitalName, PhoneNumber]
     - [ZipCode, City]
+
+compas:
+  # ProPublica COMPAS scores (11,757 defendants), the file of the Erica COMPAS experiments
+  # (github.com/alons9911/Query_refinement); identifying columns dropped by the loader.
+  loader: compas
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [age, priors_count, juv_fel_count, juv_misd_count, juv_other_count, decile_score, v_decile_score]
+  bins:
+    age: {cuts: [25, 35, 45, 55, 65], labels: ['<25', '25-34', '35-44', '45-54', '55-64', '65+']}
+    priors_count: {cuts: [1, 2, 4, 7, 11], labels: ['0', '1', '2-3', '4-6', '7-10', '11+']}
+    juv_fel_count: {cuts: [1, 2], labels: ['0', '1', '2+']}
+    juv_misd_count: {cuts: [1, 2], labels: ['0', '1', '2+']}
+    juv_other_count: {cuts: [1, 2], labels: ['0', '1', '2+']}
+    decile_score: {cuts: [3, 5, 7, 9], labels: ['1-2', '3-4', '5-6', '7-8', '9-10']}
+    v_decile_score: {cuts: [3, 5, 7, 9], labels: ['1-2', '3-4', '5-6', '7-8', '9-10']}
+  category_order:
+    age_cat: ['Less than 25', '25 - 45', 'Greater than 45']
+    score_text: [Low, Medium, High]
+    v_score_text: [Low, Medium, High]
+  categorical: [sex, age_cat, race, c_charge_degree, is_recid, is_violent_recid, score_text, v_score_text]
+  top_values: {race: 4}     # Asian and Native American (98 people) fall into "Other"
+  # usable attributes beyond explain_attrs: encoded, used only by the |Attrs| experiment (E7)
+  extra_explain_attrs: [juv_other_count, v_decile_score, v_score_text]
+  explain_attrs: [sex, age, race, priors_count, juv_fel_count, juv_misd_count, c_charge_degree, is_recid, is_violent_recid, decile_score]
+  ref_attrs: [sex, age, race, priors_count, juv_fel_count, juv_misd_count, c_charge_degree, is_recid, is_violent_recid, decile_score]
+  view_attrs: [sex, age, race, c_charge_degree, priors_count, decile_score, is_recid]
+
+law:
+  # LSAC law students (21,791) as distributed with Rodeo (Campbell et al., PVLDB 17(12), 2024).
+  loader: law
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [LSAT, UGPA, ZFYA, sander_index]
+  bins:
+    LSAT: {cuts: [25, 30, 35, 40, 45], labels: ['<25', '25-29', '30-34', '35-39', '40-44', '45+']}
+    UGPA: {cuts: [2.5, 3.0, 3.5], labels: ['<2.5', '2.5-2.9', '3.0-3.4', '3.5+']}
+    ZFYA: {cuts: [-1.0, -0.5, 0.0, 0.5, 1.0], labels: ['<-1', '-1 to -0.5', '-0.5 to 0', '0 to 0.5', '0.5 to 1', '1+']}
+    sander_index: {cuts: [0.6, 0.7, 0.8, 0.9], labels: ['<0.6', '0.6-0.69', '0.7-0.79', '0.8-0.89', '0.9+']}
+  categorical: [race, sex, region_first, first_pf]
+  top_values: {region_first: 10}   # one student in region PO falls into "Other"
+  explain_attrs: [race, sex, LSAT, UGPA, region_first, ZFYA, sander_index, first_pf]
+  ref_attrs: [race, sex, LSAT, UGPA, region_first, ZFYA, sander_index, first_pf]
+  view_attrs: [race, sex, LSAT, UGPA, region_first, ZFYA, first_pf]
+
+meps:
+  # MEPS 2015 full-year consolidated file (AHRQ HC-181): all 35,427 persons of panels 19 and 20,
+  # with the attributes of the MEPS tasks of the fairness literature (AIF360).
+  loader: meps
+  n_bins: 6
+  max_view_atoms: 2
+  numeric: [AGE, UTILIZATION, TOTEXP]
+  bins:
+    AGE: {cuts: [18, 30, 45, 65], labels: ['<18', '18-29', '30-44', '45-64', '65+']}
+    UTILIZATION: {cuts: [1, 5, 10, 20], labels: ['0', '1-4', '5-9', '10-19', '20+']}
+    TOTEXP: {cuts: [1, 1000, 5000, 20000], labels: ['0', '1-999', '1000-4999', '5000-19999', '20000+']}
+  category_order:
+    POVCAT: [poor, near poor, low income, middle income, high income]
+    RTHLTH: [excellent, very good, good, fair, poor]
+    MNHLTH: [excellent, very good, good, fair, poor]
+  categorical: [REGION, SEX, RACE, MARRY, EDUC, POVCAT, INSCOV, EMPST, RTHLTH, MNHLTH, DIABDX, HIBPDX, ACTLIM]
+  # usable attributes beyond explain_attrs: encoded, used only by the |Attrs| experiment (E7)
+  extra_explain_attrs: [EDUC, MNHLTH, HIBPDX, TOTEXP]
+  explain_attrs: [AGE, SEX, RACE, MARRY, POVCAT, INSCOV, EMPST, RTHLTH, DIABDX, UTILIZATION]
+  ref_attrs: [AGE, SEX, RACE, MARRY, POVCAT, INSCOV, EMPST, RTHLTH, DIABDX, UTILIZATION]
+  view_attrs: [AGE, SEX, RACE, POVCAT, INSCOV, REGION, RTHLTH, ACTLIM]
+

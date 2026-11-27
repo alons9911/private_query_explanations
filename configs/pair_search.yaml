@@ -58,6 +58,71 @@ refinement:
       - {where: "Rate > 0", min_share: 0.50}
       - {where: "Salary <= 40000", min_share: 0.30}
 
+  # --- refinement-only experiments (2026-11-27): COMPAS (Erica's attributes and groups), Law Students
+  # (the dataset of Campbell et al. 2024), MEPS (the healthcare dataset of the fairness literature).
+  # Thresholds of the constraints are near each group's share in the data.
+  compas:
+    agg: decile_score        # AVG(decile_score): the mean risk score of the selected defendants
+    min_size: 1500
+    max_size: 8000
+    proxies: {race: [], age_cat: [age], sex: []}
+    atoms:
+      - "decile_score >= 5"
+      - "decile_score >= 7"
+      - "decile_score >= 8"
+      - "priors_count >= 2"
+      - "priors_count >= 4"
+      - "priors_count >= 7"
+      - "juv_fel_count >= 1"
+      - "c_charge_degree = 'felony'"
+      - "c_charge_degree = 'misdemeanor'"
+      - "is_recid = 'yes'"
+      - "is_violent_recid = 'yes'"
+    constraints:
+      - {attr: race, value: Caucasian, min_share: 0.35}
+      - {attr: age_cat, value: 'Greater than 45', min_share: 0.20}
+      - {attr: sex, value: Female, min_share: 0.20}
+  law:
+    agg: first_pf            # AVG(first_pf): the first-attempt bar passage rate
+    min_size: 1500
+    max_size: 15000
+    proxies: {race: [], sex: []}
+    atoms:
+      - "LSAT >= 35"
+      - "LSAT >= 40"
+      - "UGPA >= 3.0"
+      - "UGPA >= 3.5"
+      - "ZFYA >= 0"
+      - "ZFYA >= 0.5"
+      - "sander_index >= 0.8"
+      - "region_first IN ('NE', 'GL')"
+      - "region_first IN ('FW', 'SE', 'SC')"
+      - "first_pf = 1"
+    constraints:
+      - {attr: race, values: [Black, Hispanic, Mexican, Puertorican, Amerindian], min_share: 0.10}
+      - {attr: sex, value: F, min_share: 0.45}
+  meps:
+    agg: TOTEXP              # AVG(TOTEXP): the mean health-care expenditure of the selected people
+    min_size: 1500
+    max_size: 12000
+    proxies: {RACE: [], SEX: [], AGE: []}
+    atoms:
+      - "UTILIZATION >= 10"
+      - "UTILIZATION >= 20"
+      - "TOTEXP >= 5000"
+      - "TOTEXP >= 20000"
+      - "RTHLTH IN ('fair', 'poor')"
+      - "DIABDX = 'yes'"
+      - "HIBPDX = 'yes'"
+      - "ACTLIM = 'yes'"
+      - "INSCOV = 'public only'"
+      - "INSCOV = 'private'"
+      - "POVCAT IN ('poor', 'near poor')"
+    constraints:
+      - {attr: RACE, values: [Black, Hispanic], min_share: 0.45}
+      - {attr: SEX, value: M, min_share: 0.45}
+      - {where: "AGE < 45", min_share: 0.30}
+
 cqa:
   tax_dirty:
     agg: Rate
