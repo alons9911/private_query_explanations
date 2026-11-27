@@ -52,12 +52,16 @@ for name in args.datasets:
         print(f"{name}: no candidate")
         continue
     y_sd = float(pd.to_numeric(ds.raw[spec["agg"]], errors="coerce").std())
+    if "agg_unexplained" not in cands:
+        cands["agg_unexplained"] = np.nan
     cands["score"] = _score_refinement(cands, y_sd)
+    # a refinement that selects (almost) the whole database explains nothing about a refinement
+    cands["degenerate"] = (cands["Q2"].str.strip() == "TRUE") | (cands["|Q2|"] > 0.6 * ds.N)
     cands = cands.sort_values("score", ascending=False).reset_index(drop=True)
     cands.insert(0, "dataset", name)
     write_csv(cands, od / f"refinement_{name}.csv")
     short = []
-    for _, r in cands.head(args.top).iterrows():
+    for _, r in cands[~cands["degenerate"]].head(args.top).iterrows():
         c = next(Constraint.from_dict(x) for x in spec["constraints"] if Constraint.from_dict(x).describe() == r.constraint)
         q1, q2 = parse(r.Q1).evaluate(ds.raw), parse(r.Q2).evaluate(ds.raw)
         chk = dp_check(ds, q1, q2, hidden_attributes(ds, [r.Q1, r.Q2], c, spec.get("proxies")), trials=8)

@@ -60,7 +60,8 @@ refinement:
 
   # --- refinement-only experiments (2026-11-27): COMPAS (Erica's attributes and groups), Law Students
   # (the dataset of Campbell et al. 2024), MEPS (the healthcare dataset of the fairness literature).
-  # Thresholds of the constraints are near each group's share in the data.
+  # Thresholds lie between the group's median share in the base queries and its share in the data,
+  # so that a moderate relaxation meets them (at the data share the refinement approaches the whole data).
   compas:
     agg: decile_score        # AVG(decile_score): the mean risk score of the selected defendants
     min_size: 1500
@@ -79,9 +80,9 @@ refinement:
       - "is_recid = 'yes'"
       - "is_violent_recid = 'yes'"
     constraints:
-      - {attr: race, value: Caucasian, min_share: 0.35}
-      - {attr: age_cat, value: 'Greater than 45', min_share: 0.20}
-      - {attr: sex, value: Female, min_share: 0.20}
+      - {attr: race, value: Caucasian, min_share: 0.30}
+      - {attr: age_cat, value: 'Greater than 45', min_share: 0.19}
+      - {attr: sex, value: Female, min_share: 0.18}
   law:
     agg: first_pf            # AVG(first_pf): the first-attempt bar passage rate
     min_size: 1500
@@ -99,8 +100,8 @@ refinement:
       - "region_first IN ('FW', 'SE', 'SC')"
       - "first_pf = 1"
     constraints:
-      - {attr: race, values: [Black, Hispanic, Mexican, Puertorican, Amerindian], min_share: 0.10}
-      - {attr: sex, value: F, min_share: 0.45}
+      - {attr: race, values: [Black, Hispanic, Mexican, Puertorican, Amerindian], min_share: 0.06}
+      - {attr: race, value: Black, min_share: 0.03}
   meps:
     agg: TOTEXP              # AVG(TOTEXP): the mean health-care expenditure of the selected people
     min_size: 1500
@@ -119,9 +120,9 @@ refinement:
       - "INSCOV = 'private'"
       - "POVCAT IN ('poor', 'near poor')"
     constraints:
-      - {attr: RACE, values: [Black, Hispanic], min_share: 0.45}
-      - {attr: SEX, value: M, min_share: 0.45}
-      - {where: "AGE < 45", min_share: 0.30}
+      - {attr: RACE, values: [Black, Hispanic], min_share: 0.50}
+      - {attr: SEX, value: M, min_share: 0.44}
+      - {where: "AGE < 45", min_share: 0.35}
 
 cqa:
   tax_dirty:
