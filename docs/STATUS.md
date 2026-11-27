@@ -15,16 +15,29 @@ Read this section first.  The user writes in Hebrew and wants answers in Hebrew.
 * Open decisions (ask the user, Hebrew):
   1. Erica's own pairs (pilot, results/erica_pilot/scores.csv, scripts/erica_pilot_*.py, pairs EA*/EC*/EH*):
      PEEQ 0.54-0.82 of OPT where the refinement changes hundreds of tuples (EA2, EC1, EC2), ~random where it
-     changes tens (EA1, EC3, all Healthcare, N = 887).  Options: (a) replace our pairs, (b) add as a separate
-     group "pairs from the Erica experiments" (recommended), (c) keep ours + one sentence.
+     changes tens (EA1, EC3, all Healthcare, N = 887).  User (2026-11-27 21:00): run the experiments on
+     them now, decide later whether they go in the paper ("maybe only the running times").  Until then
+     their results stay OUT of results/ and of the chapter.
   2. Contributions bullet of the introduction: user said "not yet".
-* Runtime, approved but ON HOLD until decision 1: rerun the whole runtime suite (E4 sweeps, E5, E7t, E7t7) on
-  all experiment pairs with all methods on one machine per pair: PEEQ, OptPEEQ, NonPrivate, Exhaustive (pruned,
-  top-tau), OPT, SingleStage, plus single-stage exhaustive over ALL candidates (with the lossless top-k-per-
-  attribute pruning, full suite) and the naive version without pruning only in the k sweep and the default
-  point (measure k = 1-2(3); larger k: extrapolated estimate, b2(max_subsets=...) reports estimated_seconds).
-  Needs code: runner methods OPT, SINGLE_STAGE, EXHAUSTIVE_ALL, EXHAUSTIVE_NAIVE.
-* Still running (old 4-method runtime, superseded by the rerun above): shards new-1..5, fix-1..3
+* Quality suite on Erica's 10 pairs (EA1 EA2 EA4 EC1 EC2 EC3 EH1 EH2 EH3 EH5): running locally,
+  `python -m pqde run e2 e3 e6 e8 | e7a e7g --pairs ... --out results_erica` (gitignored; logs
+  results_erica/q1.log, q2.log).  When done: copy the raw CSVs to results/erica_pairs/ (committed), and
+  summarise with their own script; do NOT append them to results/.
+* Runtime rerun, RUNNING since 2026-11-27 21:17 (approved option a + the user's 21:00 go-ahead): every
+  method of pqde.runner -- PRIV_EXPL (PEEQ), OPT_PRIV_EXPL (OptPEEQ), B1 (NonPrivate), B2 (Exhaustive), B3,
+  OPT, SINGLE_STAGE, EXH_ALL (exhaustive over every view, pruned) and EXH_NAIVE (unpruned; E4 k sweep and
+  E5 default point only; extrapolated, recorded as timeout + inferred, when its first block says it cannot
+  fit in 30 min).  Methods without a view stage build without Use (stats rep="none") and pay for every
+  view's histograms.  E4, E5, E7t, E7t7 on the 36 refinement pairs + Erica's 10.  12 cloud shards rt-1..12
+  (tag pqde-rt, branches ...-rt-<n>, `scripts/shards_status.sh rt`; plan scripts/plan_runtime_shards.py,
+  estimated ~32 h each, 1,500 process-hours in all).  Sessions: rt-1 session_01U646mbbEX3ZMekyoEYEhpW,
+  rt-2 ..mYV6bZmAsH3QAAGRdV, rt-3 ..mcC7Vy6YNGeQhYJY8J, rt-4 ..maCX112GxzmvmUSoEy, rt-5 ..mbHYeTPcSDGUKifcmj,
+  rt-6 ..mbXR5h1gsxCmbdpDYd, rt-7 ..mb572zPWHUN71WUGPZ, rt-8 ..maCBu4hm9MuJXpYZxD, rt-9 ..mYpHFm9PiYEHqRiEaW,
+  rt-10 ..mZwjW8ruvGCNRwzaig, rt-11 ..mb8g6ZnDrwNgydVwZQ, rt-12 ..maJGX1JpTCk582CJfA (prefix session_01U646).
+  When done: fetch the branches into results_shards/, merge (`scripts/merge_shards.py --shard 'rt-*'
+  e4 e5 e7t e7t7`; keep Erica's pairs out of the paper's figures until the user decides), redraw Figure 11,
+  rewrite the runtime paragraph, remove its \alon note.
+* Still running (old 5-method runtime, superseded by the rerun above): shards new-3, fix-1..3
   (`scripts/shards_status.sh new|fix`).  Ask the user before stopping or archiving them.
 * Overleaf Git: credential for git.overleaf.com saved but refused (probably saved as a bearer token; needs
   username "git" + token as password).  The user pasted a token in the chat: advise revoking it.
