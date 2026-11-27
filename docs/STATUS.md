@@ -2,6 +2,33 @@
 
 Keeps the state of the work outside the chat context.
 
+## 2026-11-27 evening: HANDOFF (the user sees this session in English; a new session may continue)
+Read this section first.  The user writes in Hebrew and wants answers in Hebrew.
+* Paper: paper/ = the user's Overleaf version (zip "Private_Query_Refinement_5", copied 2026-11-27)
+  + our refinement-only experiments chapter, figures, appendix tables, 3 bib entries (COMPAS, LSAC, MEPS),
+  and `\input{sections/pairs_table}` in the appendix.  User: do NOT change sections/introduction.tex or
+  Example B.2 in sections/appendix.tex for now (B.2 cites fig:case-c1, now commented out -> "Figure ??").
+  Upload package for Overleaf: docs/overleaf_update.zip (rebuild it after changes; Overleaf does not unzip).
+* Names (macros.tex, the user's): \sys = PEEQ, \sysopt = OptPEEQ, \Bone = NonPrivate, \BF = OPT (the
+  non-private optimum over all views, computed exactly by greedy), \Btwo = Exhaustive (exhaustive search over
+  the retained views).  Figure legends read these from paper/macros.tex (src/pqde/paper_figures.py NAME).
+* Open decisions (ask the user, Hebrew):
+  1. Erica's own pairs (pilot, results/erica_pilot/scores.csv, scripts/erica_pilot_*.py, pairs EA*/EC*/EH*):
+     PEEQ 0.54-0.82 of OPT where the refinement changes hundreds of tuples (EA2, EC1, EC2), ~random where it
+     changes tens (EA1, EC3, all Healthcare, N = 887).  Options: (a) replace our pairs, (b) add as a separate
+     group "pairs from the Erica experiments" (recommended), (c) keep ours + one sentence.
+  2. Contributions bullet of the introduction: user said "not yet".
+* Runtime, approved but ON HOLD until decision 1: rerun the whole runtime suite (E4 sweeps, E5, E7t, E7t7) on
+  all experiment pairs with all methods on one machine per pair: PEEQ, OptPEEQ, NonPrivate, Exhaustive (pruned,
+  top-tau), OPT, SingleStage, plus single-stage exhaustive over ALL candidates (with the lossless top-k-per-
+  attribute pruning, full suite) and the naive version without pruning only in the k sweep and the default
+  point (measure k = 1-2(3); larger k: extrapolated estimate, b2(max_subsets=...) reports estimated_seconds).
+  Needs code: runner methods OPT, SINGLE_STAGE, EXHAUSTIVE_ALL, EXHAUSTIVE_NAIVE.
+* Still running (old 4-method runtime, superseded by the rerun above): shards new-1..5, fix-1..3
+  (`scripts/shards_status.sh new|fix`).  Ask the user before stopping or archiving them.
+* Overleaf Git: credential for git.overleaf.com saved but refused (probably saved as a bearer token; needs
+  username "git" + token as password).  The user pasted a token in the chat: advise revoking it.
+
 ## 2026-11-27: refinement-only experiments (user: query refinement is the main use case)
 * Later the same day (user: 1 yes, 2 replace, 3 a, 4 replace): refine() now tightens every changed
   condition over all data values and dominating_refinements() checks Erica's minimality; L3, L5, M2,
