@@ -66,7 +66,7 @@ Every pair is a refinement: $Q_2$ changes predicates of $Q_1$ so that its output
 
 \paragraph{Baseline and algorithm variants.}
 No earlier system explains the difference between two query outputs privately with histograms; DPXPlain~\cite{TaoGMR22} explains the difference between two group aggregates with predicates, which our measures cannot score.
-Our baseline is the non-private \emph{brute force} (\BF{}): the best $k$ candidates over all views, which greedy selection over all candidates computes exactly (Proposition~\ref{prop:greedy-exact}).
+Our baseline is the non-private \emph{optimum} (\BF{}): the best $k$ candidates over all views. Trying every set is infeasible, but greedy selection over all candidates computes it exactly (Proposition~\ref{prop:greedy-exact}).
 The variants of \sys{} are:
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
   \item \Bone{}: no noise (exact top-$\tau$ views, then greedy by $\HD_\gamma\cdot\DivS$).
@@ -252,7 +252,7 @@ Distinct attributes & 4.9 & 4.7 & 4.3 & 3.5 & 2.5 &&&&&\\
 \label{fig:scalability}
 \end{figure*}
 
-\paragraph{Comparison with the brute force and the variants.}
+\paragraph{Comparison with the optimum and the variants.}
 How much of the best attainable score does a release keep, and which stage loses the rest?
 At the defaults we run \sys{}, \Bone{}, \SingleStage{} and \RandomExpl{} $40$ times per pair; Table~\ref{tab:quality} shows their ApproxRatio, attribute@k and coverage against \BF{}.
 \sys{} reaches an ApproxRatio of $0.62$ ($0.49$ on ACSIncome to $0.78$ on Law Students), \Bone{} $0.72$ and \RandomExpl{} $0.08$: restricting the selection to the exact top-$\tau$ views costs $0.28$ of \BF{}'s score, and the noise a further $0.10$.
@@ -323,7 +323,7 @@ We time \sys{}, \Bone{}, \Btwo{} and \sysopt{} on every pair, one parameter vari
 \alon{Runs in progress: the parameter sweeps (Figure~\ref{fig:scalability}) on COMPAS, Law Students and MEPS, \Btwo{} at $k=7$ against $|\Attrs|$ on them, and every timing of A1, T1, T4, L3, L5, M2 and M5, whose refined queries were replaced by exact minimal refinements. The numbers below cover the other pairs: $29$ for the defaults and $|\Attrs|$, and the $18$ of Adult, ACSIncome and Tax for the sweeps.}
 Privacy adds no measurable time: \sys{} and \Bone{} are within $1\%$ of each other on every pair, since $96$--$99\%$ of the time is the $\Use$ pass they share (not shown).
 As Section~\ref{subsec:complexity-analysis} predicts, the time of \sys{} is linear in $N$ and $|\mathcal{P}|$, flat in $k$, $\epsilon$, $\gamma$ and $|\Attrs|$ (within $18\%$), and grows by $29$--$33\%$ from $\tau=15$ to $\tau=|\mathcal{P}|$.
-Exhaustive search (\Btwo{}) is exponential: $20$--$61$\,s per pair at $k=6$, $6.7$--$17$ minutes at $k=7$, and over the limit from $k=8$; at $k=7$ it grows two- to threefold with each attribute beyond six and reaches the limit at $11$ attributes on Adult and ACSIncome, the two datasets with more than ten.
+\Btwo{} is exponential: $20$--$61$\,s per pair at $k=6$, $6.7$--$17$ minutes at $k=7$, and over the limit from $k=8$; at $k=7$ it grows two- to threefold with each attribute beyond six and reaches the limit at $11$ attributes on Adult and ACSIncome, the two datasets with more than ten.
 \sysopt{} releases the same explanations as \sys{} under the same randomness in all $290$ runs compared ($29$ pairs, ten runs each) and is $5.5$--$11.4\times$ faster per pair (median $7.5\times$; on ACSIncome $3.0$\,s per run instead of $26.8$\,s); from a tenth of the views to all of them its time grows at most $1.5\times$, against $8$--$9\times$ for \sys{}, but it grows with $\tau$ ($3.7$--$4.1\times$ at $\tau=|\mathcal{P}|$), since it builds the histograms of every retained view.
 % (44-pair version, with CQA and contrasts) ... grows by $18$--$41\%$ from $\tau=15$ to $\tau=|\mathcal{P}|$; \Btwo{} $15$--$61$\,s at $k=6$, $2.4$--$17$ minutes at $k=7$;
 % \sysopt{}: identical in all $440$ runs ($44$ pairs), $5.8$--$11.4\times$ faster (median $8.4\times$), at most $1.7\times$ over $|\mathcal{P}|$ against $7$--$10\times$, $3.2$--$4.6\times$ at $\tau=|\mathcal{P}|$.
