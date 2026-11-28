@@ -8,10 +8,11 @@
 #        scripts/shards_status.sh new     (running time on the 15 new refinement pairs: 6 shards new-<n>)
 cd "$(dirname "$0")/.."
 n_done=0
-if [ "${1:-}" = "rt" ]; then   # running-time rerun, every method, 46 pairs: shards rt-1..12 (scripts/plan_runtime_shards.py)
-  n_all=$(ls scripts/shards/rt-*.jobs | wc -l)
-  for n in $(seq 1 "$n_all"); do
-    b=claude/git-repo-experiments-f0705v-rt-$n; dir=rt-$n
+if [ "${1:-}" = "rt" ] || [ "${1:-}" = "pv" ]; then   # rt: running-time rerun (plan_runtime_shards.py);
+  g=$1                                                  # pv: its preview (plan_preview_shards.py)
+  n_all=$(ls scripts/shards/$g-*.jobs | wc -l)
+  for f in $(ls scripts/shards/$g-*.jobs | sort -V); do
+    dir=$(basename "$f" .jobs); b=claude/git-repo-experiments-f0705v-$dir
     if git fetch -q origin "$b" 2>/dev/null && git cat-file -e "FETCH_HEAD:results_shards/$dir/DONE" 2>/dev/null; then
       echo "$dir done"; n_done=$((n_done+1))
     else

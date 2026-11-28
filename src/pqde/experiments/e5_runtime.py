@@ -22,7 +22,7 @@ from ..baselines import b2_candidates, exhaustive_best
 from ..pairs import resolve_pair
 from ..runner import METHODS, ORIGINAL_ROUTE, OPT_ROUTE, run_method, runtime_methods, time_methods
 from ..stats import build_cache
-from .common import (make_params, out_dir, pairs_by_dataset, read_raw, run_metadata, to_markdown, write_csv,
+from .common import (machine, make_params, out_dir, pairs_by_dataset, read_raw, run_metadata, to_markdown, write_csv,
                      write_json, write_raw)
 
 EXP = "e5"
@@ -104,13 +104,15 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
             for r in range(repeats):
                 methods = tuple(m for m in runtime_methods(True) if n_to.get(m, 0) < timeout_reps)
                 for out in time_methods(ds, q1, q2, params, methods=methods, seed=seed, repeat=r,
-                                        gamma_eval=float(d["gamma_eval"]), timeout_s=timeout_s):
+                                        gamma_eval=float(d["gamma_eval"]), timeout_s=timeout_s,
+                                        early_stop=d.get("early_stop_factor")):
                     n_to[out.method] = n_to.get(out.method, 0) + int(out.timeout)
                     dp_rows.append({"dataset": ds_name, "synthetic": syn, "pair": pid, "method": out.method, "repeat": r,
                                     "build_s": out.build_s, "mech_s": out.mech_s, "total_s": out.total_s,
                                     "timeout": out.timeout, "inferred": bool(out.extra.get("estimated", False)),
                                     "estimated_s": out.extra.get("estimated_seconds"),
-                                    "subsets": out.extra.get("subsets", out.extra.get("subsets_total"))})
+                                    "subsets": out.extra.get("subsets", out.extra.get("subsets_total")),
+                                    **machine()})
             # (b) identical releases
             id_rows.append({"dataset": ds_name, "pair": pid,
                             **_identical(ds, q1, q2, params, seed, 2 if quick else int(e.get("identity_runs", 10)))})

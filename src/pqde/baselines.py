@@ -178,11 +178,13 @@ def exhaustive_best(scores: np.ndarray, aidx: np.ndarray, k: int, lam: float, ch
 
 
 def b2(cache: StatsCache, params: Params, gamma_eval: float = 0.0, tau: int | None = None, pool: str = "top-tau",
-       return_info: bool = False, max_subsets: int | None = None):
+       return_info: bool = False, max_subsets: int | None = None, time_budget: float | None = None):
     """B2; returns ``None`` as the selection when the enumeration was only estimated."""
     t0 = time.perf_counter()
     cands, scores, aidx = b2_candidates(cache, params, gamma_eval, tau, pool)
-    best, best_set, total, extra = exhaustive_best(scores, aidx, params.k, params.lam, max_subsets=max_subsets)
+    budget = None if time_budget is None else max(time_budget - (time.perf_counter() - t0), 0.0)
+    best, best_set, total, extra = exhaustive_best(scores, aidx, params.k, params.lam, max_subsets=max_subsets,
+                                                   time_budget=budget)
     sel = None if extra["estimated"] else [cands[i] for i in best_set]
     if return_info:
         return sel, {"pool_size": len(cands), "subsets": total, "F": best, "seconds": time.perf_counter() - t0, **extra}
