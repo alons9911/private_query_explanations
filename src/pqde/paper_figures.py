@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 
 import matplotlib
+import matplotlib.lines
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
@@ -45,7 +46,12 @@ DS_ORDER = ["adult", "acsincome", "tax", "compas", "law", "meps"]  # refinement 
 # CQA and contrast datasets, out of the experiments for now: "tax_dirty", "hospital", "ipums"
 DS_TITLE = {"adult": "Adult", "acsincome": "ACSIncome", "tax": "Tax", "compas": "COMPAS", "law": "Law Students",
             "meps": "MEPS", "tax_dirty": "Tax-dirty (CQA)",
-            "hospital": "Hospital (CQA)", "ipums": "IPUMS-CPS (contrast)"}
+            "hospital": "Hospital (CQA)", "ipums": "IPUMS-CPS (contrast)",
+            "adult_erica": r"Adult$^\dagger$", "compas_erica": r"COMPAS$^\dagger$",
+            "healthcare_erica": r"Healthcare$^\dagger$"}
+# PQDE_RT_EXTRA: datasets drawn in the running-time figures besides DS_ORDER (e.g. healthcare_erica)
+RT_EXTRA = [d for d in os.environ.get("PQDE_RT_EXTRA", "").split(",") if d]
+TIMEOUT_LABEL = "stopped at 30 min"
 SURF = "#ffffff"
 # C4 is a copy of H1 and R6 a copy of T2 (two searches returned the same pair); each is counted once
 EXCLUDE = {"C4", "R6"}
@@ -152,7 +158,7 @@ def fig_quality() -> Path:
     src["single"] = comp[comp.method == "SingleStage"]
     src["fixed"] = _rescored("e8_fixed_gamma")
     dss = _datasets(src["e2"])
-    fig, axes = plt.subplots(2, len(dss), figsize=(7.05, 2.75), squeeze=False, sharex="row")
+    fig, axes = plt.subplots(2, len(dss), figsize=(7.05, 2.3), squeeze=False, sharex="row")
     rows = [(BF_SERIES_EPS, r"privacy budget $\epsilon$", [0.1, 1, 10], ["0.1", "1", "10"]),
             (BF_SERIES_GAMMA, r"$\gamma$ / Eq. (14) value", [0, 0.1, 1, 10], ["0", ".1", "1", "10"])]
     for r, (series, xlabel, ticks, ticklabels) in enumerate(rows):
@@ -173,11 +179,12 @@ def fig_quality() -> Path:
                 ax.set_yticklabels([])
             if r == 0:
                 ax.set_title(f"{DS_TITLE[ds]} ({src['e2'][src['e2'].dataset == ds].pair.nunique()})")
-            ax.set_xlabel(xlabel)
-        axes[r, 0].set_ylabel("score")
+            ax.set_xlabel(xlabel, labelpad=1)
+            ax.tick_params(axis="x", pad=1.5)
+        axes[r, 0].set_ylabel("score", labelpad=1)
     h, l = axes[0, 0].get_legend_handles_labels()
-    fig.legend(h, l, loc="upper center", ncol=5, bbox_to_anchor=(0.5, 1.06))
-    fig.tight_layout(h_pad=0.6, w_pad=0.4)
+    fig.tight_layout(h_pad=0.25, w_pad=0.3, rect=(0, 0, 1, 0.93))
+    fig.legend(h, l, loc="upper center", ncol=5, bbox_to_anchor=(0.5, 1.0), handlelength=1.8, columnspacing=1.2)
     return _save(fig, "quality")
 
 
@@ -185,7 +192,7 @@ def fig_quality() -> Path:
 
 def fig_view_stage() -> Path:
     vs = _drop(pd.read_csv(RES / "e3" / "view_stage_summary.csv"))
-    fig, ax = plt.subplots(figsize=(3.3, 1.75))
+    fig, ax = plt.subplots(figsize=(3.3, 1.38))
     colours = [P.BLUE, P.ORANGE, P.AQUA, P.YELLOW, P.MAGENTA, "#6250d6"]
     markers = ["o", "s", "^", "D", "P", "v"]
     for i, ds in enumerate(_datasets(vs)):
@@ -196,7 +203,8 @@ def fig_view_stage() -> Path:
     ax.set_xlabel(r"view-stage budget $\epsilon_P$ (default $1/3$)")
     ax.set_ylabel(r"overlap with exact top-$\tau$")
     ax.set_ylim(0, 1.03)
-    ax.legend(ncol=2, loc="lower right", handlelength=1.5, columnspacing=0.8)
+    ax.legend(ncol=2, loc="lower right", fontsize=5.6, handlelength=1.2, columnspacing=0.5, labelspacing=0.2,
+              borderaxespad=0.2, markerscale=0.85)
     fig.tight_layout()
     return _save(fig, "view_stage")
 
@@ -227,8 +235,8 @@ def _rt_panel(ax, sub: pd.DataFrame, x: str, logx: bool, limit: float, logy: boo
             xs = list(d[x][~to].tail(1)) + list(d[x][to])
             ys = list(d.total_s[~to].tail(1)) + [limit] * int(to.sum())
             ax.plot(xs, ys, color=c, linestyle=":", linewidth=1.0)
-            ax.plot(d[x][to], [limit] * int(to.sum()), linestyle="none", marker="x", color=c, markersize=5,
-                    markeredgewidth=1.4, label=f"{RT_LABEL[m]} timeout")
+            ax.plot(d[x][to], [limit] * int(to.sum()), linestyle="none", marker="x", color=c, markersize=4.5,
+                    markeredgewidth=1.3, label=TIMEOUT_LABEL)
     if logy:
         ax.set_yscale("log")
     else:
@@ -248,7 +256,7 @@ def fig_runtime_grid(raw_path: Path | None = None) -> Path:
     pts = e4_scalability.points(raw)
     limit = float(json.loads((RES / "e4" / "metadata.json").read_text()).get("timeout_s", 60)) \
         if (RES / "e4" / "metadata.json").exists() else 60.0
-    dss = _datasets(pts)
+    dss = _datasets(pts) + [d for d in RT_EXTRA if d in set(pts.dataset)]
     keep = os.environ.get("PQDE_RT_SWEEPS")  # e.g. k,data_fraction,view_fraction,tau (eps, gamma: no effect on time)
     sweeps = [s for s in SWEEPS if s[0] in set(pts.sweep) and (not keep or s[0] in keep.split(","))]
     EXH = ["B2", "EXH_ALL", "EXH_NAIVE", "EXH_TOPTAU"]
@@ -263,8 +271,8 @@ def fig_runtime_grid(raw_path: Path | None = None) -> Path:
     # PQDE_RT_SCALE=linear: a linear y axis of its own in every panel but k (log: the exhaustive searches),
     # so that the growth of the other methods shows; default: log, one y axis per row
     linear = os.environ.get("PQDE_RT_SCALE", "log") == "linear"
-    fig, axes = plt.subplots(len(dss), len(cols), figsize=(7.05, 1.12 * len(dss) + 0.35), squeeze=False,
-                             sharey=False if linear else "row")
+    fig, axes = plt.subplots(len(dss), len(cols), figsize=(7.05, 0.8 * len(dss) + 0.42), squeeze=False,
+                             sharey=False if linear else "row", sharex="col")
     plain = FuncFormatter(lambda v, _: f"{v:g}")
     xticks = {"k": [2, 4, 6, 8, 10], "epsilon": [0.1, 1, 10], "tau": [5, 50, 500], "gamma_mult": [0, 0.1, 1, 10]}
     for i, ds in enumerate(dss):
@@ -293,11 +301,10 @@ def fig_runtime_grid(raw_path: Path | None = None) -> Path:
             if sw == "gamma_mult":
                 ax.set_xlim(left=0)
             if i == 0:
-                ax.set_title(xl)
-            if i == len(dss) - 1:
-                ax.set_xlabel(xl)
+                ax.set_title(xl, pad=3)
+            ax.tick_params(axis="both", pad=1.5)
             if j == 0:
-                ax.set_ylabel(DS_TITLE[ds].split(" (")[0] + "\ntime (s)", fontsize=6.5)
+                ax.set_ylabel(DS_TITLE[ds].split(" (")[0] + " (s)", fontsize=6.5, labelpad=1)
     handles, labels = [], []
     for ax in axes.ravel():
         for h, lab in zip(*ax.get_legend_handles_labels()):
@@ -310,9 +317,17 @@ def fig_runtime_grid(raw_path: Path | None = None) -> Path:
         subs = (1.0,) if hi / max(lo, 1e-12) > 1e4 else (1.0, 3.0)
         axes[i, jlog].yaxis.set_major_locator(LogLocator(base=10, subs=subs, numticks=12))
         axes[i, jlog].yaxis.set_major_formatter(plain)
-    rows = 1 if len(labels) <= 7 else 2  # many methods: the legend takes two rows
-    fig.tight_layout(h_pad=0.25, w_pad=0.3, rect=(0, 0, 1, 0.975 if rows == 1 else 0.95))
-    fig.legend(handles, labels, loc="upper center", ncol=-(-len(labels) // rows), bbox_to_anchor=(0.5, 1.01))
+    if TIMEOUT_LABEL in labels:  # one grey cross for the runs stopped at the limit, at the end of the legend
+        i = labels.index(TIMEOUT_LABEL)
+        handles.pop(i), labels.pop(i)
+        handles.append(matplotlib.lines.Line2D([], [], linestyle="none", marker="x", color=P.MUTED, markersize=4.5,
+                                               markeredgewidth=1.3))
+        labels.append(TIMEOUT_LABEL)
+    rows = 1 if len(labels) <= 9 else 2
+    top = 1 - (0.2 if rows == 1 else 0.34) / fig.get_figheight()
+    fig.tight_layout(h_pad=0.15, w_pad=0.3, rect=(0, 0, 1, top))
+    fig.legend(handles, labels, loc="upper center", ncol=-(-len(labels) // rows), bbox_to_anchor=(0.5, 1.0),
+               handlelength=1.6, columnspacing=1.0)
     return _save(fig, "runtime_grid")
 
 
@@ -378,7 +393,7 @@ def fig_attrs() -> Path:
                                                                        timeout=("timeout", "max"))
     asum = acc.groupby(["dataset", "pair", "value"], as_index=False)[["ratio_BF", "attr_at_k_BF"]].mean()
     dss = [d for d in DS_ORDER if d in set(pts.dataset) | set(asum.dataset)]
-    fig, axes = plt.subplots(2, len(dss), figsize=(7.05, 2.9), squeeze=False)
+    fig, axes = plt.subplots(2, len(dss), figsize=(7.05, 2.35), squeeze=False)
     plain = FuncFormatter(lambda v, _: f"{v:g}")
     k7_path = RES / "e7" / "raw" / "runtime_k7.csv"
     k7 = None
@@ -403,8 +418,8 @@ def fig_attrs() -> Path:
             if to.any():
                 ax.plot(list(d7.value[~to].tail(1)) + list(d7.value[to]), list(d7.total_s[~to].tail(1)) + [limit] * int(to.sum()),
                         color=c, linestyle=":", linewidth=1.0)
-                ax.plot(d7.value[to], [limit] * int(to.sum()), linestyle="none", marker="x", color=c, markersize=5,
-                        markeredgewidth=1.4, label=f"{RT_LABEL[k7m]} timeout")
+                ax.plot(d7.value[to], [limit] * int(to.sum()), linestyle="none", marker="x", color=c, markersize=4.5,
+                        markeredgewidth=1.3, label=TIMEOUT_LABEL)
             allt += list(d7.total_s)
         lo, hi = float(min(allt)) / 1.5, float(max(allt)) * 1.5
         if hi / lo < 10:  # at least one decade, so that run-to-run noise does not read as a trend
@@ -415,20 +430,24 @@ def fig_attrs() -> Path:
         ax.yaxis.set_major_locator(LogLocator(base=10, subs=(1.0,) if wide else (1.0, 2.0, 5.0), numticks=10))
         ax.yaxis.set_major_formatter(plain)
         ax.yaxis.set_minor_formatter(NullFormatter())
-        ax.set_title(f"{DS_TITLE[ds]}")
+        ax.set_title(f"{DS_TITLE[ds]}", pad=3)
+        ax.tick_params(axis="both", pad=1.5)
         if j == 0:
-            ax.set_ylabel("time (s)")
+            ax.set_ylabel("time (s)", labelpad=1)
         ax = axes[1, j]
         sub = asum[asum.dataset == ds].groupby("value", as_index=False).mean(numeric_only=True).sort_values("value")
-        for col, lab, c, mk in (("ratio_BF", f"ApproxRatio ({NAME['sys']})", P.BLUE, "o"),
-                                ("attr_at_k_BF", f"attribute@k ({NAME['sys']})", P.ORANGE, "s")):
+        for col, lab, c, mk in (("ratio_BF", "ApproxRatio", P.BLUE, "o"),
+                                ("attr_at_k_BF", "attribute@k", P.ORANGE, "s")):
             ax.plot(sub.value, sub[col], color=c, marker=mk, label=lab)
         ax.set_ylim(0, 1.1)
         ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
         ax.axhline(1.0, color=P.MUTED, linewidth=0.5, zorder=0)
         if j:
             ax.set_yticklabels([])
-        ax.set_xlabel(r"$|\mathit{Attrs}|$")
+        ax.set_xlabel(r"$|\mathit{Attrs}|$", labelpad=1)
+        ax.tick_params(axis="both", pad=1.5)
+        if j == 0:
+            ax.set_ylabel("score", labelpad=1)
         for a in axes[:, j]:
             a.xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(integer=True, nbins=5))
     def legend_of(axs):
@@ -440,9 +459,18 @@ def fig_attrs() -> Path:
                     ls.append(lab)
         return hs, ls
 
-    fig.tight_layout(h_pad=1.6, w_pad=0.3, rect=(0, 0.04, 1, 0.95))
-    fig.legend(*legend_of(axes[0]), loc="upper center", ncol=5, bbox_to_anchor=(0.5, 1.02), fontsize=6)
-    fig.legend(*legend_of(axes[1]), loc="lower center", ncol=3, bbox_to_anchor=(0.5, -0.04), fontsize=6)
+    hs, ls = legend_of(axes[0])
+    if TIMEOUT_LABEL in ls:  # one grey cross, at the end of the legend
+        i = ls.index(TIMEOUT_LABEL)
+        hs.pop(i), ls.pop(i)
+        hs.append(matplotlib.lines.Line2D([], [], linestyle="none", marker="x", color=P.MUTED, markersize=4.5,
+                                          markeredgewidth=1.3))
+        ls.append(TIMEOUT_LABEL)
+    fig.tight_layout(h_pad=0.3, w_pad=0.3, rect=(0, 0, 1, 1 - 0.36 / fig.get_figheight()))
+    fig.legend(hs, ls, loc="upper center", ncol=-(-len(ls) // 2), bbox_to_anchor=(0.5, 1.0), fontsize=6,
+               handlelength=1.6, columnspacing=1.0)
+    axes[1, 0].legend(*legend_of(axes[1]), loc="lower right", fontsize=5.5, handlelength=1.4, borderaxespad=0.3,
+                      labelspacing=0.25)  # the scores: inside the first panel, where it is empty
     return _save(fig, "attrs")
 
 
