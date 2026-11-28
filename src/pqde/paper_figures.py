@@ -48,7 +48,7 @@ DS_TITLE = {"adult": "Adult", "acsincome": "ACSIncome", "tax": "Tax", "compas": 
             "meps": "MEPS", "tax_dirty": "Tax-dirty (CQA)",
             "hospital": "Hospital (CQA)", "ipums": "IPUMS-CPS (contrast)",
             "adult_erica": r"Adult$^\dagger$", "compas_erica": r"COMPAS$^\dagger$",
-            "healthcare_erica": r"Healthcare$^\dagger$"}
+            "healthcare_erica": "Healthcare"}
 # PQDE_RT_EXTRA: datasets drawn in the running-time figures besides DS_ORDER (e.g. healthcare_erica)
 RT_EXTRA = [d for d in os.environ.get("PQDE_RT_EXTRA", "").split(",") if d]
 TIMEOUT_LABEL = "stopped at 30 min"

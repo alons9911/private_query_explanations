@@ -30,10 +30,10 @@ Tax~\cite{BohannonFGJK07}        & 200{,}000   & 9  & 2{,}106 & 4  & ours \\
 COMPAS~\cite{compas-propublica}  & 11{,}757    & 10 & 407     & 5  & ours, groups of~\cite{ERICA} \\
 Law Students~\cite{lsac-wightman98} & 21{,}791 & 8  & 659     & 5  & ours \\
 MEPS~\cite{meps-hc181}           & 35{,}427    & 10 & 563     & 5  & ours \\
+Healthcare~\cite{ERICA}          & 887         & 8  & 439     & 4  & Erica~\cite{ERICA} \\
 \midrule
 Adult$^\dagger$                  & 32{,}561    & 10 & 1{,}144 & 3  & Erica experiments~\cite{ERICA} \\
 COMPAS$^\dagger$                 & 11{,}757    & 10 & 382     & 3  & Erica experiments~\cite{ERICA} \\
-Healthcare$^\dagger$             & 887         & 8  & 439     & 4  & Erica experiments~\cite{ERICA} \\
 % CQA and contrast pairs, out of the experiments for now (Setting column: CQA / contrast):
 % Tax-dirty~\cite{MahdaviAFMOST19} & 200{,}000   & 9  & 2{,}300 & CQA        & 3  & ours, rules~\cite{NiMZWLY24} \\
 % Hospital~\cite{rekatsinas2017}   & 1{,}000     & 10 & 502     & CQA        & 3  & ours \\
@@ -51,7 +51,8 @@ Table~\ref{tab:datasets} summarises the datasets and Table~\ref{tab:attributes} 
   \item \textbf{COMPAS}~\cite{compas-propublica}: ProPublica's $11{,}757$ defendants with their criminal history and risk scores, the dataset of the Erica experiments~\cite{ERICA}; we drop the identifying columns.
   \item \textbf{Law Students}~\cite{lsac-wightman98}: $21{,}791$ students of the LSAC bar-passage study, the dataset of~\cite{CSSM24}.
   \item \textbf{MEPS}~\cite{meps-hc181}: the $35{,}427$ respondents of the 2015 Medical Expenditure Panel Survey, with the attributes used in the fairness literature, among them the yearly number of medical visits (\texttt{UTILIZATION}) and expenditure (\texttt{TOTEXP}).
-  \item \textbf{The data of the Erica experiments}~\cite{ERICA}, for running time only: their copies of Adult (the $32{,}561$ records of the UCI training file) and COMPAS, and Healthcare, $887$ patients with their age group, race, county, income, number of children, smoking and complications.
+  \item \textbf{Healthcare}~\cite{ERICA}: $887$ patients with their age group, race, county, income, number of children, smoking and complications, the dataset of the Erica experiments.
+  \item \textbf{The copies of the Erica experiments}~\cite{ERICA}, for running time only: Adult (the $32{,}561$ records of the UCI training file) and COMPAS.
   % CQA and contrast datasets, out of the experiments for now:
   % \item \textbf{Tax-dirty}~\cite{MahdaviAFMOST19}: Raha's dirty version of the same file.
   % \item \textbf{Hospital}~\cite{rekatsinas2017}: HoloClean's $1{,}000$-tuple file of hospital records with injected errors.
@@ -247,7 +248,7 @@ Distinct attributes & 4.9 & 4.7 & 4.3 & 3.5 & 2.5 &&&&&\\
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/exp/runtime_grid.pdf}
-\caption{End-to-end running time in seconds (median of ten runs, mean over the pairs), one parameter varied at a time; Healthcare$^\dagger$: its four pairs from the Erica experiments. $k$ is shown twice: for the other methods (first column) and, on a logarithmic axis, for the exhaustive searches (second column), which appear only there; crosses: runs stopped at $30$ minutes. $\epsilon$ and $\gamma$ do not change the time (text).\alon{Preview run (three runs per point). Decide which methods to show: \Bone{} coincides with \sys{}, and \SingleStage{} with \BF{}.}}
+\caption{End-to-end running time in seconds (median of ten runs, mean over the pairs), one parameter varied at a time. $k$ is shown twice: for the other methods (first column) and, on a logarithmic axis, for the exhaustive searches (second column), which appear only there; crosses: runs stopped at $30$ minutes. $\epsilon$ and $\gamma$ do not change the time (text).\alon{Preview run (three runs per point). Decide which methods to show: \Bone{} coincides with \sys{}, and \SingleStage{} with \BF{}.}}
 \label{fig:scalability}
 \end{figure*}
 
@@ -326,7 +327,7 @@ At the defaults \sys{} takes under half a second on Adult, COMPAS, Law Students 
 \BF{} and \SingleStage{} take about a third of the time of \sys{}, since they compute no $\Use$.
 The exhaustive searches do not scale: \TopKExh{} is exponential in $k$ and exceeds the $30$-minute limit from $k=8$ on every dataset (at $k=7$, from $12$ attributes), and \FullExh{} exceeds it from $k=3$.
 \alon{\Btwo{} (every candidate of the retained views): numbers from the supplementary run, in progress.}
-The ten pairs of the Erica experiments show the same picture (Healthcare$^\dagger$ in Figure~\ref{fig:scalability}).
+The ten pairs of the Erica experiments show the same picture (Healthcare in Figure~\ref{fig:scalability}).
 % Detailed numbers (preview run), left out of the text for space; the full run updates them:
 % We time all methods on every pair, one parameter varied at a time (Figure~\ref{fig:scalability}; Figure~\ref{fig:attrs}, top, for $|\Attrs|$).
 % Privacy adds no measurable time: \sys{} and \Bone{} are within $2\%$ of each other on every pair, since $94$--$99\%$ of the time is the $\Use$ pass they share.
