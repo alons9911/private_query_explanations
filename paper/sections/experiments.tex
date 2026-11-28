@@ -181,7 +181,7 @@ In all three pairs, then, the explanations describe the tuples that the refineme
 \begin{table}[t]
 \centering
 \footnotesize
-\caption{Quality at the defaults against \BF{}, mean over the pairs of each dataset. Attribute@k: chance level in parentheses. Coverage: mean $\Cov$ of the explained views. The last row weights the $36$ pairs equally (the mean of the six dataset means is $0.64$ for \sys{}).}
+\caption{Quality at the defaults against \BF{}, mean over the pairs of each dataset. Attribute@k: chance level in parentheses. Coverage: mean $\Cov$ of the explained views. The last row weights the $36$ pairs equally (the mean of the six dataset means is $0.64$ for \sys{}). Table~\ref{tab:quality-all} (appendix) gives every method.}
 \label{tab:quality}
 \setlength{\tabcolsep}{2pt}
 \resizebox{\columnwidth}{!}{\begin{tabular}{@{}lccccccccc@{}}
@@ -265,7 +265,7 @@ Distinct attributes & 4.9 & 4.7 & 4.3 & 3.5 & 2.5 &&&&&\\
 
 \paragraph{Comparison with the optimum and the variants.}
 How much of the best attainable score does a release keep, and which stage loses the rest?
-At the defaults we run \sys{}, \Bone{}, \SingleStage{} and \RandomExpl{} $40$ times per pair; Table~\ref{tab:quality} shows their ApproxRatio, attribute@k and coverage against \BF{}.
+At the defaults we run \sys{}, \Bone{}, \SingleStage{} and \RandomExpl{} $40$ times per pair; Table~\ref{tab:quality} shows their ApproxRatio, attribute@k and coverage against \BF{}, and Table~\ref{tab:quality-all} in the appendix those of every method: \sysopt{} releases what \sys{} releases, \Btwo{} selects what \Bone{} selects, and \TopKExh{} and \FullExh{} reach the optimum of \BF{}.
 \sys{} reaches an ApproxRatio of $0.62$ ($0.49$ on ACSIncome to $0.78$ on Law Students), \Bone{} $0.72$ and \RandomExpl{} $0.08$: restricting the selection to the exact top-$\tau$ views costs $0.28$ of \BF{}'s score, and the noise a further $0.10$.
 \SingleStage{} reaches $0.92$ but ignores coverage: the mean $\Cov$ of its views is $0.09$, against $0.18$ for \sys{}, and a third of it on ACSIncome and Tax.
 The views of \BF{} itself have a mean $\Cov$ of $0.10$: the largest differences lie in views that hold few output tuples.
