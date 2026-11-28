@@ -1,22 +1,24 @@
 
 ######## our refinement pairs: 36 pairs
-E5 pairs measured: 32
+E5 pairs measured: 36
 E5 mean over pairs of the median time (s):
 method     PRIV_EXPL  OPT_PRIV_EXPL    B1    B2    OPT  SINGLE_STAGE  EXH_ALL  EXH_NAIVE
 dataset                                                                                 
 adult           0.47         0.0487 0.468  1.52  0.147         0.148     1.18    1.8e+03
-acsincome       23.9           2.61  23.9  24.9   9.16          8.96     10.1    1.8e+03
-tax             3.47          0.365  3.46  4.15   1.04          1.06     1.79    1.8e+03
+acsincome       23.9           2.76  23.9  24.9   9.19          8.93     10.1    1.8e+03
+tax             3.73          0.392  3.73  4.45   1.14          1.09     1.83    1.8e+03
 compas         0.118         0.0211 0.118  1.23 0.0406        0.0396     1.17    1.8e+03
-law            0.183         0.0278 0.183 0.555  0.062        0.0628    0.439    1.8e+03
+law             0.19         0.0285  0.19 0.579 0.0641        0.0646    0.454    1.8e+03
 meps           0.394         0.0571 0.393  1.67  0.127         0.129     1.34    1.8e+03
-OptPEEQ speedup per pair: 5.1-11.4x, median 8.4x
-OPT / PEEQ per pair: 0.28-0.43, median 0.33
-SINGLE_STAGE / PEEQ per pair: 0.28-0.40, median 0.34
-EXH_ALL / Exhaustive per pair (no timeout): 0.39-0.98, median 0.78
-EXH_NAIVE at the defaults, extrapolated (years, median over pairs): {'adult': '7.82e+03', 'acsincome': '7.41e+03', 'tax': '1.05e+05', 'compas': '51.7', 'law': '166', 'meps': '397'}
-identical releases (PEEQ vs OptPEEQ): 96/96 runs, 32 pairs
-E4 pairs measured: 36; sweeps: {'data_fraction': 32, 'epsilon': 31, 'gamma_mult': 34, 'k': 36, 'tau': 35, 'view_fraction': 33}
+OptPEEQ speedup per pair: 5.1-11.4x, median 8.1x
+OPT / PEEQ per pair: 0.28-0.43, median 0.34
+SINGLE_STAGE / PEEQ per pair: 0.26-0.40, median 0.34
+EXH_ALL / Exhaustive per pair (no timeout): 0.36-0.98, median 0.77
+EXH_NAIVE at the defaults, extrapolated (years, median over pairs): {'adult': '7.82e+03', 'acsincome': '6.5e+03', 'tax': '1.08e+05', 'compas': '51.7', 'law': '171', 'meps': '397'}
+identical releases (PEEQ vs OptPEEQ): 108/108 runs, 36 pairs
+/home/user/private_query_explanations/scripts/runtime_numbers.py:38: DtypeWarning: Columns (0: machine, 1: cpu) have mixed types. Specify dtype option on import or set low_memory=False.
+  d = pd.read_csv(p)
+E4 pairs measured: 36; sweeps: {'data_fraction': 36, 'epsilon': 36, 'gamma_mult': 36, 'k': 36, 'tau': 36, 'view_fraction': 36}
 B2 at k=6: per pair 6.74-56.6 s
 B2 at k=7: per pair 135-929 s
 B2: first k at the limit by dataset: {'adult': 8.0, 'acsincome': 8.0, 'tax': 8.0, 'compas': 8.0, 'law': 8.0, 'meps': 8.0}
@@ -25,37 +27,39 @@ EXH_ALL at k=7: per pair 135-908 s
 EXH_ALL: first k at the limit by dataset: {'adult': 8.0, 'acsincome': 8.0, 'tax': 8.0, 'compas': 8.0, 'law': 8.0, 'meps': 8.0}
 EXH_NAIVE measured (s) by k: {1.0: {'median': 0.165, 'max': 9.578}, 2.0: {'median': 9.924, 'max': 35.566}}
 EXH_NAIVE extrapolated (years, median) by k: {3: '0.0009', 4: '2.51', 5: '5.08e+03', 6: '9.25e+06', 7: '1.3e+10', 8: '1.62e+13', 10: '1.79e+19'}
-growth view_fraction 0.1 -> 1.0: {'PRIV_EXPL': '6.85-10.26x (median 8.48)', 'OPT_PRIV_EXPL': '0.81-2.20x (median 1.30)', 'OPT': '6.54-10.92x (median 8.38)', 'SINGLE_STAGE': '7.00-11.18x (median 8.52)', 'B1': '6.84-10.33x (median 8.43)'}
-growth data_fraction 0.1 -> 1.0: {'PRIV_EXPL': '1.92-13.10x (median 3.52)', 'OPT_PRIV_EXPL': '2.21-12.34x (median 4.86)', 'OPT': '1.58-15.13x (median 3.15)', 'SINGLE_STAGE': '1.60-15.26x (median 2.92)', 'B1': '1.91-13.09x (median 3.52)'}
-growth tau 15 -> -1: {'PRIV_EXPL': '0.94-2.03x (median 1.32)', 'OPT_PRIV_EXPL': '2.61-5.20x (median 3.54)', 'B1': '0.94-2.04x (median 1.32)'}
+growth view_fraction 0.1 -> 1.0: {'PRIV_EXPL': '6.85-10.73x (median 8.51)', 'OPT_PRIV_EXPL': '0.81-2.20x (median 1.31)', 'OPT': '6.54-10.92x (median 8.35)', 'SINGLE_STAGE': '7.00-11.59x (median 8.45)', 'B1': '6.84-10.83x (median 8.46)'}
+growth data_fraction 0.1 -> 1.0: {'PRIV_EXPL': '1.87-13.10x (median 3.56)', 'OPT_PRIV_EXPL': '2.21-12.34x (median 4.96)', 'OPT': '1.57-15.13x (median 3.15)', 'SINGLE_STAGE': '1.60-15.26x (median 2.92)', 'B1': '1.88-13.09x (median 3.56)'}
+growth tau 15 -> -1: {'PRIV_EXPL': '0.94-2.03x (median 1.32)', 'OPT_PRIV_EXPL': '2.61-5.20x (median 3.51)', 'B1': '0.94-2.04x (median 1.32)'}
 E7 k=7 B2: first |Attrs| at the limit: {'adult': 11, 'acsincome': 11, 'compas': 12, 'meps': 11} (largest |Attrs|: {'adult': 13, 'acsincome': 12, 'tax': 10, 'compas': 13, 'law': 8, 'meps': 14})
 E7 k=7 EXH_ALL: first |Attrs| at the limit: {'adult': 11, 'acsincome': 11, 'compas': 12, 'meps': 11} (largest |Attrs|: {'adult': 13, 'acsincome': 12, 'tax': 10, 'compas': 13, 'law': 8, 'meps': 14})
 
 ######## Erica's pairs: 10 pairs
-E5 pairs measured: 8
+E5 pairs measured: 10
 E5 mean over pairs of the median time (s):
-method            PRIV_EXPL  OPT_PRIV_EXPL     B1    B2    OPT  SINGLE_STAGE  EXH_ALL  EXH_NAIVE
-dataset                                                                                         
-adult_erica           0.413          0.032  0.419  1.55   0.13         0.136     1.26    1.8e+03
-compas_erica           0.13         0.0173  0.131  1.47 0.0443        0.0455     1.32    1.8e+03
-healthcare_erica     0.0558        0.00816 0.0557 0.461 0.0226        0.0229     0.44    1.8e+03
-OptPEEQ speedup per pair: 4.7-13.7x, median 8.0x
-OPT / PEEQ per pair: 0.29-0.49, median 0.35
-SINGLE_STAGE / PEEQ per pair: 0.31-0.45, median 0.35
-EXH_ALL / Exhaustive per pair (no timeout): 0.80-1.03, median 0.89
-EXH_NAIVE at the defaults, extrapolated (years, median over pairs): {'adult_erica': '1.01e+04', 'compas_erica': '42.4', 'healthcare_erica': '21.6'}
-identical releases (PEEQ vs OptPEEQ): 24/24 runs, 8 pairs
-E4 pairs measured: 10; sweeps: {'data_fraction': 9, 'epsilon': 8, 'gamma_mult': 10, 'k': 8, 'tau': 8, 'view_fraction': 10}
+method            PRIV_EXPL  OPT_PRIV_EXPL    B1   B2    OPT  SINGLE_STAGE  EXH_ALL  EXH_NAIVE
+dataset                                                                                       
+adult_erica           0.413          0.032 0.419 1.55   0.13         0.136     1.26    1.8e+03
+compas_erica          0.119         0.0163  0.12 1.35 0.0402        0.0411     1.25    1.8e+03
+healthcare_erica     0.0522        0.00756 0.052 0.45 0.0236        0.0232    0.425    1.8e+03
+OptPEEQ speedup per pair: 4.7-13.7x, median 7.6x
+OPT / PEEQ per pair: 0.29-0.64, median 0.35
+SINGLE_STAGE / PEEQ per pair: 0.31-0.59, median 0.35
+EXH_ALL / Exhaustive per pair (no timeout): 0.80-1.03, median 0.91
+EXH_NAIVE at the defaults, extrapolated (years, median over pairs): {'adult_erica': '1.01e+04', 'compas_erica': '40.2', 'healthcare_erica': '21.6'}
+identical releases (PEEQ vs OptPEEQ): 30/30 runs, 10 pairs
+/home/user/private_query_explanations/scripts/runtime_numbers.py:38: DtypeWarning: Columns (0: machine, 1: cpu) have mixed types. Specify dtype option on import or set low_memory=False.
+  d = pd.read_csv(p)
+E4 pairs measured: 10; sweeps: {'data_fraction': 10, 'epsilon': 10, 'gamma_mult': 10, 'k': 10, 'tau': 10, 'view_fraction': 10}
 B2 at k=6: per pair 5.51-32.1 s
 B2 at k=7: per pair 122-853 s
 B2: first k at the limit by dataset: {'adult_erica': 8.0, 'compas_erica': 8.0, 'healthcare_erica': 8.0}
 EXH_ALL at k=6: per pair 5.49-31.9 s
 EXH_ALL at k=7: per pair 122-841 s
 EXH_ALL: first k at the limit by dataset: {'adult_erica': 8.0, 'compas_erica': 8.0, 'healthcare_erica': 8.0}
-EXH_NAIVE measured (s) by k: {1.0: {'median': 0.04, 'max': 0.11}, 2.0: {'median': 1.407, 'max': 9.561}, 3.0: {'median': 869.417, 'max': 1152.873}}
-EXH_NAIVE extrapolated (years, median) by k: {3: '0.00132', 4: '0.0393', 5: '28.8', 6: '1.58e+04', 7: '7.98e+06', 8: '3.57e+09', 10: '4.26e+14'}
+EXH_NAIVE measured (s) by k: {1.0: {'median': 0.038, 'max': 0.11}, 2.0: {'median': 1.359, 'max': 9.561}, 3.0: {'median': 875.618, 'max': 1778.246}}
+EXH_NAIVE extrapolated (years, median) by k: {3: '0.00115', 4: '0.052', 5: '36.5', 6: '2.11e+04', 7: '1.03e+07', 8: '4.99e+09', 10: '6.57e+14'}
 growth view_fraction 0.1 -> 1.0: {'PRIV_EXPL': '7.12-9.64x (median 7.94)', 'OPT_PRIV_EXPL': '1.07-1.50x (median 1.37)', 'OPT': '7.21-10.21x (median 8.33)', 'SINGLE_STAGE': '7.32-10.28x (median 8.77)', 'B1': '7.20-9.67x (median 7.95)'}
-growth data_fraction 0.1 -> 1.0: {'PRIV_EXPL': '1.06-2.32x (median 1.95)', 'OPT_PRIV_EXPL': '1.05-3.15x (median 1.90)', 'OPT': '1.08-2.33x (median 1.42)', 'SINGLE_STAGE': '1.06-1.92x (median 1.44)', 'B1': '1.07-2.34x (median 1.96)'}
-growth tau 15 -> -1: {'PRIV_EXPL': '1.23-1.50x (median 1.36)', 'OPT_PRIV_EXPL': '3.17-5.16x (median 3.69)', 'B1': '1.22-1.48x (median 1.35)'}
+growth data_fraction 0.1 -> 1.0: {'PRIV_EXPL': '1.06-2.32x (median 1.95)', 'OPT_PRIV_EXPL': '1.05-3.15x (median 1.96)', 'OPT': '1.08-2.33x (median 1.58)', 'SINGLE_STAGE': '1.06-1.93x (median 1.60)', 'B1': '1.07-2.34x (median 1.96)'}
+growth tau 15 -> -1: {'PRIV_EXPL': '1.02-1.93x (median 1.36)', 'OPT_PRIV_EXPL': '3.17-6.07x (median 3.75)', 'B1': '1.00-1.80x (median 1.35)'}
 E7 k=7 B2: first |Attrs| at the limit: {} (largest |Attrs|: {'adult_erica': 10, 'compas_erica': 10, 'healthcare_erica': 8})
 E7 k=7 EXH_ALL: first |Attrs| at the limit: {} (largest |Attrs|: {'adult_erica': 10, 'compas_erica': 10, 'healthcare_erica': 8})

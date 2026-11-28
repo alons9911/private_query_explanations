@@ -35,6 +35,12 @@
 | adult_erica | EA1 | 3 | 3 | 6.94e-18 |
 | compas_erica | EC3 | 3 | 3 | 6.94e-18 |
 | adult | R3 | 3 | 3 | 8.33e-17 |
+| acsincome | ACS_Q2C1 | 3 | 3 | 5.55e-17 |
+| acsincome | ACS_Q2C3 | 3 | 3 | 5.55e-17 |
+| compas_erica | EC1 | 3 | 3 | 1.39e-17 |
+| healthcare_erica | EH1 | 3 | 3 | 0 |
+| law | L2 | 3 | 3 | 0 |
+| tax | T3 | 3 | 3 | 2.78e-17 |
 | acsincome | ACS_Q1C2 | 3 | 3 | 2.78e-17 |
 | acsincome | ACS_Q4C8 | 3 | 3 | 4.34e-19 |
 | compas | CO5 | 3 | 3 | 5.55e-17 |
