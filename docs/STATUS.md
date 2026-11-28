@@ -49,6 +49,8 @@ English (file captions written in Hebrew showed in Hebrew; screenshot 2026-11-28
   pv-6 maMmN7BAB8AT5c54wb, pv-7 maLftCki2CKHyPTUVk, pv-8 mbBoNLAB4KE9suQWvo, pv-9 mcAt5rKCemfxVBBAy6,
   pv-10 mYy6pVpTo4PVkHpkpx, pv-11 mcsQseSvEMspNhYTNq, pv-12 mYwpgLnTpataST7z7o.  When done: merge into a
   SEPARATE directory (not results/), draft the runtime paragraph and Figure 11 from it, marked provisional.
+* pv-8 ARCHIVED 2026-11-28 10:10 (user): container restarted ~every 2 h on the old code and never finished a point at
+  |Attrs| = 11; its four E7t7 jobs (ACS_Q1C1, ACS_Q2C2, ACS_Q3C5, CO1) stop at |Attrs| = 2..10 (branch ...-pv-8, 80e5778).
 * pv-8b (session_01U646mdGaR1DfShdNea69Qj, 2026-11-28 08:56, user approved): the 29 short jobs queued on pv-8.
   pv-8 will run them too: when merging the preview, keep pv-8b's copy and drop pv-8's duplicate job dirs.
 * Restart fix (checkpoint per run, user approved 07:08): merged on rt-1,2,3,5,6,10,11; rt-4,7,8,9,12 and pv-3,6,8
