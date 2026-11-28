@@ -71,10 +71,10 @@ Every pair is a refinement: $Q_2$ changes predicates of $Q_1$ so that its output
 
 \paragraph{Baseline and algorithm variants.}
 No earlier system explains the difference between two query outputs privately with histograms; DPXPlain~\cite{TaoGMR22} explains the difference between two group aggregates with predicates, which our measures cannot score.
-Our baseline is the non-private \emph{optimum} (\BF{}): the $k$ candidates of all views with the largest $F_\lambda$, the objective of the explanation stage ($F_w$ of Definition~\ref{def:setobj} with $w_j=\lambda^{j-1}$, over $\HD_\gamma$). It has no view stage and ignores $\Use$. Trying every set is infeasible, but greedy selection over all candidates computes it exactly (Proposition~\ref{prop:greedy-exact}).
-The variants of \sys{} and the other methods are below; \sys{} selects views by $\Use$ and then explanations by $\HD_\gamma\cdot\DivS$, the greedy form of $F_\lambda$.
+\sys{} selects views by $\Use$ and then explanations by $\HD_\gamma\cdot\DivS$, the greedy form of the objective $F_\lambda$ defined with the baseline below. We compare it with:
 {\emergencystretch=2em  % long method names: let these lines stretch instead of overflowing
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
+  \item \textbf{Baseline: \BF{}}, the non-private \emph{optimum}: the $k$ candidates of all views with the largest $F_\lambda$, the objective of the explanation stage ($F_w$ of Definition~\ref{def:setobj} with $w_j=\lambda^{j-1}$, over $\HD_\gamma$). It has no view stage and ignores $\Use$. Trying every set is infeasible, but greedy selection over all candidates computes it exactly (Proposition~\ref{prop:greedy-exact}). Every quality measure below is relative to \BF{}.
   \item \Bone{}: both stages of \sys{} without noise: the exact top-$\tau$ views by $\Use$, then greedy by $\HD_\gamma\cdot\DivS$.
   \item \SingleStage{}: no view stage; Algorithm~\ref{alg:topk} over the candidates of all views, by $\HD_\gamma\cdot\DivS$ with $\epsilon_P+\epsilon_S$ for the selection. It ignores $\Use$, that is, representativeness and coverage.
   \item \RandomExpl{}: $k$ uniformly drawn candidates, with no utility.
