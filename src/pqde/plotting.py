@@ -254,8 +254,10 @@ def plot_runtime(methods: pd.DataFrame, b2: pd.DataFrame, path: Path) -> list[Pa
 
 YELLOW = "#eda100"
 MAGENTA = "#e87ba4"
-METHOD_COLORS = {"PRIV_EXPL": BLUE, "B1": ORANGE, "B2": AQUA, "B3": YELLOW, "OPT_PRIV_EXPL": MAGENTA}
-METHOD_MARKERS = {"PRIV_EXPL": "o", "B1": "s", "B2": "^", "B3": "D", "OPT_PRIV_EXPL": "P"}
+METHOD_COLORS = {"PRIV_EXPL": BLUE, "B1": ORANGE, "B2": AQUA, "B3": YELLOW, "OPT_PRIV_EXPL": MAGENTA,
+                 "OPT": "#6250d6", "SINGLE_STAGE": "#8a8a8a", "EXH_ALL": "#1b7f5b", "EXH_NAIVE": "#b5452c"}
+METHOD_MARKERS = {"PRIV_EXPL": "o", "B1": "s", "B2": "^", "B3": "D", "OPT_PRIV_EXPL": "P",
+                  "OPT": "v", "SINGLE_STAGE": "X", "EXH_ALL": "<", "EXH_NAIVE": ">"}
 RUNTIME_METHODS = ("PRIV_EXPL", "OPT_PRIV_EXPL", "B1", "B2", "B3")
 DATASET_TITLES = {"adult": "Adult", "tax": "Tax", "tax_dirty": "Tax (dirty, CQA)", "hospital": "Hospital",
                   "stackoverflow": "StackOverflow", "ipums": "IPUMS-CPS (contrast)"}

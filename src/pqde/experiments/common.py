@@ -107,6 +107,67 @@ def resume_rows(exp: str, name: str, base: Path | None, keys: tuple[str, ...]) -
     return rows, done
 
 
+_MACHINE: dict | None = None
+
+
+def machine() -> dict:
+    """Which machine measured a run: the boot id (it changes when the container restarts, so the runs of
+    one process share it) and the CPU model.  Recorded with every timed row, with the wall-clock time."""
+    global _MACHINE
+    if _MACHINE is None:
+        try:
+            boot = Path("/proc/sys/kernel/random/boot_id").read_text().strip()[:8]
+        except OSError:
+            boot = platform.node()
+        cpu = platform.processor() or ""
+        try:
+            cpu = next(l.split(":", 1)[1].strip() for l in open("/proc/cpuinfo") if l.startswith("model name"))
+        except (OSError, StopIteration):
+            pass
+        _MACHINE = {"machine": boot, "cpu": cpu}
+    return {**_MACHINE, "ts": round(time.time())}
+
+
+def resume_runs(exp: str, name: str, base: Path | None, keys: tuple[str, ...]) -> tuple[list[dict], dict]:
+    """Like :func:`resume_rows`, for jobs that checkpoint after every run (repeat) of a point: the rows
+    already measured and, per point, its rows, so that a relaunched job continues a point from its next
+    run (a run -- every method once -- is recorded whole or not at all).  ``PQDE_FRESH=1`` starts afresh."""
+    p = Path(base or RESULTS_DIR) / exp / "raw" / f"{name}.csv"
+    if os.environ.get("PQDE_FRESH") or not p.exists():
+        return [], {}
+    rows = pd.read_csv(p).to_dict("records")
+    prev: dict = {}
+    for r in rows:
+        prev.setdefault(point_key(r, keys), []).append(r)
+    n_runs = sum(len({x["repeat"] for x in v}) for v in prev.values())
+    print(f"  resuming {p}: {len(prev)} points, {n_runs} runs already measured", flush=True)
+    return rows, prev
+
+
+def run_state(old: list[dict]) -> tuple[set, dict]:
+    """Runs (repeats) already measured at a point and the timeouts per method among them."""
+    reps = {int(r["repeat"]) for r in old}
+    n_to: dict = {}
+    for r in old:
+        if str(r["timeout"]).lower() == "true":
+            n_to[r["method"]] = n_to.get(r["method"], 0) + 1
+    return reps, n_to
+
+
+class Checkpoint:
+    """Writes the raw rows at most every ``every`` seconds, and always on ``force``."""
+
+    def __init__(self, exp: str, name: str, base: Path | None, every: float | None = None):
+        every = float(os.environ.get("PQDE_CHECKPOINT_S", 60.0)) if every is None else every
+        self.exp, self.name, self.base, self.every = exp, name, base, every
+        self.last = time.monotonic()
+
+    def __call__(self, rows: list[dict], force: bool = False) -> None:
+        if force or time.monotonic() - self.last >= self.every:
+            write_raw(pd.DataFrame(rows), self.exp, self.name, self.base)
+            self.last = time.monotonic()
+
+
 def point_key(row: dict, keys: tuple[str, ...]) -> tuple:
     return tuple(round(float(row[k]), 9) if k == "value" else str(row[k]) for k in keys)
 

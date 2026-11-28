@@ -5,7 +5,8 @@
   into results/<exp>/raw/, the metadata of the first job is kept, and the figures and
   summaries are rebuilt from the merged raw data (``pqde plot``).
 
-Usage: python scripts/merge_shards.py [experiment ...]   (default: every experiment found)
+Usage: python scripts/merge_shards.py [--shard NAME ...] [--out DIR] [experiment ...]
+       (default: every experiment found; --out: merge into DIR instead of results/)
 """
 
 from __future__ import annotations
@@ -67,11 +68,21 @@ def merge_per_pair(exp: str) -> None:
         meta = next((d / meta_name for d in dirs if (d / meta_name).exists()), None)
         if meta:
             m = json.loads(meta.read_text())
-            m["merged_from"] = [str(d.parent.relative_to(ROOT)) for d in dirs]
+            m["merged_from"] = [str(d.parent.relative_to(SHARDS.parent)) for d in dirs]
             (dst / meta_name).write_text(json.dumps(m, indent=2))
 
 
 def main(argv: list[str]) -> None:
+    global RESULTS
+    global SHARDS
+    if "--shards" in argv:  # read the shard outputs from DIR instead of results_shards/
+        i = argv.index("--shards")
+        SHARDS = Path(argv[i + 1]).resolve()
+        del argv[i:i + 2]
+    if "--out" in argv:
+        i = argv.index("--out")
+        RESULTS = (ROOT / argv[i + 1]).resolve()
+        del argv[i:i + 2]
     while "--shard" in argv:
         i = argv.index("--shard")
         ONLY_SHARDS.append(argv[i + 1])
@@ -83,7 +94,7 @@ def main(argv: list[str]) -> None:
     if plot:
         from pqde.cli import main as cli
 
-        cli(["plot", *plot])
+        cli(["plot", *plot, "--out", str(RESULTS)])
 
 
 if __name__ == "__main__":
