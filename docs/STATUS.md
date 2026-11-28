@@ -55,6 +55,13 @@ English (file captions written in Hebrew showed in Hebrew; screenshot 2026-11-28
   refused a peer message -- the user must confirm in those sessions.  Preview merged in results_preview/,
   draft docs/runtime_draft.tex, checks scripts/runtime_sanity.py; figure options PQDE_RT_SCALE=linear,
   PQDE_RT_EXH_K_ONLY=1, PQDE_RT_SWEEPS=k,data_fraction,view_fraction,tau (user: drop eps and gamma).
+* TopTauExhaustive is now UNPRUNED (user, 2026-11-28 10:00): every candidate of the retained views (EXH_TOPTAU);
+  the pruned B2 of the rt/pv runs is no longer shown.  Supplementary run tt-1..5 (configs/experiments_toptau.yaml:
+  EXH_TOPTAU + PEEQ + OPT, E4 sweeps k and tau, 10 runs, 46 pairs, ~5 h from 10:03): sessions (prefix session_01U646)
+  tt-1 mYjvKLxrPG2LeDjwTg, tt-2 maH46SRze3x2n7uFos, tt-3 ma3jQnpbj8u8UQ5DfM, tt-4 mZuckkXFfeQiVPU7wy, tt-5 mae8cjzMwTfXkFwPnh.
+  When done: merge (`merge_shards.py --shard 'tt-*' --out results_toptau e4`), add EXH_TOPTAU to the k column of the
+  runtime grid and its numbers to the paragraph (replace the \alon note).  Names: \Btwo = TopTauExhaustive,
+  \TopKExh = TopKExhaustive (EXH_ALL), \FullExh = FullExhaustive (EXH_NAIVE).
 * Still running (old 5-method runtime, superseded by the rerun above): shards new-3, fix-1..3
   (`scripts/shards_status.sh new|fix`).  Ask the user before stopping or archiving them.
 * Overleaf Git: credential for git.overleaf.com saved but refused (probably saved as a bearer token; needs

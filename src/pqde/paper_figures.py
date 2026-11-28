@@ -372,7 +372,8 @@ def fig_attrs() -> Path:
     k7 = None
     if k7_path.exists():  # B2 at k = 7, where its search grows fastest with |Attrs|
         r7 = _drop(pd.read_csv(k7_path))
-        r7 = r7[r7.method == "B2"].groupby(["dataset", "pair", "value"], as_index=False).agg(
+        k7m = os.environ.get("PQDE_K7_METHOD", "B2")  # the exhaustive search drawn at k = 7
+        r7 = r7[r7.method == k7m].groupby(["dataset", "pair", "value"], as_index=False).agg(
             total_s=("total_s", "median"), timeout=("timeout", "max"))
         k7 = r7.groupby(["dataset", "value"], as_index=False).agg(total_s=("total_s", "mean"), timeout=("timeout", "max"))
     for j, ds in enumerate(dss):
@@ -383,14 +384,15 @@ def fig_attrs() -> Path:
         if k7 is not None and (k7.dataset == ds).any():
             d7 = k7[k7.dataset == ds].sort_values("value")
             to = d7.timeout.astype(bool)
-            c = P.METHOD_COLORS["B2"]
+            k7m = os.environ.get("PQDE_K7_METHOD", "B2")
+            c = P.METHOD_COLORS[k7m]
             ax.plot(d7.value[~to], d7.total_s[~to], color=c, linestyle="--", marker="^", markerfacecolor=SURF,
-                    linewidth=1.0, label=NAME["Btwo"] + ", $k=7$")
+                    linewidth=1.0, label=RT_LABEL[k7m] + ", $k=7$")
             if to.any():
                 ax.plot(list(d7.value[~to].tail(1)) + list(d7.value[to]), list(d7.total_s[~to].tail(1)) + [limit] * int(to.sum()),
                         color=c, linestyle=":", linewidth=1.0)
                 ax.plot(d7.value[to], [limit] * int(to.sum()), linestyle="none", marker="x", color=c, markersize=5,
-                        markeredgewidth=1.4, label=f"{NAME['Btwo']} timeout")
+                        markeredgewidth=1.4, label=f"{RT_LABEL[k7m]} timeout")
             allt += list(d7.total_s)
         lo, hi = float(min(allt)) / 1.5, float(max(allt)) * 1.5
         if hi / lo < 10:  # at least one decade, so that run-to-run noise does not read as a trend
