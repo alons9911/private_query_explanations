@@ -69,6 +69,10 @@ English (file captions written in Hebrew showed in Hebrew; screenshot 2026-11-28
   (our 26, ACSIncome 10, Healthcare 4); Healthcare is a regular dataset (own row, bullet, attributes, pairs HC1-HC4,
   running time only because its outputs hold at most 89 tuples). Numbers: `scripts/runtime_numbers.py DIR` reports
   the 40 pairs of the paper; ignore EA*/EC* in the rt/pv results.
+* Reviewer pass decisions (user, 2026-11-28 ~16:30): B.2 only 'few' -> 'fewer' (view sizes in results/view_sizes,
+  not in the paper); B.3 not in the paper (results/grouped_baselines: OPT/SingleStage with the grouped pass take
+  0.87-0.89 of OptPEEQ's time, so claim no speed advantage over them); B.5 not in the paper (prior work only says
+  'averaged over N runs'); DPClustX baseline, the intro and the Fig. 8 method choice left for later; COMPAS bullet kept.
 * Figures (user, 2026-11-28 12:05): the tighter layouts of quality, view_stage, attrs and runtime_grid (same content,
   less height), and a Healthcare (Erica) row in the runtime grid.  Redraw ONLY with `scripts/draw_chapter_figures.sh`
   (it sets the env of the paper's figures; RT_RESULTS=<dir> for the running-time data, default results_preview).

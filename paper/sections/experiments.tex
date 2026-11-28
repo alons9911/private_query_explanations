@@ -252,7 +252,7 @@ How much of the best attainable score does a release keep, and which stage loses
 At the defaults we run \sys{}, \Bone{}, \SingleStage{} and \RandomExpl{} $40$ times per pair; Table~\ref{tab:quality} shows their ApproxRatio, attribute@k and coverage against \BF{}, and Table~\ref{tab:quality-all} in the appendix those of every method: \sysopt{} releases what \sys{} releases, \Btwo{} selects what \Bone{} selects, and \TopKExh{} and \FullExh{} reach the optimum of \BF{}.
 \sys{} reaches an ApproxRatio of $0.62$ ($0.49$ on ACSIncome to $0.78$ on Law Students), \Bone{} $0.72$ and \RandomExpl{} $0.08$: restricting the selection to the exact top-$\tau$ views costs $0.28$ of \BF{}'s score, and the noise a further $0.10$.
 \SingleStage{} reaches $0.92$ but ignores coverage: the mean $\Cov$ of its views is $0.09$, against $0.18$ for \sys{}, and a third of it on ACSIncome and Tax.
-The views of \BF{} itself have a mean $\Cov$ of $0.10$: the largest differences lie in views that hold few output tuples.
+The views of \BF{} itself have a mean $\Cov$ of $0.10$: the largest differences lie in views that hold fewer output tuples.
 % (with CQA) Only on Hospital, whose private view stage fails (next paragraph), is \SingleStage{} better on both counts.
 The explanations rarely coincide with those of \BF{} (precision@k $0.14$ on average and at most $0.29$ on a dataset; not in the table), but their attributes mostly agree with it (attribute@k $0.75$ against a chance level of $0.36$, and above chance on every dataset), through near-duplicate views.
 % (with CQA) ..., as the different State views of D1 illustrate; Tax-dirty is the exception ($0.26$, below its chance level of $0.44$).
