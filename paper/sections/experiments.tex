@@ -74,7 +74,10 @@ The variants of \sys{} are:
   \item \Bone{}: no noise (exact top-$\tau$ views, then greedy by $\HD_\gamma\cdot\DivS$).
   \item \SingleStage{}: no view stage; Algorithm~\ref{alg:topk} over all candidates with $\epsilon_P+\epsilon_S$ for the selection. It ignores representativeness and coverage.
   \item \RandomExpl{}: $k$ uniformly drawn candidates.
-  \item For running time only: \sysopt{} computes the statistics of all views on the same attributes in one pass over $D$ ($21$ passes instead of $1{,}144$ on Adult) and otherwise runs as \sys{}. \Btwo{} replaces the greedy rounds by exhaustive search over the retained views, which returns the greedy set; it enumerates only the $k$ best candidates of each attribute, which loses nothing, since a set that used a worse candidate of an attribute could swap it for an unused better one. \TopKExh{} runs the same search over the candidates of every view, and \FullExh{} over all of them, without that pruning.
+  \item \sysopt{} (running time only): computes the statistics of all views on the same attributes in one pass over $D$ ($21$ passes instead of $1{,}144$ on Adult) and otherwise runs as \sys{}.
+  \item \Btwo{} (running time only): replaces the greedy rounds by exhaustive search over the candidates of the retained views, which returns the greedy set. It enumerates only the $k$ best candidates of each attribute, which loses nothing: a set that used a worse candidate of an attribute could swap it for an unused better one.
+  \item \TopKExh{} (running time only): exhaustive search with the same pruning over the candidates of every view.
+  \item \FullExh{} (running time only): exhaustive search over all candidates of every view, without that pruning.
 \end{itemize}
 For running time we also time \BF{} and \SingleStage{}. The methods without a view stage (\BF{}, \SingleStage{}, \TopKExh{}, \FullExh{}) compute no Use; they build the histograms of every view instead.\par}
 
