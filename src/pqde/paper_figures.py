@@ -251,22 +251,33 @@ def fig_runtime_grid(raw_path: Path | None = None) -> Path:
     dss = _datasets(pts)
     keep = os.environ.get("PQDE_RT_SWEEPS")  # e.g. k,data_fraction,view_fraction,tau (eps, gamma: no effect on time)
     sweeps = [s for s in SWEEPS if s[0] in set(pts.sweep) and (not keep or s[0] in keep.split(","))]
+    EXH = ["B2", "EXH_ALL", "EXH_NAIVE", "EXH_TOPTAU"]
+    # PQDE_RT_SPLIT_K=1: k in two columns, the other methods (linear axis) and the exhaustive searches (log axis)
+    split_k = bool(os.environ.get("PQDE_RT_SPLIT_K")) and any(s[0] == "k" for s in sweeps)
+    cols = []  # (data sweep, label, log x, methods: "all" / "fast" / "exh")
+    for sw, xl, logx in sweeps:
+        if sw == "k" and split_k:
+            cols += [(sw, xl, logx, "fast"), (sw, xl + ", exhaustive searches", logx, "exh")]
+        else:
+            cols.append((sw, xl, logx, "all"))
     # PQDE_RT_SCALE=linear: a linear y axis of its own in every panel but k (log: the exhaustive searches),
     # so that the growth of the other methods shows; default: log, one y axis per row
     linear = os.environ.get("PQDE_RT_SCALE", "log") == "linear"
-    fig, axes = plt.subplots(len(dss), len(sweeps), figsize=(7.05, 1.12 * len(dss) + 0.35), squeeze=False,
+    fig, axes = plt.subplots(len(dss), len(cols), figsize=(7.05, 1.12 * len(dss) + 0.35), squeeze=False,
                              sharey=False if linear else "row")
     plain = FuncFormatter(lambda v, _: f"{v:g}")
-    xticks = {"epsilon": [0.1, 1, 10], "tau": [5, 50, 500], "gamma_mult": [0, 0.1, 1, 10]}
+    xticks = {"k": [2, 4, 6, 8, 10], "epsilon": [0.1, 1, 10], "tau": [5, 50, 500], "gamma_mult": [0, 0.1, 1, 10]}
     for i, ds in enumerate(dss):
-        for j, (sw, xl, logx) in enumerate(sweeps):
+        for j, (sw, xl, logx, which) in enumerate(cols):
             ax = axes[i, j]
             sub = pts[(pts.dataset == ds) & (pts.sweep == sw)].rename(columns={"value": sw})
             if sw == "data_fraction":
                 sub = sub[sub[sw] <= 1.0]
-            logy = not linear or sw == "k"
-            if os.environ.get("PQDE_RT_EXH_K_ONLY") and sw != "k":  # exhaustive searches in the k column only
-                sub = sub[~sub.method.isin(["B2", "EXH_ALL", "EXH_NAIVE"])]
+            logy = not linear or (sw == "k" and which != "fast")
+            if which == "fast" or (os.environ.get("PQDE_RT_EXH_K_ONLY") and sw != "k"):
+                sub = sub[~sub.method.isin(EXH)]  # exhaustive searches in their own k column (or the k column only)
+            elif which == "exh":
+                sub = sub[sub.method.isin(EXH)]
             _rt_panel(ax, sub, sw, logx, limit, logy=logy)
             if logy:
                 ax.axhline(limit, color=P.MUTED, linewidth=0.5, linestyle=":", zorder=0)
@@ -293,11 +304,12 @@ def fig_runtime_grid(raw_path: Path | None = None) -> Path:
             if lab not in labels:
                 handles.append(h)
                 labels.append(lab)
-    for i in range(len(dss)):  # y ticks per row: 1-3-10 steps, or decades when the row spans > 4 decades
-        lo, hi = axes[i, 0].get_ylim()
+    jlog = next((j for j, c in enumerate(cols) if not linear or (c[0] == "k" and c[3] != "fast")), None)
+    for i in range(len(dss) if jlog is not None else 0):  # y ticks of the log column: 1-3-10 steps, or decades
+        lo, hi = axes[i, jlog].get_ylim()
         subs = (1.0,) if hi / max(lo, 1e-12) > 1e4 else (1.0, 3.0)
-        axes[i, 0].yaxis.set_major_locator(LogLocator(base=10, subs=subs, numticks=12))
-        axes[i, 0].yaxis.set_major_formatter(plain)
+        axes[i, jlog].yaxis.set_major_locator(LogLocator(base=10, subs=subs, numticks=12))
+        axes[i, jlog].yaxis.set_major_formatter(plain)
     rows = 1 if len(labels) <= 7 else 2  # many methods: the legend takes two rows
     fig.tight_layout(h_pad=0.25, w_pad=0.3, rect=(0, 0, 1, 0.975 if rows == 1 else 0.95))
     fig.legend(handles, labels, loc="upper center", ncol=-(-len(labels) // rows), bbox_to_anchor=(0.5, 1.01))

@@ -56,7 +56,8 @@ English (file captions written in Hebrew showed in Hebrew; screenshot 2026-11-28
 * Restart fix (checkpoint per run, user approved 07:08): merged on rt-1,2,3,5,6,10,11; rt-4,7,8,9,12 and pv-3,6,8
   refused a peer message -- the user must confirm in those sessions.  Preview merged in results_preview/,
   draft docs/runtime_draft.tex, checks scripts/runtime_sanity.py; figure options PQDE_RT_SCALE=linear,
-  PQDE_RT_EXH_K_ONLY=1, PQDE_RT_SWEEPS=k,data_fraction,view_fraction,tau (user: drop eps and gamma).
+  PQDE_RT_EXH_K_ONLY=1, PQDE_RT_SWEEPS=k,data_fraction,view_fraction,tau (user: drop eps and gamma),
+  PQDE_RT_SPLIT_K=1 (user: the exhaustive searches against k in a column of their own).
 * TopTauExhaustive is now UNPRUNED (user, 2026-11-28 10:00): every candidate of the retained views (EXH_TOPTAU);
   the pruned B2 of the rt/pv runs is no longer shown.  Supplementary run tt-1..5 (configs/experiments_toptau.yaml:
   EXH_TOPTAU + PEEQ + OPT, E4 sweeps k and tau, 10 runs, 46 pairs, ~5 h from 10:03): sessions (prefix session_01U646)
