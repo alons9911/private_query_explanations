@@ -318,7 +318,7 @@ Attribute@k falls on MEPS ($0.88\rightarrow0.61$) and COMPAS ($0.90\rightarrow0.
 
 \paragraph{Runtime.}
 \label{subsec:scalability}
-We time all methods on every pair, one parameter varied at a time (Figure~\ref{fig:scalability}; Figure~\ref{fig:attrs}, top, for $|\Attrs|$).
+We time all methods on every pair, one parameter varied at a time: $|\Attrs|$ in Figure~\ref{fig:attrs} (top), the other parameters in Figure~\ref{fig:scalability}.
 Privacy adds no measurable time: \sys{} and \Bone{} are within $2\%$ of each other on every pair, since almost all of the time is the $\Use$ pass they share.
 As Section~\ref{subsec:complexity-analysis} predicts, the time of \sys{} is linear in $N$ and $|\mathcal{P}|$ (median $R^2$ of $0.99$), flat in $k$ and $|\Attrs|$, and grows by less than half from $\tau=15$ to $\tau=|\mathcal{P}|$; $\epsilon$ and $\gamma$ change only the noise, and Figure~\ref{fig:scalability} omits them.
 At the defaults \sys{} takes under half a second on Adult, COMPAS, Law Students and MEPS, a few seconds on Tax and $24$\,s on ACSIncome, with $1.7$ million tuples.
