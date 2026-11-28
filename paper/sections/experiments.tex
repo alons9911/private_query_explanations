@@ -44,11 +44,11 @@ Table~\ref{tab:datasets} summarises the datasets and Table~\ref{tab:attributes} 
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
   \item \textbf{Adult}~\cite{adult-uci}: $48{,}842$ census records.
   \item \textbf{ACSIncome}~\cite{DingHMS21}: $1{,}664{,}500$ records of the American Community Survey, the dataset of Erica~\cite{LMSJ23,ERICA}.
-  \item \textbf{Tax}~\cite{BohannonFGJK07}: the $200{,}000$-tuple clean file of Raha~\cite{MahdaviAFMOST19}.
+  \item \textbf{Tax}~\cite{BohannonFGJK07}: $200{,}000$ synthetic personal tax records generated for data cleaning, with the person's gender, phone and address (city, state, zip), marital status, children, salary, tax rate and exemptions; we use the clean file of Raha~\cite{MahdaviAFMOST19}.
   \item \textbf{COMPAS}~\cite{compas-propublica}: ProPublica's $11{,}757$ defendants with their criminal history and risk scores, the dataset of the Erica experiments~\cite{ERICA}; we drop the identifying columns.
   \item \textbf{Law Students}~\cite{lsac-wightman98}: $21{,}791$ students of the LSAC bar-passage study, the dataset of~\cite{CSSM24}.
   \item \textbf{MEPS}~\cite{meps-hc181}: the $35{,}427$ respondents of the 2015 Medical Expenditure Panel Survey, with the attributes used in the fairness literature, among them the yearly number of medical visits (\texttt{UTILIZATION}) and expenditure (\texttt{TOTEXP}).
-  \item \textbf{Healthcare}~\cite{ERICA}: $887$ patients with their age group, race, county, income, number of children, smoking and complications, the dataset of the Erica experiments.
+  \item \textbf{Healthcare}~\cite{ERICA}: $887$ patients with their age group, race, county, income, number of children, smoking and complications.
   % CQA and contrast datasets, out of the experiments for now:
   % \item \textbf{Tax-dirty}~\cite{MahdaviAFMOST19}: Raha's dirty version of the same file.
   % \item \textbf{Hospital}~\cite{rekatsinas2017}: HoloClean's $1{,}000$-tuple file of hospital records with injected errors.
