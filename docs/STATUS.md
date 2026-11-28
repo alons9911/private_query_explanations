@@ -65,6 +65,10 @@ English (file captions written in Hebrew showed in Hebrew; screenshot 2026-11-28
   When done: merge (`merge_shards.py --shard 'tt-*' --out results_toptau e4`), add EXH_TOPTAU to the k column of the
   runtime grid and its numbers to the paragraph (replace the \alon note).  Names: \Btwo = TopTauExhaustive,
   \TopKExh = TopKExhaustive (EXH_ALL), \FullExh = FullExhaustive (EXH_NAIVE).
+* Figures (user, 2026-11-28 12:05): the tighter layouts of quality, view_stage, attrs and runtime_grid (same content,
+  less height), and a Healthcare (Erica) row in the runtime grid.  Redraw ONLY with `scripts/draw_chapter_figures.sh`
+  (it sets the env of the paper's figures; RT_RESULTS=<dir> for the running-time data, default results_preview).
+  The user rejected aggregated figures (one line over the datasets): keep one curve per dataset.
 * Runtime paragraph style (user, 2026-11-28 11:30): bottom lines only, few numbers; no extrapolated times
   (years/hours) -- say "exceeds the 30-minute limit from k = ..." instead.  The detailed preview numbers are kept as
   a LaTeX comment under the paragraph.  When the tt and rt runs arrive, update only the numbers left in the text

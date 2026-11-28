@@ -240,14 +240,14 @@ Distinct attributes & 4.9 & 4.7 & 4.3 & 3.5 & 2.5 &&&&&\\
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/exp/attrs.pdf}
-\caption{Number of explanation attributes: the first $|\Attrs|$ attributes of ten random orders of all attributes of Table~\ref{tab:attributes}. Top: running time (median of ten runs; dashed: \TopKExh{} at $k=7$). Bottom: ApproxRatio and attribute@k against \BF{} over the same attributes.\alon{Top row from the preview run: three orders.}}
+\caption{Number of explanation attributes: the first $|\Attrs|$ attributes of ten random orders of all attributes of Table~\ref{tab:attributes}. Top: running time (median of ten runs; dashed: \TopKExh{} at $k=7$). Bottom: ApproxRatio and attribute@k of \sys{} against \BF{} over the same attributes.\alon{Top row from the preview run: three orders.}}
 \label{fig:attrs}
 \end{figure*}
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/exp/runtime_grid.pdf}
-\caption{End-to-end running time (median of ten runs, mean over the pairs), one parameter varied at a time. $k$ is shown twice: for the other methods (first column) and, on a logarithmic axis, for the exhaustive searches (second column), which appear only there; crosses: runs stopped at $30$ minutes. $\epsilon$ and $\gamma$ do not change the time (text).\alon{Preview run (three runs per point). Decide which methods to show: \Bone{} coincides with \sys{}, and \SingleStage{} with \BF{}.}}
+\caption{End-to-end running time in seconds (median of ten runs, mean over the pairs), one parameter varied at a time; Healthcare$^\dagger$: its four pairs from the Erica experiments. $k$ is shown twice: for the other methods (first column) and, on a logarithmic axis, for the exhaustive searches (second column), which appear only there; crosses: runs stopped at $30$ minutes. $\epsilon$ and $\gamma$ do not change the time (text).\alon{Preview run (three runs per point). Decide which methods to show: \Bone{} coincides with \sys{}, and \SingleStage{} with \BF{}.}}
 \label{fig:scalability}
 \end{figure*}
 
@@ -326,7 +326,7 @@ At the defaults \sys{} takes under half a second on Adult, COMPAS, Law Students 
 \BF{} and \SingleStage{} take about a third of the time of \sys{}, since they compute no $\Use$.
 The exhaustive searches do not scale: \TopKExh{} is exponential in $k$ and exceeds the $30$-minute limit from $k=8$ on every dataset (at $k=7$, from $12$ attributes), and \FullExh{} exceeds it from $k=3$.
 \alon{\Btwo{} (every candidate of the retained views): numbers from the supplementary run, in progress.}
-The ten pairs of the Erica experiments show the same picture.
+The ten pairs of the Erica experiments show the same picture (Healthcare$^\dagger$ in Figure~\ref{fig:scalability}).
 % Detailed numbers (preview run), left out of the text for space; the full run updates them:
 % We time all methods on every pair, one parameter varied at a time (Figure~\ref{fig:scalability}; Figure~\ref{fig:attrs}, top, for $|\Attrs|$).
 % Privacy adds no measurable time: \sys{} and \Bone{} are within $2\%$ of each other on every pair, since $94$--$99\%$ of the time is the $\Use$ pass they share.
