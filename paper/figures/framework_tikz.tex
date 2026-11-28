@@ -36,7 +36,7 @@
 \draw[flow, dashed, draw=black!55] (origin) -- node[above, inner sep=1.5pt, text=black!65] {$Q_2$} (analyst);
 % --- what crosses the boundary of the server ---
 \draw[flow] (analyst.south) -- (analyst.south |- server.north)
-  node[midway, left, inner sep=2pt] {$Q_1,\,Q_2,\,\views,\,\Attrs,\,k,\,\epsilon$};
+  node[midway, left, inner sep=2pt] {$Q_1,\,Q_2,\,\views,\,\Attrs,\,\mathcal{A}_R,\,k,\,\epsilon$};
 \draw[flow, draw=peeqorange, line width=0.7pt] (rel.north) |- (analyst.east)
   node[pos=0.75, above, inner sep=1.5pt, text=peeqorange] {$k$ explanations};
 \end{tikzpicture}%

@@ -679,3 +679,66 @@ def fig_cases_compact(mode: str = "pair", top: int | None = None, width: float =
     fig.legend(h, lab, loc="upper center", ncol=3, bbox_to_anchor=(0.5, 1.0), fontsize=5.6, handlelength=1.2,
                frameon=False)
     return _save(fig, name)
+
+
+# ----------------------------------------------------------------------------- Figure 2 (introduction)
+
+FRAMEWORK_BLUE, FRAMEWORK_ORANGE = "#2D5F96", "#C45820"  # peeqblue / peeqorange of figures/framework_tikz.tex
+
+
+def fig_candidates(seed: int = 0, max_bins: int = 6) -> Path:
+    """The two candidates of Example 1.1 (A2, by occupation): (a) education = Masters, (b) education = Bachelors.
+
+    Bars: the two histograms as PEEQ releases them at the default setting (Laplace noise of scale 2k/eps_H = 30
+    per bar, one draw with a fixed seed); ticks: the exact counts (not released).  The bins of each panel are the
+    ``max_bins`` with the largest exact difference, in domain order.  Single column, vector PDF.
+    """
+    from .algorithm import Params  # noqa: F401  (defaults below follow configs/experiments.yaml)
+    from .mechanisms import laplace_mechanism
+    from .pairs import resolve_pair
+    from .stats import build_cache
+
+    k, eps, share_h = 5, 1.0, 1 / 3
+    eps_rel = eps * share_h / k
+    pair = resolve_pair("A2")
+    ds = pair.dataset
+    cache = build_cache(ds, pair.q1, pair.q2, None, mode="direct", rep="none", hist="lazy")
+    lab = {cache.view_label(i): i for i in range(cache.n_views)}
+    dom = list(ds.domains["occupation"])
+    rng = np.random.default_rng(seed)
+    with plt.rc_context({"font.size": 7, "axes.labelsize": 7, "xtick.labelsize": 6.3, "ytick.labelsize": 6.3,
+                         "legend.fontsize": 6.5, "axes.titlesize": 7}):
+        fig, axes = plt.subplots(1, 2, figsize=(3.33, 1.55), sharey=True)
+        for ax, view, tag in zip(axes, ["education='Masters'", "education='Bachelors'"], ["(a)", "(b)"]):
+            _, x1, x2 = cache.histograms(lab[view], "occupation")
+            n1 = laplace_mechanism(x1, 2.0, eps_rel, rng)
+            n2 = laplace_mechanism(x2, 2.0, eps_rel, rng)
+            nz = np.flatnonzero((x1 + x2) > 0)
+            order = np.sort(nz[np.argsort(-np.abs(x1 - x2)[nz], kind="stable")[:max_bins]])
+            xs = np.arange(len(order))
+            ax.bar(xs - 0.2, n1[order], 0.38, color=FRAMEWORK_BLUE, label="$Q_1$ (released)")
+            ax.bar(xs + 0.2, n2[order], 0.38, color=FRAMEWORK_ORANGE, label="$Q_2$ (released)")
+            ax.plot(xs - 0.2, x1[order], ls="none", marker="_", color=P.INK, ms=5, mew=0.9)
+            ax.plot(xs + 0.2, x2[order], ls="none", marker="_", color=P.INK, ms=5, mew=0.9, label="exact (not released)")
+            ax.axhline(0, color=P.INK, lw=0.5)
+            ax.set_xticks(xs)
+            ax.set_xticklabels([BIN_SHORT.get(dom[i], dom[i]) for i in order], rotation=40, ha="right",
+                               rotation_mode="anchor")
+            ax.tick_params(axis="x", length=0, pad=1)
+            ax.tick_params(axis="y", length=2, pad=1)
+            ax.grid(axis="x", visible=False)
+            ax.grid(axis="y", linewidth=0.3, alpha=0.6)
+            ax.set_title(tag, pad=2)
+        axes[0].set_ylabel("tuples", labelpad=1)
+        axes[0].yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(nbins=4))
+        h, lab_ = axes[0].get_legend_handles_labels()
+        want = ["$Q_1$ (released)", "$Q_2$ (released)", "exact (not released)"]
+        h, lab_ = [h[lab_.index(w)] for w in want], want
+        fig.tight_layout(w_pad=0.4, rect=(0, 0, 1, 1 - 0.17 / fig.get_figheight()))
+        fig.legend(h, lab_, loc="upper center", ncol=3, bbox_to_anchor=(0.5, 1.0), handlelength=1.2,
+                   columnspacing=0.8, frameon=False)
+    out = ROOT / "paper" / "figures" / "candidates.pdf"
+    fig.savefig(out, bbox_inches="tight", pad_inches=0.02)
+    fig.savefig(out.with_suffix(".preview.png"), dpi=200, bbox_inches="tight", pad_inches=0.02)
+    plt.close(fig)
+    return out

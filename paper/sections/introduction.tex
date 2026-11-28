@@ -83,13 +83,14 @@ Figure~\ref{fig:candidates} shows two differences that neither the queries nor t
 Released exactly, such histograms can disclose information about the few people in a small region of the database.
 \end{example}
 % Placed here so that the float lands at the top of page 2, next to Example~\ref{ex:intro}.
-\begin{figure*}[t]
+\begin{figure}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/candidates.png}
-\caption{How the outputs of $Q_1$ and $Q_2$ of Example~\ref{ex:intro} differ on the full Adult dataset, by \texttt{occupation}: (a)~among Master's degree holders, whom both queries select, and (b)~among Bachelor's degree holders, whom only $Q_1$ selects. Counts are exact, and \sys{} releases such pairs of histograms with noise.}
+\includegraphics[width=\linewidth]{figures/candidates.pdf}
+\caption{How the outputs of $Q_1$ and $Q_2$ of Example~\ref{ex:intro} differ on the full Adult dataset, by \texttt{occupation}: (a)~among Master's degree holders, whom both queries select, and (b)~among Bachelor's degree holders, whom only $Q_1$ selects. Bars: the two histograms as \sys{} releases them at the default setting (Laplace noise of scale $30$ per bar); ticks: the exact counts, which are not released; in each panel, the six occupations with the largest exact difference.}
 \label{fig:candidates}
-\end{figure*}
-\ag{Alon: please regenerate Figure~\ref{fig:candidates} as a compact single-column vector figure that shows the noisy histograms that \sys{} releases instead of the exact counts, and update the last sentence of its caption accordingly.}
+\end{figure}
+% (addressed) \ag{Alon: please regenerate Figure~\ref{fig:candidates} as a compact single-column vector figure that shows the noisy histograms that \sys{} releases instead of the exact counts, and update the last sentence of its caption accordingly.}
+% Previous version (figure*, exact counts): \includegraphics[width=\linewidth]{figures/candidates.png}; caption ended "Counts are exact, and \sys{} releases such pairs of histograms with noise." 
 
 To our knowledge, no prior work has focused on explaining how the outputs of two queries differ under DP.
 DPXPlain~\cite{TaoGMR22} explains why the aggregate value of one group exceeds that of another, and DPClustX~\cite{DPClustX} characterizes the clusters produced by a clustering algorithm.
@@ -178,8 +179,10 @@ We make the following contributions.
 \item We present a two-stage algorithm that first retains a few views by representativeness and coverage, then selects diverse explanations from them by interestingness, and releases their histograms with Laplace noise (Section~\ref{sec:solution}). It satisfies $\epsilon$-DP for databases of at least a public size $\bar N$, and without noise its second stage is optimal over the retained candidates.
 % \item We present a two-stage algorithm that selects views, then explanations, and releases noisy histograms (Section~\ref{sec:solution}). It satisfies $\epsilon$-DP on databases of at least a public size $\bar N$ and derives its parameters from public quantities; without noise, its second stage is optimal for the set-level objective over the retained candidates.
 % NOTE: numbers from Section~\ref{subsec:quality}; update after the experiments are rerun.
-\item We discuss two extensions of the model (Section~\ref{sec:extension}): contrasts between the groups of a group-by query~\cite{TaoGMR22} and consistent query answering~\cite{arenas1999,bertossi2011}, where the second output is not a selection.
-\item We evaluate \sys{} on six datasets and $44$ query pairs (Section~\ref{sec:experiments}). At $\epsilon=1$ it reaches $0.91$--$0.96$ of the best non-private selection over the same candidate views on three of the datasets and, for pairs of selection queries, agrees with it on $72$--$87\%$ of the explained attributes; small differences and small databases remain harder.
-\ag{Alon: please align this item with Section~\ref{sec:experiments}, which now reports $60\%$ of the best non-private selection averaged over the pairs, remove the $17$ contrast pairs from the counts since there will be no contrast experiments, and note that ``where the second output is not a selection'' in the previous item applies only to consistent query answering.}
+\item \textcolor{blue}{We discuss two extensions of the model (Section~\ref{sec:extension}): consistent query answering~\cite{arenas1999,bertossi2011}, where the second output is not a selection, and contrasts between the groups of a group-by query~\cite{TaoGMR22}.}
+% Previous version: \item We discuss two extensions of the model (Section~\ref{sec:extension}): contrasts between the groups of a group-by query~\cite{TaoGMR22} and consistent query answering~\cite{arenas1999,bertossi2011}, where the second output is not a selection.
+\item \textcolor{blue}{We evaluate \sys{} on seven datasets and $40$ query refinements (Section~\ref{sec:experiments}). At $\epsilon=1$ a release keeps $62\%$ of the objective of the best non-private selection on average and mostly explains the same attributes; restricting the selection to a few views costs more of the objective than the noise does, in exchange for views that hold more of the outputs.}
+% Previous version: \item We evaluate \sys{} on six datasets and $44$ query pairs (Section~\ref{sec:experiments}). At $\epsilon=1$ it reaches $0.91$--$0.96$ of the best non-private selection over the same candidate views on three of the datasets and, for pairs of selection queries, agrees with it on $72$--$87\%$ of the explained attributes; small differences and small databases remain harder.
+% (addressed) \ag{Alon: please align this item with Section~\ref{sec:experiments}, which now reports $60\%$ of the best non-private selection averaged over the pairs, remove the $17$ contrast pairs from the counts since there will be no contrast experiments, and note that ``where the second output is not a selection'' in the previous item applies only to consistent query answering.}
 % \item We discuss two extensions of the model and what they imply for the sensitivities and for the algorithm (Section~\ref{sec:extension}): contrasts between the groups of a group-by query~\cite{TaoGMR22}, where the outputs are disjoint and the noise of two of the three steps halves, and consistent query answering~\cite{arenas1999,bertossi2011}, where the second output is not a selection.
 \end{itemize}

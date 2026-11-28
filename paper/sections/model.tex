@@ -25,7 +25,7 @@ Section~\ref{subsec:ext-cqa} discusses outputs that are not selections.
 
 \paratitle{Workflow.}
 Figure~\ref{fig:framework} shows the interaction.
-The analyst submits the two queries, a collection $\views$ of candidate view predicates, the explanation attributes $\Attrs$, the number $k$ of explanations, and a privacy budget $\epsilon$.
+The analyst submits the two queries, a collection $\views$ of candidate view predicates, the explanation attributes $\Attrs$, the reference attributes $\mathcal{A}_R$, the number $k$ of explanations, and a privacy budget $\epsilon$.
 The server evaluates both queries, privately selects $k$ explanations, and releases them.
 Nothing else leaves the server.
 % Both queries are inputs, so 
@@ -34,7 +34,8 @@ If the mechanism that produced $Q_2$ read $D$, its privacy cost composes with ou
 \begin{figure}[t]
 \centering
 \input{figures/framework_tikz}
-\caption{The \sys{} framework. The analyst supplies both queries, however $Q_2$ was obtained, with the search space and the budget. The server privately selects views, then explanations, and releases only noisy histogram pairs. The parameters $\tau$ and $\gamma$ are derived from public quantities and consume no budget.\yuval{Should $\mathcal{A}_R$ be part of the input as well?}}
+\caption{The \sys{} framework. The analyst supplies both queries, however $Q_2$ was obtained, with the search space and the budget. The server privately selects views, then explanations, and releases only noisy histogram pairs. The parameters $\tau$ and $\gamma$ are derived from public quantities and consume no budget.}
+% (addressed: A_R added to the input, here and in figures/framework_tikz.tex) \yuval{Should $\mathcal{A}_R$ be part of the input as well?}
 \label{fig:framework}
 \end{figure}
 
