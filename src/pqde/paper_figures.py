@@ -160,7 +160,7 @@ def fig_quality() -> Path:
     dss = _datasets(src["e2"])
     fig, axes = plt.subplots(2, len(dss), figsize=(7.05, 2.3), squeeze=False, sharex="row")
     rows = [(BF_SERIES_EPS, r"privacy budget $\epsilon$", [0.1, 1, 10], ["0.1", "1", "10"]),
-            (BF_SERIES_GAMMA, r"$\gamma$ / Eq. (14) value", [0, 0.1, 1, 10], ["0", ".1", "1", "10"])]
+            (BF_SERIES_GAMMA, r"$\gamma$ / default $\gamma$", [0, 0.1, 1, 10], ["0", ".1", "1", "10"])]
     for r, (series, xlabel, ticks, ticklabels) in enumerate(rows):
         for j, ds in enumerate(dss):
             ax = axes[r, j]
@@ -213,7 +213,7 @@ def fig_view_stage() -> Path:
 
 SWEEPS = [("k", r"$k$", False), ("data_fraction", r"$N$ (fraction)", False), ("epsilon", r"$\epsilon$", True),
           ("view_fraction", r"$|\mathcal{P}|$ (fraction)", False), ("tau", r"$\tau$", True),
-          ("gamma_mult", r"$\gamma$ / Eq. (14)", True)]
+          ("gamma_mult", r"$\gamma$ / default $\gamma$", True)]
 # B3 is not used in the paper; PQDE_RT_METHODS (comma-separated) overrides the methods drawn
 RT_METHODS = tuple(os.environ.get("PQDE_RT_METHODS", "PRIV_EXPL,B1,B2,OPT_PRIV_EXPL").split(","))
 RT_LABEL = {"PRIV_EXPL": NAME["sys"], "B1": NAME["Bone"], "B2": NAME["Btwo"], "B3": NAME["Bthree"],

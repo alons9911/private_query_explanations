@@ -1,12 +1,12 @@
 \section{Experiments}
 \label{sec:experiments}
 
-We evaluate the algorithm of Section~\ref{sec:solution}, \sys{}, on six datasets and $36$ query refinements ($10$ from earlier work) and ask:
+We evaluate the algorithm of Section~\ref{sec:solution}, \sys{}, on seven datasets and $40$ query refinements ($14$ from earlier work) and ask:
 (1)~do the explanations show an analyst something the queries and the constraint do not (Section~\ref{sec:usecase-results});
-(2)~how close do they come to the best non-private selection, and what limits them; and (3)~what do they cost in time (both in Section~\ref{subsec:quality}).
+(2)~how close do they come to the best non-private selection, and what limits them (Section~\ref{subsec:quality}); and (3)~what do they cost in time (Section~\ref{subsec:scalability}).
 Our answers:
 (1)~the explanations describe the tuples that a refinement adds or drops;
-(2)~averaged over the $36$ pairs, a release at $\epsilon=1$ reaches $62\%$ of the objective of the best non-private selection and mostly explains the same attributes; restricting the selection to $\tau=15$ views costs more of the objective than the noise does, in exchange for views that hold more of the outputs;
+(2)~averaged over the $36$ pairs on which we measure quality, a release at $\epsilon=1$ reaches $62\%$ of the objective of the best non-private selection and mostly explains the same attributes; restricting the selection to $\tau=15$ views costs more of the objective than the noise does, in exchange for views that hold more of the outputs;
 (3)~privacy adds no measurable running time, and computing the statistics of views on the same attributes together makes the pipeline about eight times faster.
 
 % ---------------------------------------------------------------
@@ -42,8 +42,8 @@ Healthcare~\cite{ERICA}          & 887         & 8  & 439     & 4  & Erica~\cite
 \paragraph{Datasets.}
 Table~\ref{tab:datasets} summarises the datasets and Table~\ref{tab:attributes} (appendix) their attributes.
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
-  \item \textbf{Adult}~\cite{adult-uci}: $48{,}842$ census records.
-  \item \textbf{ACSIncome}~\cite{DingHMS21}: $1{,}664{,}500$ records of the American Community Survey, the dataset of Erica~\cite{LMSJ23,ERICA}.
+  \item \textbf{Adult}~\cite{adult-uci}: $48{,}842$ records of the 1994 US census with age, education, occupation, marital status, weekly hours and income.
+  \item \textbf{ACSIncome}~\cite{DingHMS21}: $1{,}664{,}500$ records of the American Community Survey from all $50$ states and Puerto Rico, the dataset of Erica~\cite{LMSJ23,ERICA}.
   \item \textbf{Tax}~\cite{BohannonFGJK07}: $200{,}000$ synthetic personal tax records generated for data cleaning, with the person's gender, phone and address (city, state, zip), marital status, children, salary, tax rate and exemptions; we use the clean file of Raha~\cite{MahdaviAFMOST19}.
   \item \textbf{COMPAS}~\cite{compas-propublica}: ProPublica's $11{,}757$ defendants with their criminal history and risk scores, the dataset of the Erica experiments~\cite{ERICA}; we drop the identifying columns.
   \item \textbf{Law Students}~\cite{lsac-wightman98}: $21{,}791$ students of the LSAC bar-passage study, the dataset of~\cite{CSSM24}.
@@ -59,7 +59,7 @@ Numeric attributes are bucketed into equal-width bins (e.g.\ ages by decade), mi
 \paragraph{Query pairs.}
 Every pair is a refinement: $Q_2$ changes predicates of $Q_1$ so that its output meets a representation constraint that $Q_1$ violates. Table~\ref{tab:pairs} (appendix) lists all $40$ pairs; Section~\ref{sec:usecase-results} details three.
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
-  \item \emph{From Erica}: ten pairs on ACSIncome~\cite{LMSJ23} and four on Healthcare from the Erica experiments~\cite{ERICA}, with Erica's queries, constraints and minimal refinements. Only the ACSIncome pairs serve for quality as well: we measure quality only when both outputs hold more than $1{,}000$ tuples (at least $1{,}471$ on ACSIncome, at most $89$ in the smaller output on Healthcare). Below that, the bars of a release are comparable to its noise: Laplace noise of scale $2k/\epsilon_H=30$ per bar at the defaults, a standard deviation of about $42$.
+  \item \emph{From Erica}: ten pairs on ACSIncome~\cite{LMSJ23} and four on Healthcare from the Erica experiments~\cite{ERICA}, with Erica's queries, constraints and minimal refinements. Only the ACSIncome pairs serve for quality as well: we measure quality only when both outputs hold more than $1{,}000$ tuples (at least $1{,}471$ on ACSIncome and $1{,}503$ on our pairs, at most $89$ in the smaller output on Healthcare). Below that, neither stage of a release can work: on Healthcare a refinement changes at most $26$ tuples, so every candidate scores $\HD_\gamma\le26/\gamma\approx0.18$, far below the difference of about $1$ that the selection resolves (Eq.~\eqref{eq:gamma-rule}), and the bars of a release are comparable to its noise (Laplace noise of scale $2k/\epsilon_H=30$ per bar at the defaults, a standard deviation of about $42$).
   \item \emph{Ours}: $26$ pairs on Adult, Tax, COMPAS, Law Students and MEPS. A base query has at most two conditions and an output of at least $1{,}500$ tuples; a constraint asks for a minimum share of a group, between its share in the base queries and in the data; $Q_2$ is a minimal refinement in Erica's sense (no other refinement that satisfies the constraint is closer to $Q_1$ in every condition), computed with our implementation of Erica's search. On COMPAS the constraints use the groups of the Erica experiments.
 \end{itemize}
 % CQA and contrast pairs, out of the experiments for now (first line of the paragraph: "The pairs cover three settings (...; Section 6.2 details four of them):"):
@@ -80,7 +80,7 @@ No earlier system explains the difference between two query outputs privately wi
   \item \TopKExh{} (running time only): the explanation stage only, like \BF{}: the $k$ candidates of all views with the largest $F_\lambda$, by exhaustive search over the $k$ best candidates of each attribute, which loses nothing: a set that used a worse candidate of an attribute could swap it for an unused better one.
   \item \FullExh{} (running time only): as \TopKExh{}, by exhaustive search over every candidate of every view.
 \end{itemize}
-For running time we also time \BF{} and \SingleStage{}. The methods without a view stage (\BF{}, \SingleStage{}, \TopKExh{}, \FullExh{}) compute no $\Use$; they build the histograms of every view instead.\par}
+For running time we also time \BF{} and \SingleStage{}. The methods without a view stage (\BF{}, \SingleStage{}, \TopKExh{}, \FullExh{}) compute no $\Use$; they build the histograms of every view instead. The exhaustive searches are what one would run without Proposition~\ref{prop:greedy-exact}: they show the time it saves, and they check it, since they select what \Bone{} and \BF{} select (Table~\ref{tab:quality-all}).\par}
 
 \paragraph{Metrics.}
 An explanation has no ground truth, so we judge a release by what it explains: how much of the largest attainable difference between the outputs it captures, whether it points to the same attributes as the optimum, and whether its views hold enough of the output to matter to the analyst.
@@ -88,13 +88,13 @@ An explanation has no ground truth, so we judge a release by what it explains: h
   \item \emph{ApproxRatio}: the ratio $F_\lambda(E)/F_\lambda(\BF{})$, with $\HD_\gamma$ at the pair's default $\gamma$ in every experiment, including those that vary $\epsilon$ or $\gamma$. It is the share of the best attainable difference score a release keeps; without smoothing it would reward changes in bins of a few tuples.
   \item \emph{Precision@k}, the share of \BF{}'s (view, attribute) pairs in the release, is the usual measure of top-$k$ selection, but suits our setting poorly: many views are near-duplicates, such as a view and its specialization by one more condition, so a release can explain what \BF{} explains with different pairs.
   \item \emph{Attribute@k} therefore compares the explained attributes (multiset overlap divided by $k$), read against its chance level, the expected attribute@k of $k$ uniformly drawn candidates.
-  \item \emph{Coverage}: the mean $\Cov$ (Eq.~\eqref{eq:coverage-proxy}) of the explained views, i.e.\ the output tuples in a view as a fraction of $|D|$; a view that holds few output tuples tells the analyst little.
+  \item \emph{Coverage}: the mean $\Cov$ (Eq.~\eqref{eq:coverage-proxy}) of the explained views, i.e.\ the output tuples in a view, counted once per output, as a fraction of $|D|$; a view that holds few output tuples tells the analyst little.
 \end{itemize}
 
 \paragraph{Default setting.}
 Unless stated otherwise: all of $D$ and all views, $k=5$, $\lambda=0.5$, $\epsilon=1$ split equally, $\gamma_R=N/100$, $\tau=15$ and $\gamma=144$--$150$ (Eqs.~\eqref{eq:tau-rule} and~\eqref{eq:gamma-rule}), and $\bar N=|D|$, that is, we treat the size of each dataset as public, as the bounded relation of Section~\ref{subsec:ideal-sensitivity} does.
 An accuracy point averages $40$ runs per pair and then the pairs of a dataset (or all $36$ pairs, each weighted equally, where stated).
-Running time is measured end to end, ten runs per point; in each run all methods run on one machine, one after the other, and we compare methods within runs. A run is stopped at $30$ minutes, and a point that reaches the limit is run three times. \FullExh{} runs only when the rate of its first block of sets says it can finish within the limit; otherwise it counts as over the limit.
+We implemented \sys{} and the other methods in Python~3.13 using the Pandas and NumPy libraries. Running times were measured on cloud machines with four cores of an Intel Xeon CPU at $2.3$\,GHz and $16$\,GB of RAM, each running four single-process jobs at a time. A running time covers the statistics, the selection and the release, after the data is loaded and the two queries are evaluated, ten runs per point; in each run all methods run on one machine, one after the other, and we compare methods within runs. A run is stopped at $30$ minutes, and a point that reaches the limit is run three times. \FullExh{} runs only when the rate of its first block of sets says it can finish within the limit; otherwise it counts as over the limit.
 \alon{The running times below come from a preview run: three runs per point, and \TopKExh{} also stops after its first block when it says it would need more than twice the time left. The full run (ten runs per point) replaces them.}
 
 % ---------------------------------------------------------------
@@ -112,7 +112,7 @@ Figure~\ref{fig:cases} shows the five explanations of the first release of each,
 \label{fig:cases}\label{fig:case-a2}\label{fig:case-acs}\label{fig:case-co1}
 \end{figure*}
 
-\paragraph{Refinement (A2): the Master's holders of the refined output differ in occupation, sector and marital status.}
+\paragraph{A2 (Adult): the Master's holders of the refined output differ in occupation, sector and marital status.}
 In the running example of Section~\ref{sec:introduction}, $Q_1$ selects Bachelor's and Master's holders working $50$ hours or more, and $Q_2$ keeps only Master's holders and lowers the threshold to $30$ hours; the share of women rises from $19.5\%$ to $30.6\%$, which meets the constraint of at least $25\%$.
 Every release explains views of Master's holders by occupation, relationship and workclass, though not always the same views (Figure~\ref{fig:cases}, top row).
 Among Master's holders, the refined output has a larger share of professional-specialty workers ($41\%$ in $Q_1$, $49\%$ in $Q_2$), a smaller share of executives ($41\%\rightarrow31\%$) and a larger share of government employees ($25\%\rightarrow30\%$); seven releases also explain marital status, and among white Master's holders a smaller share is married ($66\%\rightarrow59\%$).
@@ -120,13 +120,13 @@ Bachelor's holders make up $71\%$ of $Q_1$ and $Q_2$ drops them all, yet a view 
 $\HD_\gamma$ divides a bin's change by the bin's support in the view: the Bachelor's holders $Q_2$ drops are only $27\%$ of all Bachelor's holders in $D$, whereas the Master's holders it adds are $59\%$ of all Master's holders, so the Master's views score higher.
 
 
-\paragraph{Refinement from Erica (S1): the release describes the workers the refinement adds.}
+\paragraph{S1 (ACSIncome): the release describes the workers the refinement adds.}
 In S1, $Q_1$ selects government employees with at least some college who work $40$ hours or more, and the constraints ask for at least $48{,}884$ married women and $15{,}719$ Black workers; Erica adds the private sector, and the output grows from $141{,}100$ to $587{,}712$ tuples.
-All explanations of every release are on private-sector views, which $Q_1$ does not meet (Figure~\ref{fig:cases}, middle row): among the added workers with $40$--$49$ weekly hours, $13\%$ are in office support, $13\%$ in management and $10\%$ in sales, $39\%$ hold a bachelor's degree and $55\%$ head their household.
+All explanations of every release are on private-sector views, which $Q_1$ does not select (Figure~\ref{fig:cases}, middle row): among the added workers with $40$--$49$ weekly hours, $13\%$ are in office support, $13\%$ in management and $10\%$ in sales, $39\%$ hold a bachelor's degree and $55\%$ head their household.
 The analyst learns who was added, which the one-predicate change does not say.
 
 
-\paragraph{Refinement on COMPAS (C1): the refinement adds younger defendants with lower risk scores.}
+\paragraph{C1 (COMPAS): the refinement adds younger defendants with lower risk scores.}
 In C1, $Q_1$ selects the $1{,}825$ defendants with at least seven prior convictions, $22.8\%$ of them Caucasian; to meet a constraint of at least $30\%$, $Q_2$ lowers the threshold to two, which adds $3{,}549$ defendants and gives $30.8\%$.
 Six of the ten releases explain the defendants with two or three prior convictions, whom $Q_1$ does not select, by age, risk score and race (Figure~\ref{fig:cases}, bottom row).
 Among all the added defendants, $27\%$ have a risk score of $1$ or $2$, against $7\%$ in $Q_1$, $60\%$ are under $35$, against $46\%$, and $35\%$ are Caucasian, against $23\%$; the mean risk score of the output falls from $6.89$ to $5.49$ because of who is counted.
@@ -193,7 +193,7 @@ All $36$ pairs & 0.62 & 0.72 & 0.92 & 0.08 & 0.75 (0.36) & 0.89 & 0.18 & 0.09 & 
 \begin{table}[t]
 \centering
 \footnotesize
-\caption{\sys{} against \BF{} when one parameter varies (defaults in bold); mean over all $36$ pairs ($\tau\ge|\mathcal{P}|$: all views). ApproxRatio unless stated. Splits $(\epsilon_P,\epsilon_S,\epsilon_H)/\epsilon$: $(0.05,0.6,0.35)$, $(0.1,0.55,0.35)$, $(0.2,0.4,0.4)$, $(1/3,1/3,1/3)$, $(0.5,0.25,0.25)$.}
+\caption{\sys{} against \BF{} when one parameter varies (defaults in bold); mean over all $36$ pairs ($\tau\ge|\mathcal{P}|$: all views). ApproxRatio unless stated. Splits $(\epsilon_P,\epsilon_S,\epsilon_H)/\epsilon$: $(0.05,0.6,0.35)$, $(0.1,0.55,0.35)$, $(0.2,0.4,0.4)$, $(1/3,1/3,1/3)$, $(0.5,0.25,0.25)$. Each block comes from a separate run, so the defaults differ by up to $0.01$.}
 \label{tab:params}
 \setlength{\tabcolsep}{2.4pt}
 \begin{tabular}{@{}lcccccccccc@{}}
@@ -281,7 +281,7 @@ $\tau$ thus sets the trade-off between score and coverage that Section~\ref{subs
 \paragraph{Budget split.}
 We vary the view stage's share $\epsilon_P/\epsilon$ from $5\%$ to $50\%$, with $\epsilon_S$ and $\epsilon_H$ as in the caption of Table~\ref{tab:params}.
 Shares of $20$--$50\%$ give an ApproxRatio of $0.62$--$0.63$, and $5$--$10\%$ only $0.50$--$0.57$, since the view stage then retains fewer of the exact top-$\tau$ views (overlap $0.54$ at $\epsilon_P=0.1$; Figure~\ref{fig:view-stage}); $\epsilon_H$ does not enter the ApproxRatio, which uses exact histograms.
-The equal split is the best split tried.
+The equal split is as good as any split tried.
 
 \paragraph{Privacy budget $\epsilon$.}
 We vary $\epsilon$ from $0.1$ to $20$, with $\gamma$ following Eq.~\eqref{eq:gamma-rule}, which lowers it as $\epsilon$ grows, or fixed at its default (Figure~\ref{fig:quality}, top; means over all pairs in Table~\ref{tab:params}).
@@ -308,11 +308,11 @@ We vary $|\Attrs|$ from two attributes to all of Table~\ref{tab:attributes}, inc
 Each point takes the first $|\Attrs|$ attributes of ten random orders and recomputes \BF{} over them, so where attributes are added the right end of a curve is not the default setting of Table~\ref{tab:quality}.
 The ApproxRatio rises on ACSIncome ($0.48\rightarrow0.66$) and Tax ($0.45\rightarrow0.75$), and by at most $0.07$ elsewhere; keeping $\gamma$ at its value for the default attributes, instead of following Eq.~\eqref{eq:gamma-rule}, moves it by at most $0.04$.
 More attributes thus do not lower the ApproxRatio, but wide attributes attract the explanations: with all $12$ attributes of ACSIncome, the place of birth ($224$ values) and the state ($51$) take $74\%$ of the explanations, and with all ten of Tax, \texttt{AreaCode} ($273$ values) and the state take $99\%$ of them.
-Grouping values, as Erica does for occupations, would avoid this.
+Grouping values, as Erica does for occupations, could avoid this.
 Attribute@k falls on MEPS ($0.88\rightarrow0.61$) and COMPAS ($0.90\rightarrow0.77$), where the added attributes (education and mental health on MEPS, the violent-recidivism score on COMPAS) draw a quarter and a fifth of the explanations.
 % (with CQA) The ApproxRatio rises on ACSIncome ($0.48\rightarrow0.66$), Tax ($0.47\rightarrow0.74$), Tax-dirty and Hospital, and stays within $0.06$ elsewhere; ... on Tax-dirty, where \texttt{AreaCode} ($273$ values) takes a third of them at ten attributes, attribute@k falls from $0.82$ to $0.20$.
 
-\paragraph{Runtime.}
+\subsection{Running Time}
 \label{subsec:scalability}
 We time all methods on every pair, one parameter varied at a time: $|\Attrs|$ in Figure~\ref{fig:attrs} (top), the other parameters in Figure~\ref{fig:scalability}.
 Privacy adds no measurable time: \sys{} and \Bone{} are within $2\%$ of each other on every pair, since almost all of the time is the $\Use$ pass they share.
@@ -320,7 +320,7 @@ As Section~\ref{subsec:complexity-analysis} predicts, the time of \sys{} is line
 At the defaults \sys{} takes under half a second on Adult, COMPAS, Law Students, MEPS and Healthcare, a few seconds on Tax and $24$\,s on ACSIncome, with $1.7$ million tuples.
 \sysopt{} releases the same explanations about eight times faster (median over the pairs); its time depends on $\tau$ more than on $|\mathcal{P}|$, since it builds the histograms of every retained view, and with a tenth of the views it saves nothing.
 \BF{} and \SingleStage{} take about a third of the time of \sys{}, since they compute no $\Use$.
-The exhaustive searches do not scale: \TopKExh{} is exponential in $k$ and exceeds the $30$-minute limit from $k=8$ on every dataset (at $k=7$, from $12$ attributes), and \FullExh{} exceeds it from $k=3$ ($k=4$ on Healthcare).
+The exhaustive searches do not scale: \TopKExh{} is exponential in $k$ and exceeds the $30$-minute limit from $k=8$ on every dataset (at $k=7$, from $11$ or $12$ attributes), and \FullExh{} exceeds it from $k=3$ ($k=4$ on Healthcare).
 \alon{\Btwo{} (every candidate of the retained views): numbers from the supplementary run, in progress.}
 % Detailed numbers (preview run), left out of the text for space; the full run updates them.
 % With Healthcare (40 pairs; Erica's copies of Adult and COMPAS are out): OptPEEQ 4.7-11.4x (median 7.8x), OPT/PEEQ 0.28-0.64 (median 0.34), identical releases in 120/120 runs; NonPrivate within 1.7% of PEEQ; median R^2 0.99 in N and |P|.
