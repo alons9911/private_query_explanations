@@ -40,8 +40,8 @@ from ..runner import runtime_methods, time_methods
 from ..stats import build_cache
 from ..views import enumerate_views
 from .accuracy import BASELINES, summarise
-from .common import (make_params, out_dir, pairs_by_dataset, point_key, resume_rows, run_metadata, spawn_rngs,
-                     stable_key, stats_route,
+from .common import (Checkpoint, make_params, out_dir, pairs_by_dataset, point_key, resume_rows, resume_runs,
+                     run_metadata, run_state, spawn_rngs, stable_key, stats_route,
                      write_csv, write_json, write_raw)
 
 EXP = "e7"
@@ -76,7 +76,8 @@ def run_runtime(cfg: dict, pairs: list[str] | None = None, base=None, quick: boo
     timeout_reps = int(d.get("timeout_repeats", 3))
     n_orders = 2 if quick else int(e["orders"])
     pids = pairs or cfg.get("runtime_pairs", cfg["pairs"])
-    rows, done = resume_rows(EXP, raw_name, base, ("pair", "value"))
+    rows, prev = resume_runs(EXP, raw_name, base, ("pair", "value"))
+    save = Checkpoint(EXP, raw_name, base)
     for ds_name, plist in pairs_by_dataset(pids, cfg.get("datasets")).items():
         for pid in plist:
             pair = resolve_pair(pid)
@@ -86,28 +87,33 @@ def run_runtime(cfg: dict, pairs: list[str] | None = None, base=None, quick: boo
             print(f"  E7t {ds_name}/{pid}: {len(pool)} attributes", flush=True)
             ms = sizes(pool, e)
             for m in (ms if not quick else [ms[0], ms[-1]]):
-                if point_key({"pair": pid, "value": m}, ("pair", "value")) in done:
-                    continue  # measured before an interruption
-                n_to: dict = {}
+                # runs measured before an interruption are kept; the point continues from its next run
+                done_reps, n_to = run_state(prev.get(point_key({"pair": pid, "value": m}, ("pair", "value")), []))
                 for r, order in enumerate(orders):
+                    if r in done_reps:
+                        continue
                     methods = tuple(x for x in runtime_methods(False) if n_to.get(x, 0) < timeout_reps)
                     if not methods:
                         break
                     ds_m = replace(pair.dataset, explain_attrs=order[:m])
                     params = make_params(d, n_views, m, **over)
                     for out in time_methods(ds_m, pair.q1, pair.q2, params, methods=methods, seed=seed, repeat=r,
-                                            gamma_eval=float(d["gamma_eval"]), timeout_s=timeout_s):
+                                            gamma_eval=float(d["gamma_eval"]), timeout_s=timeout_s,
+                                            early_stop=d.get("early_stop_factor")):
                         n_to[out.method] = n_to.get(out.method, 0) + int(out.timeout)
                         rows.append({"dataset": ds_name, "pair": pid, "sweep": "n_attrs", "value": m, "order": r,
                                      "attrs": json.dumps(order[:m]), "method": out.method, "repeat": r,
                                      "N": pair.dataset.N, "P": n_views, "k": params.k, "tau": params.tau,
                                      "gamma": params.gamma, "build_s": out.build_s, "mech_s": out.mech_s,
                                      "total_s": out.total_s, "timeout": out.timeout,
+                                     "inferred": bool(out.extra.get("estimated", False)),
+                                     "estimated_s": out.extra.get("estimated_seconds"),
                                      "b2_subsets": out.extra.get("subsets", out.extra.get("subsets_total"))})
+                    save(rows)  # checkpoint (at most once a minute) after every run of the point
                 print(f"    |Attrs|={m}: " + "  ".join(
                     f"{x} {np.median([w['total_s'] for w in rows if w['pair'] == pid and w['value'] == m and w['method'] == x]):.3g}s"
                     for x in runtime_methods(False)), flush=True)
-                write_raw(pd.DataFrame(rows), EXP, raw_name, base)
+                save(rows, force=True)
     write_json(run_metadata(cfg, experiment="e7t" if k is None else f"e7t-k{k}", orders=n_orders, timeout_s=timeout_s),
                out_dir(EXP, base) / f"metadata_{raw_name}.json")
     return {}

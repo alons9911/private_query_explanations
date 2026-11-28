@@ -104,7 +104,8 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
             for r in range(repeats):
                 methods = tuple(m for m in runtime_methods(True) if n_to.get(m, 0) < timeout_reps)
                 for out in time_methods(ds, q1, q2, params, methods=methods, seed=seed, repeat=r,
-                                        gamma_eval=float(d["gamma_eval"]), timeout_s=timeout_s):
+                                        gamma_eval=float(d["gamma_eval"]), timeout_s=timeout_s,
+                                        early_stop=d.get("early_stop_factor")):
                     n_to[out.method] = n_to.get(out.method, 0) + int(out.timeout)
                     dp_rows.append({"dataset": ds_name, "synthetic": syn, "pair": pid, "method": out.method, "repeat": r,
                                     "build_s": out.build_s, "mech_s": out.mech_s, "total_s": out.total_s,
