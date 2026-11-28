@@ -11,8 +11,8 @@ n_done=0
 if [ "${1:-}" = "rt" ] || [ "${1:-}" = "pv" ]; then   # rt: running-time rerun (plan_runtime_shards.py);
   g=$1                                                  # pv: its preview (plan_preview_shards.py)
   n_all=$(ls scripts/shards/$g-*.jobs | wc -l)
-  for n in $(seq 1 "$n_all"); do
-    b=claude/git-repo-experiments-f0705v-$g-$n; dir=$g-$n
+  for f in $(ls scripts/shards/$g-*.jobs | sort -V); do
+    dir=$(basename "$f" .jobs); b=claude/git-repo-experiments-f0705v-$dir
     if git fetch -q origin "$b" 2>/dev/null && git cat-file -e "FETCH_HEAD:results_shards/$dir/DONE" 2>/dev/null; then
       echo "$dir done"; n_done=$((n_done+1))
     else
