@@ -527,8 +527,9 @@ CASES = [("A2", "case_a2", ("$Q_1$", "$Q_2$")), ("ACS_Q1C1", "case_acs", ("$Q_1$
 
 
 def fig_cases() -> list[Path]:
-    """The case-study figures: all explanations of the first of the ten releases."""
-    return [fig_case(pid, None, name, q_names=q) for pid, name, q in CASES]
+    """The case-study figure: all explanations of the first of the ten releases, one row per pair
+    (user, 2026-11-28: one compact figure instead of one per pair; fig_case draws the old ones)."""
+    return [fig_cases_compact("pair", None, 7.05, "cases", cases=tuple(pid for pid, _, _ in CASES))]
 
 
 def main() -> None:
@@ -629,7 +630,7 @@ def fig_cases_compact(mode: str = "pair", top: int | None = None, width: float =
             ax.yaxis.set_major_formatter(FuncFormatter(_kfmt))
             ax.grid(axis="x", visible=False)
             view = _short_view(e["view"])
-            if len(view) > 17 * (width - 0.4) / ncol:  # narrow panels: one condition per line
+            if len(view) > 25 * (width - 0.4) / ncol:  # narrow panels: one condition per line
                 view = view.replace(", ", ",\n")
             ax.set_title(f"{view}\nby {ATTR_SHORT.get(e['attr'], e['attr'])}",
                          fontsize=5.0, pad=1.5, loc="left", linespacing=1.05)

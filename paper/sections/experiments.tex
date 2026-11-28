@@ -106,45 +106,33 @@ Running time is measured end to end, ten runs per point; in each run all methods
 
 We take three refinements: A2 (Adult, the running example), S1 (ACSIncome, from Erica) and C1 (COMPAS), and make ten releases of each at the defaults.
 % (with CQA and contrasts) We take one pair per setting, plus one of Erica's refinements: A2, S1, D1 (Tax-dirty, CQA) and I1 (IPUMS-CPS, contrast).
-Each figure shows the five explanations of the first release: released values as bars, exact counts (not released) as ticks, at most the six bins with the largest exact difference, and in each title the number of releases that contain the same explanation (view and attribute).
+Figure~\ref{fig:cases} shows the five explanations of the first release of each, one row per pair.
 Percentages below are exact. The noise of the release (standard deviation about $42$ per bar) is small against the bars of S1 and C1 but not against the smaller bars of A2.
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/exp/case_a2.pdf}
-\caption{A2 (Adult, the running example): the five explanations of the first release.}
-\label{fig:case-a2}
+\includegraphics[width=\linewidth]{figures/exp/cases.pdf}
+\caption{The five explanations of the first of ten releases of A2 (Adult, the running example; top row), S1 (ACSIncome, from Erica; middle row) and C1 (COMPAS; bottom row): released histograms of $Q_1$ and $Q_2$, exact counts (not released) as ticks, at most the six bins with the largest exact difference; at the top right of each panel, the number of releases that contain the same explanation (view and attribute). Occupation groups of S1: OASO office and administrative support, MBSA management, SRO sales, HPTO healthcare practitioners, BOS business operations, CMO computer and mathematical.}
+\label{fig:cases}\label{fig:case-a2}\label{fig:case-acs}\label{fig:case-co1}
 \end{figure*}
 
 \paragraph{Refinement (A2): the Master's holders of the refined output differ in occupation, sector and marital status.}
 In the running example of Section~\ref{sec:introduction}, $Q_1$ selects Bachelor's and Master's holders working $50$ hours or more, and $Q_2$ keeps only Master's holders and lowers the threshold to $30$ hours; the share of women rises from $19.5\%$ to $30.6\%$, which meets the constraint of at least $25\%$.
-Every release explains views of Master's holders by occupation, relationship and workclass, though not always the same views (Figure~\ref{fig:case-a2}).
+Every release explains views of Master's holders by occupation, relationship and workclass, though not always the same views (Figure~\ref{fig:cases}, top row).
 Among Master's holders, the refined output has a larger share of professional-specialty workers ($41\%$ in $Q_1$, $49\%$ in $Q_2$), a smaller share of executives ($41\%\rightarrow31\%$) and a larger share of government employees ($25\%\rightarrow30\%$); seven releases also explain marital status, and among white Master's holders a smaller share is married ($66\%\rightarrow59\%$).
 Bachelor's holders make up $71\%$ of $Q_1$ and $Q_2$ drops them all, yet a view on them appears in only three of the ten releases.
 $\HD_\gamma$ divides a bin's change by the bin's support in the view: the Bachelor's holders $Q_2$ drops are only $27\%$ of all Bachelor's holders in $D$, whereas the Master's holders it adds are $59\%$ of all Master's holders, so the Master's views score higher.
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/exp/case_acs.pdf}
-\caption{S1 (ACSIncome, from Erica): the five explanations of the first release. Occupation groups: OASO office and administrative support, MBSA management, SRO sales, HPTO healthcare practitioners, BOS business operations, CMO computer and mathematical.}
-\label{fig:case-acs}
-\end{figure*}
 
 \paragraph{Refinement from Erica (S1): the release describes the workers the refinement adds.}
 In S1, $Q_1$ selects government employees with at least some college who work $40$ hours or more, and the constraints ask for at least $48{,}884$ married women and $15{,}719$ Black workers; Erica adds the private sector, and the output grows from $141{,}100$ to $587{,}712$ tuples.
-All explanations of every release are on private-sector views, which $Q_1$ does not meet (Figure~\ref{fig:case-acs}): among the added workers with $40$--$49$ weekly hours, $13\%$ are in office support, $13\%$ in management and $10\%$ in sales, $39\%$ hold a bachelor's degree and $55\%$ head their household.
+All explanations of every release are on private-sector views, which $Q_1$ does not meet (Figure~\ref{fig:cases}, middle row): among the added workers with $40$--$49$ weekly hours, $13\%$ are in office support, $13\%$ in management and $10\%$ in sales, $39\%$ hold a bachelor's degree and $55\%$ head their household.
 The analyst learns who was added, which the one-predicate change does not say.
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/exp/case_co1.pdf}
-\caption{C1 (COMPAS): the five explanations of the first release.}
-\label{fig:case-co1}
-\end{figure*}
 
 \paragraph{Refinement on COMPAS (C1): the refinement adds younger defendants with lower risk scores.}
 In C1, $Q_1$ selects the $1{,}825$ defendants with at least seven prior convictions, $22.8\%$ of them Caucasian; to meet a constraint of at least $30\%$, $Q_2$ lowers the threshold to two, which adds $3{,}549$ defendants and gives $30.8\%$.
-Six of the ten releases explain the defendants with two or three prior convictions, whom $Q_1$ does not select, by age, risk score and race (Figure~\ref{fig:case-co1}).
+Six of the ten releases explain the defendants with two or three prior convictions, whom $Q_1$ does not select, by age, risk score and race (Figure~\ref{fig:cases}, bottom row).
 Among all the added defendants, $27\%$ have a risk score of $1$ or $2$, against $7\%$ in $Q_1$, $60\%$ are under $35$, against $46\%$, and $35\%$ are Caucasian, against $23\%$; the mean risk score of the output falls from $6.89$ to $5.49$ because of who is counted.
 In all three pairs, then, the explanations describe the tuples that the refinement adds or drops, which neither query states.
 
