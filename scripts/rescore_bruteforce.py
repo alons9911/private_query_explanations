@@ -12,11 +12,14 @@ Outputs (results/rescored/): e2.csv, e2_b1.csv, e3.csv, e6.csv, e6_b1.csv, e7.cs
 e8_competitors.csv, e8_fixed_gamma.csv, e8_tau.csv, e8_lambda.csv, chance.csv, bf.csv.
 
 Usage: python scripts/rescore_bruteforce.py [pair ...]
+       RESCORE_BASE=results_erica python scripts/rescore_bruteforce.py EA1 ...   (raw CSVs read from
+       RESCORE_BASE instead of results/, outputs written to RESCORE_BASE/rescored/)
 """
 
 from __future__ import annotations
 
 import json
+import os
 import sys
 from collections import Counter
 from dataclasses import replace
@@ -33,7 +36,8 @@ from pqde.pairs import resolve_pair
 from pqde.stats import build_cache
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "results" / "rescored"
+BASE = os.environ.get("RESCORE_BASE", "results")
+OUT = ROOT / BASE / "rescored"
 OUT.mkdir(parents=True, exist_ok=True)
 cfg = experiments_config()
 d = cfg["defaults"]
@@ -46,7 +50,7 @@ def attr_at_k(sel, ref, k=K) -> float:
 
 
 def read(path: str) -> pd.DataFrame:
-    p = ROOT / path
+    p = ROOT / BASE / path.removeprefix("results/")
     return pd.read_csv(p) if p.exists() else pd.DataFrame()
 
 
