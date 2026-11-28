@@ -65,6 +65,11 @@ English (file captions written in Hebrew showed in Hebrew; screenshot 2026-11-28
   When done: merge (`merge_shards.py --shard 'tt-*' --out results_toptau e4`), add EXH_TOPTAU to the k column of the
   runtime grid and its numbers to the paragraph (replace the \alon note).  Names: \Btwo = TopTauExhaustive,
   \TopKExh = TopKExhaustive (EXH_ALL), \FullExh = FullExhaustive (EXH_NAIVE).
+* Runtime paragraph style (user, 2026-11-28 11:30): bottom lines only, few numbers; no extrapolated times
+  (years/hours) -- say "exceeds the 30-minute limit from k = ..." instead.  The detailed preview numbers are kept as
+  a LaTeX comment under the paragraph.  When the tt and rt runs arrive, update only the numbers left in the text
+  (2%, R^2, the default times, ~8x, ~a third, the first k over the limit) and add \Btwo as "exceeds the limit
+  from k = ..." in the sentence on the exhaustive searches.
 * Still running (old 5-method runtime, superseded by the rerun above): shards new-3, fix-1..3
   (`scripts/shards_status.sh new|fix`).  Ask the user before stopping or archiving them.
 * Overleaf Git: credential for git.overleaf.com saved but refused (probably saved as a bearer token; needs
