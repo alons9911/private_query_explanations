@@ -2,7 +2,7 @@
 \begin{table*}[t]
 \centering
 \scriptsize
-\caption{The 36 query pairs of the experiments, by dataset. Bold: the case studies of Section~\ref{sec:usecase-results}. ACS codes are shown by name; \texttt{SCHL} 16 = high-school diploma, 19 = some college, 21 = bachelor's, 22 = master's, 23 = professional degree.}
+\caption{The 46 query pairs of the experiments, by dataset; the 10 pairs of the Erica experiments (last three groups) serve for running time only. Bold: the case studies of Section~\ref{sec:usecase-results}. ACS codes are shown by name; \texttt{SCHL} 16 = high-school diploma, 19 = some college, 21 = bachelor's, 22 = master's, 23 = professional degree.}
 \label{tab:pairs}
 \setlength{\tabcolsep}{3pt}
 \renewcommand{\arraystretch}{1.08}
@@ -57,6 +57,22 @@ M2 & \texttt{TOTEXP$\,\ge\,$5000 $\wedge$ HIBPDX = yes} & \texttt{TOTEXP$\,\ge\,
 M3 & \texttt{HIBPDX = yes $\wedge$ INSCOV = public only} & \texttt{HIBPDX = yes $\wedge$ INSCOV IN (private, public only)} & $\ge$44\% \texttt{SEX = M} \\
 M4 & \texttt{UTILIZATION$\,\ge\,$10 $\wedge$ RTHLTH IN (fair, poor)} & \texttt{UTILIZATION$\,\ge\,$4 $\wedge$ RTHLTH IN (fair, poor)} & $\ge$50\% \texttt{RACE IN (Black, Hispanic)} \\
 M5 & \texttt{TOTEXP$\,\ge\,$5000 $\wedge$ INSCOV = public only} & \texttt{TOTEXP$\,\ge\,$2019 $\wedge$ INSCOV = public only} & $\ge$35\% \texttt{AGE$\,<\,$45} \\
+\midrule
+\multicolumn{4}{@{}p{\textwidth}@{}}{\emph{Adult, the copy of the Erica experiments~\cite{ERICA}: their queries, constraints and refinements; running time only.}}\\[1pt]
+EA1 & \texttt{education\_num$\,\ge\,$12 $\wedge$ hours\_per\_week$\,\ge\,$21 $\wedge$ capital\_gain$\,\ge\,$5501} & \texttt{education\_num$\,\ge\,$12 $\wedge$ hours\_per\_week$\,\ge\,$21 $\wedge$ capital\_gain$\,\ge\,$2580} & $\ge$200 \texttt{sex = Female} \\
+EA2 & \texttt{education\_num$\,\ge\,$14 $\wedge$ hours\_per\_week$\,\ge\,$21 $\wedge$ capital\_gain$\,\ge\,$5501} & \texttt{education\_num$\,\ge\,$14 $\wedge$ hours\_per\_week$\,\ge\,$21 $\wedge$ capital\_gain$\,\ge\,$0} & $\ge$200 \texttt{sex = Female} \\
+EA3 & \texttt{education\_num$\,\ge\,$9 $\wedge$ hours\_per\_week$\,\ge\,$21 $\wedge$ capital\_gain$\,\ge\,$5501} & \texttt{education\_num$\,\ge\,$9 $\wedge$ hours\_per\_week$\,\ge\,$41 $\wedge$ capital\_gain$\,\ge\,$15025} & $\le$20 \texttt{sex = Female}; $\le$180 \texttt{sex = Male $\wedge$ race = White} \\
+\midrule
+\multicolumn{4}{@{}p{\textwidth}@{}}{\emph{COMPAS, the copy of the Erica experiments~\cite{ERICA}: their queries, constraints and refinements; running time only.}}\\[1pt]
+EC1 & \texttt{juv\_fel\_count$\,\ge\,$1 $\wedge$ decile\_score$\,\ge\,$1 $\wedge$ r\_charge\_degree = F} & \texttt{juv\_fel\_count$\,\ge\,$0 $\wedge$ decile\_score$\,\ge\,$1 $\wedge$ r\_charge\_degree = F} & $\ge$23 \texttt{race = Caucasian}; $\ge$15 \texttt{age\_cat = Greater than 45} \\
+EC2 & \texttt{juv\_fel\_count$\,\ge\,$1 $\wedge$ decile\_score$\,\ge\,$5 $\wedge$ r\_charge\_degree = F} & \texttt{juv\_fel\_count$\,\ge\,$0 $\wedge$ decile\_score$\,\ge\,$5 $\wedge$ r\_charge\_degree = F} & $\ge$23 \texttt{race = Caucasian}; $\ge$15 \texttt{age\_cat = Greater than 45} \\
+EC3 & \texttt{juv\_fel\_count$\,\le\,$4 $\wedge$ decile\_score$\,\ge\,$8 $\wedge$ c\_charge\_degree = O} & \texttt{juv\_fel\_count$\,\le\,$4 $\wedge$ decile\_score$\,\ge\,$7 $\wedge$ c\_charge\_degree = O} & $\ge$10 \texttt{race = Caucasian}; $\ge$15 \texttt{age\_cat = Greater than 45} \\
+\midrule
+\multicolumn{4}{@{}p{\textwidth}@{}}{\emph{Healthcare, the data of the Erica experiments~\cite{ERICA}: their queries, constraints and refinements; running time only.}}\\[1pt]
+EH1 & \texttt{income$\,\ge\,$200 $\wedge$ num\_children$\,\ge\,$3 $\wedge$ county IN (county2, county3)} & \texttt{income$\,\ge\,$182 $\wedge$ num\_children$\,\ge\,$3 $\wedge$ county IN (county2, county3)} & $\ge$10 \texttt{race = race3}; $\ge$3 \texttt{race = race1 $\wedge$ age\_group = group1} \\
+EH2 & \texttt{income$\,\ge\,$150 $\wedge$ num\_children$\,\le\,$4 $\wedge$ complications$\,\le\,$8 $\wedge$ county IN (county2, county4)} & \texttt{income$\,\ge\,$135 $\wedge$ num\_children$\,\le\,$4 $\wedge$ complications$\,\le\,$8 $\wedge$ county IN (county2, county4)} & $\ge$37 \texttt{race = race2}; $\ge$14 \texttt{race = race1 $\wedge$ age\_group = group1} \\
+EH3 & \texttt{income$\,\le\,$100 $\wedge$ complications$\,\ge\,$5 $\wedge$ num\_children$\,\ge\,$4} & \texttt{income$\,\le\,$134 $\wedge$ complications$\,\ge\,$5 $\wedge$ num\_children$\,\ge\,$4} & $\ge$8 \texttt{race = race2}; $\ge$13 \texttt{age\_group = group1} \\
+EH4 & \texttt{income$\,\ge\,$200 $\wedge$ num\_children$\,\ge\,$3 $\wedge$ county IN (county2, county3)} & \texttt{income$\,\ge\,$318 $\wedge$ num\_children$\,\ge\,$3 $\wedge$ county IN (county2, county3)} & $\le$5 \texttt{race = race2}; $\le$283 \texttt{age\_group = group2} \\
 \bottomrule
 \end{tabularx}
 \end{table*}

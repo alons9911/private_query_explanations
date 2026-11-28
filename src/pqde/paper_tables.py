@@ -27,7 +27,12 @@ GROUPS = [
     ("compas", r"COMPAS~\cite{compas-propublica}: refinements under representation constraints on the attributes and groups of the Erica experiments~\cite{ERICA} (ours)."),
     ("law", r"Law Students~\cite{lsac-wightman98}: the dataset of~\cite{CSSM24}, refinements under representation constraints (ours)."),
     ("meps", r"MEPS~\cite{meps-hc181}: refinements under representation constraints (ours)."),
+    ("adult_erica", r"Adult, the copy of the Erica experiments~\cite{ERICA}: their queries, constraints and refinements; running time only."),
+    ("compas_erica", r"COMPAS, the copy of the Erica experiments~\cite{ERICA}: their queries, constraints and refinements; running time only."),
+    ("healthcare_erica", r"Healthcare, the data of the Erica experiments~\cite{ERICA}: their queries, constraints and refinements; running time only."),
 ]
+# pairs of the Erica experiments: running time only (their smaller output holds at most 874 tuples)
+RUNTIME_ONLY = ["EA1", "EA2", "EA4", "EC1", "EC2", "EC3", "EH1", "EH2", "EH3", "EH5"]
 # CQA and contrast pairs, out of the experiments for now: written to the tables as comments
 COMMENTED_GROUPS = [
     ("tax_dirty", r"Tax-dirty~\cite{MahdaviAFMOST19}: consistent answers under the Tax rules of~\cite{NiMZWLY24} (ours)."),
@@ -39,6 +44,7 @@ COMMENTED_PAIRS = ["H1", "H2", "H3", "C1", "C2", "C3", "I1", "I2", "I3", "I4", "
 
 # paper IDs: one letter per dataset, numbered in table order (internal pair ids stay as in configs/pairs.yaml)
 PREFIX = {"adult": "A", "acsincome": "S", "tax": "T", "compas": "C", "law": "L", "meps": "M",
+          "adult_erica": "EA", "compas_erica": "EC", "healthcare_erica": "EH",
           "tax_dirty": "D", "hospital": "H", "ipums": "I"}
 
 
@@ -47,7 +53,7 @@ def display_ids() -> dict[str, str]:
     P = yaml.safe_load((ROOT / "configs" / "pairs.yaml").read_text())
     count: dict[str, int] = {}
     out = {}
-    for pid in list(cfg["pairs"]) + [p for p in COMMENTED_PAIRS if p not in cfg["pairs"]]:
+    for pid in list(cfg["pairs"]) + RUNTIME_ONLY + [p for p in COMMENTED_PAIRS if p not in cfg["pairs"]]:
         if pid in DUPLICATES:
             continue
         ds = P[pid]["dataset"]
@@ -116,7 +122,7 @@ def pairs_table() -> Path:
     cfg = yaml.safe_load((ROOT / "configs" / "experiments.yaml").read_text())
     P = yaml.safe_load((ROOT / "configs" / "pairs.yaml").read_text())
     labels = _labels()
-    pids = [p for p in list(cfg["pairs"]) + COMMENTED_PAIRS if p not in DUPLICATES]
+    pids = [p for p in list(cfg["pairs"]) + RUNTIME_ONLY + COMMENTED_PAIRS if p not in DUPLICATES]
     rows = {g: [] for g, _ in GROUPS + COMMENTED_GROUPS}
     for pid in pids:
         ds = P[pid]["dataset"]
@@ -133,7 +139,8 @@ def pairs_table() -> Path:
     def part(groups, first: bool) -> list[str]:
         """The first part (refinement pairs) has a constraint column; the second (CQA and contrasts) has none."""
         with_constraint = any(row[3] != "--" for g, _ in groups for row in rows[g])
-        cap = (rf"The {total} query pairs of the experiments, by dataset. Bold: the case studies of Section~\ref{{sec:usecase-results}}. "
+        cap = (rf"The {total} query pairs of the experiments, by dataset; the {len(RUNTIME_ONLY)} pairs of the Erica experiments "
+               r"(last three groups) serve for running time only. Bold: the case studies of Section~\ref{sec:usecase-results}. "
                r"ACS codes are shown by name; "
                r"\texttt{SCHL} 16 = high-school diploma, 19 = some college, 21 = bachelor's, 22 = master's, 23 = professional degree.") \
             if first else r"The query pairs of the experiments (continued)."
