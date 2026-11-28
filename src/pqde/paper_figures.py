@@ -210,7 +210,7 @@ SWEEPS = [("k", r"$k$", False), ("data_fraction", r"$N$ (fraction)", False), ("e
 RT_METHODS = tuple(os.environ.get("PQDE_RT_METHODS", "PRIV_EXPL,B1,B2,OPT_PRIV_EXPL").split(","))
 RT_LABEL = {"PRIV_EXPL": NAME["sys"], "B1": NAME["Bone"], "B2": NAME["Btwo"], "B3": NAME["Bthree"],
             "OPT_PRIV_EXPL": NAME["sysopt"], "OPT": NAME["BF"], "SINGLE_STAGE": NAME["SingleStage"],
-            "EXH_ALL": NAME["Btwo"] + " (all views)", "EXH_NAIVE": NAME["Btwo"] + " (no pruning)"}
+            "EXH_ALL": NAME.get("TopKExh", "TopKExhaustive"), "EXH_NAIVE": NAME.get("FullExh", "FullExhaustive")}
 
 
 def _rt_panel(ax, sub: pd.DataFrame, x: str, logx: bool, limit: float, logy: bool = True):
