@@ -88,6 +88,8 @@ def _cmd_run(args) -> int:
     from .experiments.common import experiments_config
 
     cfg = experiments_config(Path(args.config) if args.config else None)
+    if getattr(args, "sweeps", None):
+        cfg["e4"]["only_sweeps"] = list(args.sweeps)
     for exp in args.experiments:
         mod = EXPERIMENTS[exp]
         kw = {"pairs": args.pairs, "base": Path(args.out) if args.out else None, "quick": args.quick}
@@ -159,6 +161,7 @@ def main(argv: list[str] | None = None) -> int:
         r.add_argument("--trials", type=int)
         r.add_argument("--out", help="results directory (default: results/)")
         r.add_argument("--config", help="experiments.yaml to use")
+        r.add_argument("--sweeps", nargs="*", help="E4 only: run only these sweeps (e.g. k tau)")
         r.set_defaults(fn=fn)
     args = p.parse_args(argv)
     return args.fn(args)

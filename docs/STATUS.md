@@ -2,8 +2,10 @@
 
 Keeps the state of the work outside the chat context.
 
-## 2026-11-27 evening: HANDOFF (the user sees this session in English; a new session may continue)
-Read this section first.  The user writes in Hebrew and wants answers in Hebrew.
+## 2026-11-27 evening: HANDOFF (a new session may continue)
+Read this section first.  The user writes in Hebrew and wants answers in Hebrew.  WRITE THE CHAT REPLIES
+IN HEBREW: the "English display" was not a platform translation -- the replies themselves were written in
+English (file captions written in Hebrew showed in Hebrew; screenshot 2026-11-28).
 * Paper: paper/ = the user's Overleaf version (zip "Private_Query_Refinement_5", copied 2026-11-27)
   + our refinement-only experiments chapter, figures, appendix tables, 3 bib entries (COMPAS, LSAC, MEPS),
   and `\input{sections/pairs_table}` in the appendix.  User: do NOT change sections/introduction.tex or
@@ -15,16 +17,45 @@ Read this section first.  The user writes in Hebrew and wants answers in Hebrew.
 * Open decisions (ask the user, Hebrew):
   1. Erica's own pairs (pilot, results/erica_pilot/scores.csv, scripts/erica_pilot_*.py, pairs EA*/EC*/EH*):
      PEEQ 0.54-0.82 of OPT where the refinement changes hundreds of tuples (EA2, EC1, EC2), ~random where it
-     changes tens (EA1, EC3, all Healthcare, N = 887).  Options: (a) replace our pairs, (b) add as a separate
-     group "pairs from the Erica experiments" (recommended), (c) keep ours + one sentence.
+     changes tens (EA1, EC3, all Healthcare, N = 887).  User (2026-11-27 21:00): run the experiments on
+     them now, decide later whether they go in the paper ("maybe only the running times").  Until then
+     their results stay OUT of results/ and of the chapter.
   2. Contributions bullet of the introduction: user said "not yet".
-* Runtime, approved but ON HOLD until decision 1: rerun the whole runtime suite (E4 sweeps, E5, E7t, E7t7) on
-  all experiment pairs with all methods on one machine per pair: PEEQ, OptPEEQ, NonPrivate, Exhaustive (pruned,
-  top-tau), OPT, SingleStage, plus single-stage exhaustive over ALL candidates (with the lossless top-k-per-
-  attribute pruning, full suite) and the naive version without pruning only in the k sweep and the default
-  point (measure k = 1-2(3); larger k: extrapolated estimate, b2(max_subsets=...) reports estimated_seconds).
-  Needs code: runner methods OPT, SINGLE_STAGE, EXHAUSTIVE_ALL, EXHAUSTIVE_NAIVE.
-* Still running (old 4-method runtime, superseded by the rerun above): shards new-1..5, fix-1..3
+* Quality suite on Erica's 10 pairs (EA1 EA2 EA4 EC1 EC2 EC3 EH1 EH2 EH3 EH5): running locally,
+  `python -m pqde run e2 e3 e6 e8 | e7a e7g --pairs ... --out results_erica` (gitignored; logs
+  results_erica/q1.log, q2.log).  When done: copy the raw CSVs to results/erica_pairs/ (committed), and
+  summarise with their own script; do NOT append them to results/.
+* Runtime rerun, RUNNING since 2026-11-27 21:17 (approved option a + the user's 21:00 go-ahead): every
+  method of pqde.runner -- PRIV_EXPL (PEEQ), OPT_PRIV_EXPL (OptPEEQ), B1 (NonPrivate), B2 (Exhaustive), B3,
+  OPT, SINGLE_STAGE, EXH_ALL (exhaustive over every view, pruned) and EXH_NAIVE (unpruned; E4 k sweep and
+  E5 default point only; extrapolated, recorded as timeout + inferred, when its first block says it cannot
+  fit in 30 min).  Methods without a view stage build without Use (stats rep="none") and pay for every
+  view's histograms.  E4, E5, E7t, E7t7 on the 36 refinement pairs + Erica's 10.  12 cloud shards rt-1..12
+  (tag pqde-rt, branches ...-rt-<n>, `scripts/shards_status.sh rt`; plan scripts/plan_runtime_shards.py,
+  estimated ~32 h each, 1,500 process-hours in all).  Sessions: rt-1 session_01U646mbbEX3ZMekyoEYEhpW,
+  rt-2 ..mYV6bZmAsH3QAAGRdV, rt-3 ..mcC7Vy6YNGeQhYJY8J, rt-4 ..maCX112GxzmvmUSoEy, rt-5 ..mbHYeTPcSDGUKifcmj,
+  rt-6 ..mbXR5h1gsxCmbdpDYd, rt-7 ..mb572zPWHUN71WUGPZ, rt-8 ..maCBu4hm9MuJXpYZxD, rt-9 ..mYpHFm9PiYEHqRiEaW,
+  rt-10 ..mZwjW8ruvGCNRwzaig, rt-11 ..mb8g6ZnDrwNgydVwZQ, rt-12 ..maJGX1JpTCk582CJfA (prefix session_01U646).
+  When done: fetch the branches into results_shards/, merge (`scripts/merge_shards.py --shard 'rt-*'
+  e4 e5 e7t e7t7`; keep Erica's pairs out of the paper's figures until the user decides), redraw Figure 11,
+  rewrite the runtime paragraph, remove its \alon note.
+* PREVIEW of the runtime rerun, RUNNING since 2026-11-27 21:36 (user chose option a: results within ~10 h
+  for writing, the full rerun above continues and replaces them later): configs/experiments_preview.yaml
+  (3 repeats per point, E7 3 attribute orders, early_stop_factor 2 for B2/EXH_ALL: stop after the first
+  block when it says > 2x the time left; estimate within 10-16% of actual), E4 one job per (pair, sweep).
+  12 cloud shards pv-1..12 (tag pqde-pv, branches ...-pv-<n>, `scripts/shards_status.sh pv`, plan
+  scripts/plan_preview_shards.py, est. 6.3 h).  Sessions (prefix session_01U646): pv-1 mZEcyBPskN7uS4DVPG,
+  pv-2 md7GK7UDEASmAAJhqd, pv-3 mcuz9yCpjG9nksJqbR, pv-4 mYxUscqpdKa4YEdckX, pv-5 mbYNP3iA3JFiu5X8zc,
+  pv-6 maMmN7BAB8AT5c54wb, pv-7 maLftCki2CKHyPTUVk, pv-8 mbBoNLAB4KE9suQWvo, pv-9 mcAt5rKCemfxVBBAy6,
+  pv-10 mYy6pVpTo4PVkHpkpx, pv-11 mcsQseSvEMspNhYTNq, pv-12 mYwpgLnTpataST7z7o.  When done: merge into a
+  SEPARATE directory (not results/), draft the runtime paragraph and Figure 11 from it, marked provisional.
+* pv-8b (session_01U646mdGaR1DfShdNea69Qj, 2026-11-28 08:56, user approved): the 29 short jobs queued on pv-8.
+  pv-8 will run them too: when merging the preview, keep pv-8b's copy and drop pv-8's duplicate job dirs.
+* Restart fix (checkpoint per run, user approved 07:08): merged on rt-1,2,3,5,6,10,11; rt-4,7,8,9,12 and pv-3,6,8
+  refused a peer message -- the user must confirm in those sessions.  Preview merged in results_preview/,
+  draft docs/runtime_draft.tex, checks scripts/runtime_sanity.py; figure options PQDE_RT_SCALE=linear,
+  PQDE_RT_EXH_K_ONLY=1, PQDE_RT_SWEEPS=k,data_fraction,view_fraction,tau (user: drop eps and gamma).
+* Still running (old 5-method runtime, superseded by the rerun above): shards new-3, fix-1..3
   (`scripts/shards_status.sh new|fix`).  Ask the user before stopping or archiving them.
 * Overleaf Git: credential for git.overleaf.com saved but refused (probably saved as a bearer token; needs
   username "git" + token as password).  The user pasted a token in the chat: advise revoking it.
