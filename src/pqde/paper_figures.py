@@ -212,7 +212,7 @@ RT_LABEL = {"PRIV_EXPL": NAME["sys"], "B1": NAME["Bone"], "B2": NAME["Btwo"], "B
             "EXH_ALL": NAME["Btwo"] + " (all views)", "EXH_NAIVE": NAME["Btwo"] + " (no pruning)"}
 
 
-def _rt_panel(ax, sub: pd.DataFrame, x: str, logx: bool, limit: float):
+def _rt_panel(ax, sub: pd.DataFrame, x: str, logx: bool, limit: float, logy: bool = True):
     for m in RT_METHODS:
         d = sub[sub.method == m].sort_values(x)
         if d.empty:
@@ -228,7 +228,10 @@ def _rt_panel(ax, sub: pd.DataFrame, x: str, logx: bool, limit: float):
             ax.plot(xs, ys, color=c, linestyle=":", linewidth=1.0)
             ax.plot(d[x][to], [limit] * int(to.sum()), linestyle="none", marker="x", color=c, markersize=5,
                     markeredgewidth=1.4, label=f"{RT_LABEL[m]} timeout")
-    ax.set_yscale("log")
+    if logy:
+        ax.set_yscale("log")
+    else:
+        ax.set_ylim(bottom=0)
     if logx:
         _logx(ax, sub[x])
 
@@ -246,8 +249,11 @@ def fig_runtime_grid(raw_path: Path | None = None) -> Path:
         if (RES / "e4" / "metadata.json").exists() else 60.0
     dss = _datasets(pts)
     sweeps = [s for s in SWEEPS if s[0] in set(pts.sweep)]
+    # PQDE_RT_SCALE=linear: a linear y axis of its own in every panel but k (log: the exhaustive searches),
+    # so that the growth of the other methods shows; default: log, one y axis per row
+    linear = os.environ.get("PQDE_RT_SCALE", "log") == "linear"
     fig, axes = plt.subplots(len(dss), len(sweeps), figsize=(7.05, 1.12 * len(dss) + 0.35), squeeze=False,
-                             sharey="row")
+                             sharey=False if linear else "row")
     plain = FuncFormatter(lambda v, _: f"{v:g}")
     xticks = {"epsilon": [0.1, 1, 10], "tau": [5, 50, 500], "gamma_mult": [0, 0.1, 1, 10]}
     for i, ds in enumerate(dss):
@@ -256,10 +262,17 @@ def fig_runtime_grid(raw_path: Path | None = None) -> Path:
             sub = pts[(pts.dataset == ds) & (pts.sweep == sw)].rename(columns={"value": sw})
             if sw == "data_fraction":
                 sub = sub[sub[sw] <= 1.0]
-            _rt_panel(ax, sub, sw, logx, limit)
-            ax.axhline(limit, color=P.MUTED, linewidth=0.5, linestyle=":", zorder=0)
-            ax.yaxis.set_major_formatter(plain)
-            ax.yaxis.set_minor_formatter(NullFormatter())
+            logy = not linear or sw == "k"
+            if os.environ.get("PQDE_RT_EXH_K_ONLY") and sw != "k":  # exhaustive searches in the k column only
+                sub = sub[~sub.method.isin(["B2", "EXH_ALL", "EXH_NAIVE"])]
+            _rt_panel(ax, sub, sw, logx, limit, logy=logy)
+            if logy:
+                ax.axhline(limit, color=P.MUTED, linewidth=0.5, linestyle=":", zorder=0)
+                ax.yaxis.set_major_formatter(plain)
+                ax.yaxis.set_minor_formatter(NullFormatter())
+            else:
+                ax.yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(nbins=4))
+                ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}"))
             if sw in xticks:
                 ax.set_xticks(xticks[sw])
                 ax.xaxis.set_major_formatter(plain)
