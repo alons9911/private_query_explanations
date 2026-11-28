@@ -40,7 +40,7 @@ from ..runner import runtime_methods, time_methods
 from ..stats import build_cache
 from ..views import enumerate_views
 from .accuracy import BASELINES, summarise
-from .common import (Checkpoint, make_params, out_dir, pairs_by_dataset, point_key, resume_rows, resume_runs,
+from .common import (Checkpoint, machine, make_params, out_dir, pairs_by_dataset, point_key, resume_rows, resume_runs,
                      run_metadata, run_state, spawn_rngs, stable_key, stats_route,
                      write_csv, write_json, write_raw)
 
@@ -108,7 +108,8 @@ def run_runtime(cfg: dict, pairs: list[str] | None = None, base=None, quick: boo
                                      "total_s": out.total_s, "timeout": out.timeout,
                                      "inferred": bool(out.extra.get("estimated", False)),
                                      "estimated_s": out.extra.get("estimated_seconds"),
-                                     "b2_subsets": out.extra.get("subsets", out.extra.get("subsets_total"))})
+                                     "b2_subsets": out.extra.get("subsets", out.extra.get("subsets_total")),
+                                     **machine()})
                     save(rows)  # checkpoint (at most once a minute) after every run of the point
                 print(f"    |Attrs|={m}: " + "  ".join(
                     f"{x} {np.median([w['total_s'] for w in rows if w['pair'] == pid and w['value'] == m and w['method'] == x]):.3g}s"
