@@ -86,7 +86,7 @@ No earlier system explains the difference between two query outputs privately wi
 For running time we also time \BF{} and \SingleStage{}. The methods without a view stage (\BF{}, \SingleStage{}, \TopKExh{}, \FullExh{}) compute no $\Use$; they build the histograms of every view instead.\par}
 
 \paragraph{Metrics.}
-All measures use exact histograms, so the release noise does not enter them.
+An explanation has no ground truth, so we judge a release by what it explains: how much of the largest attainable difference between the outputs it captures, whether it points to the same attributes as the optimum, and whether its views hold enough of the output to matter to the analyst.
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
   \item \emph{ApproxRatio}: the ratio $F_\lambda(E)/F_\lambda(\BF{})$, with $\HD_\gamma$ at the pair's default $\gamma$ in every experiment, including those that vary $\epsilon$ or $\gamma$. It is the share of the best attainable difference score a release keeps; without smoothing it would reward changes in bins of a few tuples.
   \item \emph{Precision@k}, the share of \BF{}'s (view, attribute) pairs in the release, is the usual measure of top-$k$ selection, but suits our setting poorly: many views are near-duplicates, such as a view and its specialization by one more condition, so a release can explain what \BF{} explains with different pairs.
