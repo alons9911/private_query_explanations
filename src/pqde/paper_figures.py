@@ -121,9 +121,10 @@ def _quality_row(axes, summ: pd.DataFrame, dss: list[str], xlabel: str, logx: bo
 
 def _rescored(name: str) -> pd.DataFrame:
     """Rows of results/rescored/<name>.csv (scored against the brute force at the default gamma)."""
-    df = pd.read_csv(RES / "rescored" / f"{name}.csv")
+    acc = ROOT / os.environ.get("PQDE_ACC_RESULTS", "results")  # accuracy: always the main results by default
+    df = pd.read_csv(acc / "rescored" / f"{name}.csv")
     if "dataset" not in df or df.dataset.isna().any():  # the B1 rows carry the pair only
-        df["dataset"] = df.pair.map(pd.read_csv(RES / "rescored" / "bf.csv").set_index("pair").dataset)
+        df["dataset"] = df.pair.map(pd.read_csv(acc / "rescored" / "bf.csv").set_index("pair").dataset)
     return _drop(df)
 
 

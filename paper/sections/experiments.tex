@@ -59,7 +59,9 @@ Every pair is a refinement: $Q_2$ changes predicates of $Q_1$ so that its output
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
   \item \emph{From Erica}~\cite{LMSJ23}: ten pairs on ACSIncome, with Erica's queries, cardinality constraints and minimal refinements; we keep the ten of its twelve query--constraint combinations whose refinement satisfies the constraints and, where it returns several, the one that most changes the attributes the query and the constraints do not mention.
   \item \emph{Ours}: $26$ pairs on the other datasets. A base query is a conjunction of at most two conditions with an output of at least $1{,}500$ tuples; a constraint asks for a minimum share of a group, set between the group's share in the base queries and in the data; and $Q_2$ is a minimal refinement in Erica's sense: no other refinement that satisfies the constraint is closer to $Q_1$ in every condition. We compute it with our implementation of Erica's search. On COMPAS the constraints use the groups of the Erica experiments~\cite{ERICA}, whose own queries select about $100$ tuples, too few for a private release.
+  \item \emph{From the Erica experiments}, for running time only: the ten pairs of Erica's own experiments on Adult, COMPAS and Healthcare~\cite{ERICA}, with the refinements those experiments stored, on the copies of the data they used ($32{,}561$, $11{,}757$ and $887$ tuples).
 \end{itemize}
+\alon{Erica's ten pairs: decide whether to report their quality too (measured: \sys{} reaches $0.54$--$0.82$ of \BF{} where the refinement changes hundreds of tuples or more, about the level of \RandomExpl{} where it changes tens), and add them and Healthcare to Tables~\ref{tab:datasets} and~\ref{tab:pairs}.}
 % CQA and contrast pairs, out of the experiments for now (first line of the paragraph: "The pairs cover three settings (...; Section 6.2 details four of them):"):
 %   \item \emph{Consistent query answering (CQA)}: $Q_2=Q_\Sigma$ is the consistent answer of a selection $Q_1$ under subset repair (Definition~\ref{def:consistent-answer}), i.e.\ $Q_1(D)$ minus the tuples in a conflict~\cite{chomicki2004}; the selections are such that $Q_\Sigma$ drops $10$--$90\%$ of the output. On Tax-dirty we use seven of the eight Tax rules of Ni et~al.~\cite{NiMZWLY24}, which put $3.9\%$ of the tuples in conflict, unevenly across states; the eighth, $\texttt{AreaCode}\to\texttt{State}$, is meant for repairing cells and under subset repair would delete $82\%$ of the tuples. On Hospital we use three functional dependencies.
 %   \item \emph{Contrasts}: $Q_1$ and $Q_2$ select two disjoint groups, in the $17$ questions of DPXPlain~\cite{TaoGMR22} on IPUMS-CPS. We remove the attribute that defines the groups from the views and the explanation attributes, since it separates them by definition.
@@ -72,8 +74,10 @@ The variants of \sys{} are:
   \item \Bone{}: no noise (exact top-$\tau$ views, then greedy by $\HD_\gamma\cdot\DivS$).
   \item \SingleStage{}: no view stage; Algorithm~\ref{alg:topk} over all candidates with $\epsilon_P+\epsilon_S$ for the selection. It ignores representativeness and coverage.
   \item \RandomExpl{}: $k$ uniformly drawn candidates.
-  \item \sysopt{} and \Btwo{}, for running time only. \sysopt{} computes the statistics of all views on the same attributes in one pass over $D$ ($21$ passes instead of $1{,}144$ on Adult) and otherwise runs as \sys{}; \Btwo{} replaces the greedy rounds by exhaustive search over the retained views, which returns the greedy set.
+  \item \sysopt{}, \Btwo{}, \ExhAll{} and \BruteForce{}, for running time only. \sysopt{} computes the statistics of all views on the same attributes in one pass over $D$ ($21$ passes instead of $1{,}144$ on Adult) and otherwise runs as \sys{}. \Btwo{} replaces the greedy rounds by exhaustive search over the retained views, which returns the greedy set; it enumerates only the $k$ best candidates of each attribute, which loses nothing, since a set that used a worse candidate of an attribute could swap it for an unused better one. \ExhAll{} runs the same search over the candidates of every view, and \BruteForce{} over all of them, without that pruning.
 \end{itemize}
+For running time we also time \BF{} and \SingleStage{}. The methods without a view stage (\BF{}, \SingleStage{}, \ExhAll{}, \BruteForce{}) compute no Use; they build the histograms of every view instead.
+\alon{Method names \ExhAll{} and \BruteForce{} are proposals (macros.tex).}
 
 \paragraph{Metrics.}
 All measures use exact histograms, so the release noise does not enter them.
@@ -87,7 +91,8 @@ All measures use exact histograms, so the release noise does not enter them.
 \paragraph{Default setting.}
 Unless stated otherwise: all of $D$ and all views, $k=5$, $\lambda=0.5$, $\epsilon=1$ split equally, $\gamma_R=N/100$, $\tau=15$ and $\gamma=144$--$150$ (Eqs.~\eqref{eq:tau-rule} and~\eqref{eq:gamma-rule}), and $\bar N=|D|$, that is, we treat the size of each dataset as public, as the bounded relation of Section~\ref{subsec:ideal-sensitivity} does.
 An accuracy point averages $40$ runs per pair and then the pairs of a dataset (or all $36$ pairs, each weighted equally, where stated).
-Running time is measured end to end, ten runs per point, with all methods of a pair on one machine; a run is stopped at $30$ minutes, and a point that reaches the limit is run three times.
+Running time is measured end to end, ten runs per point; in each run all methods run on one machine, one after the other, and we compare methods within runs. A run is stopped at $30$ minutes, and a point that reaches the limit is run three times. \BruteForce{} runs only when the rate of its first block of sets says it can finish within the limit; otherwise we extrapolate its time from that rate.
+\alon{The running times below come from a preview run: three runs per point, and \Btwo{} and \ExhAll{} also stop after their first block when it says they would need more than twice the time left. The full run (ten runs per point) replaces them.}
 
 % ---------------------------------------------------------------
 \subsection{Case Studies}
@@ -241,14 +246,14 @@ Distinct attributes & 4.9 & 4.7 & 4.3 & 3.5 & 2.5 &&&&&\\
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/exp/attrs.pdf}
-\caption{Number of explanation attributes: the first $|\Attrs|$ attributes of ten random orders of all attributes of Table~\ref{tab:attributes}. Top: running time (median of ten runs; dashed: \Btwo{} at $k=7$). Bottom: ApproxRatio and attribute@k against \BF{} over the same attributes.}
+\caption{Number of explanation attributes: the first $|\Attrs|$ attributes of ten random orders of all attributes of Table~\ref{tab:attributes}. Top: running time (median of ten runs; dashed: \Btwo{} at $k=7$). Bottom: ApproxRatio and attribute@k against \BF{} over the same attributes.\alon{Top row from the preview run: three orders.}}
 \label{fig:attrs}
 \end{figure*}
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/exp/runtime_grid.pdf}
-\caption{End-to-end running time of \sys{}, \Bone{}, \Btwo{} and \sysopt{} (median of ten runs, mean over the pairs), one parameter varied at a time; crosses: runs stopped at $30$ minutes.}
+\caption{End-to-end running time (median of ten runs, mean over the pairs), one parameter varied at a time. Logarithmic axis for $k$ only, where the exhaustive searches are shown; crosses: runs stopped at $30$ minutes. $\epsilon$ and $\gamma$ do not change the time (text).\alon{Preview run (three runs per point). Decide which methods to show: \Bone{} coincides with \sys{}, and \SingleStage{} with \BF{}.}}
 \label{fig:scalability}
 \end{figure*}
 
@@ -319,11 +324,23 @@ Attribute@k falls on MEPS ($0.88\rightarrow0.61$) and COMPAS ($0.90\rightarrow0.
 
 \paragraph{Runtime.}
 \label{subsec:scalability}
-We time \sys{}, \Bone{}, \Btwo{} and \sysopt{} on every pair, one parameter varied at a time (Figure~\ref{fig:scalability}; Figure~\ref{fig:attrs}, top, for $|\Attrs|$).
-\alon{Runs in progress: the parameter sweeps (Figure~\ref{fig:scalability}) on COMPAS, Law Students and MEPS, \Btwo{} at $k=7$ against $|\Attrs|$ on them, and every timing of A1, T1, T4, L3, L5, M2 and M5, whose refined queries were replaced by exact minimal refinements. The numbers below cover the other pairs: $29$ for the defaults and $|\Attrs|$, and the $18$ of Adult, ACSIncome and Tax for the sweeps.}
-Privacy adds no measurable time: \sys{} and \Bone{} are within $1\%$ of each other on every pair, since $96$--$99\%$ of the time is the $\Use$ pass they share (not shown).
-As Section~\ref{subsec:complexity-analysis} predicts, the time of \sys{} is linear in $N$ and $|\mathcal{P}|$, flat in $k$, $\epsilon$, $\gamma$ and $|\Attrs|$ (within $18\%$), and grows by $29$--$33\%$ from $\tau=15$ to $\tau=|\mathcal{P}|$.
-\Btwo{} is exponential: $20$--$61$\,s per pair at $k=6$, $6.7$--$17$ minutes at $k=7$, and over the limit from $k=8$; at $k=7$ it grows two- to threefold with each attribute beyond six and reaches the limit at $11$ attributes on Adult and ACSIncome, the two datasets with more than ten.
-\sysopt{} releases the same explanations as \sys{} under the same randomness in all $290$ runs compared ($29$ pairs, ten runs each) and is $5.5$--$11.4\times$ faster per pair (median $7.5\times$; on ACSIncome $3.0$\,s per run instead of $26.8$\,s); from a tenth of the views to all of them its time grows at most $1.5\times$, against $8$--$9\times$ for \sys{}, but it grows with $\tau$ ($3.7$--$4.1\times$ at $\tau=|\mathcal{P}|$), since it builds the histograms of every retained view.
+We time all methods on every pair, one parameter varied at a time (Figure~\ref{fig:scalability}; Figure~\ref{fig:attrs}, top, for $|\Attrs|$).
+Privacy adds no measurable time: \sys{} and \Bone{} are within $2\%$ of each other on every pair, since $94$--$99\%$ of the time is the $\Use$ pass they share.
+As Section~\ref{subsec:complexity-analysis} predicts, the time of \sys{} is linear in $N$ and $|\mathcal{P}|$ (a straight line fits every pair with $R^2 \ge 0.86$, median $0.99$), flat in $k$ and $|\Attrs|$, and grows by $21$--$46\%$ from $\tau=15$ to $\tau=|\mathcal{P}|$ (mean over the pairs of a dataset).
+The budget $\epsilon$ and the smoothing $\gamma$ change only the noise, not what is computed: along their ranges the time of every method varies by about $10\%$, with no trend, and Figure~\ref{fig:scalability} omits them.
+At the defaults, \sys{} takes $0.12$--$0.47$\,s on Adult, COMPAS, Law Students and MEPS, $3.5$\,s on Tax and $24$\,s on ACSIncome.
+\sysopt{} releases the same explanations as \sys{} under the same randomness in all $96$ runs compared and is $5.1$--$11.4\times$ faster per pair (median $8.4\times$); from a tenth of the views to all of them its time grows at most $2.2\times$ (median $1.3\times$), against $6.5$--$11\times$ for \sys{}, but it grows with $\tau$ ($3.5\times$ at $\tau=|\mathcal{P}|$), since it builds the histograms of every retained view. With a tenth of the views it saves nothing (up to $16\%$ slower than \sys{} on $8$ pairs).
+\BF{} and \SingleStage{} take $0.28$--$0.43$ of the time of \sys{}: they compute no Use and build the histograms of every view instead.
+\Btwo{} is exponential in $k$: $7$--$57$\,s per pair at $k=6$, $2.3$--$15.5$ minutes at $k=7$, and over the limit from $k=8$ on every dataset; at $k=7$ it takes about $27$ minutes at $11$ attributes, at the limit ($20$ of its $69$ runs exceed it), and exceeds it from $12$.
+\ExhAll{} enumerates as many sets, since the pruning keeps the $k$ best candidates of every attribute in both, and takes the same time where the enumeration dominates (median ratio $0.99$); at the defaults it is faster than \Btwo{} on ACSIncome ($10$ against $25$\,s), as it computes no Use.
+\BruteForce{} finishes only at $k \le 2$ ($10$\,s per pair at $k=2$, at most $36$\,s); its extrapolated time is about eight hours at $k=3$ and $5{,}000$ years at $k=5$ (median over the pairs; $52$ years on COMPAS, $10^5$ on Tax).
+On the ten pairs of the Erica experiments the picture is the same: \sys{} takes $0.06$\,s (Healthcare) to $0.41$\,s (Adult) at the defaults, \sysopt{} is $4.7$--$13.7\times$ faster (median $8.0\times$), \Btwo{} is over the limit from $k=8$, and \BruteForce{} at the defaults would take $22$ (Healthcare) to $10^4$ years (Adult).
+% Previous running-time run (PEEQ, NonPrivate, Exhaustive, OptPEEQ only; 29 pairs at the defaults, 18 in the sweeps):
+% We time \sys{}, \Bone{}, \Btwo{} and \sysopt{} on every pair, one parameter varied at a time (Figure~\ref{fig:scalability}; Figure~\ref{fig:attrs}, top, for $|\Attrs|$).
+% \alon{Runs in progress: the parameter sweeps (Figure~\ref{fig:scalability}) on COMPAS, Law Students and MEPS, \Btwo{} at $k=7$ against $|\Attrs|$ on them, and every timing of A1, T1, T4, L3, L5, M2 and M5, whose refined queries were replaced by exact minimal refinements. The numbers below cover the other pairs: $29$ for the defaults and $|\Attrs|$, and the $18$ of Adult, ACSIncome and Tax for the sweeps.}
+% Privacy adds no measurable time: \sys{} and \Bone{} are within $1\%$ of each other on every pair, since $96$--$99\%$ of the time is the $\Use$ pass they share (not shown).
+% As Section~\ref{subsec:complexity-analysis} predicts, the time of \sys{} is linear in $N$ and $|\mathcal{P}|$, flat in $k$, $\epsilon$, $\gamma$ and $|\Attrs|$ (within $18\%$), and grows by $29$--$33\%$ from $\tau=15$ to $\tau=|\mathcal{P}|$.
+% \Btwo{} is exponential: $20$--$61$\,s per pair at $k=6$, $6.7$--$17$ minutes at $k=7$, and over the limit from $k=8$; at $k=7$ it grows two- to threefold with each attribute beyond six and reaches the limit at $11$ attributes on Adult and ACSIncome, the two datasets with more than ten.
+% \sysopt{} releases the same explanations as \sys{} under the same randomness in all $290$ runs compared ($29$ pairs, ten runs each) and is $5.5$--$11.4\times$ faster per pair (median $7.5\times$; on ACSIncome $3.0$\,s per run instead of $26.8$\,s); from a tenth of the views to all of them its time grows at most $1.5\times$, against $8$--$9\times$ for \sys{}, but it grows with $\tau$ ($3.7$--$4.1\times$ at $\tau=|\mathcal{P}|$), since it builds the histograms of every retained view.
 % (44-pair version, with CQA and contrasts) ... grows by $18$--$41\%$ from $\tau=15$ to $\tau=|\mathcal{P}|$; \Btwo{} $15$--$61$\,s at $k=6$, $2.4$--$17$ minutes at $k=7$;
 % \sysopt{}: identical in all $440$ runs ($44$ pairs), $5.8$--$11.4\times$ faster (median $8.4\times$), at most $1.7\times$ over $|\mathcal{P}|$ against $7$--$10\times$, $3.2$--$4.6\times$ at $\tau=|\mathcal{P}|$.
