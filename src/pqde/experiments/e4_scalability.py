@@ -23,8 +23,8 @@ from .. import plotting
 from ..pairs import pair_on_sample, resolve_pair
 from ..runner import runtime_methods, time_methods
 from ..views import enumerate_views
-from .common import (make_params, out_dir, pairs_by_dataset, point_key, read_raw, resume_rows, run_metadata,
-                     write_csv, write_json, write_raw)
+from .common import (Checkpoint, make_params, out_dir, pairs_by_dataset, point_key, read_raw, resume_runs,
+                     run_metadata, run_state, write_csv, write_json, write_raw)
 
 EXP = "e4"
 PARAM_SWEEPS = ("k", "epsilon", "tau", "gamma_mult")
@@ -71,7 +71,8 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
     repeats = 1 if quick else int(e["repeats"])
     by_ds = pairs_by_dataset(pairs or e.get("pairs") or cfg.get("runtime_pairs", cfg["pairs"]), cfg.get("datasets"))
     timeout_reps = int(d.get("timeout_repeats", 3))
-    rows, done = resume_rows(EXP, "runtime", base, ("pair", "sweep", "value"))
+    rows, prev = resume_runs(EXP, "runtime", base, ("pair", "sweep", "value"))
+    save = Checkpoint(EXP, "runtime", base)
     for ds_name, pids in by_ds.items():
         sweeps = {k: list(v) for k, v in e["sweeps"].items()}
         if "data_fraction" in sweeps:
@@ -90,8 +91,9 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
                 if sweep == "tau":  # capped at |P|; "all" = every view
                     values = sorted({n_full if str(v) == "all" else min(int(v), n_full) for v in values})
                 for val in values:
-                    if point_key({"pair": pid, "sweep": sweep, "value": val}, ("pair", "sweep", "value")) in done:
-                        continue  # measured before an interruption
+                    # runs measured before an interruption are kept; the point continues from its next run
+                    done_reps, n_timeouts = run_state(prev.get(
+                        point_key({"pair": pid, "sweep": sweep, "value": val}, ("pair", "sweep", "value")), []))
                     frac = float(val) if sweep == "data_fraction" else float(d["data_fraction"])
                     vfrac = float(val) if sweep == "view_fraction" else float(d["view_fraction"])
                     ds, q1, q2 = pair_on_sample(pair, frac, seed)
@@ -101,9 +103,10 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
                     params = make_params(d, n_views, len(ds.explain_attrs), **over)
                     # every method is timed in every repeat; a method that hits the time limit
                     # is run timeout_repeats times at this point and then no more
-                    n_timeouts: dict = {}
                     point_methods = runtime_methods(sweep in e.get("naive_sweeps", ["k"]))
                     for r in range(repeats):
+                        if r in done_reps:
+                            continue
                         methods = tuple(m for m in point_methods if n_timeouts.get(m, 0) < timeout_reps)
                         if not methods:
                             break
@@ -120,10 +123,11 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
                                          "timeout": out.timeout, "inferred": bool(out.extra.get("estimated", False)),
                                          "b2_subsets": out.extra.get("subsets", out.extra.get("subsets_total")),
                                          "b2_estimated_s": out.extra.get("estimated_seconds")})
+                        save(rows)  # checkpoint (at most once a minute) after every run of the point
                     print(f"    {sweep}={val}: " + "  ".join(
                         f"{m} {np.median([x['total_s'] for x in rows if x['pair'] == pid and x['sweep'] == sweep and x['value'] == val and x['method'] == m]):.3g}s"
                         for m in point_methods), flush=True)
-                    write_raw(pd.DataFrame(rows), EXP, "runtime", base)  # checkpoint after every point
+                    save(rows, force=True)  # and after every point
     write_json(run_metadata(cfg, experiment=EXP, repeats=repeats, timeout_s=timeout_s), out_dir(EXP, base) / "metadata.json")
     plot(cfg, base)
     return {}
