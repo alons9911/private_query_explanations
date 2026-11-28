@@ -1,0 +1,3 @@
+| dataset | pair | runs | identical_runs | max_abs_use_diff |
+|---|---|---|---|---|
+| adult | R3 | 3 | 3 | 8.33e-17 |
