@@ -70,7 +70,7 @@ English (file captions written in Hebrew showed in Hebrew; screenshot 2026-11-28
   running time only because its outputs hold at most 89 tuples). Numbers: `scripts/runtime_numbers.py DIR` reports
   the 40 pairs of the paper; ignore EA*/EC* in the rt/pv results.
 * rt-12b (user, 2026-11-28 17:05): a new machine runs the 11 jobs of rt-12 that had not started (scripts/shards/rt-12b.jobs;
-  e7t EA4 dropped). rt-12 keeps its four e7t7 jobs (M2, M4, CO1, CO3) and may later run the same 11 jobs:
+  e7t EA4 dropped), session session_01U646mc13jRJW1MCb3XoPED, branch ...-rt-12b. rt-12 keeps its four e7t7 jobs (M2, M4, CO1, CO3) and may later run the same 11 jobs:
   when merging the rt run, keep rt-12b's copy of those jobs and drop rt-12's duplicates.
 * Reviewer pass decisions (user, 2026-11-28 ~16:30): B.2 only 'few' -> 'fewer' (view sizes in results/view_sizes,
   not in the paper); B.3 not in the paper (results/grouped_baselines: OPT/SingleStage with the grouped pass take
