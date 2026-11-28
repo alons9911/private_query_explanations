@@ -22,8 +22,10 @@ from matplotlib.ticker import FuncFormatter, LogLocator, NullFormatter  # noqa: 
 from . import plotting as P  # noqa: E402  (palette and base style)
 from .experiments import e4_scalability  # noqa: E402
 
+import os  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[2]
-RES = ROOT / "results"
+RES = ROOT / os.environ.get("PQDE_RESULTS", "results")  # e.g. results_preview (provisional runs)
 
 
 def _method_names() -> dict[str, str]:
@@ -37,7 +39,7 @@ def _method_names() -> dict[str, str]:
 
 
 NAME = _method_names()
-OUT = ROOT / "paper" / "figures" / "exp"
+OUT = ROOT / os.environ.get("PQDE_FIG_OUT", "paper/figures/exp")
 
 DS_ORDER = ["adult", "acsincome", "tax", "compas", "law", "meps"]  # refinement pairs only (2026-11-27)
 # CQA and contrast datasets, out of the experiments for now: "tax_dirty", "hospital", "ipums"
@@ -203,9 +205,11 @@ def fig_view_stage() -> Path:
 SWEEPS = [("k", r"$k$", False), ("data_fraction", r"$N$ (fraction)", False), ("epsilon", r"$\epsilon$", True),
           ("view_fraction", r"$|\mathcal{P}|$ (fraction)", False), ("tau", r"$\tau$", True),
           ("gamma_mult", r"$\gamma$ / Eq. (14)", True)]
-RT_METHODS = ("PRIV_EXPL", "B1", "B2", "OPT_PRIV_EXPL")  # B3 is not used in the paper
+# B3 is not used in the paper; PQDE_RT_METHODS (comma-separated) overrides the methods drawn
+RT_METHODS = tuple(os.environ.get("PQDE_RT_METHODS", "PRIV_EXPL,B1,B2,OPT_PRIV_EXPL").split(","))
 RT_LABEL = {"PRIV_EXPL": NAME["sys"], "B1": NAME["Bone"], "B2": NAME["Btwo"], "B3": NAME["Bthree"],
-            "OPT_PRIV_EXPL": NAME["sysopt"]}
+            "OPT_PRIV_EXPL": NAME["sysopt"], "OPT": NAME["BF"], "SINGLE_STAGE": NAME["SingleStage"],
+            "EXH_ALL": NAME["Btwo"] + " (all views)", "EXH_NAIVE": NAME["Btwo"] + " (no pruning)"}
 
 
 def _rt_panel(ax, sub: pd.DataFrame, x: str, logx: bool, limit: float):
@@ -279,8 +283,9 @@ def fig_runtime_grid(raw_path: Path | None = None) -> Path:
         subs = (1.0,) if hi / max(lo, 1e-12) > 1e4 else (1.0, 3.0)
         axes[i, 0].yaxis.set_major_locator(LogLocator(base=10, subs=subs, numticks=12))
         axes[i, 0].yaxis.set_major_formatter(plain)
-    fig.tight_layout(h_pad=0.25, w_pad=0.3, rect=(0, 0, 1, 0.975))
-    fig.legend(handles, labels, loc="upper center", ncol=len(labels), bbox_to_anchor=(0.5, 1.01))
+    rows = 1 if len(labels) <= 7 else 2  # many methods: the legend takes two rows
+    fig.tight_layout(h_pad=0.25, w_pad=0.3, rect=(0, 0, 1, 0.975 if rows == 1 else 0.95))
+    fig.legend(handles, labels, loc="upper center", ncol=-(-len(labels) // rows), bbox_to_anchor=(0.5, 1.01))
     return _save(fig, "runtime_grid")
 
 
