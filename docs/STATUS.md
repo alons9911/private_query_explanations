@@ -49,6 +49,12 @@ English (file captions written in Hebrew showed in Hebrew; screenshot 2026-11-28
   pv-6 maMmN7BAB8AT5c54wb, pv-7 maLftCki2CKHyPTUVk, pv-8 mbBoNLAB4KE9suQWvo, pv-9 mcAt5rKCemfxVBBAy6,
   pv-10 mYy6pVpTo4PVkHpkpx, pv-11 mcsQseSvEMspNhYTNq, pv-12 mYwpgLnTpataST7z7o.  When done: merge into a
   SEPARATE directory (not results/), draft the runtime paragraph and Figure 11 from it, marked provisional.
+* pv-8b (session_01U646mdGaR1DfShdNea69Qj, 2026-11-28 08:56, user approved): the 29 short jobs queued on pv-8.
+  pv-8 will run them too: when merging the preview, keep pv-8b's copy and drop pv-8's duplicate job dirs.
+* Restart fix (checkpoint per run, user approved 07:08): merged on rt-1,2,3,5,6,10,11; rt-4,7,8,9,12 and pv-3,6,8
+  refused a peer message -- the user must confirm in those sessions.  Preview merged in results_preview/,
+  draft docs/runtime_draft.tex, checks scripts/runtime_sanity.py; figure options PQDE_RT_SCALE=linear,
+  PQDE_RT_EXH_K_ONLY=1, PQDE_RT_SWEEPS=k,data_fraction,view_fraction,tau (user: drop eps and gamma).
 * Still running (old 5-method runtime, superseded by the rerun above): shards new-3, fix-1..3
   (`scripts/shards_status.sh new|fix`).  Ask the user before stopping or archiving them.
 * Overleaf Git: credential for git.overleaf.com saved but refused (probably saved as a bearer token; needs
