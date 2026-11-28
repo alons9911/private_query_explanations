@@ -298,15 +298,16 @@ def fig_runtime_methods() -> Path:
     g = per_pair.groupby(["dataset", "method"], as_index=False).agg(total_s=("total_s", "mean"),
                                                                     timeout=("timeout", "mean"))
     dss = _datasets(g)
-    methods = ["PRIV_EXPL", "OPT_PRIV_EXPL", "B1", "B2", "B3"]
+    methods = ([m for m in RT_METHODS if m in set(g.method)] if "PQDE_RT_METHODS" in os.environ
+               else ["PRIV_EXPL", "OPT_PRIV_EXPL", "B1", "B2", "B3"])
     growth = _drop(pd.read_csv(RES / "e5" / "raw" / "b2_growth.csv"))
     fig, (a, b) = plt.subplots(1, 2, figsize=(7.05, 1.75), gridspec_kw={"width_ratios": [1.9, 1]})
-    w = 0.16
+    w = 0.8 / len(methods)
     x = np.arange(len(dss))
     for i, m in enumerate(methods):
         vals = [float(g[(g.dataset == d) & (g.method == m)].total_s.mean()) for d in dss]
         tos = [float(g[(g.dataset == d) & (g.method == m)].timeout.mean()) for d in dss]
-        bars = a.bar(x + (i - 2) * w, vals, w * 0.88, color=P.METHOD_COLORS[m], label=RT_LABEL[m])
+        bars = a.bar(x + (i - (len(methods) - 1) / 2) * w, vals, w * 0.88, color=P.METHOD_COLORS[m], label=RT_LABEL[m])
         for bx, t in zip(bars, tos):
             if t > 0:
                 bx.set_hatch("////")
@@ -315,7 +316,8 @@ def fig_runtime_methods() -> Path:
     a.set_xticks(x)
     a.set_xticklabels([DS_TITLE[d].split(" (")[0] for d in dss])
     a.set_ylabel("end-to-end time (s)")
-    a.legend(ncol=5, loc="upper center", bbox_to_anchor=(0.5, 1.2), handlelength=1.2, columnspacing=0.9)
+    a.legend(ncol=min(len(methods), 5), loc="upper center", bbox_to_anchor=(0.5, 1.2 if len(methods) <= 5 else 1.45),
+             handlelength=1.2, columnspacing=0.9)
     a.grid(axis="x", visible=False)
     colours = [P.BLUE, P.ORANGE, P.AQUA, P.YELLOW, P.MAGENTA, "#6250d6"]
     markers = ["o", "s", "^", "D", "P", "v"]
