@@ -102,7 +102,7 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
             # (a method that hits the time limit: timeout_repeats runs)
             n_to: dict = {}
             for r in range(repeats):
-                methods = tuple(m for m in runtime_methods(True) if n_to.get(m, 0) < timeout_reps)
+                methods = tuple(m for m in runtime_methods(True, d.get("runtime_methods")) if n_to.get(m, 0) < timeout_reps)
                 for out in time_methods(ds, q1, q2, params, methods=methods, seed=seed, repeat=r,
                                         gamma_eval=float(d["gamma_eval"]), timeout_s=timeout_s,
                                         early_stop=d.get("early_stop_factor")):

@@ -103,7 +103,7 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
                     params = make_params(d, n_views, len(ds.explain_attrs), **over)
                     # every method is timed in every repeat; a method that hits the time limit
                     # is run timeout_repeats times at this point and then no more
-                    point_methods = runtime_methods(sweep in e.get("naive_sweeps", ["k"]))
+                    point_methods = runtime_methods(sweep in e.get("naive_sweeps", ["k"]), d.get("runtime_methods"))
                     for r in range(repeats):
                         if r in done_reps:
                             continue

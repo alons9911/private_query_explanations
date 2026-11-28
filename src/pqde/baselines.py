@@ -240,3 +240,34 @@ def exhaustive_naive(cache: StatsCache, params: Params, gamma_eval: float = 0.0,
     best, best_set, total, extra = exhaustive_best(scores, aidx, params.k, params.lam, time_budget=budget)
     sel = None if extra["estimated"] else [cands[i] for i in best_set]
     return sel, {"pool_size": len(cands), "subsets": total, "F": best, **extra}
+
+
+def toptau_candidates(cache: StatsCache, params: Params, gamma_eval: float = 0.0,
+                      tau: int | None = None) -> tuple[list[tuple[int, str]], np.ndarray, np.ndarray]:
+    """Every candidate of the exact top-tau views by Use, unpruned, sorted by (attribute, score desc)."""
+    tau = tau if tau is not None else (params.tau or choose_tau(params.k, cache.n_views, params.tau_factor))
+    rows = exact_top_views(cache, tau)
+    hd = cache.hd_matrix(gamma_eval, rows)
+    cands, scores, aidx = [], [], []
+    for a, attr in enumerate(cache.explain_attrs):
+        col = hd[:, a]
+        ok = np.flatnonzero(~np.isnan(col))
+        for r in ok[np.argsort(-col[ok], kind="stable")]:
+            cands.append((int(rows[r]), attr))
+            scores.append(float(col[r]))
+            aidx.append(a)
+    return cands, np.asarray(scores), np.asarray(aidx)
+
+
+def exhaustive_toptau(cache: StatsCache, params: Params, gamma_eval: float = 0.0, time_budget: float | None = None):
+    """EXH_TOPTAU (TopTauExhaustive): every size-k subset of every candidate of the exact top-tau views, no pruning.
+
+    Like :func:`exhaustive_naive`, the enumeration runs only when the rate of its first block says it fits
+    in ``time_budget``; otherwise its time is extrapolated (``info["estimated"]``, no selection).
+    """
+    t0 = time.perf_counter()
+    cands, scores, aidx = toptau_candidates(cache, params, gamma_eval)
+    budget = None if time_budget is None else max(time_budget - (time.perf_counter() - t0), 0.0)
+    best, best_set, total, extra = exhaustive_best(scores, aidx, params.k, params.lam, time_budget=budget)
+    sel = None if extra["estimated"] else [cands[i] for i in best_set]
+    return sel, {"pool_size": len(cands), "subsets": total, "F": best, **extra}

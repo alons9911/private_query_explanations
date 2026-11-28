@@ -8,7 +8,7 @@
 #        scripts/shards_status.sh new     (running time on the 15 new refinement pairs: 6 shards new-<n>)
 cd "$(dirname "$0")/.."
 n_done=0
-if [ "${1:-}" = "rt" ] || [ "${1:-}" = "pv" ]; then   # rt: running-time rerun (plan_runtime_shards.py);
+if [ "${1:-}" = "rt" ] || [ "${1:-}" = "pv" ] || [ "${1:-}" = "tt" ]; then   # rt: running-time rerun (plan_runtime_shards.py);
   g=$1                                                  # pv: its preview (plan_preview_shards.py)
   n_all=$(ls scripts/shards/$g-*.jobs | wc -l)
   for f in $(ls scripts/shards/$g-*.jobs | sort -V); do

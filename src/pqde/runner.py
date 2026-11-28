@@ -14,6 +14,8 @@ OPT            greedy over the candidates of every view (exact optimum, no view 
 SINGLE_STAGE   one private selection over the candidates of every view (no view stage)
 EXH_ALL        exhaustive optimum over the candidates of every view, top-k-per-attribute pruning
 EXH_NAIVE      exhaustive optimum over the candidates of every view, no pruning
+EXH_TOPTAU     exhaustive optimum over every candidate of the exact top-tau views, no pruning
+               (not in METHODS: run by configurations that list it in defaults.runtime_methods)
 =============  =============================================================
 
 PRIV_EXPL, B1, B2 and B3 use the original (direct) route; only OPT_PRIV_EXPL
@@ -46,7 +48,7 @@ import numpy as np
 
 from . import timeouts
 from .algorithm import Params, explain
-from .baselines import b1, b2, b3, exhaustive_naive, opt_all, single_stage
+from .baselines import b1, b2, b3, exhaustive_naive, exhaustive_toptau, opt_all, single_stage
 from .data.encode import EncodedDataset
 from .stats import StatsCache, build_cache
 from .views import View
@@ -58,9 +60,10 @@ OPT_ROUTE = {"mode": "grouped", "rep": "general", "hist": "lazy"}
 NO_VIEW_ROUTE = {"mode": "direct", "rep": "none", "hist": "lazy"}
 
 
-def runtime_methods(naive: bool) -> tuple[str, ...]:
-    """The methods of a running-time point; EXH_NAIVE only where ``naive`` (the k sweep, the default point)."""
-    return tuple(m for m in METHODS if naive or m != "EXH_NAIVE")
+def runtime_methods(naive: bool, methods=None) -> tuple[str, ...]:
+    """The methods of a running-time point (``methods``: defaults.runtime_methods of the configuration, else
+    METHODS); EXH_NAIVE only where ``naive`` (the k sweep, the default point)."""
+    return tuple(m for m in (methods or METHODS) if naive or m != "EXH_NAIVE")
 
 
 @dataclass
@@ -84,6 +87,10 @@ def _run_on_cache(method: str, cache: StatsCache, params: Params, rng, gamma_eva
         return [(x.view, x.attr) for x in single_stage(cache, params, rng)], {}
     if method == "EXH_ALL":
         sel, info = b2(cache, params, gamma_eval, pool="all", return_info=True, time_budget=stop)
+        return sel, {"pool": info["pool_size"], "subsets": info["subsets"], "estimated": info["estimated"],
+                     "estimated_seconds": info.get("estimated_seconds")}
+    if method == "EXH_TOPTAU":
+        sel, info = exhaustive_toptau(cache, params, gamma_eval, time_budget)
         return sel, {"pool": info["pool_size"], "subsets": info["subsets"], "estimated": info["estimated"],
                      "estimated_seconds": info.get("estimated_seconds")}
     if method == "EXH_NAIVE":

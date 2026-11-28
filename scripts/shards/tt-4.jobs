@@ -1,0 +1,20 @@
+# SUPPLEMENTARY run: TopTauExhaustive without pruning (EXH_TOPTAU) + PEEQ and OPT, E4 sweeps k and tau;
+# run with CONFIG=configs/experiments_toptau.yaml (user, 2026-11-28).
+# Estimated makespan 5.0 h (4 jobs at a time), longest job first.
+e4 L4 tau
+e4 ACS_Q2C2 tau
+e4 ACS_Q4C7 tau
+e4 ACS_Q3C4 tau
+e4 ACS_Q3C5 tau
+e4 ACS_Q3C6 tau
+e4 ACS_Q2C2 k
+e4 ACS_Q1C2 tau
+e4 ACS_Q1C1 tau
+e4 ACS_Q4C8 tau
+e4 ACS_Q4C7 k
+e4 ACS_Q3C4 k
+e4 ACS_Q3C5 k
+e4 EC3 k
+e4 EH2 tau
+e4 EH1 k
+e4 EH2 k
