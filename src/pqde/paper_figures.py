@@ -248,7 +248,8 @@ def fig_runtime_grid(raw_path: Path | None = None) -> Path:
     limit = float(json.loads((RES / "e4" / "metadata.json").read_text()).get("timeout_s", 60)) \
         if (RES / "e4" / "metadata.json").exists() else 60.0
     dss = _datasets(pts)
-    sweeps = [s for s in SWEEPS if s[0] in set(pts.sweep)]
+    keep = os.environ.get("PQDE_RT_SWEEPS")  # e.g. k,data_fraction,view_fraction,tau (eps, gamma: no effect on time)
+    sweeps = [s for s in SWEEPS if s[0] in set(pts.sweep) and (not keep or s[0] in keep.split(","))]
     # PQDE_RT_SCALE=linear: a linear y axis of its own in every panel but k (log: the exhaustive searches),
     # so that the growth of the other methods shows; default: log, one y axis per row
     linear = os.environ.get("PQDE_RT_SCALE", "log") == "linear"

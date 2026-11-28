@@ -20,6 +20,7 @@ The exhaustive search over all candidates enumerates as many sets, since the pru
 Without the pruning, the search finishes at $k \le 2$ ($10$\,s per pair at $k=2$, at most $36$\,s); from $k=3$ it exceeds the limit, and its time extrapolated from the rate of its first block is about eight hours at $k=3$ and $5{,}000$ years at $k=5$ (median over the pairs; $52$ years on COMPAS, $10^5$ on Tax).
 At $k=7$, \Btwo{} takes about $27$ minutes at $11$ attributes, at the limit ($20$ of its $69$ runs exceed it), and exceeds it from $12$.
 From a tenth of the views to all of them, the time of \sys{}, \BF{} and \SingleStage{} grows $6.5$--$11\times$ (median $8.5\times$) and that of \sysopt{} at most $2.2\times$ (median $1.3\times$); \sysopt{} grows instead with $\tau$ ($3.5\times$ from $\tau=15$ to $\tau=|\mathcal{P}|$, against $1.3\times$ for \sys{}), since it builds the histograms of every retained view.
+The privacy budget $\epsilon$ and the smoothing $\gamma$ change only the noise, not what is computed: along their ranges the time of every method varies by about $10\%$ (the median ratio of its largest to its smallest time on a curve), with no trend, and we omit them from Figure~\ref{fig:scalability}.
 With a tenth of the views \sysopt{} saves nothing (on $8$ of the $36$ pairs it is up to $16\%$ slower than \sys{}).
 
 % Erica's 10 pairs (not in the chapter until the user decides): the same picture -- OptPEEQ 4.7-13.7x faster
