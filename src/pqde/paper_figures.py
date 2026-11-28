@@ -541,3 +541,112 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+# ----------------------------------------------------------------------------- compact case studies (one figure)
+
+ATTR_SHORT = {"OCCP_bucket": "occupation", "RAC1P": "race", "RELP": "relationship", "SCHL": "education",
+              "WKHP": "hours", "COW": "worker class", "decile_score": "risk score", "priors_count": "priors",
+              "maritalStatus": "marital status", "is_recid": "reoffended", "hoursPerWeek": "hours"}
+CASE_TITLE = {"A2": "A2 (Adult)", "ACS_Q1C1": "S1 (ACSIncome)", "CO1": "C1 (COMPAS)"}
+BIN_SHORT = {"Prof-specialty": "Prof-spec.", "Exec-managerial": "Exec-man.", "Adm-clerical": "Adm-cler.",
+             "Tech-support": "Tech-supp.", "Married-civ-spouse": "Married", "Married-spouse-absent": "Married-abs.", "Never-married": "Never-marr.",
+             "Not-in-family": "Not-in-fam.", "Other-relative": "Other-rel.", "Self-emp-not-inc": "Self-emp.",
+             "Self-emp-inc": "Self-emp-inc", "reference-person": "householder", "biological-child": "child",
+             "unmarried-partner": "partner", "housemate-roommate": "roommate", "some college": "some coll.",
+             "African-American": "Afr.-Amer.", "other-race": "other", "two-or-more": "two+"}
+
+
+def _short_view(view: str) -> str:
+    import re
+    parts = []
+    for cond in str(view).split(" AND "):
+        m = re.match(r"\s*(\w+)\s*=\s*'?([^']*)'?\s*$", cond)
+        parts.append(f"{ATTR_SHORT.get(m.group(1), m.group(1))}={m.group(2)}" if m else cond)
+    return ", ".join(parts)
+
+
+def _kfmt(v, _):
+    v = float(v)
+    if abs(v) >= 1e6:
+        return f"{v / 1e6:g}M"
+    if abs(v) >= 1e3:
+        return f"{v / 1e3:g}k"
+    return f"{v:g}"
+
+
+def fig_cases_compact(mode: str = "pair", top: int | None = None, width: float = 7.05, name: str = "cases",
+                      cases=("A2", "ACS_Q1C1", "CO1"), max_bins: int = 6, subdir: str = "e1") -> Path:
+    """All case studies in one figure, one row per pair and one small panel per explanation of release 1.
+
+    mode="pair": the released histograms of Q1 and Q2 side by side, exact counts as ticks.
+    mode="change": one bar per bin, the released change Q2 - Q1 (orange: more in Q2, blue: more in Q1),
+    the exact change as a tick.  ``top``: only the explanations in the most releases (in release order).
+    The number of releases with the same explanation is a badge in the corner of each panel.
+    """
+    reps = {pid: json.loads((RES / subdir / pid / "report.json").read_text()) for pid in cases}
+    sel = {}
+    for pid, rep in reps.items():
+        ex = rep["explanations"]
+        if top:
+            keep = sorted(ex, key=lambda e: -e.get("share_of_releases_with_this_explanation", 0))[:top]
+            ex = [e for e in ex if e in keep]
+        sel[pid] = ex
+    ncol = max(len(v) for v in sel.values())
+    panel_h = 1.05 if mode == "pair" else 0.95
+    fig, axes = plt.subplots(len(cases), ncol, figsize=(width, panel_h * len(cases) + 0.35), squeeze=False)
+    for i, pid in enumerate(cases):
+        n_rel = reps[pid].get("releases", {}).get("n", 1)
+        for j in range(ncol):
+            ax = axes[i, j]
+            if j >= len(sel[pid]):
+                ax.axis("off")
+                continue
+            e = sel[pid][j]
+            bins = e["bins"]
+            h1, h2 = np.asarray(e["noisy_h1"]), np.asarray(e["noisy_h2"])
+            x1, x2 = np.asarray(e["exact_h1"]), np.asarray(e["exact_h2"])
+            nz = np.flatnonzero((x1 + x2) > 0)
+            order = np.sort(nz[np.argsort(-np.abs(x1 - x2)[nz], kind="stable")[:max_bins]])
+            xs = np.arange(len(order))
+            if mode == "pair":
+                ax.bar(xs - 0.2, h1[order], 0.38, color=P.BLUE, label="$Q_1$ (released)")
+                ax.bar(xs + 0.2, h2[order], 0.38, color=P.ORANGE, label="$Q_2$ (released)")
+                ax.plot(xs - 0.2, x1[order], ls="none", marker="_", color=P.INK, ms=4.5, mew=0.9)
+                ax.plot(xs + 0.2, x2[order], ls="none", marker="_", color=P.INK, ms=4.5, mew=0.9,
+                        label="exact (not released)")
+            else:
+                d = (h2 - h1)[order]
+                ax.bar(xs, d, 0.62, color=[P.ORANGE if v >= 0 else P.BLUE for v in d])
+                ax.plot(xs, (x2 - x1)[order], ls="none", marker="_", color=P.INK, ms=6, mew=0.9)
+                ax.axhline(0, color=P.INK, lw=0.5)
+            ax.set_xticks(xs)
+            ax.set_xticklabels([BIN_SHORT.get(str(bins[i_]), _bin_label(bins[i_], 12)) for i_ in order], rotation=35,
+                               ha="right", rotation_mode="anchor", fontsize=4.8)
+            ax.tick_params(axis="x", length=0, pad=1)
+            ax.tick_params(axis="y", labelsize=4.8, length=1.5, pad=1)
+            ax.yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(nbins=3))
+            ax.yaxis.set_major_formatter(FuncFormatter(_kfmt))
+            ax.grid(axis="x", visible=False)
+            view = _short_view(e["view"])
+            if len(view) > 17 * (width - 0.4) / ncol:  # narrow panels: one condition per line
+                view = view.replace(", ", ",\n")
+            ax.set_title(f"{view}\nby {ATTR_SHORT.get(e['attr'], e['attr'])}",
+                         fontsize=5.0, pad=1.5, loc="left", linespacing=1.05)
+            if n_rel > 1 and "share_of_releases_with_this_explanation" in e:
+                ax.set_title(f"{round(e['share_of_releases_with_this_explanation'] * n_rel)}/{n_rel}",
+                             fontsize=4.8, pad=1.5, loc="right", color=P.MUTED)
+            if j == 0:
+                ax.set_ylabel(CASE_TITLE.get(pid, pid) + ("\ncount" if mode == "pair" else "\nchange"),
+                              fontsize=5.6)
+    if mode == "pair":
+        h, lab = axes[0, 0].get_legend_handles_labels()
+    else:
+        from matplotlib.patches import Patch
+        h = [Patch(color=P.ORANGE), Patch(color=P.BLUE),
+             matplotlib.lines.Line2D([], [], ls="none", marker="_", color=P.INK, ms=6, mew=0.9)]
+        lab = ["more in $Q_2$ (released)", "more in $Q_1$ (released)", "exact change (not released)"]
+    fig.tight_layout(h_pad=0.35, w_pad=0.25, rect=(0, 0, 1, 1 - 0.22 / fig.get_figheight()))
+    fig.legend(h, lab, loc="upper center", ncol=3, bbox_to_anchor=(0.5, 1.0), fontsize=5.6, handlelength=1.2,
+               frameon=False)
+    return _save(fig, name)
