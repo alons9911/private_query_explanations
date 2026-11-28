@@ -23,7 +23,7 @@ from .. import plotting
 from ..pairs import pair_on_sample, resolve_pair
 from ..runner import runtime_methods, time_methods
 from ..views import enumerate_views
-from .common import (Checkpoint, make_params, out_dir, pairs_by_dataset, point_key, read_raw, resume_runs,
+from .common import (Checkpoint, machine, make_params, out_dir, pairs_by_dataset, point_key, read_raw, resume_runs,
                      run_metadata, run_state, write_csv, write_json, write_raw)
 
 EXP = "e4"
@@ -122,7 +122,7 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
                                          "build_s": out.build_s, "mech_s": out.mech_s, "total_s": out.total_s,
                                          "timeout": out.timeout, "inferred": bool(out.extra.get("estimated", False)),
                                          "b2_subsets": out.extra.get("subsets", out.extra.get("subsets_total")),
-                                         "b2_estimated_s": out.extra.get("estimated_seconds")})
+                                         "b2_estimated_s": out.extra.get("estimated_seconds"), **machine()})
                         save(rows)  # checkpoint (at most once a minute) after every run of the point
                     print(f"    {sweep}={val}: " + "  ".join(
                         f"{m} {np.median([x['total_s'] for x in rows if x['pair'] == pid and x['sweep'] == sweep and x['value'] == val and x['method'] == m]):.3g}s"

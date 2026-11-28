@@ -22,7 +22,7 @@ from ..baselines import b2_candidates, exhaustive_best
 from ..pairs import resolve_pair
 from ..runner import METHODS, ORIGINAL_ROUTE, OPT_ROUTE, run_method, runtime_methods, time_methods
 from ..stats import build_cache
-from .common import (make_params, out_dir, pairs_by_dataset, read_raw, run_metadata, to_markdown, write_csv,
+from .common import (machine, make_params, out_dir, pairs_by_dataset, read_raw, run_metadata, to_markdown, write_csv,
                      write_json, write_raw)
 
 EXP = "e5"
@@ -111,7 +111,8 @@ def run(cfg: dict, pairs: list[str] | None = None, base=None, quick: bool = Fals
                                     "build_s": out.build_s, "mech_s": out.mech_s, "total_s": out.total_s,
                                     "timeout": out.timeout, "inferred": bool(out.extra.get("estimated", False)),
                                     "estimated_s": out.extra.get("estimated_seconds"),
-                                    "subsets": out.extra.get("subsets", out.extra.get("subsets_total"))})
+                                    "subsets": out.extra.get("subsets", out.extra.get("subsets_total")),
+                                    **machine()})
             # (b) identical releases
             id_rows.append({"dataset": ds_name, "pair": pid,
                             **_identical(ds, q1, q2, params, seed, 2 if quick else int(e.get("identity_runs", 10)))})
