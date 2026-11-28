@@ -2,8 +2,10 @@
 
 Keeps the state of the work outside the chat context.
 
-## 2026-11-27 evening: HANDOFF (the user sees this session in English; a new session may continue)
-Read this section first.  The user writes in Hebrew and wants answers in Hebrew.
+## 2026-11-27 evening: HANDOFF (a new session may continue)
+Read this section first.  The user writes in Hebrew and wants answers in Hebrew.  WRITE THE CHAT REPLIES
+IN HEBREW: the "English display" was not a platform translation -- the replies themselves were written in
+English (file captions written in Hebrew showed in Hebrew; screenshot 2026-11-28).
 * Paper: paper/ = the user's Overleaf version (zip "Private_Query_Refinement_5", copied 2026-11-27)
   + our refinement-only experiments chapter, figures, appendix tables, 3 bib entries (COMPAS, LSAC, MEPS),
   and `\input{sections/pairs_table}` in the appendix.  User: do NOT change sections/introduction.tex or
