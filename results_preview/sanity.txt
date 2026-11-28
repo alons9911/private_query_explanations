@@ -1,0 +1,21 @@
+rows 76470, points 3132, pairs 46
+A. no machine column (rows written by the older code)
+B. points whose runs shift together by > 15% (machine or load change): 458 of 3120
+C. curves (k, eps, tau, gamma) whose build time is not flat (> 15%): 64 of 170
+D. OptPEEQ speedup: min 0.84, median 7.28; points where OptPEEQ is slower: 8
+D. NonPrivate / PEEQ: median 1.00; outside [0.9, 1.1]: 2
+D. Exhaustive (all views) / Exhaustive where the enumeration dominates: median 0.99, range 0.78-1.06; outside [0.8, 1.25]: 2
+D. unpruned faster than pruned (k >= 2): 0 of 48 points
+D. identical releases: 120/120; pairs with a difference: 0
+D. run-to-run CV (runs > 0.5 s): median 0.032, 90th pct 0.103; > 15%: 381 of 10664
+E. points in both runs: 6667; ratio of medians (this / other): median 0.91, 10-90% 0.71-1.12; deviating from their curve > 25%: 87
+
+121 flags written to results_preview/sanity_flags.csv
+check
+B runs of a point shift together                 15
+C build time not flat along the curve            64
+D NonPrivate differs from PEEQ by > 10%           2
+D OptPEEQ slower than PEEQ                        8
+D run-to-run spread > 15%                        15
+D the two exhaustive searches differ by > 25%     2
+E deviates from the other run                    15

@@ -1,0 +1,3 @@
+| dataset | pair | runs | identical_runs | max_abs_use_diff |
+|---|---|---|---|---|
+| law | L4 | 3 | 3 | 0 |

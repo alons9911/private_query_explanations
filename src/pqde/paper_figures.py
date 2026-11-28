@@ -22,8 +22,10 @@ from matplotlib.ticker import FuncFormatter, LogLocator, NullFormatter  # noqa: 
 from . import plotting as P  # noqa: E402  (palette and base style)
 from .experiments import e4_scalability  # noqa: E402
 
+import os  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[2]
-RES = ROOT / "results"
+RES = ROOT / os.environ.get("PQDE_RESULTS", "results")  # e.g. results_preview (provisional runs)
 
 
 def _method_names() -> dict[str, str]:
@@ -37,7 +39,7 @@ def _method_names() -> dict[str, str]:
 
 
 NAME = _method_names()
-OUT = ROOT / "paper" / "figures" / "exp"
+OUT = ROOT / os.environ.get("PQDE_FIG_OUT", "paper/figures/exp")
 
 DS_ORDER = ["adult", "acsincome", "tax", "compas", "law", "meps"]  # refinement pairs only (2026-11-27)
 # CQA and contrast datasets, out of the experiments for now: "tax_dirty", "hospital", "ipums"
@@ -203,12 +205,14 @@ def fig_view_stage() -> Path:
 SWEEPS = [("k", r"$k$", False), ("data_fraction", r"$N$ (fraction)", False), ("epsilon", r"$\epsilon$", True),
           ("view_fraction", r"$|\mathcal{P}|$ (fraction)", False), ("tau", r"$\tau$", True),
           ("gamma_mult", r"$\gamma$ / Eq. (14)", True)]
-RT_METHODS = ("PRIV_EXPL", "B1", "B2", "OPT_PRIV_EXPL")  # B3 is not used in the paper
+# B3 is not used in the paper; PQDE_RT_METHODS (comma-separated) overrides the methods drawn
+RT_METHODS = tuple(os.environ.get("PQDE_RT_METHODS", "PRIV_EXPL,B1,B2,OPT_PRIV_EXPL").split(","))
 RT_LABEL = {"PRIV_EXPL": NAME["sys"], "B1": NAME["Bone"], "B2": NAME["Btwo"], "B3": NAME["Bthree"],
-            "OPT_PRIV_EXPL": NAME["sysopt"]}
+            "OPT_PRIV_EXPL": NAME["sysopt"], "OPT": NAME["BF"], "SINGLE_STAGE": NAME["SingleStage"],
+            "EXH_ALL": NAME["Btwo"] + " (all views)", "EXH_NAIVE": NAME["Btwo"] + " (no pruning)"}
 
 
-def _rt_panel(ax, sub: pd.DataFrame, x: str, logx: bool, limit: float):
+def _rt_panel(ax, sub: pd.DataFrame, x: str, logx: bool, limit: float, logy: bool = True):
     for m in RT_METHODS:
         d = sub[sub.method == m].sort_values(x)
         if d.empty:
@@ -224,7 +228,10 @@ def _rt_panel(ax, sub: pd.DataFrame, x: str, logx: bool, limit: float):
             ax.plot(xs, ys, color=c, linestyle=":", linewidth=1.0)
             ax.plot(d[x][to], [limit] * int(to.sum()), linestyle="none", marker="x", color=c, markersize=5,
                     markeredgewidth=1.4, label=f"{RT_LABEL[m]} timeout")
-    ax.set_yscale("log")
+    if logy:
+        ax.set_yscale("log")
+    else:
+        ax.set_ylim(bottom=0)
     if logx:
         _logx(ax, sub[x])
 
@@ -241,9 +248,13 @@ def fig_runtime_grid(raw_path: Path | None = None) -> Path:
     limit = float(json.loads((RES / "e4" / "metadata.json").read_text()).get("timeout_s", 60)) \
         if (RES / "e4" / "metadata.json").exists() else 60.0
     dss = _datasets(pts)
-    sweeps = [s for s in SWEEPS if s[0] in set(pts.sweep)]
+    keep = os.environ.get("PQDE_RT_SWEEPS")  # e.g. k,data_fraction,view_fraction,tau (eps, gamma: no effect on time)
+    sweeps = [s for s in SWEEPS if s[0] in set(pts.sweep) and (not keep or s[0] in keep.split(","))]
+    # PQDE_RT_SCALE=linear: a linear y axis of its own in every panel but k (log: the exhaustive searches),
+    # so that the growth of the other methods shows; default: log, one y axis per row
+    linear = os.environ.get("PQDE_RT_SCALE", "log") == "linear"
     fig, axes = plt.subplots(len(dss), len(sweeps), figsize=(7.05, 1.12 * len(dss) + 0.35), squeeze=False,
-                             sharey="row")
+                             sharey=False if linear else "row")
     plain = FuncFormatter(lambda v, _: f"{v:g}")
     xticks = {"epsilon": [0.1, 1, 10], "tau": [5, 50, 500], "gamma_mult": [0, 0.1, 1, 10]}
     for i, ds in enumerate(dss):
@@ -252,10 +263,17 @@ def fig_runtime_grid(raw_path: Path | None = None) -> Path:
             sub = pts[(pts.dataset == ds) & (pts.sweep == sw)].rename(columns={"value": sw})
             if sw == "data_fraction":
                 sub = sub[sub[sw] <= 1.0]
-            _rt_panel(ax, sub, sw, logx, limit)
-            ax.axhline(limit, color=P.MUTED, linewidth=0.5, linestyle=":", zorder=0)
-            ax.yaxis.set_major_formatter(plain)
-            ax.yaxis.set_minor_formatter(NullFormatter())
+            logy = not linear or sw == "k"
+            if os.environ.get("PQDE_RT_EXH_K_ONLY") and sw != "k":  # exhaustive searches in the k column only
+                sub = sub[~sub.method.isin(["B2", "EXH_ALL", "EXH_NAIVE"])]
+            _rt_panel(ax, sub, sw, logx, limit, logy=logy)
+            if logy:
+                ax.axhline(limit, color=P.MUTED, linewidth=0.5, linestyle=":", zorder=0)
+                ax.yaxis.set_major_formatter(plain)
+                ax.yaxis.set_minor_formatter(NullFormatter())
+            else:
+                ax.yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(nbins=4))
+                ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}"))
             if sw in xticks:
                 ax.set_xticks(xticks[sw])
                 ax.xaxis.set_major_formatter(plain)
@@ -279,8 +297,9 @@ def fig_runtime_grid(raw_path: Path | None = None) -> Path:
         subs = (1.0,) if hi / max(lo, 1e-12) > 1e4 else (1.0, 3.0)
         axes[i, 0].yaxis.set_major_locator(LogLocator(base=10, subs=subs, numticks=12))
         axes[i, 0].yaxis.set_major_formatter(plain)
-    fig.tight_layout(h_pad=0.25, w_pad=0.3, rect=(0, 0, 1, 0.975))
-    fig.legend(handles, labels, loc="upper center", ncol=len(labels), bbox_to_anchor=(0.5, 1.01))
+    rows = 1 if len(labels) <= 7 else 2  # many methods: the legend takes two rows
+    fig.tight_layout(h_pad=0.25, w_pad=0.3, rect=(0, 0, 1, 0.975 if rows == 1 else 0.95))
+    fig.legend(handles, labels, loc="upper center", ncol=-(-len(labels) // rows), bbox_to_anchor=(0.5, 1.01))
     return _save(fig, "runtime_grid")
 
 
@@ -293,15 +312,16 @@ def fig_runtime_methods() -> Path:
     g = per_pair.groupby(["dataset", "method"], as_index=False).agg(total_s=("total_s", "mean"),
                                                                     timeout=("timeout", "mean"))
     dss = _datasets(g)
-    methods = ["PRIV_EXPL", "OPT_PRIV_EXPL", "B1", "B2", "B3"]
+    methods = ([m for m in RT_METHODS if m in set(g.method)] if "PQDE_RT_METHODS" in os.environ
+               else ["PRIV_EXPL", "OPT_PRIV_EXPL", "B1", "B2", "B3"])
     growth = _drop(pd.read_csv(RES / "e5" / "raw" / "b2_growth.csv"))
     fig, (a, b) = plt.subplots(1, 2, figsize=(7.05, 1.75), gridspec_kw={"width_ratios": [1.9, 1]})
-    w = 0.16
+    w = 0.8 / len(methods)
     x = np.arange(len(dss))
     for i, m in enumerate(methods):
         vals = [float(g[(g.dataset == d) & (g.method == m)].total_s.mean()) for d in dss]
         tos = [float(g[(g.dataset == d) & (g.method == m)].timeout.mean()) for d in dss]
-        bars = a.bar(x + (i - 2) * w, vals, w * 0.88, color=P.METHOD_COLORS[m], label=RT_LABEL[m])
+        bars = a.bar(x + (i - (len(methods) - 1) / 2) * w, vals, w * 0.88, color=P.METHOD_COLORS[m], label=RT_LABEL[m])
         for bx, t in zip(bars, tos):
             if t > 0:
                 bx.set_hatch("////")
@@ -310,7 +330,8 @@ def fig_runtime_methods() -> Path:
     a.set_xticks(x)
     a.set_xticklabels([DS_TITLE[d].split(" (")[0] for d in dss])
     a.set_ylabel("end-to-end time (s)")
-    a.legend(ncol=5, loc="upper center", bbox_to_anchor=(0.5, 1.2), handlelength=1.2, columnspacing=0.9)
+    a.legend(ncol=min(len(methods), 5), loc="upper center", bbox_to_anchor=(0.5, 1.2 if len(methods) <= 5 else 1.45),
+             handlelength=1.2, columnspacing=0.9)
     a.grid(axis="x", visible=False)
     colours = [P.BLUE, P.ORANGE, P.AQUA, P.YELLOW, P.MAGENTA, "#6250d6"]
     markers = ["o", "s", "^", "D", "P", "v"]
