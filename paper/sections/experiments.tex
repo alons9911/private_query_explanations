@@ -16,7 +16,7 @@ Our answers:
 \begin{table}[t]
 \centering
 \small
-\caption{Datasets and the source of their query pairs.}
+\caption{Datasets and the source of their query pairs. $^\dagger$The copies of the Erica experiments, for running time only.}
 % (with the contrast pairs) On IPUMS-CPS $|\mathcal{P}|$ depends on the attribute each question removes.
 \label{tab:datasets}
 \setlength{\tabcolsep}{3pt}
@@ -30,6 +30,10 @@ Tax~\cite{BohannonFGJK07}        & 200{,}000   & 9  & 2{,}106 & 4  & ours \\
 COMPAS~\cite{compas-propublica}  & 11{,}757    & 10 & 407     & 5  & ours, groups of~\cite{ERICA} \\
 Law Students~\cite{lsac-wightman98} & 21{,}791 & 8  & 659     & 5  & ours \\
 MEPS~\cite{meps-hc181}           & 35{,}427    & 10 & 563     & 5  & ours \\
+\midrule
+Adult$^\dagger$                  & 32{,}561    & 10 & 1{,}144 & 3  & Erica experiments~\cite{ERICA} \\
+COMPAS$^\dagger$                 & 11{,}757    & 10 & 382     & 3  & Erica experiments~\cite{ERICA} \\
+Healthcare$^\dagger$             & 887         & 8  & 439     & 4  & Erica experiments~\cite{ERICA} \\
 % CQA and contrast pairs, out of the experiments for now (Setting column: CQA / contrast):
 % Tax-dirty~\cite{MahdaviAFMOST19} & 200{,}000   & 9  & 2{,}300 & CQA        & 3  & ours, rules~\cite{NiMZWLY24} \\
 % Hospital~\cite{rekatsinas2017}   & 1{,}000     & 10 & 502     & CQA        & 3  & ours \\
@@ -47,6 +51,7 @@ Table~\ref{tab:datasets} summarises the datasets and Table~\ref{tab:attributes} 
   \item \textbf{COMPAS}~\cite{compas-propublica}: ProPublica's $11{,}757$ defendants with their criminal history and risk scores, the dataset of the Erica experiments~\cite{ERICA}; we drop the identifying columns.
   \item \textbf{Law Students}~\cite{lsac-wightman98}: $21{,}791$ students of the LSAC bar-passage study, the dataset of~\cite{CSSM24}.
   \item \textbf{MEPS}~\cite{meps-hc181}: the $35{,}427$ respondents of the 2015 Medical Expenditure Panel Survey, with the attributes used in the fairness literature, among them the yearly number of medical visits (\texttt{UTILIZATION}) and expenditure (\texttt{TOTEXP}).
+  \item \textbf{The data of the Erica experiments}~\cite{ERICA}, for running time only: their copies of Adult (the $32{,}561$ records of the UCI training file) and COMPAS, and Healthcare, $887$ patients with their age group, race, county, income, number of children, smoking and complications.
   % CQA and contrast datasets, out of the experiments for now:
   % \item \textbf{Tax-dirty}~\cite{MahdaviAFMOST19}: Raha's dirty version of the same file.
   % \item \textbf{Hospital}~\cite{rekatsinas2017}: HoloClean's $1{,}000$-tuple file of hospital records with injected errors.
@@ -60,7 +65,6 @@ Every pair is a refinement: $Q_2$ changes predicates of $Q_1$ so that its output
   \item \emph{From Erica}: ten pairs on ACSIncome~\cite{LMSJ23} and ten from the Erica experiments on Adult, COMPAS and Healthcare~\cite{ERICA}, with Erica's queries, constraints and minimal refinements. Only the ACSIncome pairs serve for quality as well: we measure quality only when both outputs hold more than $1{,}000$ tuples (at least $1{,}471$ on ACSIncome, at most $874$ in the smaller output of the other ten). Below that, the bars of a release are comparable to its noise: Laplace noise of scale $2k/\epsilon_H=30$ per bar at the defaults, a standard deviation of about $42$.
   \item \emph{Ours}: $26$ pairs on Adult, Tax, COMPAS, Law Students and MEPS. A base query has at most two conditions and an output of at least $1{,}500$ tuples; a constraint asks for a minimum share of a group, between its share in the base queries and in the data; $Q_2$ is a minimal refinement in Erica's sense (no other refinement that satisfies the constraint is closer to $Q_1$ in every condition), computed with our implementation of Erica's search. On COMPAS the constraints use the groups of the Erica experiments.
 \end{itemize}
-\alon{Healthcare and the Erica copies of Adult and COMPAS are not in Table~\ref{tab:datasets} yet.}
 % CQA and contrast pairs, out of the experiments for now (first line of the paragraph: "The pairs cover three settings (...; Section 6.2 details four of them):"):
 %   \item \emph{Consistent query answering (CQA)}: $Q_2=Q_\Sigma$ is the consistent answer of a selection $Q_1$ under subset repair (Definition~\ref{def:consistent-answer}), i.e.\ $Q_1(D)$ minus the tuples in a conflict~\cite{chomicki2004}; the selections are such that $Q_\Sigma$ drops $10$--$90\%$ of the output. On Tax-dirty we use seven of the eight Tax rules of Ni et~al.~\cite{NiMZWLY24}, which put $3.9\%$ of the tuples in conflict, unevenly across states; the eighth, $\texttt{AreaCode}\to\texttt{State}$, is meant for repairing cells and under subset repair would delete $82\%$ of the tuples. On Hospital we use three functional dependencies.
 %   \item \emph{Contrasts}: $Q_1$ and $Q_2$ select two disjoint groups, in the $17$ questions of DPXPlain~\cite{TaoGMR22} on IPUMS-CPS. We remove the attribute that defines the groups from the views and the explanation attributes, since it separates them by definition.
