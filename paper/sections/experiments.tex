@@ -71,24 +71,24 @@ Every pair is a refinement: $Q_2$ changes predicates of $Q_1$ so that its output
 
 \paragraph{Baseline and algorithm variants.}
 No earlier system explains the difference between two query outputs privately with histograms; DPXPlain~\cite{TaoGMR22} explains the difference between two group aggregates with predicates, which our measures cannot score.
-Our baseline is the non-private \emph{optimum} (\BF{}): the best $k$ candidates over all views. Trying every set is infeasible, but greedy selection over all candidates computes it exactly (Proposition~\ref{prop:greedy-exact}).
-The variants of \sys{} are:
+Our baseline is the non-private \emph{optimum} (\BF{}): the $k$ candidates of all views with the largest $F_\lambda$, the objective of the explanation stage ($F_w$ of Definition~\ref{def:setobj} with $w_j=\lambda^{j-1}$, over $\HD_\gamma$). It has no view stage and ignores $\Use$. Trying every set is infeasible, but greedy selection over all candidates computes it exactly (Proposition~\ref{prop:greedy-exact}).
+The variants of \sys{} and the other methods are below; \sys{} selects views by $\Use$ and then explanations by $\HD_\gamma\cdot\DivS$, the greedy form of $F_\lambda$.
 {\emergencystretch=2em  % long method names: let these lines stretch instead of overflowing
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
-  \item \Bone{}: no noise (exact top-$\tau$ views, then greedy by $\HD_\gamma\cdot\DivS$).
-  \item \SingleStage{}: no view stage; Algorithm~\ref{alg:topk} over all candidates with $\epsilon_P+\epsilon_S$ for the selection. It ignores representativeness and coverage.
-  \item \RandomExpl{}: $k$ uniformly drawn candidates.
-  \item \sysopt{} (running time only): computes the statistics of all views on the same attributes in one pass over $D$ ($21$ passes instead of $1{,}144$ on Adult) and otherwise runs as \sys{}.
-  \item \Btwo{} (running time only): replaces the greedy rounds by exhaustive search over every candidate of the retained views, which returns the greedy set.
-  \item \TopKExh{} (running time only): exhaustive search over the candidates of every view, but only the $k$ best of each attribute, which loses nothing: a set that used a worse candidate of an attribute could swap it for an unused better one.
-  \item \FullExh{} (running time only): exhaustive search over every candidate of every view.
+  \item \Bone{}: both stages of \sys{} without noise: the exact top-$\tau$ views by $\Use$, then greedy by $\HD_\gamma\cdot\DivS$.
+  \item \SingleStage{}: no view stage; Algorithm~\ref{alg:topk} over the candidates of all views, by $\HD_\gamma\cdot\DivS$ with $\epsilon_P+\epsilon_S$ for the selection. It ignores $\Use$, that is, representativeness and coverage.
+  \item \RandomExpl{}: $k$ uniformly drawn candidates, with no utility.
+  \item \sysopt{} (running time only): \sys{} with the same stages and utilities, computing the statistics of all views on the same attributes in one pass over $D$ ($21$ passes instead of $1{,}144$ on Adult).
+  \item \Btwo{} (running time only): the view stage of \Bone{} (exact top-$\tau$ by $\Use$), then the explanation stage by exhaustive search: the $k$ candidates of the retained views with the largest $F_\lambda$, which are the greedy set.
+  \item \TopKExh{} (running time only): the explanation stage only, like \BF{}: the $k$ candidates of all views with the largest $F_\lambda$, by exhaustive search over the $k$ best candidates of each attribute, which loses nothing: a set that used a worse candidate of an attribute could swap it for an unused better one.
+  \item \FullExh{} (running time only): as \TopKExh{}, by exhaustive search over every candidate of every view.
 \end{itemize}
-For running time we also time \BF{} and \SingleStage{}. The methods without a view stage (\BF{}, \SingleStage{}, \TopKExh{}, \FullExh{}) compute no Use; they build the histograms of every view instead.\par}
+For running time we also time \BF{} and \SingleStage{}. The methods without a view stage (\BF{}, \SingleStage{}, \TopKExh{}, \FullExh{}) compute no $\Use$; they build the histograms of every view instead.\par}
 
 \paragraph{Metrics.}
 All measures use exact histograms, so the release noise does not enter them.
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
-  \item \emph{ApproxRatio}: the ratio $F_\lambda(E)/F_\lambda(\BF{})$, where $F_\lambda$ is the objective $F_w$ of Definition~\ref{def:setobj} with $w_j=\lambda^{j-1}$, and $\HD_\gamma$ is at the pair's default $\gamma$ in every experiment, including those that vary $\epsilon$ or $\gamma$. It is the share of the best attainable difference score a release keeps; without smoothing it would reward changes in bins of a few tuples.
+  \item \emph{ApproxRatio}: the ratio $F_\lambda(E)/F_\lambda(\BF{})$, with $\HD_\gamma$ at the pair's default $\gamma$ in every experiment, including those that vary $\epsilon$ or $\gamma$. It is the share of the best attainable difference score a release keeps; without smoothing it would reward changes in bins of a few tuples.
   \item \emph{Precision@k}, the share of \BF{}'s (view, attribute) pairs in the release, is the usual measure of top-$k$ selection, but suits our setting poorly: many views are near-duplicates, such as a view and its specialization by one more condition, so a release can explain what \BF{} explains with different pairs.
   \item \emph{Attribute@k} therefore compares the explained attributes (multiset overlap divided by $k$), read against its chance level, the expected attribute@k of $k$ uniformly drawn candidates.
   \item \emph{Coverage}: the mean $\Cov$ (Eq.~\eqref{eq:coverage-proxy}) of the explained views, i.e.\ the output tuples in a view as a fraction of $|D|$; a view that holds few output tuples tells the analyst little.
