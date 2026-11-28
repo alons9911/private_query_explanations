@@ -739,6 +739,5 @@ def fig_candidates(seed: int = 0, max_bins: int = 6) -> Path:
                    columnspacing=0.8, frameon=False)
     out = ROOT / "paper" / "figures" / "candidates.pdf"
     fig.savefig(out, bbox_inches="tight", pad_inches=0.02)
-    fig.savefig(out.with_suffix(".preview.png"), dpi=200, bbox_inches="tight", pad_inches=0.02)
     plt.close(fig)
     return out
