@@ -3,7 +3,7 @@
 
 We evaluate the algorithm of Section~\ref{sec:solution}, \sys{}, on seven datasets and $40$ query refinements ($14$ from earlier work) and ask:
 (1)~do the explanations show an analyst something the queries and the constraint do not (Section~\ref{sec:usecase-results});
-(2)~how close do they come to the best non-private selection, and what limits them (Section~\ref{subsec:quality}); and (3)~what do they cost in time (Section~\ref{subsec:scalability}).
+(2)~how close do they come to the best non-private selection, and what limits them; and (3)~what do they cost in time (both in Section~\ref{subsec:quality}).
 Our answers:
 (1)~the explanations describe the tuples that a refinement adds or drops;
 (2)~averaged over the $36$ pairs on which we measure quality, a release at $\epsilon=1$ reaches $62\%$ of the objective of the best non-private selection and mostly explains the same attributes; restricting the selection to $\tau=15$ views costs more of the objective than the noise does, in exchange for views that hold more of the outputs;
@@ -312,7 +312,7 @@ Grouping values, as Erica does for occupations, could avoid this.
 Attribute@k falls on MEPS ($0.88\rightarrow0.61$) and COMPAS ($0.90\rightarrow0.77$), where the added attributes (education and mental health on MEPS, the violent-recidivism score on COMPAS) draw a quarter and a fifth of the explanations.
 % (with CQA) The ApproxRatio rises on ACSIncome ($0.48\rightarrow0.66$), Tax ($0.47\rightarrow0.74$), Tax-dirty and Hospital, and stays within $0.06$ elsewhere; ... on Tax-dirty, where \texttt{AreaCode} ($273$ values) takes a third of them at ten attributes, attribute@k falls from $0.82$ to $0.20$.
 
-\subsection{Running Time}
+\paragraph{Runtime.}
 \label{subsec:scalability}
 We time all methods on every pair, one parameter varied at a time: $|\Attrs|$ in Figure~\ref{fig:attrs} (top), the other parameters in Figure~\ref{fig:scalability}.
 Privacy adds no measurable time: \sys{} and \Bone{} are within $2\%$ of each other on every pair, since almost all of the time is the $\Use$ pass they share.
