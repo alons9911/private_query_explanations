@@ -107,6 +107,27 @@ def resume_rows(exp: str, name: str, base: Path | None, keys: tuple[str, ...]) -
     return rows, done
 
 
+_MACHINE: dict | None = None
+
+
+def machine() -> dict:
+    """Which machine measured a run: the boot id (it changes when the container restarts, so the runs of
+    one process share it) and the CPU model.  Recorded with every timed row, with the wall-clock time."""
+    global _MACHINE
+    if _MACHINE is None:
+        try:
+            boot = Path("/proc/sys/kernel/random/boot_id").read_text().strip()[:8]
+        except OSError:
+            boot = platform.node()
+        cpu = platform.processor() or ""
+        try:
+            cpu = next(l.split(":", 1)[1].strip() for l in open("/proc/cpuinfo") if l.startswith("model name"))
+        except (OSError, StopIteration):
+            pass
+        _MACHINE = {"machine": boot, "cpu": cpu}
+    return {**_MACHINE, "ts": round(time.time())}
+
+
 def resume_runs(exp: str, name: str, base: Path | None, keys: tuple[str, ...]) -> tuple[list[dict], dict]:
     """Like :func:`resume_rows`, for jobs that checkpoint after every run (repeat) of a point: the rows
     already measured and, per point, its rows, so that a relaunched job continues a point from its next
