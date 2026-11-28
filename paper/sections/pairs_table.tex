@@ -36,6 +36,20 @@ T1 & \texttt{Rate$\,\ge\,$6 $\wedge$ HasChild = Y} & \texttt{Rate$\,\ge\,$5 $\we
 T2 & \texttt{MaritalStatus = S $\wedge$ HasChild = N $\wedge$ Salary$\,\ge\,$50000} & \texttt{MaritalStatus = S $\wedge$ Salary$\,\ge\,$50000} & $\ge$30\% \texttt{HasChild = Y} \\
 T3 & \texttt{Salary$\,\ge\,$60000 $\wedge$ Rate$\,\le\,$2} & \texttt{Salary$\,\ge\,$60000 $\wedge$ Rate$\,\le\,$3.9} & $\ge$40\% \texttt{Rate$\,>\,$0} \\
 T4 & \texttt{Salary$\,\le\,$30000 $\wedge$ Rate$\,\le\,$2} & \texttt{Salary$\,\le\,$30000 $\wedge$ Rate$\,\le\,$3.1799998} & $\ge$50\% \texttt{Rate$\,>\,$0} \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\scriptsize
+\ContinuedFloat
+\caption{The query pairs of the experiments (continued).}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{4.4cm}@{}}
+\toprule
+ID & $Q_1$ & $Q_2$ & Constraint\\
 \midrule
 \multicolumn{4}{@{}p{\textwidth}@{}}{\emph{COMPAS~\cite{compas-propublica}: refinements under representation constraints on the attributes and groups of the Erica experiments~\cite{ERICA} (ours).}}\\[1pt]
 \textbf{C1} & \texttt{priors\_count$\,\ge\,$7} & \texttt{priors\_count$\,\ge\,$2} & $\ge$30\% \texttt{race = Caucasian} \\
