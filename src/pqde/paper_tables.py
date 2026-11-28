@@ -22,14 +22,14 @@ CASE_STUDIES = {"A2", "ACS_Q1C1", "CO1"}
 
 GROUPS = [
     ("adult", r"Adult~\cite{adult-uci}: refinements under representation constraints (ours); A2 is the running example of Section~\ref{sec:introduction}."),
-    ("acsincome", r"ACSIncome~\cite{DingHMS21}: queries, constraints and refinements of Erica~\cite{LMSJ23}."),
+    ("acsincome", r"ACSIncome~\cite{DingHMS21}: queries, constraints and refinements of Erica~\cite{LMSJ23}: the ten of its twelve query--constraint combinations whose refinement satisfies the constraints and, where Erica returns several refinements, the one that most changes the attributes the query and the constraints do not mention."),
     ("tax", r"Tax~\cite{BohannonFGJK07,MahdaviAFMOST19}: refinements under representation constraints (ours)."),
     ("compas", r"COMPAS~\cite{compas-propublica}: refinements under representation constraints on the attributes and groups of the Erica experiments~\cite{ERICA} (ours)."),
     ("law", r"Law Students~\cite{lsac-wightman98}: the dataset of~\cite{CSSM24}, refinements under representation constraints (ours)."),
     ("meps", r"MEPS~\cite{meps-hc181}: refinements under representation constraints (ours)."),
-    ("adult_erica", r"Adult, the copy of the Erica experiments~\cite{ERICA}: their queries, constraints and refinements; running time only."),
-    ("compas_erica", r"COMPAS, the copy of the Erica experiments~\cite{ERICA}: their queries, constraints and refinements; running time only."),
-    ("healthcare_erica", r"Healthcare, the data of the Erica experiments~\cite{ERICA}: their queries, constraints and refinements; running time only."),
+    ("adult_erica", r"Adult, the copy of the Erica experiments~\cite{ERICA} ($32{,}561$ tuples): their queries and constraints, and the stored refinement closest to $Q_1$; running time only."),
+    ("compas_erica", r"COMPAS, the copy of the Erica experiments~\cite{ERICA} ($11{,}757$ tuples): their queries and constraints, and the stored refinement closest to $Q_1$; running time only."),
+    ("healthcare_erica", r"Healthcare, the data of the Erica experiments~\cite{ERICA} ($887$ tuples): their queries and constraints, and the stored refinement closest to $Q_1$; running time only."),
 ]
 # pairs of the Erica experiments: running time only (their smaller output holds at most 874 tuples)
 RUNTIME_ONLY = ["EA1", "EA2", "EA4", "EC1", "EC2", "EC3", "EH1", "EH2", "EH3", "EH5"]
