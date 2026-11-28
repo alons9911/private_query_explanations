@@ -16,7 +16,7 @@ Our answers:
 \begin{table}[t]
 \centering
 \small
-\caption{Datasets and the source of their query pairs. $^\dagger$The copies of the Erica experiments, for running time only.}
+\caption{Datasets and the source of their query pairs.}
 % (with the contrast pairs) On IPUMS-CPS $|\mathcal{P}|$ depends on the attribute each question removes.
 \label{tab:datasets}
 \setlength{\tabcolsep}{3pt}
@@ -31,9 +31,6 @@ COMPAS~\cite{compas-propublica}  & 11{,}757    & 10 & 407     & 5  & ours, group
 Law Students~\cite{lsac-wightman98} & 21{,}791 & 8  & 659     & 5  & ours \\
 MEPS~\cite{meps-hc181}           & 35{,}427    & 10 & 563     & 5  & ours \\
 Healthcare~\cite{ERICA}          & 887         & 8  & 439     & 4  & Erica~\cite{ERICA} \\
-\midrule
-Adult$^\dagger$                  & 32{,}561    & 10 & 1{,}144 & 3  & Erica experiments~\cite{ERICA} \\
-COMPAS$^\dagger$                 & 11{,}757    & 10 & 382     & 3  & Erica experiments~\cite{ERICA} \\
 % CQA and contrast pairs, out of the experiments for now (Setting column: CQA / contrast):
 % Tax-dirty~\cite{MahdaviAFMOST19} & 200{,}000   & 9  & 2{,}300 & CQA        & 3  & ours, rules~\cite{NiMZWLY24} \\
 % Hospital~\cite{rekatsinas2017}   & 1{,}000     & 10 & 502     & CQA        & 3  & ours \\
@@ -52,7 +49,6 @@ Table~\ref{tab:datasets} summarises the datasets and Table~\ref{tab:attributes} 
   \item \textbf{Law Students}~\cite{lsac-wightman98}: $21{,}791$ students of the LSAC bar-passage study, the dataset of~\cite{CSSM24}.
   \item \textbf{MEPS}~\cite{meps-hc181}: the $35{,}427$ respondents of the 2015 Medical Expenditure Panel Survey, with the attributes used in the fairness literature, among them the yearly number of medical visits (\texttt{UTILIZATION}) and expenditure (\texttt{TOTEXP}).
   \item \textbf{Healthcare}~\cite{ERICA}: $887$ patients with their age group, race, county, income, number of children, smoking and complications, the dataset of the Erica experiments.
-  \item \textbf{The copies of the Erica experiments}~\cite{ERICA}, for running time only: Adult (the $32{,}561$ records of the UCI training file) and COMPAS.
   % CQA and contrast datasets, out of the experiments for now:
   % \item \textbf{Tax-dirty}~\cite{MahdaviAFMOST19}: Raha's dirty version of the same file.
   % \item \textbf{Hospital}~\cite{rekatsinas2017}: HoloClean's $1{,}000$-tuple file of hospital records with injected errors.
@@ -61,9 +57,9 @@ Table~\ref{tab:datasets} summarises the datasets and Table~\ref{tab:attributes} 
 Numeric attributes are bucketed into equal-width bins (e.g.\ ages by decade), missing and out-of-domain values into \texttt{NA} and \texttt{Other} bins, and views are conjunctions of at most two conditions.
 
 \paragraph{Query pairs.}
-Every pair is a refinement: $Q_2$ changes predicates of $Q_1$ so that its output meets a representation constraint that $Q_1$ violates. Table~\ref{tab:pairs} (appendix) lists all $46$ pairs; Section~\ref{sec:usecase-results} details three.
+Every pair is a refinement: $Q_2$ changes predicates of $Q_1$ so that its output meets a representation constraint that $Q_1$ violates. Table~\ref{tab:pairs} (appendix) lists all $40$ pairs; Section~\ref{sec:usecase-results} details three.
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
-  \item \emph{From Erica}: ten pairs on ACSIncome~\cite{LMSJ23} and ten from the Erica experiments on Adult, COMPAS and Healthcare~\cite{ERICA}, with Erica's queries, constraints and minimal refinements. Only the ACSIncome pairs serve for quality as well: we measure quality only when both outputs hold more than $1{,}000$ tuples (at least $1{,}471$ on ACSIncome, at most $874$ in the smaller output of the other ten). Below that, the bars of a release are comparable to its noise: Laplace noise of scale $2k/\epsilon_H=30$ per bar at the defaults, a standard deviation of about $42$.
+  \item \emph{From Erica}: ten pairs on ACSIncome~\cite{LMSJ23} and four on Healthcare from the Erica experiments~\cite{ERICA}, with Erica's queries, constraints and minimal refinements. Only the ACSIncome pairs serve for quality as well: we measure quality only when both outputs hold more than $1{,}000$ tuples (at least $1{,}471$ on ACSIncome, at most $89$ in the smaller output on Healthcare). Below that, the bars of a release are comparable to its noise: Laplace noise of scale $2k/\epsilon_H=30$ per bar at the defaults, a standard deviation of about $42$.
   \item \emph{Ours}: $26$ pairs on Adult, Tax, COMPAS, Law Students and MEPS. A base query has at most two conditions and an output of at least $1{,}500$ tuples; a constraint asks for a minimum share of a group, between its share in the base queries and in the data; $Q_2$ is a minimal refinement in Erica's sense (no other refinement that satisfies the constraint is closer to $Q_1$ in every condition), computed with our implementation of Erica's search. On COMPAS the constraints use the groups of the Erica experiments.
 \end{itemize}
 % CQA and contrast pairs, out of the experiments for now (first line of the paragraph: "The pairs cover three settings (...; Section 6.2 details four of them):"):
@@ -321,14 +317,15 @@ Attribute@k falls on MEPS ($0.88\rightarrow0.61$) and COMPAS ($0.90\rightarrow0.
 \label{subsec:scalability}
 We time all methods on every pair, one parameter varied at a time: $|\Attrs|$ in Figure~\ref{fig:attrs} (top), the other parameters in Figure~\ref{fig:scalability}.
 Privacy adds no measurable time: \sys{} and \Bone{} are within $2\%$ of each other on every pair, since almost all of the time is the $\Use$ pass they share.
-As Section~\ref{subsec:complexity-analysis} predicts, the time of \sys{} is linear in $N$ and $|\mathcal{P}|$ (median $R^2$ of $0.99$), flat in $k$ and $|\Attrs|$, and grows by less than half from $\tau=15$ to $\tau=|\mathcal{P}|$; $\epsilon$ and $\gamma$ change only the noise, and Figure~\ref{fig:scalability} omits them.
-At the defaults \sys{} takes under half a second on Adult, COMPAS, Law Students and MEPS, a few seconds on Tax and $24$\,s on ACSIncome, with $1.7$ million tuples.
+As Section~\ref{subsec:complexity-analysis} predicts, the time of \sys{} is linear in $N$ and $|\mathcal{P}|$ (median $R^2$ of $0.99$), flat in $k$ and $|\Attrs|$, and grows by less than half from $\tau=15$ to $\tau=|\mathcal{P}|$; on Healthcare, with $887$ tuples, it hardly grows with $N$; $\epsilon$ and $\gamma$ change only the noise, and Figure~\ref{fig:scalability} omits them.
+At the defaults \sys{} takes under half a second on Adult, COMPAS, Law Students, MEPS and Healthcare, a few seconds on Tax and $24$\,s on ACSIncome, with $1.7$ million tuples.
 \sysopt{} releases the same explanations about eight times faster (median over the pairs); its time depends on $\tau$ more than on $|\mathcal{P}|$, since it builds the histograms of every retained view, and with a tenth of the views it saves nothing.
 \BF{} and \SingleStage{} take about a third of the time of \sys{}, since they compute no $\Use$.
-The exhaustive searches do not scale: \TopKExh{} is exponential in $k$ and exceeds the $30$-minute limit from $k=8$ on every dataset (at $k=7$, from $12$ attributes), and \FullExh{} exceeds it from $k=3$.
+The exhaustive searches do not scale: \TopKExh{} is exponential in $k$ and exceeds the $30$-minute limit from $k=8$ on every dataset (at $k=7$, from $12$ attributes), and \FullExh{} exceeds it from $k=3$ ($k=4$ on Healthcare).
 \alon{\Btwo{} (every candidate of the retained views): numbers from the supplementary run, in progress.}
-The ten pairs of the Erica experiments show the same picture (Healthcare in Figure~\ref{fig:scalability}).
-% Detailed numbers (preview run), left out of the text for space; the full run updates them:
+% Detailed numbers (preview run), left out of the text for space; the full run updates them.
+% With Healthcare (40 pairs; Erica's copies of Adult and COMPAS are out): OptPEEQ 4.7-11.4x (median 7.8x), OPT/PEEQ 0.28-0.64 (median 0.34), identical releases in 120/120 runs; NonPrivate within 1.7% of PEEQ; median R^2 0.99 in N and |P|.
+% Healthcare: PEEQ 0.05 s at the defaults, 1.06-1.22x from a tenth of the data to all of it; FullExhaustive finishes at k=3 (869-1153 s) and exceeds the limit from k=4; TopKExhaustive from k=8.
 % We time all methods on every pair, one parameter varied at a time (Figure~\ref{fig:scalability}; Figure~\ref{fig:attrs}, top, for $|\Attrs|$).
 % Privacy adds no measurable time: \sys{} and \Bone{} are within $2\%$ of each other on every pair, since $94$--$99\%$ of the time is the $\Use$ pass they share.
 % As Section~\ref{subsec:complexity-analysis} predicts, the time of \sys{} is linear in $N$ and $|\mathcal{P}|$ (a straight line fits the pairs with a median $R^2$ of $0.99$; the worst fit, $0.48$, is a COMPAS pair that takes at most $0.11$\,s, where the noise of the measurement dominates), flat in $k$ and $|\Attrs|$, and grows by $21$--$46\%$ from $\tau=15$ to $\tau=|\mathcal{P}|$ (mean over the pairs of a dataset).

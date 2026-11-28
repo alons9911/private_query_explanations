@@ -129,5 +129,7 @@ def report(group: str, pairs: list[str]) -> None:
                   f"(largest |Attrs|: {mx.reindex(ds_order(mx.index)).to_dict()})")
 
 
-report("our refinement pairs", OURS)
-report("Erica's pairs", ERICA)
+HEALTHCARE = ["EH1", "EH2", "EH3", "EH5"]
+report("pairs of the paper (ours and Healthcare; the Erica copies of Adult and COMPAS are out, user 2026-11-28)",
+       OURS + HEALTHCARE)
+report("Healthcare", HEALTHCARE)

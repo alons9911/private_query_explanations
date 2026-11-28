@@ -65,6 +65,10 @@ English (file captions written in Hebrew showed in Hebrew; screenshot 2026-11-28
   When done: merge (`merge_shards.py --shard 'tt-*' --out results_toptau e4`), add EXH_TOPTAU to the k column of the
   runtime grid and its numbers to the paragraph (replace the \alon note).  Names: \Btwo = TopTauExhaustive,
   \TopKExh = TopKExhaustive (EXH_ALL), \FullExh = FullExhaustive (EXH_NAIVE).
+* Erica's copies of Adult and COMPAS are OUT of the paper (user, 2026-11-28 12:20, option 2): the paper has 40 pairs
+  (our 26, ACSIncome 10, Healthcare 4); Healthcare is a regular dataset (own row, bullet, attributes, pairs HC1-HC4,
+  running time only because its outputs hold at most 89 tuples). Numbers: `scripts/runtime_numbers.py DIR` reports
+  the 40 pairs of the paper; ignore EA*/EC* in the rt/pv results.
 * Figures (user, 2026-11-28 12:05): the tighter layouts of quality, view_stage, attrs and runtime_grid (same content,
   less height), and a Healthcare (Erica) row in the runtime grid.  Redraw ONLY with `scripts/draw_chapter_figures.sh`
   (it sets the env of the paper's figures; RT_RESULTS=<dir> for the running-time data, default results_preview).
