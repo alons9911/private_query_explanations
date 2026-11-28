@@ -1,4 +1,5 @@
 == e4 (E4 -- end-to-end running time of every method of :mod:`pqde.runner` (Section 5.3.2).)
+  resuming results_shards/rt-3/e4-ACS_Q2C1/e4/raw/runtime.csv: 40 points, 400 runs already measured
   E4 acsincome/ACS_Q2C1
     k=1: PRIV_EXPL 24.6s  OPT_PRIV_EXPL 3.1s  B1 24.6s  B2 24.6s  B3 24.6s  OPT 9.09s  SINGLE_STAGE 9.24s  EXH_ALL 9.13s  EXH_NAIVE 9.07s
     k=2: PRIV_EXPL 24.3s  OPT_PRIV_EXPL 3.21s  B1 24.3s  B2 24.3s  B3 24.3s  OPT 9.1s  SINGLE_STAGE 9.13s  EXH_ALL 9.27s  EXH_NAIVE 19.4s
@@ -35,3 +36,8 @@
     view_fraction=0.7: PRIV_EXPL 18.3s  OPT_PRIV_EXPL 3.67s  B1 18.2s  B2 19.5s  B3 18.3s  OPT 6.95s  SINGLE_STAGE 6.88s  EXH_ALL 7.91s
     view_fraction=0.8: PRIV_EXPL 19.4s  OPT_PRIV_EXPL 3.41s  B1 19.4s  B2 20.4s  B3 19.4s  OPT 7.37s  SINGLE_STAGE 7.34s  EXH_ALL 8.43s
     view_fraction=0.9: PRIV_EXPL 22.5s  OPT_PRIV_EXPL 3.57s  B1 22.6s  B2 23.7s  B3 22.6s  OPT 8.58s  SINGLE_STAGE 8.42s  EXH_ALL 9.21s
+    view_fraction=1.0: PRIV_EXPL 26.7s  OPT_PRIV_EXPL 3.82s  B1 26.7s  B2 27.9s  B3 26.8s  OPT 9.91s  SINGLE_STAGE 9.9s  EXH_ALL 11.1s
+    tau=5: PRIV_EXPL 26.1s  OPT_PRIV_EXPL 3.48s  B1 26.1s  B2 26.7s  B3 26.1s  OPT 9.67s  SINGLE_STAGE 9.73s  EXH_ALL 10.8s
+    tau=10: PRIV_EXPL 25.6s  OPT_PRIV_EXPL 3.57s  B1 25.6s  B2 26.7s  B3 25.6s  OPT 9.55s  SINGLE_STAGE 9.78s  EXH_ALL 10.9s
+    tau=15: PRIV_EXPL 26.9s  OPT_PRIV_EXPL 3.77s  B1 26.9s  B2 28s  B3 26.9s  OPT 9.92s  SINGLE_STAGE 10s  EXH_ALL 11.1s
+    tau=30: PRIV_EXPL 24.4s  OPT_PRIV_EXPL 3.83s  B1 24.4s  B2 25.5s  B3 24.5s  OPT 9.04s  SINGLE_STAGE 8.95s  EXH_ALL 9.93s
